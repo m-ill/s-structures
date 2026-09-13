@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {evaluatePracticalDesign,concurrentMemberDemands,practicalCheck} from '../src/design/evaluation/practicalEvaluation.js';
+import {designCodeBasis} from '../src/metadata/designCodeBasis.js';
+import {getKcscRuleSources} from '../src/metadata/kcscRuleSources.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+model.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+model.loadCases=[{id:'L',type:'live'},{id:'D',type:'dead'}];model.loads=[{id:'d',type:'udl',member:'AB',case:'D',dir:'-z',w:1}];
+model.loadCombinations=[{id:'LIVE',type:'service',factors:{L:1}},{id:'TOTAL',type:'service',factors:{L:1}}];
+stagePracticalDesignInput(model,{type:'reinforcement-record',id:'R',name:'test',version:1,memberId:'AB',start:0,end:1,cover:0.04,barMaterialId:'steel@1',bars:[{y:-0.2,z:0,diameter:20},{y:0.2,z:0,diameter:20}],sourceNote:'synthetic',concreteWeight:'normal',serviceabilityMode:'instant-live-curvature',serviceBoundary:'chord',serviceDeflectionLimit:'live-floor',serviceCrackingComboId:'TOTAL',nonstructuralDamageSensitive:false},[]);
+const set=id=>({ok:true,anyOk:true,combo:{id},memberResults:{AB:{xs:[0,1.5,3],N:[0,0,0],Vy:[0,0,0],Vz:[0,0,0],T:[0,0,0],My:[0,0,0],Mz:[0,3,0]}}});
+const live=set('LIVE'),total=set('TOTAL'),run=()=>evaluatePracticalDesign(model,{byCombo:{LIVE:live,TOTAL:total}},{resultSet:live});
+const ref=getKcscRuleSources(['142020'])[0];
+assert.equal(designCodeBasis('rc-section-strength',{status:'OK',codeReferences:[{...ref,clause:'999 invented clause'}]}).status,'NOT_ESTABLISHED');
+assert.equal(designCodeBasis('rc-section-strength',{status:'OK',codeReferences:[{...ref,clause:'4.1.1; 999.1 invented clause'}]}).status,'NOT_ESTABLISHED');
+assert.equal(designCodeBasis('rc-section-strength',{status:'OK',codeReferences:[{...ref,clause:'4.1.1; Eq.4.1-999'}]}).status,'NOT_ESTABLISHED');
+assert.equal(concurrentMemberDemands('AB','LIVE',{...live.memberResults.AB,xs:[0,3,1.5]}).length,0);
+assert.equal(run().checks.find(x=>x.checkId==='rc-deflection').reason,'TOTAL_SERVICE_DEAD_LOAD_REQUIRED');
+assert.equal(run().checks.find(x=>x.checkId==='rc-section-strength').status,'N_A');
+assert.equal(run().checks.find(x=>x.checkId==='rc-code-compliance').reason,'REQUIRED_KDS_CHECKS_INCOMPLETE');
+model.loadCombinations[1].factors.D=1;
+assert.equal(run().checks.find(x=>x.checkId==='rc-deflection').status,'OK');
+console.log('PASS P25-T01 clause existence, sorted demand, total dead load, SLS applicability and computed compliance summary');
+
+assert.equal(practicalCheck('X','U','joint-confinement',{status:'NG',ratio:2,reason:'RULE_UNAVAILABLE'}).reason,'CHECK_CRITERION_NOT_SATISFIED');
+assert.equal(practicalCheck('X','U','joint-confinement',{status:'OK',ratio:.5,reason:'RULE_UNAVAILABLE'}).reason,null);

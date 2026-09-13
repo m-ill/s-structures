@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import {writeFileSync,mkdirSync} from 'node:fs';
+import {designContext} from './fixtures/p24/context.js';
+import {mixedJointFixture} from './fixtures/p25/mixedJoint.js';
+import {stageDesignInputCommand} from '../src/modeling/designInputCommands.js';
+import {practicalCommandFromRecord} from '../src/modeling/practicalInputContract.js';
+import {jointColumnDepthProposal} from '../src/compute/product/jointColumnDepthProposal.js';
+import {jointCageSpacingProposal} from '../src/compute/product/jointCageSpacingProposal.js';
+import {jointHookAnchorageProposal} from '../src/compute/product/jointHookAnchorageProposal.js';
+import {evaluateRcJoint} from '../src/design/connection/rcJoint.js';
+const ctx=designContext(),m=ctx.model,stage=c=>stageDesignInputCommand(m,c,{},[]),latest=()=>m.designDetails.connections.reduce((a,b)=>a.version>b.version?a:b);
+try{
+ for(const c of mixedJointFixture(m))stage(c);
+ const depth=jointColumnDepthProposal(m,latest());assert.equal(depth.ok,true);
+ for(const c of depth.additionalCommands)stage(c);
+ stage({...practicalCommandFromRecord('connection-record',latest()),version:2,...depth.edits[0]});
+ const hook=jointHookAnchorageProposal(m,latest());assert.equal(hook.ok,true);for(const c of hook.commands)stage(c);
+ const checks=Object.entries(evaluateRcJoint(m,latest())).map(([checkId,c])=>({...c,checkId,entityId:'joint:B'}));
+ const cage=jointCageSpacingProposal(practicalCommandFromRecord('connection-record',latest()),checks,m);assert.equal(cage.ok,true);
+ stage({...practicalCommandFromRecord('connection-record',latest()),version:3,...cage.edits[0]});
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'layers-source'});assert.equal(run.ok,true);
+ const evaluation=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const plan=await ctx.call('plan_design_candidates',{evaluationId:evaluation.evaluationId,connectionId:'J',maxCandidates:1,maxMillis:10000});
+ assert.equal(plan.generation.beamLayerProposal.ok,true,JSON.stringify(plan));
+ const started=await ctx.call('start_design_candidates',{planId:plan.planId,requestId:'layer-start'});
+ let job;for(let i=0;i<1000;i++){job=await ctx.call('get_design_candidates',{jobId:started.jobId});if(job.status!=='running')break;await new Promise(r=>setTimeout(r,10));}
+ assert.ok(job.best,JSON.stringify(job));
+ const receipt=await ctx.call('apply_design_candidate_and_review',{jobId:started.jobId,candidateId:job.best.candidateId,requestId:'layer-apply'});
+ assert.equal(receipt.followUp.status,'completed',JSON.stringify(receipt));
+ const result=ctx.bridge.getPracticalDesignSnapshot(receipt.followUp.evaluationId).checks.filter(c=>c.entityId==='joint:B');
+ assert.equal(result.find(c=>c.checkId==='joint-bar-congestion').status,'OK');
+ assert.equal(result.find(c=>c.checkId==='joint-anchorage').status,'OK');
+ assert.ok(result.every(c=>c.codeBasis));
+ const unchanged=ctx.bridge.getWorkflowInputIdentity().inputHash;
+ const exhausted=await ctx.call('plan_design_candidates',{evaluationId:receipt.followUp.evaluationId,connectionId:'J',maxCandidates:1,maxMillis:10000});
+ assert.equal(exhausted.ok,false,JSON.stringify(exhausted));
+ assert.equal(exhausted.code,'JOINT_CAGE_NO_QUALIFIED_LAYOUT');
+ assert.ok(exhausted.generation.trials.some(t=>t.hoopStatus==='NG'));
+ assert.equal(ctx.bridge.getWorkflowInputIdentity().inputHash,unchanged);
+ mkdirSync('output/phase25',{recursive:true});writeFileSync('output/phase25/joint-layer-repair-webmcp-audit.json',JSON.stringify({generation:plan.generation,receipt,exhausted,checks:result,wholeDesignComplete:false},null,2));
+ console.log('PASS actual WebMCP joint beam depth/hook lane -> apply -> fresh review');
+}finally{await ctx.dispose();}

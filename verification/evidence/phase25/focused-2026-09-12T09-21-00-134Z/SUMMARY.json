@@ -1,0 +1,17 @@
+{
+  "sourceHash": "27d9558f4b85603ab7e11aebc7cea168c52d0b0a726e5039205c1a55d39b27d1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:21:00.477Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-splice-bar-mapping.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 94,
+      "sha256": "e061f60fb941b8fba93b1894fafde6c07226568c32b1b2770e61841971307bf4",
+      "error": null
+    }
+  ]
+}

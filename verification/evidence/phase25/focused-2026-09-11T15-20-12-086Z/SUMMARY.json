@@ -1,0 +1,17 @@
+{
+  "sourceHash": "14a31653c63643c7402712fd8ffed2f533d8ee03ca6f45a47f02b5bbac2956b6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:20:16.054Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-interface-shear.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3761,
+      "sha256": "fc67a8c83235e59c10b949cdbe34986a1520581aafe067d62e5df240fbcb5d2b",
+      "error": null
+    }
+  ]
+}

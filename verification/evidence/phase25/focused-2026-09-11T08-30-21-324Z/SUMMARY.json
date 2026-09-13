@@ -1,0 +1,25 @@
+{
+  "sourceHash": "8d100b15b4e542adbdf59534c32d7a9bb5d56b94cbf9a09e7a5638d08843376f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T08:30:24.374Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 76,
+      "sha256": "9cffcccfbc9cb98fa4e27304e16cb86b3ebdbc670de25338e8161977b6352769",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2691,
+      "sha256": "b4b8cf9cb5657171e751b3790bedb6f479e038b48e4878b6627fe45b3d783ba5",
+      "error": null
+    }
+  ]
+}

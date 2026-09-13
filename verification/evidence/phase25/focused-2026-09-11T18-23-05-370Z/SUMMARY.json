@@ -1,0 +1,25 @@
+{
+  "sourceHash": "8b3ac2f079e21263c70c269198d7e2f6edf290624eca2a2bcfe21b6d6d354c97",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:23:08.712Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-drawing-retention.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 615,
+      "sha256": "a003df82075a36c4793466a3dd09ea4ed99f757b8f723b014f41e17a0b2543e4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2534,
+      "sha256": "47df8e5c4a5cbc2995fb8f85576d6f954d82f5746f70106980b98dc3b428ca2e",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "939084fd156569bcd9777244b32a9899e9516dd7ea71bb6f1f4a83f0b4a2cef7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:46:44.306Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 152,
+      "sha256": "f72c8aa076d9664eaa13479470279e65c00737855f2af47963f62c0e7e48dd37",
+      "error": null
+    }
+  ]
+}

@@ -1,32 +1,47 @@
+import {workerBudgetObservers} from '../../core/workerBudgetObservers.js';
+import {runCandidateEvaluation} from './candidateAnalysisClient.js';
+import {practicalResultCacheKey} from './practicalResultCache.js';
+import {requireCurrentDesignSources} from './designSourceGuard.js';
+import { freezeCheckpointValue } from './workflowResults.js';
+import {ELASTIC_REVIEW_VERSION} from '../../metadata/elasticReviewVersion.js';
+import {calculateReview} from './elasticReviewCalculation.js';
+import {createModuleWorker,runBoundedWorkerTask} from '../../core/boundedWorkerTask.js';
+import {retainedBytes} from '../../core/resourceBudget.js';
+import {PRACTICAL_DESIGN_LIMITS as limits} from '../../metadata/practicalDesignLimits.js';
 import { validateReportSnapshot } from '../../report/phase11/reportSnapshot.js';
+import {selectDesignCombination} from './designCombinationSource.js';
 import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { stableHash, sha256 } from '../../core/stableHash.js';
 import { sameWorkflowInput } from '../../core/workflowIdentity.js';
-import { runDesignChecks } from '../../design/steel.js';
-import { buildDesignDemandPackage } from '../../design/designDemandPackage.js';
-import { buildServiceabilityDriftReport } from '../../design/serviceability.js';
-import { buildConnectionFoundationReport } from '../../design/connectionFoundation.js';
 import { createDesignReviewReport } from '../../report/phase19/designReviewReport.js';
 import { finiteJson, object } from '../../modeling/designInputCommands.js';
 
-export const ELASTIC_REVIEW_VERSION = 'p21-m4-elastic-review-v2';
+export {ELASTIC_REVIEW_VERSION} from '../../metadata/elasticReviewVersion.js';
 const clone = value => structuredClone(value);
 const problem = (code, details = null) => ({ ok: false, code, details, designTransferAllowed: false });
 const reject = (code, details) => { throw Object.assign(new Error(code), { code, details }); };
 const guard = fn => { try { return fn(); } catch (e) { return problem(e.code || e.message, e.details); } };
 const kinds = ['static','modal','responseSpectrum','buckling','linearTha'];
 
-export function createElasticReviewService({ bridge, store, reportExportWorkflow, browserPdfExporter=null, getPdfContext = () => ({}), budget = createResourceBudget() }) {
+export function createElasticReviewService({ bridge, store, reportExportWorkflow, browserPdfExporter=null, sharedPracticalCache=null, getPdfContext = () => ({}), budget = createResourceBudget() }) {
   const reviewPlans = new BudgetMap(budget,'review-plans',{maxEntries:64}), workflowPlans = new BudgetMap(budget,'workflow-plans',{maxEntries:64}), requests = new BudgetMap(budget,'review-requests'), reports = new BudgetMap(budget,'reports',{maxEntries:32});
-  let busy = false;
+  let busy = false, reviewController=null, reviewGeneration=0;
+  const pendingReviews=new Map();
   const identity = () => bridge.getWorkflowInputIdentity();
-  function currentSources(sources) {
+  function currentSources(sources,admissionOwner=null) {
     const currentIdentities = {}, rows = [], combinations = new Set();
+    let admissionBytes=retainedBytes(bridge.getCurrentModel())*3;
     for (const source of sources) {
       object(source, ['analysisRunId','comboId']);
       if (typeof source.analysisRunId !== 'string' || typeof source.comboId !== 'string') reject('SOURCE_IDS_REQUIRED');
       if (combinations.has(source.comboId)) reject('DUPLICATE_COMBINATION');
       combinations.add(source.comboId);
+      if(admissionOwner){
+        const meta=bridge.getWorkflowAnalysisMetadata(source.analysisRunId);
+        if(!meta.ok)reject(meta.code);
+        if(!Number.isSafeInteger(meta.retainedSizeEstimateBytes)||meta.retainedSizeEstimateBytes<0)reject('SOURCE_MEMORY_ESTIMATE_REQUIRED');
+        admissionBytes+=meta.retainedSizeEstimateBytes*3;budget.reserve(admissionOwner,admissionBytes);
+      }
       const row = bridge.getWorkflowAnalysisResult(source.analysisRunId);
       if (!row.ok) reject(row.code);
       if (row.stale) reject('STALE_INPUT');
@@ -38,7 +53,7 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
       if (method === 'legacy') reject('PDELTA_COMPARISON_ONLY');
       // The selected result must belong to this exact combination. Never read a
       // convenient envelope or fall back to a different analysis method.
-      const set = payload?.byCombo?.[source.comboId];
+      const set = selectDesignCombination(payload,source.comboId,method);
       if (!set?.ok || !set.anyOk || !set.memberResults || !(set.disp || set.nodeDisplacements)) reject('COMBINATION_RESULT_REQUIRED');
       if (method === 'direct' && payload.pDeltaMethod !== 'direct') reject('PDELTA_RESULT_MAPPING_REQUIRED');
       currentIdentities[source.analysisRunId] = row.identity;
@@ -69,13 +84,73 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     if (requests.has(key)) { const prior=requests.get(key);if(prior.hash!==hash) reject('REQUEST_ID_CONFLICT');return getReview(prior.id); }
     if (requests.size >= 128) reject('SESSION_REQUEST_LIMIT');
     const model = clone(bridge.getCurrentModel()), {rows,currentIdentities} = currentSources(plan.sources);
-    const result = calculateReview(model, rows);
+    const result = calculateReview(model, rows,sharedPracticalCache?.get(practicalResultCacheKey(plan.inputIdentity.inputHash,rows)));
     if (!sameWorkflowInput(plan.inputIdentity, identity())) reject('STALE_INPUT');
+    requireCurrentDesignSources(bridge,rows);
     const { version, inputIdentity, ...storePlan } = plan;
     const recorded = store.recordDesign({identity:inputIdentity,plan:storePlan,currentIdentities,result});
     requests.set(key, {hash,id:recorded.designRunId});
     return recorded;
   }); }
+  function startReviewAsync(input={}) {
+    let hash,key;
+    try{
+      finiteJson(input);object(input,['plan','requestId']);requestKey(input.requestId);
+      key=`review:${input.requestId}`;hash=stableHash(input.plan);
+      const pending=pendingReviews.get(key);
+      if(pending){if(pending.hash!==hash)reject('REQUEST_ID_CONFLICT');return pending.promise;}
+      if(reviewController)reject('DESIGN_REVIEW_BUSY');
+      const issued=reviewPlans.get(input.plan?.planHash);
+      if(!issued||stableHash(issued)!==hash)reject('DESIGN_PLAN_INVALID');
+      if(!sameWorkflowInput(input.plan.inputIdentity,identity()))reject('STALE_INPUT');
+      if(requests.has(key)){const prior=requests.get(key);if(prior.hash!==hash)reject('REQUEST_ID_CONFLICT');return Promise.resolve(getReview(prior.id));}
+      if(requests.size>=128)reject('SESSION_REQUEST_LIMIT');
+    }catch(e){return Promise.resolve(problem(e.code||e.message,e.details));}
+    const controller=new AbortController(),generation=reviewGeneration,owner=budget.nextOwner('design-review-transient');
+    reviewController=controller;
+    const reviewStarted=performance.now();let reviewTimedOut=false;
+    const reviewTimer=setTimeout(()=>{reviewTimedOut=true;controller.abort();},limits.maxEvaluationMillis);
+    const promise=(async()=>{
+      try{
+        const model=bridge.getCurrentModel();
+        if((model.members||[]).length>limits.maxMembers||input.plan.sources.length>limits.maxSources)reject('FOCUSED_DESIGN_SIZE_LIMIT');
+        budget.reserve(owner,retainedBytes(model)*3);
+        const {rows}=currentSources(input.plan.sources,owner);
+        if(rows.some(x=>Object.values(x.set.memberResults||{}).reduce((n,r)=>n+(r.xs?.length||0),0)>limits.maxStationsPerSet))reject('FOCUSED_DESIGN_SIZE_LIMIT');
+        const compactRows=rows.map(({source,set,method,row})=>({source,set,method,row:{caseId:row.caseId,qualification:row.qualification,identity:row.identity,resultHash:row.resultHash}}));
+        budget.reserve(owner,retainedBytes({model,rows:compactRows})*3);
+        const sharedKey=practicalResultCacheKey(input.plan.inputIdentity.inputHash,rows);
+        let prepared=sharedPracticalCache?.get(sharedKey),freshPractical=null;
+        if(!prepared&&sharedPracticalCache){freshPractical=await sharedPracticalCache.compute(sharedKey,signal=>runCandidateEvaluation({budget,workerReservationBytes:budget.snapshot().owners[owner],model,sets:compactRows,timeoutMs:limits.maxEvaluationMillis,signal}),controller.signal);prepared=freshPractical;}
+        if(controller.signal.aborted||generation!==reviewGeneration)reject('CANCELLED');
+        const remaining=limits.maxEvaluationMillis-(performance.now()-reviewStarted);if(remaining<=0)reject('TASK_TIMEOUT');
+        if(prepared)budget.reserve(owner,retainedBytes({model,rows:compactRows,prepared})*3);
+        const computed=await runBoundedWorkerTask({...workerBudgetObservers(budget,owner),payload:{model,rows:compactRows,prepared},timeoutMs:remaining,signal:controller.signal,workerFactory:()=>createModuleWorker(new URL('./elasticReviewWorker.js',import.meta.url))});
+        const result=computed.review;
+        if(controller.signal.aborted||generation!==reviewGeneration)reject('CANCELLED');
+        if(!sameWorkflowInput(input.plan.inputIdentity,identity()))reject('STALE_INPUT');
+        const current=requireCurrentDesignSources(bridge,rows);
+        // Account for returned data and the immutable result-store copy before publication.
+        budget.reserve(owner,retainedBytes({model,rows:compactRows})*2+retainedBytes({computed,freshPractical})*2);
+        const {version,inputIdentity,...storePlan}=input.plan;
+        requests.set(key,{hash,id:null});
+        try{
+          const recorded=store.recordDesign({identity:inputIdentity,plan:storePlan,currentIdentities:current.currentIdentities,result});
+          if(!recorded.ok){requests.delete(key);return recorded;}
+          requests.get(key).id=recorded.designRunId;requests.refresh(key);
+          if(freshPractical||computed.practical)sharedPracticalCache?.put(sharedKey,freshPractical||computed.practical);
+          return recorded;
+        }catch(error){requests.delete(key);throw error;}
+      }catch(e){return problem(reviewTimedOut?'TASK_TIMEOUT':e.code||e.message,e.details);}
+      finally{clearTimeout(reviewTimer);budget.release(owner);if(reviewController===controller)reviewController=null;pendingReviews.delete(key);}
+    })();
+    pendingReviews.set(key,{hash,promise});
+    // A pre-Worker admission failure can finish synchronously before registration.
+    promise.finally(()=>{if(pendingReviews.get(key)?.promise===promise)pendingReviews.delete(key);});
+    return promise;
+  }
+  function cancelReview(){const active=!!reviewController;reviewController?.abort();return {ok:true,cancelRequested:active};}
+  function getReviewExecution(){return {mode:'module-worker',active:!!reviewController,compatibilityMode:'synchronous',timeoutMs:limits.maxEvaluationMillis};}
   function getReview(id) { return guard(() => store.getDesign(id, identity())); }
   function createReport(id) { return guard(() => {
     const record = getReview(id);
@@ -187,7 +262,7 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     } catch(e) {return problem(e.code||e.message,e.details);}
   }
   function cancelWorkflow(requestId) {const result=requests.get(`workflow:${requestId}`)?.result;if(!result)return problem('WORKFLOW_NOT_FOUND');if(result.status==='running'){result.cancelled=true;if(result.currentJobId)bridge.cancelAnalysisRun(result.currentJobId);}return {ok:true,status:result.status,cancelRequested:!!result.cancelled};}
-  function dispose(){for(const value of requests.values())if(value.result?.status==='running'){value.result.cancelled=true;if(value.result.currentJobId)bridge.cancelAnalysisRun(value.result.currentJobId);}reviewPlans.clear();workflowPlans.clear();requests.clear();reports.clear();}
+  function dispose(){reviewGeneration++;reviewController?.abort();for(const value of requests.values())if(value.result?.status==='running'){value.result.cancelled=true;if(value.result.currentJobId)bridge.cancelAnalysisRun(value.result.currentJobId);}reviewPlans.clear();workflowPlans.clear();requests.clear();reports.clear();}
   function exportState({shareImmutable=false}={}){const rows=[...reports.entries()];return shareImmutable?freezeCheckpointValue(rows):clone(rows);}
   function restoreState(rows,{shareImmutable=false}={}) {
     if(!Array.isArray(rows))throw new Error('CHECKPOINT_REPORTS_INVALID');
@@ -203,56 +278,6 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     for(const [id,value] of rows)if(shareImmutable)reports.set(id,freezeCheckpointValue(value));else reports.setCopy(id,value);
     return {ok:true,reports:reports.size};
   }
-  return Object.freeze({dispose,exportState,restoreState,cancelWorkflow,planReview,startReview,getReview,createReport,getReport,getArtifact,getExportCapability,exportPdf,planWorkflow,runWorkflow});
+  return Object.freeze({dispose,exportState,restoreState,cancelWorkflow,planReview,startReview,startReviewAsync,cancelReview,getReviewExecution,getReview,createReport,getReport,getArtifact,getExportCapability,exportPdf,planWorkflow,runWorkflow});
 }
 function requestKey(value) {if(typeof value!=='string'||!value.trim()||value.length>128) reject('REQUEST_ID_REQUIRED');}
-function status(value) {return value==='OK'||value==='PASS'?'OK':value==='NG'||value==='FAIL'?'NG':value==='WARN'?'WARN':'NOT_CHECKED';}
-function number(value) {return typeof value==='number'&&Number.isFinite(value)?value:null;}
-
-function calculateReview(model, rows) {
-  const checks=[],messages=[],sources=[],demandPackages=[];
-  for(const {source,set,method,row} of rows) {
-    const analysis={ok:true,byCombo:{[source.comboId]:set},envelope:set};
-    const demandPackage=buildDesignDemandPackage(model,analysis), design=runDesignChecks(model,analysis,{resultSet:set,demandPackage});
-    const serviceCombo=model.loadCombinations.find(x=>x.id===source.comboId)?.type==='service';
-    const completeDisplacements=(model.nodes||[]).every(node=>{const d=set.disp?.[node.id]||set.nodeDisplacements?.[node.id];return d&&[0,1,2].every(i=>number(d[i])!==null);});
-    const serviceability=serviceCombo&&completeDisplacements?buildServiceabilityDriftReport(model,analysis):{rows:[],criteria:{driftLimitRatio:1/200}};
-    const connectionFoundation=buildConnectionFoundationReport(model,analysis,{resultSet:set,demandPackage});
-    const before=checks.length;
-    for(const member of model.members||[]) {
-      const found=design.steel.memberResults[member.id]||design.concrete.memberResults[member.id];
-      if(!found) checks.push({...source,memberId:member.id,category:'member',checkId:'unsupported-or-missing',status:'NOT_CHECKED',ratio:null,expression:'No supported member design result'});
-      for(const item of found?.checks||[]) {
-        const interaction=item.id.includes('interaction'),applicable=item.id!=='rc-column-interaction'||found.role==='column';
-        const unit=interaction||item.id.includes('slenderness')?'-':item.id.includes('deflection')?'m':item.id.includes('flexure')||item.id.includes('ltb')?'kN.m':'kN';
-        checks.push({...source,memberId:member.id,category:found.type,checkId:item.id,
-          status:!applicable||item.status==='N_A'?'N_A':number(item.ratio)===null?'NOT_CHECKED':status(item.status),ratio:applicable?number(item.ratio):null,
-          reason:item.reason||(!applicable?'Column interaction does not apply to beams':null), calculationVersion:found.calculationVersion||null, reinforcementBasis:found.reinforcementBasis||null,
-          demand:interaction?number(item.ratio):number(item.demand),capacity:interaction?1:number(item.capacity),unit,
-          expression:item.expression||'',x:number(item.x),method:found.method});
-      }
-      for(const message of found?.messages||[]) messages.push({...source,memberId:member.id,category:found.type,...message});
-    }
-    for(const item of serviceability.rows) checks.push({...source,memberId:`story-${item.storyIndex||item.story||''}`,category:'serviceability',checkId:'story-drift',status:status(item.status),ratio:number(item.driftRatio/serviceability.criteria.driftLimitRatio),demand:number(item.driftRatio),capacity:serviceability.criteria.driftLimitRatio,expression:'story drift / drift limit'});
-    if(!serviceability.rows.length) checks.push({...source,memberId:null,category:'serviceability',checkId:'story-drift',status:serviceCombo?'NOT_CHECKED':'N_A',ratio:null,reason:serviceCombo?'Complete story drift inputs required':'Serviceability drift does not apply to this strength combination',expression:'story drift applicability'});
-    for(const item of connectionFoundation.connectionRows) checks.push({...source,memberId:item.memberId,category:'connection',checkId:'preliminary-force-screen',status:status(item.status),ratio:number(item.utilization),demand:number(item.equivalentDemand),capacity:connectionFoundation.assumptions.nominalConnectionCapacity,expression:'equivalent force / assumed nominal connection capacity'});
-    for(const item of connectionFoundation.foundationRows) {
-      checks.push({...source,memberId:item.nodeId,category:'foundation',checkId:'required-bearing-area',status:'NOT_CHECKED',ratio:null,demand:number(item.requiredArea),capacity:null,expression:'required area = vertical reaction / assumed allowable bearing; actual footing area not checked'});
-      const unavailable=item.reaction.vertical<=0;
-      checks.push({...source,memberId:item.nodeId,category:'foundation',checkId:'slidingRatio',status:item.uplift?'NG':unavailable?'NOT_CHECKED':status(item.status),ratio:unavailable?null:number(item.slidingRatio),expression:'horizontal reaction / (vertical reaction × assumed friction); uplift retains NG'});
-    }
-    for(const item of checks.slice(before)) item.unit ||= item.category==='serviceability'||item.checkId==='slidingRatio'?'-':item.checkId==='required-bearing-area'?'m2':item.category==='connection'?'kN':'-';
-    const own=checks.slice(before), governing=own.filter(x=>x.ratio!==null).sort((a,b)=>b.ratio-a.ratio)[0]||null;
-    sources.push({...source,caseId:row.caseId,method,maxDisplacement:number(set.dmax),maxUtilization:governing?.ratio??null,governing,qualification:row.qualification,equilibriumResidual:number(set.summary?.equilibriumResidual),equilibriumStatus:set.summary?.equilibriumStatus||'NOT_AVAILABLE',recoveryQualified:set.recoveryQualification?.qualified??null,inputHash:row.identity.inputHash,resultHash:row.resultHash});
-    demandPackages.push({...source,package:demandPackage});
-  }
-  for (const item of checks) item.checkKey = stableHash([item.analysisRunId,item.comboId,item.memberId,item.category,item.checkId]);
-  if (new Set(checks.map(item=>item.checkKey)).size !== checks.length) reject('DUPLICATE_CANONICAL_CHECK');
-  const counts=Object.fromEntries(['OK','WARN','NG','NOT_CHECKED','N_A'].map(key=>[key,checks.filter(x=>x.status===key).length]));
-  const governing=checks.filter(x=>x.ratio!==null).sort((a,b)=>b.ratio-a.ratio)[0]||null;
-  return {version:ELASTIC_REVIEW_VERSION,units:clone(model.units),axes:'member-local',signConvention:'solver-native',checks,messages,sources,demandPackages,
-    summary:{status:counts.NG?'NG':counts.NOT_CHECKED?'NOT_CHECKED':counts.WARN||messages.length?'WARN':'OK',counts,maxUtilization:governing?.ratio??null,governing,checkCount:checks.length,messageCount:messages.length,failedMemberCount:new Set(checks.filter(x=>x.status==='NG'&&(model.members||[]).some(m=>m.id===x.memberId)).map(x=>x.memberId)).size,failedEntityCount:new Set(checks.filter(x=>x.status==='NG'&&x.memberId).map(x=>x.memberId)).size},
-    ruleSources:[{module:'src/design/steel.js',method:'steel_allowable_preliminary + elastic LTB',status:'preliminary'},{module:'src/design/concrete.js',method:'rc_preliminary_strength',status:'preliminary'},{module:'src/design/serviceability.js',method:'story drift H/200 default',status:'project criterion required'},{module:'src/design/connectionFoundation.js',method:'force / bearing / sliding screening',status:'assumed capacities; preliminary'}],
-    limitations:['Final design transfer is blocked; computed OK is not engineering approval.','Only explicitly bound completed first-order/Direct P–Delta combinations are mapped. Legacy P–Delta is comparison-only and blocked. Modal, RSA, buckling, THA and nonlinear results are not mapped to member design demand.','Steel checks are preliminary allowable-stress screens, not a complete strength-code implementation. RC uses simplified section/rebar assumptions.','LTB, missing members, warnings and unchecked items retain their own status.','Connection bolt/weld/anchorage and foundation settlement, punching, reinforcement and soil qualification are NOT_CHECKED.','Selected combinations only; required code combination coverage is not certified.']};
-}
-import { freezeCheckpointValue } from './workflowResults.js';

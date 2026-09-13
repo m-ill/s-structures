@@ -170,6 +170,10 @@ assert.equal(linearLimit.ok, true, linearLimit.reason);
 assert.equal(directLimit.ok, true, directLimit.reason);
 const linearLimitMember = linearLimit.memberResults.C1;
 const directLimitMember = directLimit.result.memberResults.C1;
+assert.equal(directLimit.result.firstOrderMomentComparison.members.C1.intervalCoverageVerified,true,'native Direct Winkler producer must use continuous recovery comparison');
+assert.equal(directLimit.result.firstOrderMomentComparison.members.C1.status,'WITHIN_RECOVERY_INTERVALS');
+assert.equal(directLimit.result.firstOrderMomentComparison.fullMemberQualified,false);
+
 close(directLimit.result.disp.T[0], linearLimit.disp.T[0], 1e-8, 'P=0 foundation displacement parity');
 for (const quantity of ['N', 'Vy', 'Vz', 'Tq', 'My', 'Mz']) {
   assertVectorClose(

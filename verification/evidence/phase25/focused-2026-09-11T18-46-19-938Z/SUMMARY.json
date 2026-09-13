@@ -1,0 +1,33 @@
+{
+  "sourceHash": "d896ba0fb9130836bca32f8187c1235adb75a4f4c9c4ba1d4ea27ed14e2de4b1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:46:23.032Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-artifact-reader.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 69,
+      "sha256": "75a8aed88c3b3cdbc559cd13637893bbe4164f30f39bcc8389b4205703a98da1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2716,
+      "sha256": "2ea90ba994115ec53dccc25c62b188197be3acf50b973140284d273ad949312d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-review-ui-lifecycle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 87,
+      "sha256": "3fd16c48808cba15df329964673c63d5f7b9aa74c3db0e09180920904c62baf7",
+      "error": null
+    }
+  ]
+}

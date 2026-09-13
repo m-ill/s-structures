@@ -36,8 +36,10 @@ for(const rc of [false,true]) {
     assert.ok(review.result.checks.some(x=>x.category===(rc?'concrete':'steel')));
     assert.ok(review.result.summary.counts.NOT_CHECKED>0);
     for(const row of review.result.checks) assert.ok(sources.some(x=>x.analysisRunId===row.analysisRunId&&x.comboId===row.comboId));
+    assert.ok(review.result.checks.every(x=>x.codeBasis?.status),'every RC/steel/drift check retains code basis status');
     const report=must(api.createDesignReviewReport(review.designRunId));assert.equal(validateReportSnapshot(report.snapshot).ok,true);
     assert.deepEqual(report.snapshot.designReview.summary,review.result.summary);
+    assert.ok(report.csv.includes('codeBasis'));assert.ok(report.reports['ko-KR'].html.includes('KDS 근거'));assert.ok(report.reports['en-US'].html.includes('KDS application not established'));
     assert.ok(report.reports['ko-KR'].html.includes(String(review.result.summary.maxUtilization)));
     assert.ok(report.reports['en-US'].html.includes(report.reportSnapshotHash));
     assert.equal(JSON.parse(report.json).reportSnapshotHash,report.reportSnapshotHash);
@@ -84,7 +86,11 @@ console.log('PASS UI/Agent canonical check rows; stale/tamper/missing/duplicate/
   const doc=createFakeIndexDocument(),host=doc.createElement('div');host.setAttribute('data-ss-ribbon-panel','elastic');doc.body.appendChild(host);
   const panel=installIndexDesignReview({...target,document:doc},bridge);panel.open();
   const click=text=>{const node=doc.querySelectorAll('button').find(x=>x.textContent===text);assert.ok(node,text);node.click();};
-  const jobs=bridge.listAnalysisRuns().length;click('설계 검토 실행');click('보고서 생성');
+  const jobs=bridge.listAnalysisRuns().length,runReview=bridge.startDesignReviewAsync.bind(bridge);let pendingReview;
+  bridge.startDesignReviewAsync=(...args)=>(pendingReview=runReview(...args));
+  click('설계 검토 실행');assert.ok(pendingReview,'native button dispatched the async review');must(await pendingReview);
+  for(let i=0;i<100&&doc.querySelectorAll('button').find(x=>x.textContent==='보고서 생성').disabled;i++)await new Promise(resolve=>setTimeout(resolve,0));
+  assert.equal(doc.querySelectorAll('button').find(x=>x.textContent==='보고서 생성').disabled,false);click('보고서 생성');
   assert.ok(doc.querySelectorAll('button').find(x=>x.textContent==='HTML 저장'));
   assert.equal(bridge.listAnalysisRuns().length,jobs);
   console.log('PASS real static/direct/modal/RSA/buckling/THA sequence; native design/report button events; unsupported demand mapping');

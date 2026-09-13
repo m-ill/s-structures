@@ -144,7 +144,7 @@ function buildLegacyResultShapeSummary(analysis) {
       displacement: ['disp', 'nodeDisplacements', 'displacements'],
       memberForces: ['memberResults.N', 'memberResults.Vy', 'memberResults.Vz', 'memberResults.My', 'memberResults.Mz'],
       reactions: ['reactions.rx', 'reactions.ry', 'reactions.rz', 'reactions.rmx', 'reactions.rmy', 'reactions.rmz'],
-      design: ['design.summary', 'design.steel.memberResults', 'design.concrete.memberResults'],
+      design: ['design.summary', 'design.steel.memberResults', 'design.practicalMemberResults', 'design.concrete.memberResults'],
       validation: ['validation.errors', 'validation.warnings'],
     },
   };

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "60c5c0eec3a8d3daf6828ab41a9769176fdef189b6da4eebb38e02eaec52b24c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:37:13.640Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoop-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 224,
+      "sha256": "73faa625bd01fcd13609e46db9a4b31eba948f0c6ebfa345f6592ddb49690175",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "162de4f7390a56668732475333ca01402fb4bd633a027be333d196401f3dbbf3",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:21:32.107Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-targeted-undo.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1635,
+      "sha256": "c9b4be6c43a46edfd4a5729950abbbfa7b26c22dc5de0542aa70fbf9b2b4afcf",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m2-history.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1218,
+      "sha256": "d9afc7cd8095e003ec8c055112d97a200f6b5a46d54583eec6151510f2c49f9a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "fc6dd70132ad7ec4318f274fe98374648f97fab4cd37559b55644cb207bf8c1a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:02:38.808Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-independent-repeat-pairs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 76,
+      "sha256": "be531ffee13d9dd3056581e1b5d7cb0b314e8e3aceeb2742c9fbce2608fbd7c8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 81,
+      "sha256": "e8579dde0a9e36966bad0ce617a7b11bc94a522b18d7cf5591d19cc8abb6202b",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Missing expected rejection.
+    at async file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m1-details-input.mjs:41:6 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: undefined,
+  operator: 'rejects',
+  diff: 'simple'
+}
+
+Node.js v24.16.0

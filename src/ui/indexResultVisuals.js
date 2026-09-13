@@ -1,3 +1,4 @@
+import {hasPreparedRcResults,selectMemberDesignResult} from '../results/designResultSelection.js';
 export const INDEX_RESULT_VISUALS_VERSION = 'm13-index-result-visuals';
 
 const AXIS = {
@@ -100,14 +101,16 @@ function pickResult(analysis, resultId) {
 
 function memberVisual(member, result, analysis) {
   const memberResult = result?.memberResults?.[member.id];
-  const ratio = number(memberResult?.check?.ratio, designRatio(analysis, member.id));
-  const status = utilizationStatus(ratio);
+  const prepared=hasPreparedRcResults(analysis),design=selectMemberDesignResult(analysis,member.id);
+  const ratio=prepared?(Number.isFinite(design?.utilization)?design.utilization:null):number(memberResult?.check?.ratio,designRatio(analysis,member.id));
+  const status=prepared?['NG','FAILED'].includes(design?.status)?'ng':!design||design.incomplete||!['OK','N_A'].includes(design.status)?'none':utilizationStatus(ratio):utilizationStatus(ratio);
   return {
     id: member.id,
     n1: member.n1,
     n2: member.n2,
     role: member.design?.role || null,
     ratio,
+    incomplete:design?.incomplete===true,
     status,
     color: utilizationColor(status),
     maxForces: {

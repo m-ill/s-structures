@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "version": "p7-m1-section-core",
+  "squareJCoefficient": 0.1405770149551797,
+  "strictHollowGeometry": true,
+  "generalOptionalProperties": [
+    "Ay",
+    "Az",
+    "Cw"
+  ]
+}

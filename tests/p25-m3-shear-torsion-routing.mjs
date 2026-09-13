@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {evaluateProvidedKdsShear} from '../src/design/rc/kdsShear.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+const member={id:'AB',n1:'A',n2:'B',secId:'rc3060',matId:'concrete'};
+const d={id:'R',version:1,start:0,end:1,barMaterialId:'steel@1',concreteWeight:'normal',shearStandard:'KDS-142022-2022',torsionStandard:'KDS-142022-2022',shearScope:'ordinary-prismatic-no-opening',stirrupForm:'closed-rectangular-two-leg',stirrups:{legs:2,diameter:.01,spacing:.1,area:71.33e-6},bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,area:.0003})))};
+const t={x:1.5,N:0,Vy:1,Vz:1,T:.1};
+const r=evaluateProvidedKdsShear(model,member,[d],[t]);
+assert.equal(r['rc-shear-y'].status,'OK');assert.equal(r['rc-shear-y'].torsionNeglect.status,'OK');
+assert.equal(evaluateProvidedKdsShear(model,member,[d],[{...t,T:100}])['rc-shear-y'].status,'NOT_CHECKED');
+assert.equal(evaluateProvidedKdsShear(model,member,[{...d,torsionStandard:undefined}],[t])['rc-shear-y'].status,'NOT_CHECKED');
+console.log('PASS same-station KDS torsion neglect feeds shear; above-threshold and unselected rules remain explicit');

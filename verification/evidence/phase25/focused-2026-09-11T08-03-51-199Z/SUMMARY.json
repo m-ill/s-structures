@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T08:03:53.695Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 158,
+      "sha256": "435c5effbac773359fb6460afc3d4c65931e8a701b307af480c68befb3a7947a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-pagination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 215,
+      "sha256": "45797056d82feeb09999fbd1f17d9c3c907648d6f855fa477793ee9304e5f718",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2116,
+      "sha256": "11e576f0e793673414c57ad3166b57d19688b72a6e795bfa2f2bb570988523c8",
+      "error": null
+    }
+  ]
+}

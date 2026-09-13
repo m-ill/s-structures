@@ -1,0 +1,25 @@
+{
+  "sourceHash": "958cb1b3865c97d692d79680a88e9003fd08fda7dec664c503f833ef7b4cc267",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:02:05.348Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-moment-directions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 929,
+      "sha256": "fefeade8992f122efe43aca967f73a0946ad102d9f6f482d070dc60511bf7a4b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1824,
+      "sha256": "972fbc829a93dadd03aedc64a78432a04bfa694fe937849e2882728489837253",
+      "error": null
+    }
+  ]
+}

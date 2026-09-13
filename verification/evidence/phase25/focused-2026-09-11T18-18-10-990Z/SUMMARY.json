@@ -1,0 +1,41 @@
+{
+  "sourceHash": "9889a4b2f1d865c827ad3d99bfad7439dacf9bbd4baa1a263052d261bb3ef015",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:18:27.254Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-longitudinal-quantity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "0fc2f8342d5592c0368273d7915ef7689d4085e97623527ba06826aa7dd59e82",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2216,
+      "sha256": "9985ec12d636cab44f020c40d2e5c3487093ff57cd3869fd70751f2ba08053a6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8435,
+      "sha256": "301b9ff5462c5ae4b75dd2d6d9a639b7e7480926cedccf1a476371aad6700319",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5294,
+      "sha256": "5c1f8ac0e02678b32eaf93fb0f7942357ab79ea35e939d1bf1dc959ea13a10e3",
+      "error": null
+    }
+  ]
+}

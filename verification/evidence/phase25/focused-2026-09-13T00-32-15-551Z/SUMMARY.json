@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d6327dcc44c845d6795436048593cb45fa4f5bd6ffbc90e46e00945579e6fb96",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:32:15.855Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-severity.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "e7733d7e073cb7a2f4b02915d4241985b9ced3ef0578e895045968d933556cc4",
+      "error": null
+    }
+  ]
+}

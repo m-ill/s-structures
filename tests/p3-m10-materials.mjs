@@ -29,7 +29,7 @@ import { bootTestApp, registerAndLogin } from './helpers/serverTestApp.mjs';
 const h = computeSectionProperties('H', { H: 300, B: 150, tw: 6.5, tf: 9 });
 assert.equal(SECTION_PROPERTIES_VERSION, 'p3-m10-section-properties');
 assert.ok(h.A > 0 && h.Iy > 0 && h.Iz > 0 && h.ry > 0);
-assert.equal(MATERIAL_SCHEMA_VERSION, 'p3-m10-material-schema-v1');
+assert.equal(MATERIAL_SCHEMA_VERSION, 'p25-material-schema-v2-steel-test-evidence');
 assert.equal(SECTION_SCHEMA_VERSION, 'p3-m10-section-schema-v1');
 assert.equal(validateMaterialRecord({
   id: 'SS275', version: 2, kind: 'steel',

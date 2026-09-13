@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f84396426e0ed35c8ff4fe193680cf7fb1666e483528edafdb5526b7da5772a9",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:10:38.834Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-location-coverage.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 137,
+      "sha256": "d693037041f90f798a196acc3d01c1bc59198ed85304c17632a0e8826478731a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-crack-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "acce85f04f819202299a4282291174c7f0b1ec7adef87ce883ded4e2215cad2d",
+      "error": null
+    }
+  ]
+}

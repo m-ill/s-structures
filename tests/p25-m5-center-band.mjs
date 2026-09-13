@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {footingBarLayout,footingDistribution} from '../src/design/foundation/footingBarLayout.js';
+const f={B:2,L:4,cover:.05,barDistribution:'kds-centered-band',reinforcement:{bottomB:{diameter:.02,spacing:.2},bottomL:{diameter:.02,spacing:.2}}};
+const layout=footingBarLayout(f,'bottom','B');
+assert.equal(layout.status,'OK');
+assert.ok(layout.positions.every((x,i)=>x>=.06&&x<=3.94&&(!i||x>layout.positions[i-1])));
+assert.ok(layout.maximumSpacing<=.2+1e-10);
+const center=layout.positions.filter(x=>x>=1&&x<=3).length;
+assert.ok(center/layout.count>=2/3);
+assert.equal(footingDistribution(f).status,'OK');
+const rotated={...f,B:f.L,L:f.B};
+assert.deepEqual(footingBarLayout(rotated,'bottom','L').positions,layout.positions);
+assert.equal(footingDistribution({...f,barDistribution:undefined}).status,'NG');
+assert.equal(footingBarLayout({...f,reinforcement:{...f.reinforcement,bottomB:{diameter:.02,spacing:.001}}},'bottom','B').status,'NOT_CHECKED');
+console.log('PASS KDS centered-band proportion, coordinate rotation, spacing, uniform deficiency and allocation bound');

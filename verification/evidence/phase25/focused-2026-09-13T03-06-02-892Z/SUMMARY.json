@@ -1,0 +1,25 @@
+{
+  "sourceHash": "2afb22df7ca3a8af9f391eab7b8a89bf95ae44cf84d37bcc851f666e411de5c1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:06:13.473Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-checkpoint-failure-history.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1745,
+      "sha256": "93d377dd098b30ab0fde97e149b52c1616273a57aead69f672170aa6f22b00d3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8600,
+      "sha256": "30a381cb8d6d137a00990a68bf4c011717196fcb07a349439a11007b70527c7a",
+      "error": null
+    }
+  ]
+}

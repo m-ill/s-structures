@@ -1,0 +1,25 @@
+{
+  "sourceHash": "22e64af0a4298c94a82fbe25736042e9b700fd169accd6af2000f27f91f1d9c8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:47:48.110Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-spatial-bar-fit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 207,
+      "sha256": "a1f894a4f33e667c9e196fe2bc3b92fcd74e4454937d12a4d790434ac093281a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-layer-groups.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5256,
+      "sha256": "36b8ae5416083cc7dbe2ed3cca94e9e3e0bf38c7045a75a741fb350f8faca7e6",
+      "error": null
+    }
+  ]
+}

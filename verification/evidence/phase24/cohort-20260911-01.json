@@ -1,0 +1,189 @@
+{
+  "version": "p24-working-cohort-v1",
+  "date": "2026-09-11",
+  "baseCommit": "ed24e04809957754cdde38e7b949d7c184a0fd2b",
+  "committed": false,
+  "scope": "M0 preparation, M1 typed inputs, M2 persistence subset; not complete phase qualification",
+  "files": [
+    {
+      "path": "docs/README.md",
+      "sha256": "e9805c14b997d1a89ee0bd817ecf2302204528ba87682c70383fdd25ff9550d9"
+    },
+    {
+      "path": "docs/phase24/EXECUTION_LOG.md",
+      "sha256": "2cb6a9084738fa3074c629739519bf99542b609ce1239504615c062eaf641d0c"
+    },
+    {
+      "path": "docs/phase24/IMPLEMENTATION_STATUS.md",
+      "sha256": "0e7b64627a0347862385d08a02c0773901d01a24743c232946754de6ab90321f"
+    },
+    {
+      "path": "docs/phase24/README.md",
+      "sha256": "d549eb7918ad165754cd4c7b13b2931370af10ba0692c56bebed34fd0ccfcf95"
+    },
+    {
+      "path": "docs/phase24/TARGET_ARCHITECTURE.md",
+      "sha256": "fbf599695754212257e2a39df8c909eb7771d059514d651f88d3bb0916de66a2"
+    },
+    {
+      "path": "docs/phase24/TDD_VALIDATION_PLAN.md",
+      "sha256": "338478e21cc54a70662a5d4aac93de0ce4feaaf1269793946b38f9ec5e51815d"
+    },
+    {
+      "path": "docs/phase24/WEBMCP_CONTROL_CONTRACT.md",
+      "sha256": "890348945674e77a4acd44b2be12939ba1f5314ad9f9b47dbfc821e950ae795d"
+    },
+    {
+      "path": "docs/phase24/WORKPACKAGES.md",
+      "sha256": "89ebe8c605cda2c9191692c7a09fa6267285e54f0e873c819b7b0039cc1075d9"
+    },
+    {
+      "path": "src/core/validation.js",
+      "sha256": "6649f7bcef5e6cdda72346914a2d366bab67a7b694b81c0fa7a260aaf4a01174"
+    },
+    {
+      "path": "src/design/steel.js",
+      "sha256": "fa43d24304abb74dd1c7e24469add0249335cac42548e41db5f6ecfccf3f057a"
+    },
+    {
+      "path": "src/materials/materialSchema.js",
+      "sha256": "821614d4e5473d764825b4b6cde24cada9c71271546cde500ccb740a9af299c4"
+    },
+    {
+      "path": "src/materials/sectionSchema.js",
+      "sha256": "009a2f482e5f31e2c21582c003a16f1ee515dc15143f0e7d544801a338964e35"
+    },
+    {
+      "path": "src/metadata/designModuleCapabilities.js",
+      "sha256": "1d1be60f2972ffaf3f9c85c16a1fdce680b6b914b1ff807242cbc80f3754b36a"
+    },
+    {
+      "path": "src/modeling/designDetailValidation.js",
+      "sha256": "63856786cb42829917acda1bb586315e41789828f34ee791b6892bb02990c270"
+    },
+    {
+      "path": "src/modeling/designInputCommands.js",
+      "sha256": "2a259ca0a7187d5b96706fca6d1ea921cc259d185b83657c2241156fa27b003f"
+    },
+    {
+      "path": "src/modeling/designInputService.js",
+      "sha256": "edc99704d49f5cd7926496eb8ab8b41cd7a539d289fc700f4489716d4e0f2187"
+    },
+    {
+      "path": "src/modeling/practicalDesignInputs.js",
+      "sha256": "d89b3cd21aea44b0c2027942e076d378c59f8d2f70d1a2c4aaaada2e2f5b7cb0"
+    },
+    {
+      "path": "src/modeling/practicalInputContract.js",
+      "sha256": "50a855ceb1f142fb72173e30dcc6be42d91c21fbc3e1eb2a9031202a842a226c"
+    },
+    {
+      "path": "src/ui/indexBridge.js",
+      "sha256": "8598e3cf6df941381915b57d02400954174ba8a86b164f6549f237d8081c368b"
+    },
+    {
+      "path": "src/ui/indexDesignInput.js",
+      "sha256": "9d16f95766994540f8624cbd0dff1904203cd54d9bab2c61fd5d58e30e2388e7"
+    },
+    {
+      "path": "src/ui/indexNativePersistence.js",
+      "sha256": "072629b8fe35ffd89a06da4bbf546354f60a49e226068aa97101c96d372c70a7"
+    },
+    {
+      "path": "src/ui/webmcp/schemas.js",
+      "sha256": "897f2665395954084e48f8f6aa873813a04022c261ea1e8413d201b56d593d13"
+    },
+    {
+      "path": "src/ui/webmcp/tools.js",
+      "sha256": "4ebbba6d1d1ce0b554baeac49b0e3ef899b2ad0e1c33c73566f4f58c9e22724f"
+    },
+    {
+      "path": "tests/fixtures/p24/context.js",
+      "sha256": "44a357890749449dfa8ad41572fb0bc257995f7003d2873b9fb940dfa2b5d881"
+    },
+    {
+      "path": "tests/p24-m0-scope.mjs",
+      "sha256": "f9d3596c8dbe8c4dc728863c663688a20553176ba11a59abe439da8a830e01cf"
+    },
+    {
+      "path": "tests/p24-m1-details-input.mjs",
+      "sha256": "d6f1b7d1d0955c6b53e03284848fbd55ba4630268f8e06e7b0f5dd9c35f6d80e"
+    },
+    {
+      "path": "tests/p24-m1-material-input.mjs",
+      "sha256": "e121456020d6e710804f9b18f5e2387017dce00183bd28d103db2e1286ba192f"
+    },
+    {
+      "path": "tests/p24-m1-material-routing.mjs",
+      "sha256": "a507222355d6d795d5f2626b809d3830f22e7db220a8b85becdce289c008a851"
+    },
+    {
+      "path": "tests/p24-m1-section-input.mjs",
+      "sha256": "65ecbf919f7f282e6ebb09b726d9173f891008f09e230fa932ca32e853b0d272"
+    },
+    {
+      "path": "tests/p24-m2-detail-persistence.mjs",
+      "sha256": "ba837c9c3f989aec989fd42512eb164bd2beb29c49059e26161af9244b1bd51a"
+    },
+    {
+      "path": "tools/run-phase24-tests.mjs",
+      "sha256": "4982634bb518c7d3d2e8de156e90b3b2e407fb5cea983bc22ba1684b92dd9808"
+    },
+    {
+      "path": "verification/specs/phase24/README.md",
+      "sha256": "84bd0ef14190e5913b1f5ff7bac92df71621744c2b3bad30439189bf8f3fef5d"
+    },
+    {
+      "path": "verification/specs/phase24/baseline.json",
+      "sha256": "3ef42eb5f2fd37b549f103193d364cf95accf2c223560409fcde0fdcc130dc7f"
+    },
+    {
+      "path": "verification/specs/phase24/defects.json",
+      "sha256": "b629602c25f8f5bd67b7f195f62e099605fb32e38928834ec4520851c2963e4f"
+    },
+    {
+      "path": "verification/specs/phase24/independent-fixtures.json",
+      "sha256": "986ce4d959ab2738249b69a69c213c79e142ea3c49a0b9edbac305f48c0e6680"
+    }
+  ],
+  "finalLogs": [
+    {
+      "path": "verification/evidence/phase24/m0/20260911-01/green-final-r2.txt",
+      "sha256": "e8d1e65a53949dc1d7d66c7a7d4c2e06184fe6f4832bd1190506421f57779e40"
+    },
+    {
+      "path": "verification/evidence/phase24/m1/20260911-01/green-final-r3.txt",
+      "sha256": "7140475153e301ea582d80229b2e6e729ecd3c923d1a816629fe88166ce77b55"
+    },
+    {
+      "path": "verification/evidence/phase24/m2/20260911-01/green-final-r2.txt",
+      "sha256": "0ca841cd4713f8a72625404e4881a8a94359bc0377964f046616bd695a4d0bf0"
+    },
+    {
+      "path": "verification/evidence/phase24/m2/20260911-01/regression-input-r2.txt",
+      "sha256": "4508080f86a01f3a66f328fe0eca86befc510fef49c580bfe02def5b8969f8f4"
+    },
+    {
+      "path": "verification/evidence/phase24/m2/20260911-01/regression-persistence.txt",
+      "sha256": "307beeb19c73120b5958b8a124bb44586c405e3ce3afef175b7ad0268f1d345d"
+    },
+    {
+      "path": "verification/evidence/phase24/m2/20260911-01/regression-sections.txt",
+      "sha256": "2f117fa801a42e17ae6de0f556d20ee2e34a754ff43c3d170f022b2cc4a24248"
+    }
+  ],
+  "historyNote": "Earlier red/green logs are historical and are not executions of this final source cohort. red-version-diff.txt is a test-authoring API error; red-version-diff-r2.txt reproduces the product defect.",
+  "notRun": [
+    "full-regression",
+    "actual-building",
+    "browser",
+    "production-qualification",
+    "deployment"
+  ],
+  "remaining": [
+    "M1 browser acceptance",
+    "M2 dependency reuse and all persistence paths",
+    "M3-M9",
+    "official rule edition/clause qualification"
+  ]
+}

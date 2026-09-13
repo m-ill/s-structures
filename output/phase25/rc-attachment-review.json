@@ -1,0 +1,244 @@
+{
+  "postAttachmentReview": {
+    "kind": "rc-post-attachment-endpoint-review-v1",
+    "status": "OK",
+    "ratio": 0.7020579622576529,
+    "governingAxis": "w",
+    "checks": [
+      {
+        "axis": "u",
+        "demand": 0.00022306128999705652,
+        "signedValue": -0.00022306128999705652,
+        "position": 3,
+        "capacity": 0.001,
+        "ratio": 0.22306128999705652,
+        "status": "OK"
+      },
+      {
+        "axis": "v",
+        "demand": 0.0001250094099173139,
+        "signedValue": -0.0001250094099173139,
+        "position": 3,
+        "capacity": 0.001,
+        "ratio": 0.12500940991731388,
+        "status": "OK"
+      },
+      {
+        "axis": "w",
+        "demand": 0.000702057962257653,
+        "signedValue": -0.000702057962257653,
+        "position": 3,
+        "capacity": 0.001,
+        "ratio": 0.7020579622576529,
+        "status": "OK"
+      }
+    ],
+    "attachmentAgeDays": 90,
+    "evaluationAgeDays": 365,
+    "history": "constant-sustained-coeval",
+    "boundary": "cantilever-start",
+    "length": 3,
+    "units": "m",
+    "equation": "relative displacement field = final sustained field - attachment sustained field; extrema after subtraction",
+    "limitReference": "synthetic component limits; not a KDS-derived limit",
+    "limitBasis": "user-specified-displacement-limits",
+    "sourceChronologyChecked": true,
+    "ageingStressHistoryIncluded": false,
+    "additionalLiveLoadIncluded": false,
+    "kdsCompliance": "NOT_ESTABLISHED",
+    "codeReferences": [
+      {
+        "id": "142010",
+        "code": "KDS 14 20 10",
+        "name": "콘크리트구조 해석과 설계 원칙",
+        "edition": "2021",
+        "updateDate": "2021-02-18T14:20:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+        "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+        "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.2.2(4)",
+        "applicationScope": "time-dependent serviceability review target; endpoint approximation and supplied limits require separate method review",
+        "governsCalculation": false
+      },
+      {
+        "id": "142030",
+        "code": "KDS 14 20 30",
+        "name": "콘크리트구조 사용성 설계기준",
+        "edition": "2021",
+        "updateDate": "2021-02-18T14:39:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+        "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+        "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.2.1",
+        "applicationScope": "time-dependent serviceability review target; endpoint approximation and supplied limits require separate method review",
+        "governsCalculation": false
+      }
+    ],
+    "designTransferAllowed": false
+  },
+  "report": {
+    "format": "markdown",
+    "content": "# 부착 후 변형 검토\n부착 재령: 90일 / 최종 재령: 365일\n판정: OK / 지배축: w\n허용값 근거: synthetic component limits; not a KDS-derived limit\n단위: m\n\n| 축 | 최대 절대 변형 | 부호 있는 값 | 위치 | 허용값 | 비율 | 판정 |\n|---|---:|---:|---:|---:|---:|---|\n| u | 0.00022306128999705652 | -0.00022306128999705652 | 3 | 0.001 | 0.22306128999705652 | OK |\n| v | 0.0001250094099173139 | -0.0001250094099173139 | 3 | 0.001 | 0.12500940991731388 | OK |\n| w | 0.000702057962257653 | -0.000702057962257653 | 3 | 0.001 | 0.7020579622576529 | OK |\n\n계산식: relative displacement field = final sustained field - attachment sustained field; extrema after subtraction\n동일 지속하중의 두 재령 상태 차이. 재령별 응력이력 및 부착 후 추가 활하중은 포함하지 않음.\nKDS 전체 적합성: 미확정. 허용값은 사용자 지정 기준.\n- KDS 14 20 10 (2021) 4.2.2(4) — 검토 대상 조항, 계산법 승인 근거 아님: https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010 / 37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994\n- KDS 14 20 30 (2021) 4.2.1 — 검토 대상 조항, 계산법 승인 근거 아님: https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030 / 0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b"
+  },
+  "ok": true,
+  "version": "p25-stage-source-composition-v5-attachment-review",
+  "inputHash": "3c069f0274e6995171cd4d181de8aee46426ca23f337c9171df2588ed498c363",
+  "memberId": "AB",
+  "sources": [
+    {
+      "iterationId": "rc-iteration-71f4766d421555dd11c4cf551a11299b0f59fca46a04b7a463fd8c22a7adb56b",
+      "comboId": "S",
+      "factor": 1,
+      "resultHash": "3805a7c598c0b2a7df2c2f9fd033685e47146652b62f8c5585973d6703be3359",
+      "stiffnessMode": "fully-cracked-elastic",
+      "timeEffect": "sustained-effective-modulus",
+      "timeState": {
+        "timeEffect": "sustained-effective-modulus",
+        "attachmentAgeDays": null,
+        "chronologyQualified": false,
+        "ageBasis": "specified-constant-sustained-load-interval",
+        "loadingAgeDays": 28,
+        "evaluationAgeDays": 365,
+        "materialId": "CT",
+        "materialVersion": 1,
+        "creepCoefficient": 2,
+        "elasticModulusAtLoading": 30000,
+        "effectiveE": 10000,
+        "modulusUnit": "MPa",
+        "reference": "synthetic final",
+        "shrinkageIncluded": false,
+        "shrinkageInitialStrain": 0,
+        "shrinkageReference": null
+      },
+      "frameTimeStates": {
+        "AB": {
+          "timeEffect": "sustained-effective-modulus",
+          "attachmentAgeDays": null,
+          "chronologyQualified": false,
+          "ageBasis": "specified-constant-sustained-load-interval",
+          "loadingAgeDays": 28,
+          "evaluationAgeDays": 365,
+          "materialId": "CT",
+          "materialVersion": 1,
+          "creepCoefficient": 2,
+          "elasticModulusAtLoading": 30000,
+          "effectiveE": 10000,
+          "modulusUnit": "MPa",
+          "reference": "synthetic final",
+          "shrinkageIncluded": false,
+          "shrinkageInitialStrain": 0,
+          "shrinkageReference": null
+        }
+      }
+    },
+    {
+      "iterationId": "rc-iteration-3d1bcd620d07cabc946d99829d1f99a90fdccda5844314664515dc1f4e94bc9b",
+      "comboId": "S",
+      "factor": -1,
+      "resultHash": "7fcf14b1218841d637c5da3e79e6cfd2cf7eb158efd08db28f8f08227f0224e4",
+      "stiffnessMode": "fully-cracked-elastic",
+      "timeEffect": "attachment-effective-modulus",
+      "timeState": {
+        "timeEffect": "attachment-effective-modulus",
+        "attachmentAgeDays": 90,
+        "chronologyQualified": false,
+        "ageBasis": "specified-constant-sustained-load-interval",
+        "loadingAgeDays": 28,
+        "evaluationAgeDays": 90,
+        "materialId": "CT",
+        "materialVersion": 1,
+        "creepCoefficient": 1,
+        "elasticModulusAtLoading": 30000,
+        "effectiveE": 15000,
+        "modulusUnit": "MPa",
+        "reference": "synthetic attachment",
+        "shrinkageIncluded": false,
+        "shrinkageInitialStrain": 0,
+        "shrinkageReference": null
+      },
+      "frameTimeStates": {
+        "AB": {
+          "timeEffect": "attachment-effective-modulus",
+          "attachmentAgeDays": 90,
+          "chronologyQualified": false,
+          "ageBasis": "specified-constant-sustained-load-interval",
+          "loadingAgeDays": 28,
+          "evaluationAgeDays": 90,
+          "materialId": "CT",
+          "materialVersion": 1,
+          "creepCoefficient": 1,
+          "elasticModulusAtLoading": 30000,
+          "effectiveE": 15000,
+          "modulusUnit": "MPa",
+          "reference": "synthetic attachment",
+          "shrinkageIncluded": false,
+          "shrinkageInitialStrain": 0,
+          "shrinkageReference": null
+        }
+      }
+    }
+  ],
+  "response": {
+    "memberId": "AB",
+    "length": 3,
+    "boundary": "cantilever-start",
+    "u": {
+      "value": -0.00022306128999705652,
+      "maxAbs": 0.00022306128999705652,
+      "x": 3
+    },
+    "v": {
+      "value": -0.0001250094099173139,
+      "maxAbs": 0.0001250094099173139,
+      "x": 3
+    },
+    "w": {
+      "value": -0.000702057962257653,
+      "maxAbs": 0.000702057962257653,
+      "x": 3
+    },
+    "units": "m",
+    "intervalCount": 40,
+    "polynomialResidual": 1.0126448291014611e-16,
+    "method": "piecewise-degree-five-integral-extrema",
+    "globalExtremaEvaluated": true,
+    "designTransferAllowed": false,
+    "timeHistoryQualified": false
+  },
+  "codeReferences": [
+    {
+      "id": "142030",
+      "code": "KDS 14 20 30",
+      "name": "콘크리트구조 사용성 설계기준",
+      "edition": "2021",
+      "updateDate": "2021-02-18T14:39:00",
+      "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+      "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+      "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+      "verification": "official-source-captured-independent-review-pending",
+      "applicationScope": "related-serviceability-standard; coupled-method-clause-mapping-pending",
+      "governsCalculation": false
+    },
+    {
+      "id": "142010",
+      "code": "KDS 14 20 10",
+      "name": "콘크리트구조 해석과 설계 원칙",
+      "edition": "2021",
+      "updateDate": "2021-02-18T14:20:00",
+      "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+      "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+      "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+      "verification": "official-source-captured-independent-review-pending",
+      "clause": "4.2.2(4)",
+      "applicationScope": "time-dependent-effects consideration; effective-modulus formula not qualified by this clause",
+      "governsCalculation": false
+    }
+  ],
+  "codeBasisStatus": "SOURCE_REFERENCES_ONLY",
+  "scope": "constant-sustained-endpoint-difference; specified-limit-acceptance",
+  "timeHistoryQualified": false,
+  "designTransferAllowed": false,
+  "resultHash": "1a934042950c090aabbe6c092fee6f952c6d0ef4d618417ba3e6e40a62ab54a3"
+}

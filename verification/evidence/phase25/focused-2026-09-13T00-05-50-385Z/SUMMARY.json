@@ -1,0 +1,33 @@
+{
+  "sourceHash": "e70a00bae31e413f98c14309983cb835366d9a3397223c74cdfc4ecc540cdc00",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:05:51.211Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-drawing-download-resources.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 58,
+      "sha256": "8af16b91bf6c28026e73753a1a8409d7f2c9d1713e05c3cb3c362a41d3e72a25",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-pdf-bundle-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 196,
+      "sha256": "203e707435a56a854b5e868c259a662e89d6b1787467075ae7cf96faf9e759fe",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 316,
+      "sha256": "85e58d696c85e6a4d02a3458174b6cfcbd616c748f3b3ea6ce104c39340aa2cf",
+      "error": null
+    }
+  ]
+}

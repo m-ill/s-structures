@@ -1,0 +1,41 @@
+{
+  "sourceHash": "96d60cfa60c5229bf066b45ee871d3663c7f442de5f94cb3bd9035f11401ec37",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:56:07.482Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-reinforced-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 73,
+      "sha256": "873258e9b715a7bd72c7cc98ddaf44062d0db7a5fa3b88a2ca5638095df5bf7b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 149,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-high-strength.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 125,
+      "sha256": "51fac9f0bced51490810809c7b924a9c28d36075babe5bfa6cb572524400bc34",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3107,
+      "sha256": "c263ab61dbe6fff69292ad7174a71a17843bc12b15a307dea353c40e6b291a5c",
+      "error": null
+    }
+  ]
+}

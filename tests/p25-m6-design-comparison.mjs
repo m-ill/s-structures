@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {compareDesignChecks} from '../src/compute/product/designCheckComparison.js';
+const c=(entityId,status,ratio=null,extra={})=>({entityId,comboId:'U',checkId:'strength',status,ratio,...extra});
+const before=[c('fixed','NG',1.2),c('hidden','NG',1.4,{incomplete:true}),c('removed','NG',2),c('n_a','NG',1.1),c('newng','OK',.5),c('still','NOT_CHECKED')];
+const after=[c('fixed','OK',.8),c('hidden','OK',.6,{incomplete:true}),c('n_a','N_A'),c('newng','NG',1.1),c('still','NOT_CHECKED'),c('added','OK',.4)];
+const r=compareDesignChecks(before,after);
+assert.equal(r.counts.resolvedNg,1);assert.equal(r.counts.ngToIncomplete,1);assert.equal(r.counts.noLongerApplicable,1);
+assert.equal(r.counts.newNg,1);assert.equal(r.counts.removed,1);assert.equal(r.counts.added,1);assert.equal(r.counts.remainingIncomplete,2);
+assert.equal(r.counts.matched,5);assert.equal(r.counts.ratioImproved,2);assert.equal(r.counts.ratioWorsened,1);
+assert.equal(r.beforeCheckCount,6);assert.equal(r.afterCheckCount,6);
+assert.notEqual(r.beforeChecksHash,r.afterChecksHash);
+assert.throws(()=>compareDesignChecks([c('a','OK'),c('a','NG')],[]),/DUPLICATE_COMPARISON_CHECK/);
+assert.throws(()=>compareDesignChecks([{}],[]),/COMPARISON_CHECK_IDENTITY_REQUIRED/);
+console.log('PASS before/after comparison distinguishes resolved NG, incomplete OK, N/A and removed checks');

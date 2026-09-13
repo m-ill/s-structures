@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-11T05:55:46.106Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1266,
+      "sha256": "17601b6619d845902da984aea289256a042545eec1a3001571c2b8c9e4d3380f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-column-ratio.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "57f8d0c2795eedac658e3396e50f158895b4aaba7f69034b7461fd1d9cb87e09",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m1-details-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1123,
+      "sha256": "d51059eb59a2087160395171a90c7517d82658fd81d960f22b80a21f935d5132",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2858,
+      "sha256": "c8a395b8bd19a28328a8b88e9de13b11ad88caa081d871c243ca995a2dfe4431",
+      "error": null
+    }
+  ]
+}

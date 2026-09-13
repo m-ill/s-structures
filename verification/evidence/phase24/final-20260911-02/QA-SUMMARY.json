@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-11",
+  "scope": "focused development checks only",
+  "phase24TestFilesPassed": 19,
+  "directRegressions": ["p19-m2-design-input: 11 scenarios", "p19-m3-design-workflow", "p19-m4-webmcp-workflow", "p21-m6-checkpoint-segments"],
+  "syntheticRoutes": ["CPU static off", "CPU Direct P-Delta"],
+  "browser": {"viewport": [1440,1050], "reviewPanel": true, "missingSourceGuard": true, "pageErrors": 0, "fontFetch": true},
+  "pdf": {"pages": 1, "extractedCharacters": 467, "embeddedFont": "SStructuresSans Type0 Identity-H", "renderInspected": true, "cutLengths": "unresolved/null"},
+  "wikiLint": {"exitCode": 1, "preexistingSScanBrokenLinks": 8, "orphans": 0, "depthViolations": 0, "missingIndex": 0},
+  "gitDiffCheck": "passed",
+  "realBuildingTest": "NOT_RUN",
+  "comprehensiveValidation": "NOT_RUN",
+  "deployment": "NOT_RUN",
+  "productionQualified": false
+}

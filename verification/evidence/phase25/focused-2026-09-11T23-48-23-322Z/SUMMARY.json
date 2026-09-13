@@ -1,0 +1,33 @@
+{
+  "sourceHash": "45e6f1e4e4b7bf8386798e3a207963e8374087496c790708f5016aad21b08128",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:48:23.928Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-diaphragm.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 85,
+      "sha256": "2d9deb3d19b91c19944980b7290ef55f2d212fea3921baf1f9161be0fda31507",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-network.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 146,
+      "sha256": "dc22ae460cb754ffe250290365cec0f7d9b4fd65ec19c084140a5a8113e1fab7",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-shared-slip-network.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 155,
+      "sha256": "d5dc8f82a86372c7d91a60da2f824ccab2b0f13834ff11a1d60fea50a826edab",
+      "error": null
+    }
+  ]
+}

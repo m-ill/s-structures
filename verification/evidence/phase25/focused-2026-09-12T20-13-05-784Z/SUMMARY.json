@@ -1,0 +1,17 @@
+{
+  "sourceHash": "336c2790486e7634292680c6eec7166cecadf40be48f92c56285bc20fd6fc58a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:13:06.117Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-foundation-distribution-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 92,
+      "sha256": "3c29022251a876ba81cda8d390d1eba8b3bbc14862f327f98325027001b17d2d",
+      "error": null
+    }
+  ]
+}

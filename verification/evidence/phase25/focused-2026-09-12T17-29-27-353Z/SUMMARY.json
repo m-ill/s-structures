@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d13b044dca3a7e96a2831fdd35c4be89c3e6bcdcc167faf302c18ca22e0f9ba2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:29:27.780Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-rc-splice-checkpoint.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 178,
+      "sha256": "9ad482ff7b7106db57cf74b212fc7e7292d7ae244d5b765bee52268b19c35a39",
+      "error": null
+    }
+  ]
+}

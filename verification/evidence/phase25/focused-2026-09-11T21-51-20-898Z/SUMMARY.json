@@ -1,0 +1,41 @@
+{
+  "sourceHash": "7f8cd454bb4cafb48660ff40aeb11b6d0061b80a6233e8862db5f33e1430a070",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:51:22.766Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 234,
+      "sha256": "a6085e39725d824449f1af3ef2c66914ed5530cb6202f7ef2ce344729e29886a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-lap-frame-coupling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 117,
+      "sha256": "bcbadda91056ab63087cb8d8d441054aa0eb42582f787526885a52efad18746b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-elastic-transfer.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1178,
+      "sha256": "3fb558257c4eab37ba2bf59e4bdd3ad2eed69b7d32f351b37e95c2c84163e121",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-splice-transfer-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 99,
+      "sha256": "fc0b3c87c56bdde25225931c65268152e343d83cd47c013a6bba3dc60cb4b833",
+      "error": null
+    }
+  ]
+}

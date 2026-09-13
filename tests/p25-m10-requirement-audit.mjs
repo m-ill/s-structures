@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {auditRequirementInventory} from '../tools/audit-phase25-requirements.mjs';
+const source='## M0 — test\n대상: G01\n1. Implement the actual feature.\n작은 TDD: prove it.\n완료: complete.\n';
+const sourceSha256=createHash('sha256').update(source).digest('hex');
+const items=[['M0-entry','entry',2],['M0-1','requirement',3],['M0-verification','verification',4],['M0-completion','completion',5]].map(([id,kind,sourceLine])=>({id,kind,milestone:'M0',sourceLine,text:source.split('\n')[sourceLine-1],auditStatus:'UNREVIEWED',evidence:[]}));
+const data={sourceSha256,wholePhaseComplete:false,items};
+assert.equal(auditRequirementInventory(source,data).ok,true);
+assert.equal(auditRequirementInventory(source,data).complete,false);
+assert.equal(auditRequirementInventory(source,{...data,items:items.slice(1)}).ok,false);
+assert.equal(auditRequirementInventory(source,{...data,items:[...items,items[0]]}).ok,false);
+assert.equal(auditRequirementInventory(source,{...data,wholePhaseComplete:true}).ok,false);
+assert.equal(auditRequirementInventory(source.replace('actual','smaller'),data).ok,false);
+assert.equal(auditRequirementInventory(source,{...data,items:items.map(x=>({...x,auditStatus:'VERIFIED'}))}).ok,false);
+assert.equal(auditRequirementInventory(source,{...data,items:items.map(x=>({...x,text:'done'}))}).ok,false);
+console.log('PASS missing/duplicate/changed requirement, unsupported completion and empty evidence rejection');

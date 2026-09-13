@@ -1,0 +1,33 @@
+{
+  "sourceHash": "87731e30a23dfd83f8512d5283e839c8c825149cdef783f9ec1c4cab981ec06e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:56:30.304Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-curvature-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "604c94e8e4f229f372def78585a7e13551bf50a99c398316ad014e3a818e0a2e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2690,
+      "sha256": "73b977dcf1c90f11bcd189b6b6cd8e4354ae03448f81c0c2271f3a7ee3c2c956",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 701,
+      "sha256": "0c48a69c1df9d03a5e300455b8465cd31860d2b7414575945e7a2bc0a7a7bade",
+      "error": null
+    }
+  ]
+}

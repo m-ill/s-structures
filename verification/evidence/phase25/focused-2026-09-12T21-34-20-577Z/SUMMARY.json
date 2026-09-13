@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7052f69045c5287193f5630793297b6cfce0a3712cf3ad6e5a93414af9863701",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:34:25.925Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-reuse-scope-lineage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4774,
+      "sha256": "819d1b48abc480e95c01bff58162597c176cf2788f646d725fc9ad62101c0ac4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-browser-definitions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 291,
+      "sha256": "5e411f0c0ddad2f1f4c98d37b8b432b1cc5cc79515ecf0a4a0076ce5728f4789",
+      "error": null
+    }
+  ]
+}

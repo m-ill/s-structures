@@ -1,0 +1,50 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {buildReportData,renderHtmlReport} from '../src/report/htmlReport.js';
+import {summarizeMemberChecks} from '../src/compute/product/detailedReportData.js';
+const model=createModel();model.members=[{id:'AB',matId:'concrete',secId:'rc3060',n1:'A',n2:'B'}];
+const row={memberId:'AB',type:'concrete',status:'NOT_CHECKED',incomplete:true,incompleteCheckCount:2,utilization:null,governingCheck:'rc-anchorage',basis:'provided-practical-checks',codeBasis:{status:'NOT_ESTABLISHED'}};
+const demand={memberResults:{AB:{status:'OK',check:{status:'OK',ratio:.2,comboId:'WRONG'},Nmax:5}}};
+const analysis={design:{practicalMemberResults:{AB:row},concrete:{memberResults:{AB:{memberId:'AB',status:'NG',utilization:99}}}},envelope:demand};
+const report=buildReportData(model,analysis);assert.equal(report.design.rows[0].status,'NOT_CHECKED');assert.equal(report.design.rows[0].utilization,null);assert.equal(report.design.rows[0].incompleteCheckCount,2);
+assert.equal(report.design.rows[0].codeBasis.status,'NOT_ESTABLISHED');const html=renderHtmlReport(report);assert.ok(html.includes('Unreviewed'));assert.ok(html.includes('NOT_ESTABLISHED'));assert.ok(html.includes('<td>-</td>'));
+const detailed=summarizeMemberChecks(model,analysis,demand)[0];assert.equal(detailed.status,'NOT_CHECKED');assert.equal(detailed.utilization,null);assert.equal(detailed.comboId,null);assert.equal(detailed.incomplete,true);
+analysis.design.practicalMemberResults={};assert.equal(buildReportData(model,analysis).design.rows.length,0);const empty=summarizeMemberChecks(model,analysis,demand)[0];assert.equal(empty.status,'NOT_CHECKED');assert.equal(empty.utilization,null);
+console.log('PASS HTML and detailed report summaries preserve provided RC and missing ratios without demand fallback');
+
+const {buildMemberDesignTraceReport}=await import('../src/design/memberDesignTrace.js');
+analysis.design.practicalMemberResults={AB:row};
+const check={entityId:'AB',checkId:'rc-anchorage',comboId:'U',status:'NOT_CHECKED',ratio:null,reason:'MISSING_REINFORCEMENT',incomplete:true,codeBasis:{status:'NOT_ESTABLISHED'},requiredInputFields:['anchorage']};
+analysis.design.practical={checks:[check]};
+let trace=buildMemberDesignTraceReport(model,analysis);
+assert.equal(trace.rows[0].status,'NOT_CHECKED');assert.equal(trace.rows[0].utilization,null);
+assert.equal(trace.rows[0].formulaTrace[0].ratio,null);assert.deepEqual(trace.rows[0].formulaTrace[0].codeBasis,check.codeBasis);
+assert.equal(trace.rows[0].formulaTrace[0].reason,check.reason);assert.deepEqual(trace.rows[0].formulaTrace[0].requiredInputFields,['anchorage']);
+assert.equal(trace.rows[0].schedule.requiredRebar,null);assert.equal(trace.rows[0].preliminarySchedule,null);assert.equal(trace.rows[0].schedule.scheduleInputStatus,'PREPARED_REINFORCEMENT_INPUT_UNAVAILABLE');
+assert.equal(trace.summary.checkedCount,0);assert.equal(trace.summary.unreviewedCount,1);assert.equal(trace.summary.maxUtilization,null);
+analysis.design.practicalMemberResults={};analysis.design.practical.checks=[];
+trace=buildMemberDesignTraceReport(model,analysis);assert.equal(trace.rows[0].status,'NOT_CHECKED');assert.equal(trace.rows[0].utilization,null);assert.equal(trace.rows[0].formulaTrace.length,0);
+console.log('PASS provided member trace retains KDS, input reasons and unknown values without preliminary substitution');
+
+const {buildRcDetailedDesignReport}=await import('../src/design/rc/detailedReport.js');
+analysis.design.practicalMemberResults={AB:row};analysis.design.practical.checks=[check];
+let rc=buildRcDetailedDesignReport(model,analysis);
+assert.equal(rc.rows[0].status,'NOT_CHECKED');assert.equal(rc.rows[0].utilization,null);
+assert.equal(rc.basis,'provided-practical-checks');assert.equal(rc.rows[0].requiredRebar,null);
+assert.equal(rc.formulaTrace[0].reason,'MISSING_REINFORCEMENT');assert.deepEqual(rc.formulaTrace[0].codeBasis,check.codeBasis);
+assert.equal(rc.rcDesignGate.rcReview.finalPermitDesign,false);assert.ok(rc.issueRows.length);
+analysis.design.practicalMemberResults={};analysis.design.practical.checks=[];
+rc=buildRcDetailedDesignReport(model,analysis);assert.equal(rc.rows.length,0);assert.equal(rc.rcDesignGate.summary.readyForAgentReview,false);
+console.log('PASS RC detailed integration consumes provided checks and never resurrects legacy schedules');
+
+const {preparePracticalRcMemberResults}=await import('../src/design/evaluation/practicalMemberSummary.js');
+const evidenceChecks=[{entityId:'AB',checkId:'rc-section-strength',status:'OK',ratio:.2},{entityId:'AB',checkId:'material-test-evidence',status:'NG',incomplete:true,reason:'MATERIAL_TEST_STRENGTH_MISMATCH',incompleteReasons:['MATERIAL_TEST_BATCH_MISMATCH'],rows:[{materialRef:'STEEL@1',batch:'HEAT-001'}],codeBasis:{status:'NOT_ESTABLISHED'}}];
+analysis.design.practical.checks=evidenceChecks;analysis.design.practicalMemberResults=preparePracticalRcMemberResults(evidenceChecks);
+const materialReport=buildReportData(model,analysis);assert.equal(materialReport.design.rows[0].status,'NG');assert.ok(materialReport.design.rows[0].blockingReasons.includes('MATERIAL_TEST_BATCH_MISMATCH'));
+assert.ok(summarizeMemberChecks(model,analysis,demand)[0].blockingCheckIds.includes('material-test-evidence'));
+const materialTrace=buildMemberDesignTraceReport(model,analysis).rows[0].formulaTrace.find(c=>c.checkId==='material-test-evidence');assert.deepEqual(materialTrace.rows,evidenceChecks[1].rows);assert.equal(materialTrace.status,'NG');
+const materialRc=buildRcDetailedDesignReport(model,analysis);assert.ok(materialRc.issueRows.some(c=>c.formulaIds.includes('material-test-evidence')));assert.equal(materialRc.formulaTrace.find(c=>c.formulaId==='material-test-evidence').rows[0].batch,'HEAT-001');assert.equal(materialRc.rcDesignGate.summary.readyForAgentReview,false);
+console.log('PASS report data and RC/member traces retain material evidence failures and recorded batch evidence');
+
+const evidenceHtml=renderHtmlReport(materialReport);assert.ok(evidenceHtml.includes('material-test-evidence'));assert.ok(evidenceHtml.includes('MATERIAL_TEST_BATCH_MISMATCH'));materialReport.design.rows[0].blockingReasons.push('<script>bad()</script>');const escapedEvidence=renderHtmlReport(materialReport);assert.ok(!escapedEvidence.includes('<script>bad()</script>'));assert.ok(escapedEvidence.includes('&lt;script&gt;bad()&lt;/script&gt;'));
+console.log('PASS HTML presents blocking evidence reasons as escaped recorded text');

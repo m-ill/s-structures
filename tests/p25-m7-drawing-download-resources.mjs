@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {createResourceBudget} from '../src/core/resourceBudget.js';
+import {createDrawingDownloadResources} from '../src/ui/drawingDownloadResources.js';
+const budget=createResourceBudget(),timers=new Map(),urls=new Set();let sequence=0,revokeFails=false;
+const target={Blob:class{},URL:{createObjectURL(){const url=`blob:${++sequence}`;urls.add(url);return url;},revokeObjectURL(url){if(revokeFails)throw Error('REVOCATION_FAILED');urls.delete(url);}},setTimeout(fn){const id=++sequence;timers.set(id,fn);return id;},clearTimeout(id){timers.delete(id);}};
+const resources=createDrawingDownloadResources({target,budget});
+const a=resources.acquire(100),one=budget.snapshot().totalBytes,b=resources.acquire(100);
+assert.equal(budget.snapshot().totalBytes,2*one);
+resources.clearUrls();assert.equal(budget.snapshot().totalBytes,2*one,'pagehide does not free live read buffers');
+a.release();a.release();assert.equal(budget.snapshot().totalBytes,one);
+b.createUrl(new Uint8Array(100),'application/pdf');b.release();assert.equal(budget.snapshot().totalBytes,one);
+resources.clearUrls();assert.equal(urls.size,0);assert.equal(timers.size,0);assert.equal(budget.snapshot().totalBytes,0);
+const c=resources.acquire(200);c.createUrl(new Uint8Array(200),'application/pdf');c.release();
+revokeFails=true;resources.clearUrls();assert.ok(budget.snapshot().totalBytes>0);assert.equal(urls.size,1);
+revokeFails=false;resources.clearUrls();assert.equal(budget.snapshot().totalBytes,0);assert.equal(urls.size,0);
+const tiny=createDrawingDownloadResources({target,budget:createResourceBudget({maxBytes:1024})});
+assert.throws(()=>tiny.acquire(10),{code:'MANAGED_MEMORY_BUDGET_EXCEEDED'});
+assert.throws(()=>resources.acquire(32*1024*1024+1),{code:'DRAWING_ARTIFACT_SIZE_LIMIT'});
+const broken=resources.acquire(5);assert.throws(()=>broken.createUrl(new Uint8Array(4),'x'),{code:'DRAWING_ARTIFACT_SIZE_LIMIT'});broken.release();assert.equal(budget.snapshot().totalBytes,0);
+const originalBlob=target.Blob;target.Blob=class{constructor(){throw Error('BLOB_FAILED');}};
+const failed=resources.acquire(5);try{assert.throws(()=>failed.createUrl(new Uint8Array(5),'x'),/BLOB_FAILED/);}finally{failed.release();target.Blob=originalBlob;}
+assert.equal(budget.snapshot().totalBytes,0);
+console.log('PASS N/2N download leases, pending-read/pagehide ownership, URL release/retry, size/admission and Blob failure');

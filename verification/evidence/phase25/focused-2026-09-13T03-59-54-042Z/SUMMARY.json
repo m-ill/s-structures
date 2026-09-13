@@ -1,0 +1,25 @@
+{
+  "sourceHash": "94ba1edecf21d718a54e58bbb2cd590885c5760e1e1ccb358a80d787a0e1952a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:59:55.641Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-book-file-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "411b7b209a6f5b6e1237220d546840943d0572957357d0e2006c43176581108a",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m2-detail-persistence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1249,
+      "sha256": "ba837c9c3f989aec989fd42512eb164bd2beb29c49059e26161af9244b1bd51a",
+      "error": null
+    }
+  ]
+}

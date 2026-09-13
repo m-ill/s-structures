@@ -10,6 +10,9 @@ const TOP_LEVEL_ASSETS = new Map([
   ['/manual.html', 'manual.html'],
   ['/guide.html', 'guide.html'],
   ['/web-asset-manifest.json', 'web-asset-manifest.json'],
+  ['/assets/fonts/phase24/SStructuresSans.ttf', 'assets/fonts/phase24/SStructuresSans.ttf'],
+  ['/assets/fonts/phase24/OFL.txt', 'assets/fonts/phase24/OFL.txt'],
+  ['/assets/fonts/phase24/provenance.json', 'assets/fonts/phase24/provenance.json'],
 ]);
 
 const SOURCE_EXTENSIONS = new Set(['.js', '.css', '.wasm']);
@@ -20,6 +23,8 @@ export const STATIC_TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.wasm': 'application/wasm',
   '.json': 'application/json; charset=utf-8',
+  '.ttf': 'font/ttf',
+  '.txt': 'text/plain; charset=utf-8',
 };
 
 export function resolvePublicAsset(staticRoot, rawPathname) {

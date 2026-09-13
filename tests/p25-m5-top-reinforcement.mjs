@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {evaluateProvidedFooting} from '../src/design/foundation/providedFooting.js';
+const m=createModel();m.loadCases=[{id:'D',type:'dead'}];m.loadCombinations=[{id:'U',type:'strength',factors:{D:1.4}}];m.designDetails={ground:[{id:'G',version:1,allowableBearing:500,bearingBasis:'gross'}]};
+const f={id:'F',version:1,nodeId:'A',groundId:'G@1',B:2,L:2,thickness:.5,cover:.05,columnWidth:.4,columnDepth:.4,materialId:'concrete@1',reactionBasis:'superstructure-only',footingWeightCaseId:'D',flexureStandard:'KDS-142020-2022',concreteWeight:'normal',reinforcement:{materialId:'steel@1',bottomB:{diameter:.016,spacing:.15},bottomL:{diameter:.016,spacing:.15}}};
+const set={combo:{id:'U'},reactions:{A:{rx:0,ry:0,rz:100,rmx:0,rmy:-100}}};
+assert.equal(evaluateProvidedFooting(m,f,set)['foundation-flexure'].reason,'TOP_REINFORCEMENT_REQUIRED_FOR_REVERSE_MOMENT');
+f.reinforcement.topB={diameter:.016,spacing:.15};f.reinforcement.topL={diameter:.016,spacing:.15};
+f.punchingStandard='KDS-142022-2022';f.barCoating='uncoated';f.punchingMomentMethod='conservative-perimeter-shear';f.punchingPerimeterScope='interior-solid-no-openings';
+const r=evaluateProvidedFooting(m,f,set);
+assert.ok(['OK','NG'].includes(r['foundation-flexure'].status),JSON.stringify(r));
+assert.ok(r['foundation-punching'].transfer);
+assert.ok(r['foundation-flexure'].axisChecks.some(x=>x.face==='top'&&x.signedMoment<0));
+assert.ok(r['foundation-flexure'].axisChecks.some(x=>x.face==='bottom'&&x.signedMoment>0));
+console.log('PASS uplift reverse footing moment uses actual top reinforcement');

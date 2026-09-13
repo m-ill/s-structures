@@ -1,0 +1,33 @@
+{
+  "sourceHash": "b76077cb4c904e3e6cecd982f978256b16bab46b7ecd39ab431dd6242f55e2e0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:04:36.050Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5420,
+      "sha256": "27d1f43e2a08a9071a2083d2e8bb2b92953777603f1e632e1c3b54bd66ad244e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-frame-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3127,
+      "sha256": "c2088c77a810f02dcf2f2083577f69a5ecb430c461581c2938aeb59874044e3a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-direct-refinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 955,
+      "sha256": "512eb328f8b542b167378a64b111619157597807b22a436fc664f07f61d0d260",
+      "error": null
+    }
+  ]
+}

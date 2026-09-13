@@ -1,0 +1,41 @@
+{
+  "sourceHash": "c32d0ef9f6aeca52a4ddfd0c828db9b9b82d2535c9abd21ffbef2301312cbef1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:48:00.676Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-shear-roundoff.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 117,
+      "sha256": "c16be42ac12373dffe6e822a458031c94ddd603c5d4e32e09b98464d470fbe38",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-high-strength.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 108,
+      "sha256": "51fac9f0bced51490810809c7b924a9c28d36075babe5bfa6cb572524400bc34",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 215,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-shear-spacing-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 127,
+      "sha256": "d8baea5b85520c600a6271ea870be7f3cb3f6a64ab272096fc2db13ab2e6192c",
+      "error": null
+    }
+  ]
+}

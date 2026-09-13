@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T07:13:12.720Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-bar-layout.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 61,
+      "sha256": "752af67b97d520dc82cceb08a81ffb4a02633b0b38507194c61c40aedb7e78d2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2371,
+      "sha256": "811f2e0854357e792a16c5c088210863bade7f573b7b2b28dbdda78f1e6483f5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-evaluation-cancel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1558,
+      "sha256": "5abd659818c603d8fd976cd85f1551534bf011e7718f8ffb2c0128863f8986fa",
+      "error": null
+    }
+  ]
+}

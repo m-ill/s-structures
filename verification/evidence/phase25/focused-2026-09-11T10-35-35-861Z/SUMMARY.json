@@ -1,0 +1,17 @@
+{
+  "sourceHash": "383075e78d8f3d6411b3a1a0c023f97f018ff2ab3e8d5f0e38c5446ecabd4640",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:35:37.081Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-review-worker.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1013,
+      "sha256": "a3b593f70e8a0440ef7dff8a84f5b0e56ef43e22b87c88cc5c3d5f21914f5909",
+      "error": null
+    }
+  ]
+}

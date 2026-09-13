@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d72539771b8bf750631bd7302c8d2f8c0bff29ce21e847d3c9ffbb07057b91a0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:13:56.009Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-rc-service-worker-lease.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1165,
+      "sha256": "5843424eda29e26f2f8d6c6a286d3a6e1db3802ca36ddc026ea01ef9fcf2f106",
+      "error": null
+    }
+  ]
+}

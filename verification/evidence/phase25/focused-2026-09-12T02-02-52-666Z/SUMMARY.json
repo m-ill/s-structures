@@ -1,0 +1,25 @@
+{
+  "sourceHash": "febfd1e904df9585c3dfb27e0f122bdd0529b8f0444de40f651088838c38b828",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:02:55.267Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-interface-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2251,
+      "sha256": "64cbc513611efec8e706d03a64dd890951cc5110ad985626aa6122f83dba567a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-interface-bar-allocation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "1fb723e878a8290affa24cf772c14d7d0ac9a21ab1ebcd46c7541ddb89f233c0",
+      "error": null
+    }
+  ]
+}

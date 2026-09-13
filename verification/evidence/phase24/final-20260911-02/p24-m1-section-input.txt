@@ -1,0 +1,1 @@
+PASS T02/T18 section dimensions, independent A/I, immutable versions, UI/WebMCP, override rejection

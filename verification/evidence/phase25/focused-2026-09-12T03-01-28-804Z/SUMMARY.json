@@ -1,0 +1,49 @@
+{
+  "sourceHash": "c166b72cb5c304d4eb1a3d796962e4a8abb4ce43f5b891375af2c113db12b237",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:01:30.190Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-late-worker-lease.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 103,
+      "sha256": "b69b7683ce7ef8f54681c45d2c73b23ff62916d86f01c8d10970fddc6918177c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-worker-quarantine.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 155,
+      "sha256": "f94d678e185b88fc17e4e358906458e15283ee1d613c78e78ba29599162374ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-worker-termination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 174,
+      "sha256": "28cff6a4b272b2d00f1e933a803b375f2eace6c547841d2bc7a89f9613c70a86",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-shared-worker-lease.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "4b88c569377a1fa2ede264594e692d2088788554afb0de73f200221b466479f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 664,
+      "sha256": "b2d54459acfb177c90b40a0cebf5fbc84ce0da68b6d45b8539d6807d148d3332",
+      "error": null
+    }
+  ]
+}

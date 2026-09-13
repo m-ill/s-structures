@@ -10,6 +10,17 @@ export function validateSectionRecord(record = {}) {
   const normalized = normalizeSectionRecord(record);
   const errors = [];
   const warnings = [];
+  if(record.inputContract!=null&&record.inputContract!=='p24-section-v1')errors.push('inputContract');
+  if(record.inputContract==='p24-section-v1') {
+    if(record.kind!=='parametric'||record.dimensionUnit!=='mm')errors.push('parametric-contract');
+    const expected=computeSectionProperties(normalized.shape,normalized.params);
+    if(!expected)errors.push('parametric-geometry');
+    else for(const [key,value] of Object.entries(expected)) {
+      if(typeof value!=='number')continue;
+      const actual=normalized.properties?.[key];
+      if(typeof actual!=='number'||!Number.isFinite(actual)||Math.abs(actual-value)>1e-12*Math.max(Math.abs(value),1e-12))errors.push(`properties.${key}-geometry-mismatch`);
+    }
+  }
   if (!normalized.id) errors.push('id');
   if (!Number.isInteger(Number(normalized.version)) || Number(normalized.version) < 1) errors.push('version');
   if (!['db', 'parametric', 'direct'].includes(normalized.kind)) errors.push('kind');

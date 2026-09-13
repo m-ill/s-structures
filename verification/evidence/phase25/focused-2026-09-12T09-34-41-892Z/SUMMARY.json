@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5675a2eb44f0bf82d9a804e02eb1fb617ab5256f10cc3955bf1b6ea424eb3476",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:34:52.862Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-minimum-region-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 393,
+      "sha256": "cce6bedf4a7b9a67a0200a87e8f83ffb49ce651ad51f575319ca451c68c5be41",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10283,
+      "sha256": "612c9a96e6d34c0f18c5d60d2a5aa1a7e20a7732012fef684763b99fd29e7ac6",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "66db507a10608c0d34f3d9dca472bac440f1ad709950ec43655007f560b70fda",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:05:05.134Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 154,
+      "sha256": "13b9d0933409d733d01961a5d68fe7a1b123c228f7da68d8c0c22c65c123d993",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2024,
+      "sha256": "d1a90ff7fdae76a2c31353c374ed69498f77d0f29fc2de5b951123877d8d74a8",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "a367da971d34147f14d094b8fab6c7207588373687000e0b5c7592245377d694",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:15:22.051Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-rc-service-worker-lease.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 160,
+      "sha256": "77d25cff376fdbe58deaf0c804d03813de90edcfdd18afa42ab2f945b6a3f62f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-shared-worker-lease.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "4b88c569377a1fa2ede264594e692d2088788554afb0de73f200221b466479f1",
+      "error": null
+    }
+  ]
+}

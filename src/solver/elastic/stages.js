@@ -1,4 +1,5 @@
 import { migrateToV3, validateModel } from '../../core/model.js';
+import {assertSupportedRcStiffness} from '../../core/rcStiffnessContract.js';
 import { comboSnapshot } from '../linear3dPost.js';
 import { buildCanonicalAnalysisDomain } from '../domain/canonicalDomain.js';
 import { normalizePDeltaMethod, pDeltaMethodTrace } from '../pdelta/method.js';
@@ -6,6 +7,7 @@ import { analyzeAll } from '../linear3dFirstOrder.js';
 import { elasticStageError, refreshValidationHealth, appendSolverDiagnosticWarnings, appendComponentFailureErrors, resolveRequestedCombinations } from './resultContracts.js';
 
 export function prepareElasticAnalysis(inputModel) {
+  assertSupportedRcStiffness(inputModel);
   const model = migrateToV3(inputModel);
   const validation = model.analysisSettings?.validateBeforeSolve === false
     ? { errors: [], warnings: [] }

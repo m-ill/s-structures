@@ -184,11 +184,7 @@ export function condenseReleasedDofs(kl, f0, rel) {
   return { klC, f0C };
 }
 
-export function integratedUniformLoad(shape, x, L) {
-  if (shape === 'asc') return { fI: x ** 2 / (2 * L), mI: x ** 3 / (6 * L) };
-  if (shape === 'desc') return { fI: x - x ** 2 / (2 * L), mI: x ** 2 / 2 - x ** 3 / (6 * L) };
-  return { fI: x, mI: x ** 2 / 2 };
-}
+export {integratedUniformLoad} from './memberForceField.js';
 
 export function fixedFixedDeflectionFunction(shape, x, L) {
   if (shape === 'asc') return x ** 5 / (120 * L) - (L * x ** 3) / 40 + (L ** 2 * x ** 2) / 60;

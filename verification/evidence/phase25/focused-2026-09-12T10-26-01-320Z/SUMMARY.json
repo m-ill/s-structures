@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d730f7056558058a8285d7e17f878eaf96667d4cb01d28fe41ad3488842189b7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:26:01.783Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-member-hoop-readiness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "0ab2fd6feb694ba32b0c4d0c3a545fce7e86f596a3a9d1948b1b9de25f78dd1a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 167,
+      "sha256": "5ab2ff8179038e878bc0a066c96f4a125f07d8025ed575a7197c429462d7b1e5",
+      "error": null
+    }
+  ]
+}

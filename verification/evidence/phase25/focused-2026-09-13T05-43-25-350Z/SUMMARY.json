@@ -1,0 +1,17 @@
+{
+  "sourceHash": "aa84ecddcd22b279215bfb7e00d81889e97a64802826b91f633ceebcaded7aab",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T05:43:25.681Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-attachment-state.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 57,
+      "sha256": "6f558cb1c3c2cc423fcaa2dc49ead6cd84602da5936d9f0d5fcb01d28d7b2d5a",
+      "error": null
+    }
+  ]
+}

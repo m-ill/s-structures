@@ -1,0 +1,57 @@
+{
+  "sourceHash": "39b536a47073950a2b5c7dec12a5e6d122f156e1c45670916fed5a00055efe21",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T06:47:53.822Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-attachment-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 128,
+      "sha256": "813b3738dfe6a18aadd31ef90e7f03688648ed6b6630e79ae65292b02f52ddf0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 151,
+      "sha256": "4687a72c004d8a466498c7a56ee289861b9cecbe8fbfed0c61b9e1ba467bccf6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-check-input-navigation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 228,
+      "sha256": "5f56c047925d401d03f8344725e4ccbd8fcdf7a2fa4e6e71f7ce29dea64a4b8e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-artifact-controls.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 74,
+      "sha256": "6b218a226ab11a703b20e22c94b78f532a1b726b17b7e7483b602369998c510d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-pdf-bundle-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 180,
+      "sha256": "203e707435a56a854b5e868c259a662e89d6b1787467075ae7cf96faf9e759fe",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-candidate-lifecycle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 165,
+      "sha256": "592f007908b0e0194313e451cf83ef6c571843bf54cc60eaedf674b660bcd259",
+      "error": null
+    }
+  ]
+}

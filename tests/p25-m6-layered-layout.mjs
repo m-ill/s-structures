@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {rectangularLayeredBarLayout,inferRectangularLayers} from '../src/design/rc/barLayout.js';
+import {kdsBarSpacing} from '../src/design/rc/kdsSpacing.js';
+const input={B:.4,H:.7,cover:.04,tieDiameter:.01,barsPerFace:3,layersPerFace:2,layerClearSpacing:.04};
+const bars=rectangularLayeredBarLayout([{diameter:20,nominalAreaMm2:314,designation:'fixture'}],input);
+assert.equal(bars.length,12);assert.equal(new Set(bars.map(b=>b.y)).size,4);
+assert.deepEqual(inferRectangularLayers(bars),{barsPerFace:3,layersPerFace:2,layerClearSpacing:.04});
+const normalized=bars.map(b=>({...b,diameter:b.diameter/1000}));
+assert.equal(kdsBarSpacing({B:.4,H:.7,bars:normalized,role:'flexural-member',aggregate:.025}).status,'OK');
+assert.throws(()=>rectangularLayeredBarLayout([{diameter:20}],{...input,H:.2,layersPerFace:4}),/GEOMETRY/);
+assert.throws(()=>rectangularLayeredBarLayout([{diameter:20}],{...input,barsPerFace:20,layersPerFace:4}),/LIMIT/);
+assert.throws(()=>inferRectangularLayers(bars.slice(1)),/STRATEGY/);
+console.log('PASS aligned multi-layer geometry, KDS spacing, topology inference and preallocation limits');

@@ -1,0 +1,60 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {refineDirectFrameModel} from '../src/solver/pdelta/refineFrameModel.js';
+import {runSecondOrderPDelta} from '../src/solver/pdelta/secondOrder.js';
+import {materialOf,sectionOf} from '../src/core/catalogs.js';
+import {memberAxes} from '../src/core/memberAxes.js';
+import {collapseDirectFrameResult} from '../src/solver/pdelta/collapseFrameResult.js';
+import {prepareRefinedFrameServiceResponses,verifyRefinedFrameServiceResponses} from '../src/compute/product/refinedFrameServiceResponses.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];model.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+model.analysisSettings.selfWeight=false;model.analysisSettings.shearDeformation=false;model.analysisSettings.includeShearDeformation=false;model.analysisSettings.pDeltaMethod='direct';model.loadCases=[{id:'D',type:'dead'}];model.loads=[{id:'N',type:'nodal',node:'B',P:100,dir:'-x',case:'D'},{id:'V',type:'nodal',node:'B',P:1,dir:'-y',case:'D'}];
+const original=JSON.stringify(model),mesh=refineDirectFrameModel(model,{divisions:4});
+assert.equal(JSON.stringify(model),original);assert.equal(mesh.model.members.length,4);assert.equal(mesh.model.nodes.length,5);
+assert.deepEqual(mesh.model.nodes[0],model.nodes[0]);assert.deepEqual(mesh.model.loads,model.loads);
+const a=memberAxes(...model.nodes),section=sectionOf(model,'rc3060'),material=materialOf(model,'concrete');
+// Global -y is local-z for this orientation: select the conjugate inertia.
+const Iy=Math.abs(a.z[1])>.9?section.Iy:section.Iz,EI=material.E*Iy,L=3,N=100,k=Math.sqrt(N/EI);
+const expected=(Math.tan(k*L)/k-L)/N;
+const errors=[];
+for(const divisions of [1,2,4,8]){
+ const prepared=refineDirectFrameModel(model,{divisions}),run=runSecondOrderPDelta(prepared.model,{D:1});assert.equal(run.ok,true,run.reason);
+ const displacement=Math.abs(run.result.disp.B[1]);errors.push(Math.abs(displacement-expected));
+ const collapsed=collapseDirectFrameResult(prepared,run.result);
+ const response=prepareRefinedFrameServiceResponses(prepared,run.result).AB;
+ assert.equal(response.segments.length,divisions);
+ const axis=Math.abs(a.z[1])>.9?'w':'v';
+ assert.ok(Math.abs(response['cantilever-start'][axis].maxAbs-displacement)<1e-12);
+ assert.equal(response.loadParticularSolutionIncluded,false);
+ if(divisions>=2){
+  const saved={...collapsed,memberServiceResponses:{AB:response}};
+  assert.equal(verifyRefinedFrameServiceResponses(saved,divisions),true);
+  const corrupt=structuredClone(saved);corrupt.memberServiceResponses.AB.chord.v.maxAbs+=1;
+  assert.equal(verifyRefinedFrameServiceResponses(corrupt,divisions),false);
+  assert.equal(verifyRefinedFrameServiceResponses({...saved,memberServiceResponses:undefined},divisions),false);
+  const axialCorrupt=structuredClone(saved);axialCorrupt.memberServiceResponses.AB.axialRelative.endChange+=1;
+  assert.equal(verifyRefinedFrameServiceResponses(axialCorrupt,divisions),false);
+  const broken=structuredClone(saved);broken.memberServiceResponses.AB.segments[1].localDisplacements[0]+=1;
+  assert.equal(verifyRefinedFrameServiceResponses(broken,divisions),false);
+ }
+ assert.deepEqual(Object.keys(collapsed.memberResults),['AB']);assert.deepEqual(Object.keys(collapsed.disp),['A','B']);
+ assert.equal(collapsed.memberResults.AB.forceRecoveryInput.pieces.length,divisions);
+ assert.equal(collapsed.memberResults.AB.xs.at(-1),3);
+}
+assert.ok(errors[3]<errors[0]/100,JSON.stringify({expected,errors}));assert.ok(errors[3]/expected<1e-5);
+model.loads=[{id:'W',member:'AB',type:'udl',w:4,shape:'asc',dir:'-z',case:'D'},{id:'P',member:'AB',type:'point',P:5,t:.5,dir:'-y',case:'D'}];
+const split=refineDirectFrameModel(model,{divisions:4});
+const distributed=split.model.loads.filter(l=>l.type==='trapezoid');
+assert.equal(distributed.length,4);
+assert.ok(Math.abs(distributed.reduce((s,l)=>s+(l.w1+l.w2)/2*.75,0)-6)<1e-12);
+const firstMoment=distributed.reduce((s,l)=>{const part=split.mapping[0].parts.find(p=>p.id===l.member),length=part.endX-part.startX;return s+part.startX*length*(l.w1+l.w2)/2+length**2*(l.w1+2*l.w2)/6;},0);
+assert.ok(Math.abs(firstMoment-12)<1e-12);
+assert.equal(split.model.loads.filter(l=>l.type==='point').length,1);
+assert.equal(split.model.loads.find(l=>l.type==='point').t,0);
+assert.equal(split.mapping[0].parts.find(p=>p.id===split.model.loads.find(l=>l.type==='point').member).startX,1.5);
+const loaded=runSecondOrderPDelta(split.model,{D:1});assert.equal(loaded.ok,true,loaded.reason);
+assert.equal(collapseDirectFrameResult(split,loaded.result).memberResults.AB.refinement.cutEquilibriumVerified,true);
+assert.throws(()=>refineDirectFrameModel({...model,members:[{...model.members[0],endOffset:{i:.1}}]},{divisions:4}),/REFINEMENT_MEMBER_KINEMATICS/);
+assert.equal(refineDirectFrameModel({...model,members:[{...model.members[0],releases:{i:'rigid',j:'rigid'}}]},{divisions:2}).model.members.length,2);
+assert.throws(()=>refineDirectFrameModel({...model,members:[{...model.members[0],rel1:'pin'}]},{divisions:2}),/REFINEMENT_MEMBER_KINEMATICS/);
+console.log(JSON.stringify({expectedTipDisplacement:expected,errors,units:'m'}));
+console.log('PASS Direct mesh load conservation, source immutability and closed-form beam-column convergence');

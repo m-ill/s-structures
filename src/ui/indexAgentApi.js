@@ -162,6 +162,9 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     runElasticWorkflow(input) { return bridge.runElasticWorkflow(input); },
     planDesignReview(input) { return bridge.planDesignReview(input); },
     startDesignReview(input) { return bridge.startDesignReview(input); },
+    startDesignReviewAsync(input) { return bridge.startDesignReviewAsync(input); },
+    cancelDesignReview() { return bridge.cancelDesignReview(); },
+    getDesignReviewExecution() { return bridge.getDesignReviewExecution(); },
     getDesignReview(id) { return bridge.getDesignReview(id); },
     createDesignReviewReport(id) { return bridge.createDesignReviewReport(id); },
     getDesignReviewReport(id) { return bridge.getDesignReviewReport(id); },
@@ -171,7 +174,7 @@ export function createIndexAgentApi(target = globalThis, bridge = target?.SStruc
     getDesignInputContext() { return bridge?.getDesignInputContext?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
     previewDesignInputChanges(request) { return bridge?.previewDesignInputChanges?.(request) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
     applyDesignInputChanges(preview) { return bridge?.applyDesignInputChanges?.(preview) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
-    undoDesignInputChanges() { return bridge?.undoDesignInputChanges?.() || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
+    undoDesignInputChanges(args) { return bridge?.undoDesignInputChanges?.(args) || { ok: false, code: 'DESIGN_INPUT_UNAVAILABLE' }; },
     getWorkflowInputIdentity(input = {}) {
       return bridge?.getWorkflowInputIdentity?.(input) || createWorkflowInputIdentity({ model: getCurrentModel(target), ...input });
     },

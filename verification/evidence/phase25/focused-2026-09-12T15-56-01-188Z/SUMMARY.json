@@ -1,0 +1,25 @@
+{
+  "sourceHash": "2d329a9f51e592cc06fbd6526c6d42d5f134aec1e2f24af38a4f434fcd1750e0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:56:06.999Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/m2-linear3d.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1238,
+      "sha256": "b6bed042d35d7f270df660066a066912c5db835a76c8897325a28ffc119ef708",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4313,
+      "sha256": "c849b2b2d1febf44e545aad50835d7c336fbdb8074c64ffcb1c7130fd3ab265d",
+      "error": null
+    }
+  ]
+}

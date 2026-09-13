@@ -1,0 +1,25 @@
+{
+  "sourceHash": "ae0de0ccee48f49ff50537d750223bb0a8689bcc32ac20d5100b63953139cabe",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:14:06.739Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-rc-bar-forces-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 106,
+      "sha256": "6b895a20c6114547764d6dae944e20ab2a31a2f056e2b154d9760718edd27b68",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 162,
+      "sha256": "0e9da6c770a4b465dcabc95488c811d2ea875d4297bfe11712e296484198ef29",
+      "error": null
+    }
+  ]
+}

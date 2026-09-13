@@ -1,0 +1,17 @@
+{
+  "sourceHash": "2afb22df7ca3a8af9f391eab7b8a89bf95ae44cf84d37bcc851f666e411de5c1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:10:34.910Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m10-requirement-audit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "ef18268112d284dc7cfb27d5b45e876bfa7c863480f3756de0fe7d1c688a2f28",
+      "error": null
+    }
+  ]
+}

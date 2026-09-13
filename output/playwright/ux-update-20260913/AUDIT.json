@@ -1,0 +1,69 @@
+{
+  "pass": true,
+  "originalControls": 424,
+  "originalControlsDisconnected": 0,
+  "modelUnchanged": true,
+  "before": {
+    "x": 130,
+    "y": 60,
+    "width": 1180,
+    "height": 780
+  },
+  "moved": {
+    "x": 165,
+    "y": 80,
+    "width": 1180,
+    "height": 780
+  },
+  "reopened": {
+    "x": 165,
+    "y": 80,
+    "width": 1180,
+    "height": 780
+  },
+  "menuRect": {
+    "x": 10,
+    "y": 44.5,
+    "width": 286.125,
+    "height": 778
+  },
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      1024,
+      768
+    ],
+    [
+      390,
+      680
+    ]
+  ],
+  "date": "2026-09-13",
+  "scope": "UX navigation and control identity; selected regressions",
+  "comprehensive": false,
+  "deployment": false,
+  "solverChanged": false,
+  "snapshots": [
+    "03-ribbon-final.png",
+    "04-attachment-final.png",
+    "05-material-final.png",
+    "06-menu-final.png",
+    "07-1024-final.png",
+    "08-narrow-final.png",
+    "09-result-commands.png",
+    "10-review-overview.png"
+  ],
+  "focusedEvidence": "verification/evidence/phase25/focused-2026-09-13T06-47-52-645Z/SUMMARY.json",
+  "sourceSha256": {
+    "src/ui/workspaceUx.js": "01991b72e59778c312f3c82ff410d45ce7f57209d93e481fa3511ac3c431f2f2",
+    "src/ui/workspaceUxShell.js": "3b3f8fcb7d670039877036841735d91bfb4dbe47cc68bf68254c5e0b02ef3e60",
+    "src/ui/workspaceUxStyles.js": "22445bee0db24f568a0e515228cd040d51cb06198a34d48a701cdaf794e1b11c",
+    "src/ui/indexBridge.js": "a9c1a741df8f8b2f13c54c0b32025a3a071ccd24705516cdc0160f079d8af035",
+    "src/ui/indexDesignInput.js": "2eb0388650a48b418ee07be3e5850ff7ac8d82edc0742dc58311cc9f3804a45a",
+    "src/ui/indexPracticalDesign.js": "0659ace8bb1c1039a8aca9e976665b3f6d572e59e33b5065bb565bc4ebe68cc9",
+    "src/ui/rcAttachmentReviewControls.js": "61b6da2251db2547b222cb97aa351b95a6855a90be7c8d2cc91096d7c897093c"
+  }
+}

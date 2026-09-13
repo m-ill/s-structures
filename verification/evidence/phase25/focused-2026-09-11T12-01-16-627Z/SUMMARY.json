@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f43c1d4f45fa0a007cbec2f253c4456e25e22e61774855badee0b54a9e3a2f2d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:01:25.295Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-class-a-splice.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1747,
+      "sha256": "d3b2dc9c2c42cb5b7076b23f41b00176a2a5cca370304b413c2e8267074c7f16",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2059,
+      "sha256": "337cb4949cc182b4cc65a9d531514811e9b623fdf7b629a3653f96058e90212a",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4628,
+      "sha256": "1414880ced6582de1a04a04af39a40c6d6b4fd3bd6b441f011b9ca58be2bd29a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {runRcServiceIteration} from '../src/compute/product/rcServiceIteration.js';
+import {resolveMaterialRecord} from '../src/materials/registry.js';
+const m=createModel();m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+m.loadCases=[{id:'D',type:'dead',name:'D'},{id:'L',type:'live',name:'L'}];m.loadCombinations=[{id:'LIVE',type:'service',name:'LIVE',factors:{L:1}},{id:'TOTAL',type:'service',name:'TOTAL',factors:{D:1,L:1}},{id:'SUST',type:'service',name:'SUST',factors:{D:1,L:.5}}];
+m.loads=[{id:'D',type:'nodal',node:'B',dir:'-z',P:35,case:'D'},{id:'L',type:'nodal',node:'B',dir:'-z',P:5,case:'L'}];m.analysisSettings.pDeltaMethod='off';
+stagePracticalDesignInput(m,{type:'reinforcement-record',id:'R',name:'R',version:1,memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',bars:[{y:-.2,z:0,diameter:20},{y:.2,z:0,diameter:20}],sourceNote:'synthetic',concreteWeight:'normal',serviceabilityMode:'long-term-curvature',serviceBoundary:'cantilever-start',serviceDeflectionLimit:'live-floor',serviceCrackingComboId:'TOTAL',serviceSustainedComboId:'SUST',serviceDurationMonths:60,serviceLoadSequence:'sustained-before-attachment',nonstructuralDamageSensitive:true,servicePreAttachmentMultiplier:.2,servicePreAttachmentReference:'synthetic time-deflection source'},[]);
+const result=await runRcServiceIteration(m,{liveComboId:'LIVE'});assert.equal(result.ok,true,JSON.stringify(result));
+const s=result.serviceabilityByMember.AB,region=s.regions[0];assert.ok(['OK','NG'].includes(s.status));
+const rho=(Math.PI*.02**2/4)/(.3*.5),lambda=2/(1+50*rho),Ec=resolveMaterialRecord(m,'concrete').elastic.E;
+const expected=((lambda-.2)*37.5+.5*5)*3**3/(3*Ec*1000*region.Ie);
+assert.ok(Math.abs(s.demand-expected)<1e-11);assert.equal(s.capacity,3/480);
+assert.ok(Math.abs(result.profiles[0].segments[0].Iz-region.Ie)<1e-15);
+assert.equal(s.globalCreepRedistributionIncluded,false);assert.equal(s.preparedFrom,'converged-instantaneous-effective-stiffness-results');
+assert.ok(result.codeReferences.some(r=>r.clause.includes('(5)')));
+const invalid=structuredClone(m);delete invalid.designDetails.reinforcement[0].servicePreAttachmentReference;
+const denied=await runRcServiceIteration(invalid,{liveComboId:'LIVE'});assert.equal(denied.ok,false);assert.equal(denied.analysis,undefined);
+console.log('PASS RC stiffness iteration prepares post-attachment long-term response with independent cantilever superposition');
+const {designContext}=await import('./fixtures/p24/context.js');const ctx=designContext();
+try{
+ Object.assign(ctx.model,structuredClone(m));const inputHash=ctx.bridge.getWorkflowInputIdentity().inputHash;
+ const saved=await ctx.call('run_rc_service_iteration',{inputHash,liveComboId:'LIVE'});assert.equal(saved.converged,true,JSON.stringify(saved));
+ const prepared=saved.serviceabilitySummary.AB;assert.equal(prepared.serviceabilityMode,'long-term-curvature');assert.ok(Math.abs(prepared.demand-expected)<1e-11);assert.equal(prepared.globalCreepRedistributionIncluded,false);
+ const reviewed=await ctx.call('evaluate_practical_design',{inputHash,sources:['LIVE','TOTAL','SUST'].map(comboId=>({rcIterationId:saved.iterationId,comboId}))});
+ assert.equal(reviewed.ok,true,JSON.stringify(reviewed));assert.equal(reviewed.summary.complete,false);
+ assert.ok(reviewed.checks.some(c=>c.checkId==='rc-deflection'&&['OK','NG'].includes(c.status)));
+ const canonical=ctx.bridge.getPracticalDesignSnapshot(reviewed.evaluationId).checks.find(c=>c.checkId==='rc-deflection'&&c.comboId==='LIVE');
+ assert.equal(canonical.postAttachmentCalculation.kind,'rc-post-attachment-calculation-v1');
+ assert.ok(Math.abs(canonical.postAttachmentCalculation.result.demand-expected)<1e-11);
+ assert.equal(canonical.postAttachmentCalculation.result.demand,canonical.demand);
+ assert.equal(canonical.postAttachmentCalculation.regions[0].preAttachmentMultiplier,.2);
+ assert.equal(canonical.postAttachmentCalculation.regions[0].preAttachmentReference,'synthetic time-deflection source');
+}finally{await ctx.dispose();}
+console.log('PASS actual WebMCP RC long-term prepared summary and companion-source detailed review');

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "d4c4fd97e6a7090f0d05f979536ee659081b6d7ef4f4dc0521accd16323f7f6e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:04:19.572Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-footing-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 106,
+      "sha256": "1edcabdb7ef790532527e8eb38214e9c8c76507220537444120a0fc4154012b8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 106,
+      "sha256": "535e11d85b66826ea04f5a7f2fe5ab4e430df0dec878f805f02145a40d6f2c0d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 101,
+      "sha256": "2b6ac3163c11ad416406f7a10dc363e2d8b60c4f5a0ba85713fdff3752f1066a",
+      "error": null
+    }
+  ]
+}

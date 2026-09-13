@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T07:58:16.739Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-ground-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 74,
+      "sha256": "57b41a967def0c178dd9fc4028a29511e3c159c866b1d206f65a224ebd6f621b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1980,
+      "sha256": "d1a90ff7fdae76a2c31353c374ed69498f77d0f29fc2de5b951123877d8d74a8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3513,
+      "sha256": "4a09e7269f48e70d86f48c7eb77e43cb1d95ae9b86b666cf7edb85f9f2f59939",
+      "error": null
+    }
+  ]
+}

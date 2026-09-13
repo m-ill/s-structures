@@ -1,0 +1,33 @@
+{
+  "sourceHash": "a106e291f16e035f7842fa9844151fab6d8af7ea9efef577f6c5cdd293a48f6f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:16:50.096Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-auto-proposal-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 229,
+      "sha256": "011bdc3f3f9595e2d24c41b11ba9da547a6407aa167de415f896097af3f16936",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 181,
+      "sha256": "f13573d99ba089dfbfc91f253b05acbcd14b8706c1528312b6a010ed482a7f6e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-quarantine-status.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 781,
+      "sha256": "1ad7e5dec2e68c711e81cb9edf57f399359ae602621812a319652cd009f089b9",
+      "error": null
+    }
+  ]
+}

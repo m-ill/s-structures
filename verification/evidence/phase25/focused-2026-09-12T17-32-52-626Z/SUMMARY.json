@@ -1,0 +1,25 @@
+{
+  "sourceHash": "80c7511752802a0ce0b32a7fb73f6b766666dd566e037bd9bae452b283171f41",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:32:55.101Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-continuous-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 84,
+      "sha256": "ca0a1b4aa91cc5ebf5aeb3b14356c5b012a9d8c505da68819fc39f89d87eb1e9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-direct-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2141,
+      "sha256": "01c2df67a0148564ff56304d9aad913c8ced1985f9933291b7d41c864c6d953f",
+      "error": null
+    }
+  ]
+}

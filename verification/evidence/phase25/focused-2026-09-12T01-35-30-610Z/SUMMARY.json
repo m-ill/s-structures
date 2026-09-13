@@ -1,0 +1,33 @@
+{
+  "sourceHash": "0094e5317dd0086a2ef2d64f53b24ee1d5edc369120449d21eee921c242ce7c9",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:35:33.798Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-worker-memory-samples.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "6c4f818ee60f93eb99dbdbb353e7f9020586db5120bf64af9a1e338107f14fc9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 176,
+      "sha256": "225b23a4dd095eedb3c1e0ae06e7e49faae178a4f0fdec556003a173583f5a23",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-frame-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2709,
+      "sha256": "c2088c77a810f02dcf2f2083577f69a5ecb430c461581c2938aeb59874044e3a",
+      "error": null
+    }
+  ]
+}

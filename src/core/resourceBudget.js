@@ -17,17 +17,20 @@ export function retainedBytes(value,seen=new Set()) {
 }
 export function createResourceBudget({maxBytes=DEFAULT_RESOURCE_BUDGETS.managedBytes}={}) {
   if(!Number.isSafeInteger(maxBytes)||maxBytes<1)throw new Error('RESOURCE_BUDGET_INVALID');
-  const owners=new Map();let total=0,peak=0,sequence=0;
+  const owners=new Map(),quarantined=new Map();let total=0,peak=0,sequence=0;
   return Object.freeze({
     nextOwner:name=>`${name}:${++sequence}`,
     reserve(owner,bytes) {
       if(!Number.isSafeInteger(bytes)||bytes<0)throw new Error('RESOURCE_SIZE_INVALID');
+      if(quarantined.has(owner)||quarantined.size&&bytes>(owners.get(owner)||0))throw Object.assign(new Error('WORKER_TERMINATION_UNCONFIRMED'),{code:'WORKER_TERMINATION_UNCONFIRMED'});
       const proposed=total-(owners.get(owner)||0)+bytes;
       if(proposed>maxBytes)throw Object.assign(new Error('MANAGED_MEMORY_BUDGET_EXCEEDED'),{code:'MANAGED_MEMORY_BUDGET_EXCEEDED',details:{owner,requestedBytes:bytes,totalBytes:total,maxBytes}});
       owners.set(owner,bytes);total=proposed;peak=Math.max(peak,total);
     },
-    release(owner){total-=owners.get(owner)||0;owners.delete(owner);},
-    snapshot:()=>({version:RESOURCE_BUDGET_VERSION,accounting:'conservative-retained-data-estimate',maxBytes,totalBytes:total,peakBytes:peak,owners:Object.fromEntries(owners)}),
+    release(owner){if(quarantined.has(owner))return false;total-=owners.get(owner)||0;owners.delete(owner);return true;},
+    quarantine(owner,reason){if(!owners.has(owner))throw new Error('RESOURCE_OWNER_REQUIRED');quarantined.set(owner,String(reason));},
+    confirmTermination(owner){if(!quarantined.delete(owner))return false;total-=owners.get(owner)||0;owners.delete(owner);return true;},
+    snapshot:()=>({version:RESOURCE_BUDGET_VERSION,accounting:'conservative-retained-data-estimate',maxBytes,totalBytes:total,peakBytes:peak,owners:Object.fromEntries(owners),quarantinedOwners:Object.fromEntries(quarantined)}),
   });
 }
 export class BudgetMap extends Map {

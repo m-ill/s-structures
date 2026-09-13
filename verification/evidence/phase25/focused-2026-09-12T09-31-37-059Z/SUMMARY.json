@@ -1,0 +1,17 @@
+{
+  "sourceHash": "5a4fda3a6342ae3d96b5ad0f9fb9296e7e5b8509c425a540b23fd05ccb7d3dc7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:31:37.393Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 89,
+      "sha256": "b348e7e2cc7a02426e5d9cdfc8aff6b5a7185f8c89af302d672c3a60ddb7cfd2",
+      "error": null
+    }
+  ]
+}

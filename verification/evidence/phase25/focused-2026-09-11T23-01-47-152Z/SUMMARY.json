@@ -1,0 +1,25 @@
+{
+  "sourceHash": "1c8825a4adb34386266b1d4748d49198b64f133a48f7e26acc3ad42153108198",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:01:47.806Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-frame-convergence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 348,
+      "sha256": "2dd1f37716f2954c7860ad6194b859701057f8da57a7296d3572f662e4b04533",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-displacement-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "52697ebb707c3bd8c0cecf4b3dda4fc3f983088a6cabdf13d6f24d78edefa7f0",
+      "error": null
+    }
+  ]
+}

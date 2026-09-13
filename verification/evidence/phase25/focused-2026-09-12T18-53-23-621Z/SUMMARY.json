@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f043cbd86a860d58f71384635a2f399142d070ba0c4c0d099940fe39bef81b6f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:53:31.586Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 7699,
+      "sha256": "34545bbd1975c00fc169aa8351ebbe9335ce85641a709f86a79453184bc30660",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {sampleWorkerMemory,summarizeWorkerMemory} from '../src/compute/telemetry/workerMemory.js';
+assert.equal(sampleWorkerMemory({}),null);
+assert.equal(sampleWorkerMemory({process:{memoryUsage:()=>({heapUsed:NaN})}}),null);
+const a=sampleWorkerMemory({process:{versions:{node:'24'},memoryUsage:()=>({heapUsed:100,heapTotal:200,external:50,arrayBuffers:20,rss:1000})}});
+const b=sampleWorkerMemory({process:{versions:{node:'24'},memoryUsage:()=>({heapUsed:80,heapTotal:200,external:30,arrayBuffers:10,rss:900})}});
+const result=summarizeWorkerMemory(a,b);assert.equal(result.measuredHeap,true);assert.equal(result.heapDeltaBytes,-20);assert.equal(result.observedMaxHeapBytes,100);assert.equal(result.peakMeasured,false);assert.equal(result.sampleCount,2);
+assert.equal(summarizeWorkerMemory(null,null).observedMaxHeapBytes,null);
+assert.equal(summarizeWorkerMemory(a,null).measuredHeap,false);
+assert.ok(sampleWorkerMemory().heapUsedBytes>0);
+console.log('PASS worker memory samples distinguish observations, unavailable values and process RSS');

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "69cec6ef14d9da21e9ce768fb7797ecbaf33cbee1151756c39fb980dfa919f74",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:02:48.542Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-cracked-section-owner.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 49,
+      "sha256": "cd826823a7b01548ab37aec0607977d35368a43cc2ed0231525d9d6d97ab5d14",
+      "error": null
+    }
+  ]
+}

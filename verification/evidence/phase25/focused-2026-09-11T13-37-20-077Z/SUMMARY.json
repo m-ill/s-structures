@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a4fbdf703badb1e2009fbb8562ab396e2fea987b358e5f0dbd84093c8a9cf95d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:37:22.040Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-cross-tie-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "5d3ba776fb66632388d28e3d1e1b0817f60c96771bf57f052c4724ab7e59ee80",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-supports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "413525f07b37faa2bcdb44b3585e75ce5aebee43c0681ad0b9b87f12844d65d6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1426,
+      "sha256": "21d25c3efd621a5823dd29a10043311b8f71a1b3642c6aa8053b4b981751ea17",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 145,
+      "sha256": "f72c8aa076d9664eaa13479470279e65c00737855f2af47963f62c0e7e48dd37",
+      "error": null
+    }
+  ]
+}

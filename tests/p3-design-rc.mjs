@@ -63,7 +63,8 @@ assert.equal(beamReport.rcDesignGate.ticketCoverage.find((row) => row.ticket ===
 assert.ok(beamReport.formulaTrace.some((item) => item.formulaId === 'KDS-RC-BEAM-FLEXURE-V1'));
 assert.ok(beamReport.formulaTrace.every((item) => item.standard && item.clause && item.title));
 assert.ok(beamReport.schedules.beams[0].contract.tickets.includes('P3-T87'));
-assert.equal(beamReport.schedules.beams[0].summary.serviceabilityStatus, 'OK');
+assert.equal(beamReport.schedules.beams[0].summary.serviceabilityStatus, 'NOT_CHECKED');
+assert.equal(beamReport.schedules.beams[0].anchorage.development.length,null);
 assert.ok(beamReport.schedules.walls[0].contract.tickets.includes('P3-T89'));
 assert.ok(beamReport.schedules.slabs[0].contract.tickets.includes('P3-T90'));
 assert.match(beamReport.schedules.beams[0].flexure.bottom.label, /^\d+-D/);
@@ -198,8 +199,8 @@ assert.ok(invalidSlab.inputReview.missing.includes('slab-short-span'));
 assert.ok(invalidSlab.inputReview.missing.includes('slab-long-span'));
 assert.equal(invalidSlab.inputReview.formulaId, 'KDS-RC-INPUT-GEOMETRY-V1');
 
-assert.ok(developmentLength('D19', { fc: 27, fy: 400 }).length >= 300);
-assert.ok(lapSpliceLength('D19', { fc: 27, fy: 400 }).length > developmentLength('D19', { fc: 27, fy: 400 }).length);
+assert.equal(developmentLength('D19', { fc: 27, fy: 400 }).status,'NOT_CHECKED');
+assert.equal(lapSpliceLength('D19', { fc: 27, fy: 400 }).length,null);
 
 const target = { model: () => beam, reanalyze: () => {} };
 const agent = createIndexAgentApi(target, { getLastResult: () => beamAnalysis });

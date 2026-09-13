@@ -1,7 +1,11 @@
 import { DESIGN_INPUT_UNITS, MEMBER_DESIGN_FIELDS } from '../modeling/designInputCommands.js';
 import { DESIGN_BASIS_NUMERIC_FIELDS } from '../design/designBasisInput.js';
+import { PRACTICAL_DESIGN_TYPES, PRACTICAL_RECORD_CHANNEL, practicalInputFields, practicalCommandFromFields, practicalCommandFromRecord } from '../modeling/practicalInputContract.js';
 
 const labels = {
+  'material-record':'재료 물성·규격 입력',
+  'section-record':'단면 치수 입력',
+  'splice-record':'철근 겹침이음 입력', 'design-profile-record':'프로젝트 적용 범위·하중 검토', 'reinforcement-record':'RC 실제 배근 입력', 'connection-record':'접합부 입력', 'ground-record':'지반 자료 입력', 'foundation-record':'독립기초 입력',
   'design-basis':'설계기준', 'generate-loads':'기준 하중 생성', 'node-mass':'절점 질량',
   'mass-source':'질량원', 'load-case':'하중 케이스', load:'하중', combination:'수동 조합',
   'generate-combinations':'규칙 조합 생성', 'member-assignment':'재료·단면 할당',
@@ -21,6 +25,10 @@ const caseFields={
   linearTha:[f('integration','적분','select',['direct','modal']),f('modalModeCount','모드 수','number'),f('massSource','질량원 ID'),f('direction','방향','select',['x','y','z']),f('dampingRatio','감쇠비','number'),f('dt','시간 간격 (s)','number'),f('accelerations','가속도 값 (쉼표/줄 구분)','rows'),f('accelerationUnit','가속도 단위','select',['m/s2','g']),f('accelerationScale','가속도 배율','number')],
 };
 function fields(type,kind) {
+  if(PRACTICAL_DESIGN_TYPES.includes(type))return practicalInputFields(type,kind).map(row=>{
+    const values=row.kind==='boolean'?['false','true']:row.values;
+    return {...row,label:`${row.label}${row.unit?` (${row.unit})`:''}`,kind:row.kind==='boolean'?'select':['bars','ids'].includes(row.kind)?'rows':row.kind,values:values&&row.required===false?['',...values.filter(value=>value!=='')]:values};
+  });
   switch(type) {
     case 'design-basis': return [f('designMethod','설계법','select',['','strength','allowable']),...DESIGN_BASIS_NUMERIC_FIELDS.map(x=>f(x.id,`${basisLabels[x.id]} (${x.unit})`,'number'))];
     case 'generate-loads': return [];
@@ -48,6 +56,7 @@ function pairs(value) {
 // The form adapter only maps units and fields; all validation/mutation belongs
 // to the same service used by SStructuresAgent.
 export function designInputCommandFromFields(type,values) {
+  if(PRACTICAL_DESIGN_TYPES.includes(type))return practicalCommandFromFields(type,values);
   const data={};
   for(const field of fields(type,values.kind)) if(values[field.key]!==undefined && String(values[field.key]).trim()!=='') {
     data[field.key]=field.kind==='number'?number(values[field.key]):String(values[field.key]).trim();
@@ -85,6 +94,7 @@ export function createDesignInputController(bridge) {
     preview(commands,requestId) { return bridge.previewDesignInputChanges({requestId,units:{...DESIGN_INPUT_UNITS},commands}); },
     apply(preview) { return bridge.applyDesignInputChanges(preview); },
     undo() { return bridge.undoDesignInputChanges(); },
+    redo() { return bridge.redoDesignInputChanges(); },
   };
 }
 
@@ -116,20 +126,45 @@ export function installIndexDesignInput(target,bridge) {
   }
   function invalidate() {preview=null;apply.disabled=true;}
   function render(kind='static',preserved={}) {
+    if(type.value==='material-record'&&!['steel','concrete','timber','masonry'].includes(kind))kind='steel';
+    if(type.value==='section-record'&&!['RECT','SQUARE','H','BOX','PIPE','CIRC'].includes(kind))kind='RECT';
     clear(form);inputs={};
+    const groups=new Map();
+    const hostFor=field=>{
+      if(type.value!=='material-record'||kind!=='concrete')return form;
+      const title=/Attachment|attachment/.test(field.key)?'부착 시점':/creep|shrinkage/.test(field.key)?'재하·최종 시점':'기본 물성·강도';
+      if(!groups.has(title)){const group=el('fieldset');group.className='ss-ux-fieldset';group.appendChild(el('legend',title));form.appendChild(group);groups.set(title,group);}
+      return groups.get(title);
+    };
     for(const field of fields(type.value,kind)) {
       const wrap=el('label',field.label);wrap.style.cssText='display:flex;flex-direction:column;gap:4px';
       const input=el(field.kind==='select'?'select':field.kind==='rows'?'textarea':'input');
       input.setAttribute('aria-label',field.label);input.dataset.field=field.key;
-      if(field.kind==='select') for(const value of field.values) {const option=el('option',value?(optionLabels[value]||value):'변경 안 함');option.value=value;input.appendChild(option);}
+      if(field.kind==='select') for(const value of field.values) {const option=el('option',value?(({steel:'강재',concrete:'콘크리트',timber:'목재',masonry:'조적',assumed:'가정값',specified:'지정값',verified:'확인값'}[value]||optionLabels[value]||value)):(field.required===false?'미지정':'변경 안 함'));option.value=value;input.appendChild(option);}
       if(field.kind==='select') input.value=field.values[0];
       if(field.kind==='number') {input.type='number';input.step='any';}
       if(field.key in preserved) input.value=preserved[field.key];
-      if(field.key==='kind') {input.value=kind;input.addEventListener('change',()=>render(input.value,Object.fromEntries(['id','name','mode'].map(key=>[key,inputs[key].value]))));}
-      inputs[field.key]=input;wrap.appendChild(input);form.appendChild(wrap);
+      if(field.key==='kind'||field.key==='shape') {input.value=kind;input.addEventListener('change',()=>render(input.value,Object.fromEntries(Object.entries(inputs).map(([key,node])=>[key,node.value]))));}
+      inputs[field.key]=input;wrap.appendChild(input);hostFor(field).appendChild(wrap);
     }
+    for(const title of ['기본 물성·강도','재하·최종 시점','부착 시점'])if(groups.has(title))form.appendChild(groups.get(title));
   }
   type.addEventListener('change',()=>render());
+  panel.appendChild(button('등록값 불러오기',()=>{
+    const channel=PRACTICAL_RECORD_CHANNEL[type.value];
+    if(!channel){status.textContent='재료·단면·배근·접합·지반·기초 입력 유형을 선택하세요.';return;}
+    const id=inputs.id?.value.trim();
+    if(!id){status.textContent='불러올 ID를 입력하세요.';return;}
+    try {
+      const raw=inputs.version?.value.trim();
+      const found=bridge.getDesignRecords({channel,id,...(raw?{version:number(raw)}:{})});
+      if(!found.rows.length){status.textContent='등록된 입력이 없습니다.';return;}
+      const command=practicalCommandFromRecord(type.value,found.rows[0]);
+      const values=Object.fromEntries(Object.entries(command).map(([key,value])=>[key,key==='bars'?value.map(bar=>`${bar.y}, ${bar.z}, ${bar.diameter}${bar.nominalAreaMm2!==undefined?`, ${bar.nominalAreaMm2}, ${bar.designation}`:''}`).join('\n'):Array.isArray(value)?value.join(', '):String(value)]));
+      render(command.kind??command.shape??'static',values);invalidate();
+      status.textContent=`${id}@${command.version}을 불러왔습니다. 수정 사항은 새 버전 번호로 적용하세요.`;
+    } catch(e){status.textContent=`입력을 불러오지 못했습니다: ${e.code||e.message}`;}
+  }));
   panel.appendChild(button('변경안에 추가',()=>{
     try {commands.push(designInputCommandFromFields(type.value,Object.fromEntries(Object.entries(inputs).map(([k,v])=>[k,v.value]))));queue.appendChild(el('li',labels[type.value]));invalidate();status.textContent=`${commands.length}개 변경 대기 중`;} catch(e) {status.textContent=e.message;}
   }));
@@ -138,11 +173,25 @@ export function installIndexDesignInput(target,bridge) {
   panel.appendChild(button('변경안 미리보기',()=>{preview=controller.preview(commands,`ui-${target.crypto?.randomUUID?.()||`${Date.now()}-${Math.random()}`}`);show(preview);apply.disabled=!preview.ok;}));
   panel.appendChild(apply);
   panel.appendChild(button('설계 입력 실행취소',()=>{show(controller.undo());invalidate();}));
+  panel.appendChild(button('설계 입력 다시실행',()=>{show(controller.redo());invalidate();}));
   panel.appendChild(button('닫기',()=>{panel.hidden=true;}));panel.appendChild(status);panel.appendChild(review);
   doc.body.appendChild(panel);
   const notice=el('span','설계 입력 변경 · 이전 결과는 무효입니다. 해석을 다시 실행하세요.');
   notice.id='ssDesignInputStale';notice.hidden=true;notice.setAttribute('role','status');notice.style.cssText='color:#8a3600;white-space:normal;max-width:260px';host.appendChild(notice);
   host.appendChild(button('설계 입력 변경',()=>{bridge.elasticSetupWorkflow?.close?.();panel.hidden=false;}));
   render();
-  return {...controller,open(){panel.hidden=false;},close(){panel.hidden=true;}};
+  return {...controller,open(){panel.hidden=false;},close(){panel.hidden=true;},openRecord({type:recordType,id,seed={}}){
+    const channel=PRACTICAL_RECORD_CHANNEL[recordType];
+    if(!channel)throw Error('INPUT_RECORD_TYPE_REQUIRED');
+    let command;
+    if(id){
+      const found=bridge.getDesignRecords({channel,id,limit:1});
+      if(!found.rows?.length)throw Error('INPUT_RECORD_NOT_FOUND');
+      command=practicalCommandFromRecord(recordType,found.rows[0]);
+    }else command=Object.fromEntries(Object.entries(seed).filter(([key,value])=>['memberId','nodeId'].includes(key)&&typeof value==='string'));
+    const values=Object.fromEntries(Object.entries(command).map(([key,value])=>[key,key==='bars'?value.map(bar=>`${bar.y}, ${bar.z}, ${bar.diameter}${bar.nominalAreaMm2!==undefined?`, ${bar.nominalAreaMm2}, ${bar.designation}`:''}`).join('\n'):Array.isArray(value)?value.join(', '):String(value)]));
+    type.value=recordType;render(command.kind??command.shape??'static',values);invalidate();
+    bridge.elasticSetupWorkflow?.close?.();panel.hidden=false;
+    status.textContent=id?`${id}@${command.version} 등록값입니다. 수정 후 새 버전 번호로 변경안을 확인하세요.`:'검사에서 요구한 입력 유형과 대상을 열었습니다. 필요한 자료를 입력하고 변경안을 확인하세요.';
+  }};
 }

@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a899bcf968e338ef7d201640b738a40cb86ff8b510275c5b17b43c5bebd0f2f4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:15:22.390Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-cross-tie-end-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 157,
+      "sha256": "2a4ad7eca51870c7ad8db7b43467a15065f5e2bfc13f1f90b834099e7e7e56bf",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-repeated-path-distance.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "0161057192a9974808d6f23456c343376c9d0e8ceda492fe7b3cd2fdab4c9d62",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3313,
+      "sha256": "b687e0494e9152bdcb3c02d167842e952c15b61ffc994b8c06bf8a80fb735fc6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1737,
+      "sha256": "491c218773c9cac56e5a00b8cee9710aa97c8f56042a0aa8bf6f02b0bf3709e6",
+      "error": null
+    }
+  ]
+}

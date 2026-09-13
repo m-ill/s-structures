@@ -1,0 +1,17 @@
+{
+  "sourceHash": "52d93a06528884be3624cb981781de44f8a3c10f2cc2055f570096b5281f7d64",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T01:01:30.309Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 4194,
+      "sha256": "def64ea13a831a01d68e39cbb15364837461cfc54743eb1d8bc7d0f7ead98aee",
+      "error": null
+    }
+  ]
+}

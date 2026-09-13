@@ -649,6 +649,16 @@ function renderLoadDerivation(loadDerivation) {
 
 function renderRcDetailing(rcDetailing) {
   if (!rcDetailing?.rows?.length) return '<div class="note">No RC member detailing rows are available for this model.</div>';
+  if(rcDetailing.basis==='provided-practical-checks')return [
+    renderTable(['Member','Status','Util.','Unreviewed','Region','Longitudinal bars (mm)','Stirrups (mm)','KDS basis'],rcDetailing.rows.flatMap(row=>(row.regions?.length?row.regions:[null]).map(region=>[
+      row.memberId,row.status,formatRatio(row.utilization),row.incompleteCheckCount??'-',
+      region?`${region.id}@${region.version}: ${region.start}–${region.end}`:'Missing input',
+      region?.bars?.map(bar=>`D${bar.diameter} (y=${bar.y}, z=${bar.z})`).join('; ')||'-',
+      region?`D${region.stirrupDiameter??'-'} @ ${region.stirrupSpacing??'-'}, legs ${region.stirrupLegs??'-'}`:'-',
+      JSON.stringify(row.codeBasis??{status:'NOT_ESTABLISHED'}),
+    ]))),renderList(rcDetailing.limitations||[]),
+  ].join('');
+
   return [
     renderTable(['Item', 'Value'], [
       ['Version', rcDetailing.version],

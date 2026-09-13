@@ -1,0 +1,33 @@
+{
+  "sourceHash": "67ff964ba0e7b0a505942cd63513837bdfbbffaf573729e0c8a1f6135d2c565f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:48:43.701Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 730,
+      "sha256": "61f07c9c17b746d0a77450289d706a98ea972ac2a2f03ca8ce2248426a7e64a3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-contracts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 259,
+      "sha256": "2ee4f9c66e25c0e8d9166d609c40cc2034985c8205bbd78849d17dd5f872b3a6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11646,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

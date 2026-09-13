@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d2047747d79a190492898df67a8a3ef2f9a7582614c0dc0f8f20ae63d4051960",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:43:19.292Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-webmcp-joint-credit.mjs",
+      "exitCode": null,
+      "passed": false,
+      "elapsedMs": 20032,
+      "sha256": "c24788d2122d9720b912827501d3b8c206841f4ff0a684ec068c5236aa9544f4",
+      "error": "spawnSync C:\\Program Files\\nodejs\\node.exe ETIMEDOUT"
+    }
+  ]
+}

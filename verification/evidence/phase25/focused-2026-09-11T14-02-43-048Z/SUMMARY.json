@@ -1,0 +1,33 @@
+{
+  "sourceHash": "e48d4d437e9ddae486078ca6b6989559eb72c265176cdbb138a19ff5b535d413",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:02:46.685Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-perimeter-layout.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "e5dbf5483cff50a76e4ef48f8ec97ad1afb4ed69f9da856b6146f9b7b1a49453",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3250,
+      "sha256": "b687e0494e9152bdcb3c02d167842e952c15b61ffc994b8c06bf8a80fb735fc6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 48,
+      "sha256": "effea582e535f458da54a968ff68efe777ede1078568d506e2cef039c937d4a1",
+      "error": null
+    }
+  ]
+}

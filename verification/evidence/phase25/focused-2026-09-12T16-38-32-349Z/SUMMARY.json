@@ -1,0 +1,33 @@
+{
+  "sourceHash": "614bb035b120e02b9a66874292bb7580b0dee69c0085b65d48a4f26e4c1c0465",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:38:50.351Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-application-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 85,
+      "sha256": "2d9b60758eab49ae80f41a2b578e56bcf38c026f1a80e7a51dc3f2ce461134d9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 14337,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-constraint-actions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3347,
+      "sha256": "4c61cbc18f858d02be0ee6804c026464eac4c6b73d8a93a78f9800a853a94361",
+      "error": null
+    }
+  ]
+}

@@ -16,6 +16,7 @@ import {
   evaluateStationEndClosure,
 } from '../foundation/index.js';
 import { recoverMemberResult, sectionCheck } from '../linear3dRecovery.js';
+import {geometricForceAt} from '../memberForceField.js';
 import { PARTIAL_FIXITY_LIMITATION_CODES } from '../partialFixity.js';
 import { buildExpandedAnalysisDomain } from './analysisDomain.js';
 import { buildPDeltaSplitTrace } from './split.js';
@@ -32,6 +33,7 @@ import {
 } from '../domain/constraintSystem.js';
 import { resolveRigidDiaphragms } from '../../core/diaphragmGroups.js';
 import { resolvePDeltaFirstOrderSeed } from './firstOrderSeed.js';
+import { compareFirstSecondOrderMoments } from './momentComparison.js';
 import { constraintCoordinateKinds, directDiaphragmIssues, directMemoryAdmission } from './constraintContext.js';
 
 export const PDELTA_SECOND_ORDER_VERSION = 'p6-m5-pdelta-second-order-v1';
@@ -391,6 +393,7 @@ function* runSecondOrderPDeltaMachine(model = {}, factors = null, options = {}) 
     limitationCodes,
   };
   const amplificationTrace = translationalAmplification(domain.nodes, assembly, linearD, currentD);
+  result.firstOrderMomentComparison=compareFirstSecondOrderMoments(linear,result);
   const designEligibility = directDesignEligibility(converged, stability, result.recovery, finalCompatibility);
   const provenance = { ...directProvenance(domain, loadState), limitationCodes };
   result.pDelta.limitationCodes = limitationCodes;
@@ -510,12 +513,9 @@ function buildFactoredLoadState(domain, assembly) {
     }
     if (load.type === 'nmoment') {
       if (assembly.idx[load.node] == null || !Number.isFinite(Number(load.M))) continue;
-      const axisIndex = { x: 0, y: 1, z: 2 }[load.axis || 'z'];
-      if (axisIndex != null) {
-        const dof = assembly.idx[load.node] * 6 + 3 + axisIndex;
-        F[dof] += Number(load.M);
-        nodalExternal[dof] += Number(load.M);
-      }
+      const direction=resolveMomentDirection(load);
+      if(!direction.ok)throw Object.assign(new Error(direction.reason),{code:direction.reason,loadId:load.id});
+      direction.global.forEach((v,k)=>{const dof=assembly.idx[load.node]*6+3+k,value=v*Number(load.M);F[dof]+=value;nodalExternal[dof]+=value;});
       continue;
     }
     const md = assembly.memData?.[load.member];
@@ -733,6 +733,7 @@ function buildDirectResult({
     anyOk: recovery.qualified,
     disp,
     reactions: reactionState.reactions,
+    constraintActions: reactionState.constraintActions,
     memberResults,
     foundationResults,
     axialForces,
@@ -801,6 +802,7 @@ function recoverConsistentMemberResult(member, md, D, loads, stationCount, geome
   }
   recovered.elasticEnd = elasticEnd;
   recovered.geometricEnd = geometricEnd;
+  recovered.forceRecoveryInput={...recovered.forceRecoveryInput,version:'member-force-recovery-v2-geometric',geometricEndForces:[...geometricEnd]};
   recovered.structuralEnd = endActionContract.structuralEnd;
   recovered.foundationEnd = foundationEnd;
   recovered.end = totalEnd;
@@ -877,21 +879,8 @@ function recoverConsistentMemberResult(member, md, D, loads, stationCount, geome
 }
 
 function geometricStationContributions(end, xs, L) {
-  const endpointValues = {
-    N: [-end[0], end[6]],
-    Vy: [-end[1], end[7]],
-    Vz: [-end[2], end[8]],
-    Tq: [-end[3], end[9]],
-    My: [end[4], -end[10]],
-    Mz: [-end[5], end[11]],
-  };
-  return Object.fromEntries(Object.entries(endpointValues).map(([key, [start, finish]]) => [
-    key,
-    xs.map((x) => {
-      const ratio = L > 0 ? Math.max(0, Math.min(1, x / L)) : 0;
-      return start * (1 - ratio) + finish * ratio;
-    }),
-  ]));
+  const rows=Array.from(xs,x=>geometricForceAt(end,L,x));
+  return Object.fromEntries(['N','Vy','Vz','Tq','My','Mz'].map(key=>[key,rows.map(r=>r[key])]));
 }
 
 function geometricStationEndClosure(end, stations) {
@@ -983,7 +972,8 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
     maximumMomentResidual: Math.max(0, ...momentIndices.map((dof) => Math.abs(closureResidual[dof]))),
     ...(constraintDofs.size ? { constraintWorkResidual } : {}),
   };
-  return { reactions, reactionVector, memberNodal, nodalExternal, constraintForces, closureResidual, closure };
+  const constraintActions={version:'p25-constraint-actions-v1',signConvention:'force applied by constraint to structural DOF',units:{force:'kN',moment:'kN.m'},rows:[...constraintDofs].sort((a,b)=>a-b).map(dof=>({nodeId:domain.nodes[Math.floor(dof/6)].id,dof:DISPLACEMENT_KEYS[dof%6],force:constraintForces[dof],supportCoupled:restrained.has(dof)}))};
+  return { reactions, reactionVector, memberNodal, nodalExternal, constraintForces, constraintActions, closureResidual, closure };
 }
 
 function directConstraintDofs(domain) {
@@ -1060,7 +1050,7 @@ function buildDirectEquilibriumSummary(domain, out, KG, D, criteriaModel = {}) {
     : 'FAIL';
   return {
     ...base,
-    equilibriumVersion: 'p7-m8-direct-geometric-resultant-equilibrium-v2',
+    equilibriumVersion: 'p25-direct-geometric-resultant-equilibrium-v3-constraints',
     equilibriumMethod: 'independent-global-resultant-audit-with-assembled-KG-u-correction',
     uncorrectedResidualResultant: base.residualResultant,
     uncorrectedEquilibriumResidual: base.equilibriumResidual,
@@ -1527,3 +1517,4 @@ function positive(...values) {
   }
   return 1;
 }
+import {resolveMomentDirection} from '../../loads/momentDirection.js';

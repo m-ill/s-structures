@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d909f127f5f2c5aad4b6c99406ced587bf83225171e7b41d44deca17bbf1779e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:21:54.446Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-provided-crack-width.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2046,
+      "sha256": "41b54a60fb242fe39fd846f638fd15c442d3a65ab3437883cdf2f2d26f0a12ba",
+      "error": null
+    }
+  ]
+}

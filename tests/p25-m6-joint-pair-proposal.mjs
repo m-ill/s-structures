@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {jointCrossTiePairProposal} from '../src/compute/product/jointCrossTiePairProposal.js';
+import {validJointBarPairs} from '../src/design/connection/jointBarPairs.js';
+const bars=[[-.2,-.08],[-.2,.08],[.2,-.08],[.2,.08],[-.2,0],[.2,0]].map(([y,z])=>({y,z,diameter:.02}));
+const model={members:[{id:'C',n1:'A',n2:'N'}],designDetails:{reinforcement:[{id:'R',version:1,memberId:'C',bars}]}};
+const command={nodeId:'N',memberIds:['C'],columnMemberId:'C',jointCrossTiePattern:'alternating-hook-side',jointCrossTieBarPairs:['1:3'],tieDiameter:16,jointBendInsideRadius:.032};
+const rows=[{columnDetailId:'R',columnDetailVersion:1,hcB:.204,hcH:.504}],before=structuredClone(model);
+const result=jointCrossTiePairProposal(command,rows,model);
+assert.equal(result.ok,true);assert.deepEqual(result.edit.jointCrossTieBarPairs,['5:6']);
+assert.equal(result.automaticApplicationAllowed,false);assert.deepEqual(model,before);
+assert.equal(jointCrossTiePairProposal({...command,jointCrossTieBarPairs:['5:6']},rows,model).reason,'NO_JOINT_PAIR_CHANGE_REQUIRED');
+const missing=structuredClone(model);missing.designDetails.reinforcement[0].bars=bars.slice(0,4);
+assert.equal(jointCrossTiePairProposal(command,rows,missing).reason,'JOINT_ADDITIONAL_OPPOSITE_FACE_BARS_REQUIRED');
+const stale=structuredClone(model);stale.designDetails.reinforcement.push({...stale.designDetails.reinforcement[0],version:2});
+assert.equal(jointCrossTiePairProposal(command,rows,stale).reason,'CURRENT_JOINT_COLUMN_BARS_REQUIRED');
+assert.equal(validJointBarPairs(['1:3','3:1']),false);assert.equal(validJointBarPairs(['0:1']),false);assert.equal(validJointBarPairs(['1:101']),false);assert.equal(validJointBarPairs(['5:6']),true);
+console.log('PASS existing opposite-face pair proposal, no invented bars, stale rejection');

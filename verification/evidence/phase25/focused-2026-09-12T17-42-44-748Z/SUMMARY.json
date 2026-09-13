@@ -1,0 +1,17 @@
+{
+  "sourceHash": "27f1f2e531cebc22858267057a1262a332d4dc13b9ea0ed9ddc5ea87433742fe",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:42:45.037Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-quantity-csv.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "a3a65efe61b370849699bed2d0d46f87e41218a75e8b6d6f30de220ee905fa7e",
+      "error": null
+    }
+  ]
+}

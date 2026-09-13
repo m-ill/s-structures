@@ -1,0 +1,1 @@
+PASS T04 explicit rebar-only reuse, stale original, changed mechanics rejection, restore and old-proof rejection

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "74d53a8e15b3a799632f3cfe9968b4853621d7607ba7ea7be9a7981c7d91b513",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:07:49.322Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p24-m2-reuse.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 426,
+      "sha256": "bae6cd12e147300b81fdef5242d067a2586bc7ad134ea4e9f830ee407b349436",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4266,
+      "sha256": "c849b2b2d1febf44e545aad50835d7c336fbdb8074c64ffcb1c7130fd3ab265d",
+      "error": null
+    }
+  ]
+}

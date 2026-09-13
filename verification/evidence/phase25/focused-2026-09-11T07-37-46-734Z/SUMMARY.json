@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-11T07:37:51.257Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-beam-minimum.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 66,
+      "sha256": "034e7a968a8b0467eb15f4700e7274db04379ba8e119e2c6934f9dd57688704f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 790,
+      "sha256": "0c48a69c1df9d03a5e300455b8465cd31860d2b7414575945e7a2bc0a7a7bade",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-minimum-steel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "6aeb3f408eb6d82542f75a9f6614fe8b9ab035b4ea795f00b1b0ca13b9ce866c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3608,
+      "sha256": "cb4829830137a30839f69bef7fb7ea5ff5a3fa74ef43964a521c944aeac54659",
+      "error": null
+    }
+  ]
+}

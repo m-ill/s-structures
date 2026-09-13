@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6ac28718aca4cb1e6ac49d2d8327b78bdb7bdd240b24df2b9b7998fb109e7b0a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:23:12.239Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footing-flexure-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7205,
+      "sha256": "8bfade256bc986019aa5fabdbd8e831c855e2a9cbc0e6b0b1f4bcf998065f5d4",
+      "error": null
+    }
+  ]
+}

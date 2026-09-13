@@ -1,0 +1,17 @@
+{
+  "sourceHash": "84bdd79ea0ae250ba6ed7f9dbdce5a2045f4aa0a18b6444a0c31a9ecf1b947ca",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:13:00.630Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-temperature-gradient.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 47,
+      "sha256": "db137635ddb2dbce3ba2458bf25891d1636cc810d58592e1556ec020606ee521",
+      "error": null
+    }
+  ]
+}

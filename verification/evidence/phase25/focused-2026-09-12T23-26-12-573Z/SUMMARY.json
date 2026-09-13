@@ -1,0 +1,33 @@
+{
+  "sourceHash": "8a8df1e53cfa8d6c233e79d983a8fefb222ef2f00bcdf44d6b5d663a4b461fd6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:26:19.542Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-section-initial-strain.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "67b972f37f4731fd8175d2e3820af949837b92461fc6ea3d17700a258450ca9c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-provided-crack-width.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2056,
+      "sha256": "c4a082a2aab651fc839e9268e64bf19c8bd575ae7155d082a654a2a9be256791",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4611,
+      "sha256": "76301159d9b6f4e0a7053a602e26b249078b9a2c6be046c79516b89040e9cc3d",
+      "error": null
+    }
+  ]
+}

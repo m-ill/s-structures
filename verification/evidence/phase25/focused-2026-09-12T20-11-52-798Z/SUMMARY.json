@@ -1,0 +1,25 @@
+{
+  "sourceHash": "336c2790486e7634292680c6eec7166cecadf40be48f92c56285bc20fd6fc58a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:12:00.716Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-profile-closure.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 7554,
+      "sha256": "b92bccb948de03fe0b8643922263ba5188975b5d1d8772d6c839b869fe3b49ea",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-distribution-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 91,
+      "sha256": "692d05d15bcc3b23fd0db6ab5f29d961d991da3b0641094a4dec8aa6875ca2b8",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "ecac76eec9fa88e7bea5792275083dc00dc26b9f380c59ef2311f27b40bcb127",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:07:30.725Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-quadratic-lap-slip.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 79,
+      "sha256": "bf416cc4ae871700be51d412aed36cb124a43636e6dcd749dbf974be5be83f69",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-lap-frame-coupling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 115,
+      "sha256": "bcbadda91056ab63087cb8d8d441054aa0eb42582f787526885a52efad18746b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-lap-frame-ports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "d298313bcd5514787670f7f21542804c9c85f4e4f5b738616cea6235d04df0da",
+      "error": null
+    }
+  ]
+}

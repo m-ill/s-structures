@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7617f92dd8d1c023dab0108990fd4a4c0e6e43350ffecbadcce177c78608115a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:05:00.264Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footing-flexure-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9658,
+      "sha256": "e221ad611467a8e4ed5cbb178b2645e73cdede3bc814bcb5dbc57cac9b08bd25",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-footing-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 95,
+      "sha256": "1edcabdb7ef790532527e8eb38214e9c8c76507220537444120a0fc4154012b8",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f60bf8a164ecb394c978a4273ba559e4cf26bba7e9c7b248c9649c904d839890",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:55:16.748Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-registry-resolution.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 65,
+      "sha256": "0e1dcaccbeed3e7a00c60c7b449bb633fdda221ef78754a95cbc877eda254b18",
+      "error": null
+    }
+  ]
+}

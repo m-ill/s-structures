@@ -1,0 +1,17 @@
+{
+  "sourceHash": "8d5c60f6f94d3585df2956d33a73f722c79ea4176cc81d6632e457d44c920c11",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:23:22.825Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-section-size-proposal.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 203,
+      "sha256": "6cdc0fe4ea12330db220e5d38f8c83c80ae4c35e3b628e95663798bd334f03fa",
+      "error": null
+    }
+  ]
+}

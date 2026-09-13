@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b03ff96ea8750e54d528ebc8e9f67e3dcace708ad59854c3514dc2b954ec3c80",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:04:52.382Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-proportional-bending.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 77,
+      "sha256": "ae0da0cb16be39c1966fa35e35c1c4df50ef7176bc28f263db0e8553af976acd",
+      "error": null
+    }
+  ]
+}

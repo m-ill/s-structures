@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {segmentDistance,checkBarPathClearance} from '../src/design/connection/jointCongestion.js';
+assert.equal(segmentDistance([0,0,0],[1,0,0],[.5,-1,0],[.5,1,0]),0);
+assert.equal(segmentDistance([0,0,0],[1,0,0],[0,0,.1],[1,0,.1]),.1);
+assert.equal(segmentDistance([0,0,0],[0,0,0],[1,0,0],[2,0,0]),1);
+const bars=[{id:'A',diameter:.02,segments:[[[0,0,0],[1,0,0]]],sagitta:0},{id:'B',diameter:.02,segments:[[[.5,-1,.015],[.5,1,.015]]],sagitta:0}];
+assert.equal(checkBarPathClearance(bars,0).status,'NG');
+bars[1].segments[0]=[[.5,-1,.05],[.5,1,.05]];assert.equal(checkBarPathClearance(bars,.025).status,'OK');
+bars[1].sagitta=.01;assert.equal(checkBarPathClearance(bars,.025).status,'NG');
+console.log('PASS exact segment crossing/parallel/degenerate distance and conservative tessellation clearance');

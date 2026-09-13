@@ -1,0 +1,25 @@
+{
+  "sourceHash": "399ff4abba2b22e814c9e951e2534d654d4bc40fda08886baa4c9bc92dc458ca",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T20:13:56.638Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-rc-policy-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 223,
+      "sha256": "6f4cdf4610880d09abed783cdc55cb99804c5959923c5c9f41c9456e4ab7ee1a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7509,
+      "sha256": "aab4fe2681160baa7c040d5c3fcd3f34b7a717652c8af1756a278aaac2ab24a0",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "sourceHash": "b6925ac9a8bf2c651f0f46c04ba40df31e2fddcbf2920647244dd2b1c6d94592",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:05:07.673Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-elastic-lap-transfer.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "6d7606965eade148cc9c0303b5a322e1bfc4b88f0bcdfa711e78c1a9bc18a497",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-elastic-transfer.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1118,
+      "sha256": "a404f93feea792f1e86e7167365a2d198de5d3bf3e839f923b737affad58789e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-splice-transfer-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 109,
+      "sha256": "fc0b3c87c56bdde25225931c65268152e343d83cd47c013a6bba3dc60cb4b833",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4174,
+      "sha256": "9545edd7b636c9465bb78f28905682ece63be4aa17e16a0b510e25e209bc074d",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m1-section-input.mjs:19
+  assert.ok(next.changes.some(row=>row.path==='sections[P24-RECT@2]'&&row.before===null&&row.after.version===2),'preview must show appended version without replacing version 1');
+                         ^
+
+TypeError: next.changes.some is not a function
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m1-section-input.mjs:19:26
+
+Node.js v24.16.0

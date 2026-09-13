@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f12a12f6168b4146a113417fe3c7beb89ad4cb510986390283192683a99a0292",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:45:30.301Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rule-input-diagnostics.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "a3b65aacc0772f62af75044cf4b8012cd3fd270c0ed07b0b7ef9c616e6259ba7",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-kds-frame-sign.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2402,
+      "sha256": "7aa1c2c6e11ac4cad9f8aeec12aff5d1c49100e9d13045bd15529997e50a7781",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11546,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

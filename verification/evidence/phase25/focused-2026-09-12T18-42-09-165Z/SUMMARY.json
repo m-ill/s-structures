@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e9b47fe447d29cc569433f2c3ae0e2e6296eaf003a379318cb207cba1c8c1e74",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:42:09.600Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-section-foundation.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 189,
+      "sha256": "891436f55223d21f66dcc3635d77a813d7d45ab3dbfbe61040d35557c700a86d",
+      "error": null
+    }
+  ]
+}

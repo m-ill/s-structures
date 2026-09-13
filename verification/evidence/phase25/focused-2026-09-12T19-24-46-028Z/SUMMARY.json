@@ -1,0 +1,33 @@
+{
+  "sourceHash": "c9a80763065040265c2f649410097b80119b116d3b8b23b4481b27bc46e585b5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:24:46.913Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-offset-stations.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 238,
+      "sha256": "a035a9d8e1e8a5af535e5b91013624458dc369a8b673fb47dac31ffd88dd8d5a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-segmented-strength.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 230,
+      "sha256": "9a4a67cf03e72610c84ce6858525989b8fcf44ba6196e739bf6863541294c6ed",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 156,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    }
+  ]
+}

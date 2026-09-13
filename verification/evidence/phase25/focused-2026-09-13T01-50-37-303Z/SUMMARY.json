@@ -1,0 +1,17 @@
+{
+  "sourceHash": "20726407e2418ec38fc8129951660fceb3451a25e6c417903d378634f84cce6f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T01:50:40.294Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-through-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2725,
+      "sha256": "102638a8d469dd5869ea0b7bc0b5fae72054ecbe2a1157500987eeb4c3d0fe29",
+      "error": null
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import { loadSource, negateVector } from './common.js';
 
-export const FIXED_END_TEMPERATURE_VERSION = 'p8-m3-fixed-end-temperature-v3';
+export const FIXED_END_TEMPERATURE_VERSION = 'p25-fixed-end-temperature-v4-initial-strain';
 
 export function fixedEndTemperature(load, ax, md = {}) {
   const alpha = finitePositive(load.alpha ?? md.material?.alpha);
@@ -19,7 +19,7 @@ export function fixedEndTemperature(load, ax, md = {}) {
     method: 'fixed-end-uniform-temperature',
     fe,
     q0,
-    recovery: { type: 'temperature', axialForce: -N },
+    recovery: { type: 'temperature', axialForce: -N, initialStrain: {type:'initial-strain', axial:alpha*Number(load.dT||0)} },
     handcalc: {
       expression: 'N_restraint = -E A alpha dT (tension positive)',
       E,
@@ -50,7 +50,7 @@ export function fixedEndTemperatureGradient(load, ax, md = {}) {
     method: 'fixed-end-temperature-gradient',
     fe,
     q0,
-    recovery: { type: 'temperature-gradient', moment: M },
+    recovery: { type: 'temperature-gradient', moment: M, initialStrain: {type:'initial-strain', curvatureZ:-curvature, alphaDeltaT:alpha*(Number(load.dTtop||0)-Number(load.dTbot||0)), explicitDepth:load.h==null?null:h} },
     handcalc: {
       expression: 'M = E Iz alpha (dTtop-dTbot) / h',
       E,

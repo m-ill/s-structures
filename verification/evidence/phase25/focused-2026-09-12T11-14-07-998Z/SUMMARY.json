@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7226f3ded751906cf86e89d5ca24dcc7f147edbd52a9a1d134d707368737ad2e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:14:14.538Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3594,
+      "sha256": "ed3c515fd4406b8ea87cfd01bfc5f4e682473b81481f42b4010b60b9840c8c71",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-base-friction.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2701,
+      "sha256": "0e6eab556947b5ab3ebda9660e216821104cafd1ee48759d7402031c6fdb36e6",
+      "error": null
+    }
+  ]
+}

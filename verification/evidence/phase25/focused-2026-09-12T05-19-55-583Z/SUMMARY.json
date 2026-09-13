@@ -1,0 +1,25 @@
+{
+  "sourceHash": "862af3295e19d1abd051e0d1141ca9c287471df55d49a5af1d17257425a42399",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:20:08.582Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-cross-tie-topology.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "e346c9674baf72960c4962daaa17df6ae6a9381595bbff26516a673d7a9895f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 12674,
+      "sha256": "3729a4e2016e4c41bfb0aec25676e5a4d3381477f447ca8589ce7ad9c8f73ee3",
+      "error": null
+    }
+  ]
+}

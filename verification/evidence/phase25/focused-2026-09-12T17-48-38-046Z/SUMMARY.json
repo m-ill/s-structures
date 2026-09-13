@@ -1,0 +1,25 @@
+{
+  "sourceHash": "64f17477f6d4e25a159aac5c066f229a67d8b294f00474ff3166970da64d4cb6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:48:44.997Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-artifact-controls.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 81,
+      "sha256": "6b218a226ab11a703b20e22c94b78f532a1b726b17b7e7483b602369998c510d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6613,
+      "sha256": "fec073d65d796f3df2212a84077825713b16e2b5b1ef961cf8beeb48acb50719",
+      "error": null
+    }
+  ]
+}

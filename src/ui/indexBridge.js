@@ -1,4 +1,14 @@
+import {installWorkspaceUx} from './workspaceUx.js';
+import {createNativeCanvasResult} from './nativeCanvasResult.js';
+import {prepareRcSpliceMemberMesh} from '../compute/product/rcSpliceMemberMesh.js';
+import {createRcSpliceExecution} from '../compute/product/rcSpliceExecution.js';
+import {evaluateSpliceElasticTransfer} from '../compute/product/spliceTransferService.js';
+import {createRcServiceWorkflow} from '../compute/product/rcServiceWorkflow.js';
+import {createPracticalResultCache} from '../compute/product/practicalResultCache.js';
 import { createWorkflowCheckpointRepository } from '../compute/product/workflowCheckpoint.js';
+import { getDesignModules } from '../metadata/designModuleCapabilities.js';
+import { getDesignRuleCatalog } from '../metadata/designRuleCatalog.js';
+import { getDesignInputSchema, getDesignRecords } from '../modeling/practicalDesignInputs.js';
 import { createBrowserReviewPdfExporter } from '../report/phase22/browserReviewPdf.js';
 import { createBrowserMemoryDiagnostics } from '../compute/telemetry/browserMemory.js';
 import { runWithBoundedWorkerCancellation } from '../compute/product/boundedWorkerCancellation.js';
@@ -14,6 +24,9 @@ import { createElasticReviewService } from '../compute/product/elasticReviewServ
 import { installIndexDesignReview } from './indexDesignReview.js';
 import { installResultViewCache, COMPUTED_RESULT_VIEWS } from './resultViewCache.js';
 import { createDesignInputService } from '../modeling/designInputService.js';
+import { createDesignDependencyIdentity } from '../core/designDependencyIdentity.js';
+import { createPracticalWorkflowService } from '../compute/product/practicalWorkflowService.js';
+import { createDrawingExportService,loadBundledDrawingFont } from '../report/phase24/drawingExportService.js';
 import { installIndexDesignInput } from './indexDesignInput.js';
 import { migrateToCurrent, migrateToV3, validateModel as validateCoreModel } from '../core/model.js';
 import { installWebMcp } from './webmcp/register.js';
@@ -190,6 +203,14 @@ export function installIndexEngineBridge(target = globalThis) {
   const resourceBudget = createResourceBudget();
   target.SStructuresResourceBudget = resourceBudget;
   const workflowResults = createWorkflowResultStore({budget:resourceBudget});
+  const nativeCanvasResult=createNativeCanvasResult({runtime:target.SStructuresNativeRuntime,budget:resourceBudget});
+  function syncNativeCanvas(){
+    const selection=target.SStructuresResultSelection?.getState?.();
+    if(!selection?.activeCaseId){nativeCanvasResult.clear();return;}
+    const record=latestDisplayResult(target,selection.activeCaseId);
+    const metadata=record?.runRecordId?bridge.getWorkflowAnalysisMetadata(record.runRecordId):null;
+    nativeCanvasResult.sync(record,selection.selectedComboId,!!metadata?.ok&&!metadata.stale&&(!designInputResultsStale||record?.restored));
+  }
   const checkpoints=createWorkflowCheckpointRepository({indexedDB:target.indexedDB,storage:target.SStructuresCheckpointStorage,budget:resourceBudget});
   let checkpointBusy=false,runtimeDisposed=false;
   function assertCheckpointProject(projectId) {
@@ -207,6 +228,22 @@ export function installIndexEngineBridge(target = globalThis) {
   let elasticProductService = null;
   let eigenProductService = null;
   const bridge = {
+    getDesignModules,
+    getDesignRuleCatalog,
+    getDesignInputSchema,
+    getDesignRecords:args=>getDesignRecords(bridge.getCurrentModel(),args),
+    getRcSpliceMemberMesh:args=>{
+      if(args.inputHash!==bridge.getWorkflowInputIdentity().inputHash)throw Object.assign(Error('STALE_INPUT'),{code:'STALE_INPUT'});
+      const result=prepareRcSpliceMemberMesh(bridge.getCurrentModel(),args);
+      if(args.inputHash!==bridge.getWorkflowInputIdentity().inputHash)throw Object.assign(Error('STALE_INPUT'),{code:'STALE_INPUT'});
+      return {ok:true,...result,inputHash:args.inputHash};
+    },
+    evaluateSpliceElasticTransfer:args=>{
+      if(args.inputHash!==bridge.getWorkflowInputIdentity().inputHash)throw Object.assign(new Error('STALE_INPUT'),{code:'STALE_INPUT'});
+      const result=evaluateSpliceElasticTransfer(bridge.getCurrentModel(),args);
+      if(args.inputHash!==bridge.getWorkflowInputIdentity().inputHash)throw Object.assign(new Error('STALE_INPUT'),{code:'STALE_INPUT'});
+      return {...result,inputHash:args.inputHash};
+    },
     version: INDEX_BRIDGE_VERSION,
     legacy,
     analyzeModel(model, options) {
@@ -241,6 +278,16 @@ export function installIndexEngineBridge(target = globalThis) {
       const record = workflowResults.getAnalysisMetadata(analysisRunId);
       if (!record.ok) return record;
       return workflowResults.getAnalysis(analysisRunId, bridge.getWorkflowInputIdentity({ caseId: record.caseId }));
+    },
+    getDesignDependencies() {return createDesignDependencyIdentity(bridge.getCurrentModel(),bridge.getWorkflowInputIdentity());},
+    listDesignAnalysisSources(){return workflowResults.listAnalysisMetadata().filter(r=>r.kind==='static').map(r=>({analysisRunId:r.analysisRunId,caseId:r.caseId,comboId:r.legacyRecord?.provenance?.combination?.id,method:r.legacyRecord?.provenance?.analysisCase?.settings?.pDeltaMethod||'off',stale:!sameWorkflowInput(r.identity,bridge.getWorkflowInputIdentity({caseId:r.caseId})),executionStatus:r.executionStatus,derived:!!r.derivation}));},
+    reuseDesignAnalysis({analysisRunId,inputHash}) {
+      if(inputHash!==bridge.getWorkflowInputIdentity().inputHash)throw Object.assign(new Error('STALE_INPUT'),{code:'STALE_INPUT'});
+      const record=workflowResults.getAnalysisMetadata(analysisRunId);if(!record.ok)return record;
+      const result=workflowResults.reuseAnalysis(analysisRunId,bridge.getWorkflowInputIdentity({caseId:record.caseId}),bridge.getCurrentModel());
+      if(!result.ok)return result;
+      target.__SStructuresResultRevision=(target.__SStructuresResultRevision||0)+1;
+      return {ok:true,analysisRunId:result.analysisRunId,identity:result.identity,derivation:result.derivation||null,designTransferAllowed:false};
     },
     getWorkflowAnalysisMetadata(analysisRunId) {
       const record=workflowResults.getAnalysisMetadata(analysisRunId);
@@ -505,6 +552,14 @@ export function installIndexEngineBridge(target = globalThis) {
               lastResult=stored.payload;
               lastResultIdentity=bridge.getWorkflowInputIdentity().inputHash;
               resourceBudget.release('native-last-analysis');
+              designInputResultsStale = false;
+              const notice = target.document?.getElementById?.('ssDesignInputStale');
+              if (notice) notice.hidden = true;
+              const status = target.document?.getElementById?.('statusTxt');
+              if (status) status.textContent = `${analysisCase.name || analysisCase.id} · 해석 완료 · 설계 검토 필요`;
+              target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
+              syncNativeCanvas();
+              target.draw?.();
             }
             target.SStructuresWebMcp?.render?.();
             return {result:stored,catalogOwnsResult:true};
@@ -763,6 +818,8 @@ export function installIndexEngineBridge(target = globalThis) {
   target.analyzeModel = bridge.analyzeModel;
   target.validateModel = bridge.validateModel;
   target.SStructuresEngine = bridge;
+  const unsubscribeNativeCanvas=target.SStructuresResultSelection.subscribe(()=>{syncNativeCanvas();target.draw?.();});
+  target.addEventListener?.('pagehide',()=>unsubscribeNativeCanvas?.());
   const designInputs = createDesignInputService({
     budget:resourceBudget,
     getModel: () => bridge.getCurrentModel(),
@@ -772,6 +829,7 @@ export function installIndexEngineBridge(target = globalThis) {
       lastResult = null;
       lastResultIdentity = null;
       designInputResultsStale = true;
+      nativeCanvasResult.clear();
       target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
       target.SStructuresResultSelection?.set?.({ activeCaseId: null, activeResultId: null, modeOrStep: null }, 'design-input-changed');
       target.SStructuresAnalysisCenter?.refresh?.();
@@ -787,18 +845,63 @@ export function installIndexEngineBridge(target = globalThis) {
   bridge.previewDesignInputChanges = designInputs.preview;
   bridge.applyDesignInputChanges = designInputs.apply;
   bridge.undoDesignInputChanges = designInputs.undo;
+  bridge.redoDesignInputChanges = designInputs.redo;
+  const sharedPracticalCache=createPracticalResultCache(resourceBudget);
+  const rcSpliceExecution=createRcSpliceExecution({bridge,budget:resourceBudget});
+  bridge.solveRcSpliceInterval=rcSpliceExecution.run;
+  bridge.releaseRcSpliceModelResult=rcSpliceExecution.release;
+  bridge.getRcSpliceSourceMetadata=rcSpliceExecution.metadata;
+  bridge.readRcSpliceCombination=rcSpliceExecution.readCombination;
+  bridge.getRcSpliceMemberForceSource=rcSpliceExecution.memberSource;
+  bridge.getRcSpliceModelResult=rcSpliceExecution.query;
+  bridge.solveRcSpliceModel=args=>rcSpliceExecution.run(args,'model');
+  bridge.cancelRcSpliceInterval=rcSpliceExecution.cancel;
+  const rcServiceWorkflow=createRcServiceWorkflow({bridge,budget:resourceBudget});
+  bridge.runRcServiceIteration=rcServiceWorkflow.run;
+  bridge.getRcServiceIteration=rcServiceWorkflow.get;
+  bridge.composeRcServiceStages=rcServiceWorkflow.composeStages;
+  bridge.getRcServiceIterationDetail=rcServiceWorkflow.detail;
+  bridge.getRcServiceBarForces=rcServiceWorkflow.barForces;
+  bridge.cancelRcServiceIteration=rcServiceWorkflow.cancel;
+  bridge.releaseRcServiceIteration=rcServiceWorkflow.release;
+  bridge.getRcServiceIterationMetadata=rcServiceWorkflow.metadata;
+  bridge.readRcServiceIterationCombination=rcServiceWorkflow.readCombination;
+  const practicalWorkflow=createPracticalWorkflowService({bridge,budget:resourceBudget,sharedPracticalCache});
+  bridge.evaluatePracticalDesign=practicalWorkflow.evaluate;
+  bridge.cancelPracticalDesignEvaluation=practicalWorkflow.cancelEvaluation;
+  bridge.releasePracticalDesignEvaluation=practicalWorkflow.releaseEvaluation;
+  bridge.getPracticalDesignEvaluation=practicalWorkflow.getEvaluation;
+  bridge.getPracticalDesignCheck=practicalWorkflow.getCheckDetail;
+  bridge.planDesignCandidates=practicalWorkflow.planCandidates;
+  bridge.releaseDesignCandidates=practicalWorkflow.releaseCandidates;
+  bridge.startDesignCandidates=practicalWorkflow.startCandidates;
+  bridge.resumeDesignCandidates=practicalWorkflow.resumeCandidates;
+  bridge.getDesignCandidateJob=practicalWorkflow.getCandidateJob;
+  bridge.getDesignCandidateDetail=practicalWorkflow.getCandidateDetail;
+  bridge.getDesignCandidateBasis=practicalWorkflow.getCandidateBasis;
+  bridge.cancelDesignCandidates=practicalWorkflow.cancelCandidates;
+  bridge.applyDesignCandidate=practicalWorkflow.applyCandidate;
+  bridge.applyDesignCandidateAndReview=practicalWorkflow.applyCandidateAndReview;
+  bridge.getPracticalDesignSnapshot=practicalWorkflow.readSnapshot;
+  bridge.getPracticalDesignContext=()=>({...practicalWorkflow.getContext(),rcServiceIterations:rcServiceWorkflow.context(),rcSpliceInterval:rcSpliceExecution.context(),sharedResultCache:sharedPracticalCache.snapshot(),sources:bridge.listDesignAnalysisSources().slice(-30)});
+  const drawingExporter=createDrawingExportService({bridge,workflow:practicalWorkflow,budget:resourceBudget,loadFont:target.SStructuresLoadDrawingFont||loadBundledDrawingFont});
+  bridge.exportDesignDrawings=drawingExporter.exportDrawing;
+  bridge.getDesignDrawingArtifact=drawingExporter.getArtifact;
+  bridge.releaseDesignDrawingArtifact=drawingExporter.releaseArtifact;
+  bridge.listDesignDrawingArtifacts=drawingExporter.listArtifacts;
+  bridge.cancelDesignDrawingExport=drawingExporter.cancel;
   target.SStructuresReportExportWorkflow ||= createReportExportWorkflow({
     transport: target.sStructuresReportExport,
     openArtifact: target.SStructuresOpenReportArtifact,
   });
   const browserPdfExporter=createBrowserReviewPdfExporter(target,resourceBudget);
-  const elasticReview = createElasticReviewService({ bridge, store: workflowResults,budget:resourceBudget,browserPdfExporter,
+  const elasticReview = createElasticReviewService({ bridge, store: workflowResults,budget:resourceBudget,browserPdfExporter,sharedPracticalCache,
     reportExportWorkflow: target.SStructuresReportExportWorkflow,
     getPdfContext: () => ({ sourceRevision:target.SStructuresSourceRevision||null,buildIdentity:target.SStructuresBuildIdentity||null,figureManifest: target.SStructuresFigureManifest || null,
       qualification: target.SStructuresReportQualification || { status: 'BLOCKED' } }),
   });
   target.addEventListener?.('pagehide',()=>bridge.disposeRuntime());
-  target.addEventListener?.('pageshow',event=>{if(event.persisted){analysisProductService=null;elasticProductService=null;eigenProductService=null;nonlinearProductService=null;runtimeDisposed=false;}});
+  target.addEventListener?.('pageshow',event=>{if(event.persisted){analysisProductService=null;elasticProductService=null;eigenProductService=null;nonlinearProductService=null;runtimeDisposed=false;practicalWorkflow.resume();rcServiceWorkflow.resume();rcSpliceExecution.resume();drawingExporter.resume();}});
   Object.assign(bridge, {
     async saveWorkflowCheckpoint({projectId}={}) {
       if(checkpointBusy)throw Object.assign(new Error('CHECKPOINT_BUSY'),{code:'CHECKPOINT_BUSY'});
@@ -807,8 +910,9 @@ export function installIndexEngineBridge(target = globalThis) {
         const model=bridge.getCurrentModel(),key=projectId||model.projectId||model.meta?.projectId||model.meta?.id;
         resourceBudget.reserve('checkpoint-staging',retainedBytes(model)*3+65536);
         assertCheckpointProject(key);
-        const bundle={modelBook:createProductBook(model),inputIdentity:bridge.getWorkflowInputIdentity(),catalog:workflowResults.exportState({shareImmutable:true}),reports:elasticReview.exportState({shareImmutable:true}),
+        const bundle={inputModel:structuredClone(model),modelBook:createProductBook(model),inputIdentity:bridge.getWorkflowInputIdentity(),inputHistory:designInputs.exportState(),catalog:workflowResults.exportState({shareImmutable:true}),reports:elasticReview.exportState({shareImmutable:true}),practical:practicalWorkflow.exportState(),rcService:rcServiceWorkflow.exportState(),rcSplice:rcSpliceExecution.exportState(),
           interruptedJobs:analysisProductService?analysisProductService.listJobs().filter(job=>['running','queued'].includes(job.status)).map(job=>({id:job.id,caseId:job.caseId,status:'interrupted',resume:'rerun-required'})):[]};
+        resourceBudget.reserve('checkpoint-staging',retainedBytes(bundle)*2+65536);
         return await checkpoints.save(key,bundle);
       } finally {checkpointBusy=false;resourceBudget.release('checkpoint-staging');}
     },
@@ -817,7 +921,7 @@ export function installIndexEngineBridge(target = globalThis) {
       const selection=target.SStructuresResultSelection?.getState?.();
       if(selection?.activeCaseId||selection?.activeResultId)throw Object.assign(new Error('PINNED_RESULT'),{code:'PINNED_RESULT'});
       if(analysisProductService?.listJobs().some(row=>['queued','running'].includes(row.status)))throw Object.assign(new Error('ANALYSIS_BUSY'),{code:'ANALYSIS_BUSY'});
-      const saved=await checkpoints.matches(projectId,{catalog:workflowResults.exportState({shareImmutable:true}),reports:elasticReview.exportState({shareImmutable:true})});
+      const saved=await checkpoints.matches(projectId,{catalog:workflowResults.exportState({shareImmutable:true}),reports:elasticReview.exportState({shareImmutable:true}),practical:practicalWorkflow.exportState(),rcService:rcServiceWorkflow.exportState(),rcSplice:rcSpliceExecution.exportState(),inputHistory:designInputs.exportState()});
       if(!saved.matches)throw Object.assign(new Error('UNSAVED_RESULTS'),{code:'UNSAVED_RESULTS'});
       await bridge.disposeRuntime();
       analysisProductService=null;elasticProductService=null;eigenProductService=null;nonlinearProductService=null;runtimeDisposed=false;
@@ -827,16 +931,22 @@ export function installIndexEngineBridge(target = globalThis) {
     async restoreWorkflowCheckpoint({projectId}={}) {
       assertCheckpointProject(projectId);
       if(checkpointBusy)throw Object.assign(new Error('CHECKPOINT_BUSY'),{code:'CHECKPOINT_BUSY'});
-      if(workflowResults.getResourceState().analyses||workflowResults.getResourceState().designs)throw Object.assign(new Error('CHECKPOINT_RESTORE_REQUIRES_EMPTY_RUNTIME'),{code:'CHECKPOINT_RESTORE_REQUIRES_EMPTY_RUNTIME'});
+      if(workflowResults.getResourceState().analyses||workflowResults.getResourceState().designs||designInputs.hasRetainedState()||practicalWorkflow.hasRetainedState()||rcServiceWorkflow.hasRetainedState()||rcSpliceExecution.hasRetainedState()||analysisProductService?.listJobs().some(row=>['running','queued'].includes(row.status)))throw Object.assign(new Error('CHECKPOINT_RESTORE_REQUIRES_EMPTY_RUNTIME'),{code:'CHECKPOINT_RESTORE_REQUIRES_EMPTY_RUNTIME'});
       checkpointBusy=true;
       const current=bridge.getCurrentModel(),previous=structuredClone(current);
       try {
         const saved=await checkpoints.read(projectId),bundle=saved.bundle;
-        const restored=extractProductModel(bundle.modelBook);
+        let restored=extractProductModel(bundle.modelBook);
+        if(bundle.inputModel) {
+          if(stableHash(extractProductModel(bundle.inputModel))!==stableHash(restored)||bridge.getWorkflowInputIdentity({model:bundle.inputModel}).modelHash!==bundle.inputIdentity.modelHash)throw Object.assign(new Error('CHECKPOINT_INPUT_MODEL_MISMATCH'),{code:'CHECKPOINT_INPUT_MODEL_MISMATCH'});
+          restored=bundle.inputModel;
+        }
         replaceModelContents(current,restored);
         // Synchronous ownership transfer: restore stores retain these same objects.
         checkpoints.releaseRead();
         workflowResults.restoreState(bundle.catalog,{shareImmutable:true});
+        sharedPracticalCache.clear();rcServiceWorkflow.restoreState(bundle.rcService);rcSpliceExecution.restoreState(bundle.rcSplice);practicalWorkflow.restoreState(bundle.practical);drawingExporter.resume();
+        designInputs.restoreState(bundle.inputHistory);
         elasticReview.restoreState(bundle.reports,{shareImmutable:true});
         for(const row of bundle.catalog.analyses) {
           const stale=!sameWorkflowInput(row.identity,bridge.getWorkflowInputIdentity({caseId:row.caseId}));
@@ -846,7 +956,7 @@ export function installIndexEngineBridge(target = globalThis) {
           target.__SStructuresAnalysisResults[row.caseId]=published;
         }
         for(const interrupted of bundle.interruptedJobs||[]){const row=current.analysisCases?.find(c=>c.id===interrupted.caseId);if(row)row.status='interrupted';}
-        lastResult=null;lastResultIdentity=null;designInputResultsStale=true;resourceBudget.release('native-last-analysis');
+        lastResult=null;lastResultIdentity=null;designInputResultsStale=true;nativeCanvasResult.clear();resourceBudget.release('native-last-analysis');
         bridge.clearResultViews();target.SStructuresAgent?.clearResultViews?.();target.SStructuresResultSelection?.reset?.();
         const comboSelect=target.document?.getElementById?.('comboSel');
         if(comboSelect&&target.document?.createElement){
@@ -858,7 +968,7 @@ export function installIndexEngineBridge(target = globalThis) {
         const status=target.document?.getElementById?.('statusTxt');
         if(status){status.textContent='저장 결과 복원 완료 · 해석 케이스에서 결과를 선택하세요.';status.removeAttribute?.('title');status.removeAttribute?.('aria-label');}
         return {ok:true,projectId,sha256:saved.sha256,designRunIds:bundle.reports.map(([id])=>id),inputIdentity:bridge.getWorkflowInputIdentity(),interruptedJobs:bundle.interruptedJobs||[],designTransferAllowed:false};
-      } catch(error){replaceModelContents(current,previous);workflowResults.dispose();elasticReview.dispose();target.__SStructuresAnalysisResults={};target.__SStructuresAnalysisLatestAttempts={};target.SStructuresResultSelection?.reset?.();throw error;}
+      } catch(error){replaceModelContents(current,previous);workflowResults.dispose();elasticReview.dispose();practicalWorkflow.dispose();rcServiceWorkflow.dispose();rcSpliceExecution.dispose();drawingExporter.dispose();designInputs.dispose();target.__SStructuresAnalysisResults={};target.__SStructuresAnalysisLatestAttempts={};target.SStructuresResultSelection?.reset?.();throw error;}
       finally {checkpointBusy=false;resourceBudget.release('checkpoint-staging');checkpoints.releaseRead();}
     },
     getResourceBudget:()=>resourceBudget,
@@ -869,16 +979,17 @@ export function installIndexEngineBridge(target = globalThis) {
       runtimeDisposed=true;
       analysisProductService?.dispose();
       await Promise.allSettled([elasticProductService?.dispose(),eigenProductService?.dispose(),nonlinearProductService?.dispose?.()]);
-      elasticReview.dispose();workflowResults.dispose();designInputs.dispose();bridge.clearResultViews();target.SStructuresAgent?.clearResultViews?.();
+      sharedPracticalCache.clear();drawingExporter.dispose();practicalWorkflow.dispose();rcServiceWorkflow.dispose();rcSpliceExecution.dispose();elasticReview.dispose();workflowResults.dispose();designInputs.dispose();bridge.clearResultViews();target.SStructuresAgent?.clearResultViews?.();
       target.__SStructuresAnalysisResults={};target.__SStructuresAnalysisLatestAttempts={};delete target.__SStructuresAnalysisRunStore;
       lastResult=null;lastResultIdentity=null;designInputResultsStale=true;
+      nativeCanvasResult.dispose();
       resourceBudget.release('native-last-analysis');resourceBudget.release('legacy-run-catalog');resourceBudget.release('live-model');
       target.SStructuresResultSelection?.reset?.();
       return resourceBudget.snapshot();
     },
     cancelElasticWorkflow: elasticReview.cancelWorkflow,
     planElasticWorkflow: elasticReview.planWorkflow, runElasticWorkflow: elasticReview.runWorkflow,
-    planDesignReview: elasticReview.planReview, startDesignReview: elasticReview.startReview,
+    planDesignReview: elasticReview.planReview, startDesignReview: elasticReview.startReview, startDesignReviewAsync: elasticReview.startReviewAsync, cancelDesignReview: elasticReview.cancelReview, getDesignReviewExecution: elasticReview.getReviewExecution,
     getDesignReview: elasticReview.getReview, createDesignReviewReport: elasticReview.createReport,
     getDesignReviewReport: elasticReview.getReport, getDesignReviewArtifact: elasticReview.getArtifact, getDesignReviewExportCapability: elasticReview.getExportCapability,
     exportDesignReviewPdf: elasticReview.exportPdf,
@@ -942,6 +1053,7 @@ export function installIndexEngineBridge(target = globalThis) {
       },
     );
     decorateAgentControls(target.document);
+    bridge.workspaceUx = installWorkspaceUx(target, bridge);
     if (bridge.experimentalUi) {
       bridge.resultsPanel = installIndexResultsPanel(target, bridge);
       bridge.resultOverlay = installIndexResultOverlay(target, bridge);
@@ -1068,6 +1180,8 @@ function storeAnalysisResult(target, model, analysisCase, result, options = {}) 
     });
   }
   target.SStructuresAnalysisCenter?.refresh?.();
+  // Selection listeners ran while the case still carried its previous status.
+  target.SStructuresElasticResultPopup?.refresh?.();
   return published;
 }
 

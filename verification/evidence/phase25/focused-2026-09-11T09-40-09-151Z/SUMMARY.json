@@ -1,0 +1,33 @@
+{
+  "sourceHash": "ac0f0b9d4cc118f470444725bfbffa23f51dd5788a4aa92467cdd5f5db2f8c50",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:40:13.311Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-contracts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 200,
+      "sha256": "2ee4f9c66e25c0e8d9166d609c40cc2034985c8205bbd78849d17dd5f872b3a6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3044,
+      "sha256": "d34e880ef7fba73b78a112d8f56a8de96bfdba72395aacd4ed9c49d25d6c6a0c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 712,
+      "sha256": "d5faa580819068abf380265060d192c402853f20aec3e49c75246843db91caec",
+      "error": null
+    }
+  ]
+}

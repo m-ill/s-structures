@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d263bbae7496f218c5f0dd8d50985783bfc4374f16d194d4e71a35ae4806f5e8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:53:35.194Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoop-support.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 60,
+      "sha256": "077ed9a30c499e07e28d788a633114fddb5301f3680678bababb716acd91efae",
+      "error": null
+    }
+  ]
+}

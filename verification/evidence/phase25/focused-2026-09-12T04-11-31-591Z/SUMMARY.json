@@ -1,0 +1,33 @@
+{
+  "sourceHash": "21de80876dacf15fc7482a012379d7932407c0c4208f6b063d43d206cdc7ccd0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:11:39.769Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-minimum-steel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "0b4bae0a6b3b82c28c9c56363efb40af11c51a62805011f956430f2c5a2845d3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 80,
+      "sha256": "74fbb745d4905565e3ce641873aeb5cf139bd39193b9e4ac9306e3b8f98c2bb0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-footing-flexure-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7742,
+      "sha256": "e221ad611467a8e4ed5cbb178b2645e73cdede3bc814bcb5dbc57cac9b08bd25",
+      "error": null
+    }
+  ]
+}

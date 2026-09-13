@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a96b27a9f2a9f3404a1326d605bfdf56a86751458e21c63c105268ec84877fc4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:24:38.824Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1257,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-class-a-piece-layouts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "940f915b8a636206ee995e1c62136cd30a76a7ed6c5653d5584cbd724a4fe5ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-query.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2737,
+      "sha256": "68ab5764ab4729990d7931a4312a077baf2b3d023a8bdec11b783110d9a1ac64",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-stepped-axial-splice.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2007,
+      "sha256": "5e59d3f01ea06503156ac78d1ca3fcc3821bfd0ce5f9d331e5126daf0ae3cd99",
+      "error": null
+    }
+  ]
+}

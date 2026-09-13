@@ -1,0 +1,17 @@
+{
+  "sourceHash": "66de21a193e329e7b446684ce03ff61ce04af9946eca652f25a997200289dd08",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:18:33.003Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-footing-depth.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 76,
+      "sha256": "423e771cfeee422f831dccfeb014801bd92e7eb81067f3b44b92bc8758ac41f0",
+      "error": null
+    }
+  ]
+}

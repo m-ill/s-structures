@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a2d3f240db2fe7cea881d2e90e3cd40afc239e780b9feee0d6204ab63f6ffd01",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:19:24.856Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-footing-depth.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 98,
+      "sha256": "1363850e7cb78de3f8a22e8a43a8c5b95356151a2e0509dfda980111918d9a9b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 103,
+      "sha256": "ae5ba917843e76b673366c6c1c2ca65cadbe87cece2fd7ff243c45fb879e195f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7595,
+      "sha256": "646e2e5b12cbc5b0a81399bf94eb1bb95eac446a61fa138b4701425cc010227f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-footing-flexure-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8474,
+      "sha256": "2747bf514dfd008e0670cb700dcda710395d4893e8bac32d74fe7436f36ffa4f",
+      "error": null
+    }
+  ]
+}

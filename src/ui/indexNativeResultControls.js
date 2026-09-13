@@ -1,3 +1,4 @@
+import {selectMemberDesignResult,hasPreparedRcResults} from '../results/designResultSelection.js';
 import { installFloatingPanel } from './floatingPanel.js';
 
 export const INDEX_NATIVE_RESULT_CONTROLS_VERSION = 'm25-native-result-controls';
@@ -230,10 +231,7 @@ function renderMemberResult(target, bridge, memberId) {
   const member = (model?.members || []).find((item) => item.id === memberId);
   const result = pickActiveResult(target, analysis);
   const memberResult = result?.memberResults?.[memberId] || null;
-  const design = analysis?.design?.steel?.memberResults?.[memberId]
-    || analysis?.design?.concrete?.memberResults?.[memberId]
-    || memberResult?.check
-    || null;
+  const design = selectMemberDesignResult(analysis,memberId,memberResult?.check);
 
   if (!member || !memberResult) {
     propResult.innerHTML = `<b>Result</b><br>Member ${escapeHtml(memberId)} has no active result.`;
@@ -247,8 +245,8 @@ function renderMemberResult(target, bridge, memberId) {
       `Vy ${formatNumber(memberResult.Vymax)} kN / Vz ${formatNumber(memberResult.Vzmax)} kN`,
       `My ${formatNumber(memberResult.Mymax)} kN-m / Mz ${formatNumber(memberResult.Mzmax)} kN-m`,
       `d ${formatNumber((memberResult.dmaxM || 0) * 1000)} mm`,
-      `check ${formatRatio(design?.utilization ?? design?.ratio ?? memberResult.utilization)}`,
-      `status ${escapeHtml(design?.status || memberResult.status || 'OK')}`,
+      `check ${formatRatio(hasPreparedRcResults(analysis)?design?.utilization:design?.utilization ?? design?.ratio ?? memberResult.utilization)}`,
+      `status ${escapeHtml(hasPreparedRcResults(analysis)?design?.status||'NOT_CHECKED':design?.status || memberResult.status || 'OK')}`,
     ].join('<br>');
   }
 
@@ -765,6 +763,7 @@ function formatPDeltaNumber(value) {
 }
 
 function formatRatio(value) {
+  if(value===null||value===undefined)return '-';
   const number = Number(value);
   return Number.isFinite(number) ? number.toFixed(2) : '-';
 }

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "de1c0aa245f221668c978fe133a53b0f63edb88ab1e5c08e0c4270cd881b67dc",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:05:18.970Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-segmented-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "5800833ebe0bc42ec7330359026503fe2c304ca015fb40fa1cead899b481a671",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "1f35fd04595c60c7307f8b3e0f02396aec182e130034881a6d53aa683430f202",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T22:50:10.234Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-shared-slip-network.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 90,
+      "sha256": "06f188b29477df630609828c5abef8dc4b9e80f72c99075cbd1350a56907fc6f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-network.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 142,
+      "sha256": "dc22ae460cb754ffe250290365cec0f7d9b4fd65ec19c084140a5a8113e1fab7",
+      "error": null
+    }
+  ]
+}

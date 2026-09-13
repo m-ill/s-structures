@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f0f3c62c8a46bff80a528a7c1eeb50186deb32b9f8bd3063589bddd9a5ee5e2c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:55:12.633Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-geometric-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 114,
+      "sha256": "66fa2bc7c32852732a8386692fd1ceed277b7bdc2b3c636aa16100630752e3b0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-pdelta.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 189,
+      "sha256": "4bbd0a6766ec3ac139cc4af5c95fe4d6468995d08bbf013db43ca1904f088f91",
+      "error": null
+    }
+  ]
+}

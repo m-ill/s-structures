@@ -1,0 +1,17 @@
+{
+  "sourceHash": "0ed5edaeec387a2191e1825de317989912df89dc3bc7c7922271d10f7418f0cd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:01:27.614Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-shear-geometry.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 150,
+      "sha256": "d8c4ec474b315fe01bdf2c8e1a3a51b9ee43804b60e94bf1f7ab32875cdcae33",
+      "error": null
+    }
+  ]
+}

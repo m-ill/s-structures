@@ -1,0 +1,41 @@
+{
+  "sourceHash": "1b673747502b450b6352873fe950c218787384ff6e30e3015270c5bbd58158a6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:04:56.307Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-query.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1063,
+      "sha256": "498325b95c0f7cf786a2b2bc7418c0200e47fdd600c6b7c801b47666943f2ff6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3446,
+      "sha256": "5c1f8ac0e02678b32eaf93fb0f7942357ab79ea35e939d1bf1dc959ea13a10e3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-compound-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4289,
+      "sha256": "38ee39ab249d1081aa010f91dd50a0fa7d13cfd89284a4a41192f92cc1df5efb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 864,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    }
+  ]
+}

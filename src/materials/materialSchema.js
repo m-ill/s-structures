@@ -1,4 +1,6 @@
-export const MATERIAL_SCHEMA_VERSION = 'p3-m10-material-schema-v1';
+import {validateSteelTestEvidence,assessSteelTestEvidence} from './steelTestEvidence.js';
+import {validateConcreteCreep} from './concreteCreep.js';
+export const MATERIAL_SCHEMA_VERSION = 'p25-material-schema-v2-steel-test-evidence';
 
 export const STANDARD_MATERIAL_REQUIRED_FIELDS = Object.freeze([
   'standardCode',
@@ -13,13 +15,19 @@ export function validateMaterialRecord(record = {}) {
   const normalized = normalizeMaterialRecord(record);
   const errors = [];
   const warnings = [];
+  errors.push(...validateSteelTestEvidence(normalized));
+  if(record.creep!=null)errors.push(...validateConcreteCreep(normalized));
+  if(record.inputContract!=null&&record.inputContract!=='p24-material-v1')errors.push('inputContract');
   if (!normalized.id) errors.push('id');
   if (!Number.isInteger(Number(normalized.version)) || Number(normalized.version) < 1) errors.push('version');
   for (const key of ['E', 'G']) if (!positive(normalized.elastic?.[key])) errors.push(`elastic.${key}`);
-  if (!['steel', 'concrete', 'timber', 'custom'].includes(normalized.kind)) errors.push('kind');
+  if (!['steel', 'concrete', 'timber', 'masonry', 'custom'].includes(normalized.kind)) errors.push('kind');
   errors.push(...validateStrength(normalized.kind, normalized.strength));
   errors.push(...validateStandardMaterialMetadata(normalized));
   warnings.push(...validateSourceTrace(normalized.kind, normalized));
+  if(normalized.kind==='masonry'&&!positive(normalized.strength?.masonry?.fm))errors.push('strength.masonry.fm');
+  if(normalized.inputContract==='p24-material-v1') errors.push(...validatePracticalMaterial(normalized));
+  else if(normalized.kind==='timber')warnings.push('legacy-timber-design-properties-unverified');
   if (normalized.nonlinear && !validateBackbone(normalized.nonlinear.backbone || [])) errors.push('nonlinear.backbone');
   return { ok: errors.length === 0, errors: unique(errors), warnings: unique(warnings), normalized };
 }
@@ -30,6 +38,7 @@ export function normalizeMaterialRecord(record = {}) {
   const strength = normalizeStrength(record, kind);
   return {
     ...record,
+    ...(record.testEvidence!=null||record.testEvidenceAssessment!==undefined?{testEvidenceAssessment:assessSteelTestEvidence({...record,kind,strength})}:{}),
     kind,
     elastic: {
       ...(record.elastic || {}),
@@ -40,7 +49,7 @@ export function normalizeMaterialRecord(record = {}) {
       alpha: elastic.alpha ?? record.alpha ?? null,
     },
     strength,
-    nonlinear: record.nonlinear || defaultNonlinear(kind, strength, {
+    nonlinear: record.inputContract==='p24-material-v1' ? (record.nonlinear??null) : record.nonlinear || defaultNonlinear(kind, strength, {
       E: elastic.E ?? null,
     }),
   };
@@ -152,7 +161,37 @@ function inferKind(record) {
   if (text.includes('wood') || text.includes('timber')) return 'timber';
   if (record.strength?.concrete || record.fck != null || record.Fck != null) return 'concrete';
   if (record.strength?.steel || record.Fy != null || record.fy != null || record.mechanicalProperties?.Fy != null) return 'steel';
-  return 'steel';
+  return 'custom';
+}
+
+function validatePracticalMaterial(record) {
+  const errors=[],spec=record.specification||{},elastic=record.elastic||{};
+  if(!['steel','concrete','timber','masonry'].includes(record.kind))errors.push('kind');
+  for(const key of ['reference','edition','note','product','grade'])if(!nonEmpty(spec[key]))errors.push(`specification.${key}`);
+  if(!['assumed','specified'].includes(spec.basisStatus))errors.push('specification.basisStatus');
+  if(!positive(elastic.rho))errors.push('elastic.rho');
+  if(typeof elastic.nu!=='number'||!Number.isFinite(elastic.nu)||elastic.nu<=-1||elastic.nu>=0.5)errors.push('elastic.nu');
+  if(record.kind==='steel') {
+    if(record.strength.steel.Fu<record.strength.steel.Fy)errors.push('strength.steel.Fu-below-Fy');
+    if(spec.product!=='rebar'&&!positive(spec.thicknessMm)||spec.thicknessMm!==undefined&&!positive(spec.thicknessMm))errors.push('specification.thicknessMm');
+  }
+  if(record.kind==='timber') {
+    if(record.elasticity!=='frame-longitudinal')errors.push('elasticity');
+    for(const key of ['fb','ft0','fc0','fc90','fv'])if(!positive(record.strength?.timber?.[key]))errors.push(`strength.timber.${key}`);
+    if(!positive(elastic.E90))errors.push('elastic.E90');
+    for(const key of ['species','serviceClass','durationClass'])if(!nonEmpty(spec[key]))errors.push(`specification.${key}`);
+    if(typeof spec.moisturePercent!=='number'||!Number.isFinite(spec.moisturePercent)||spec.moisturePercent<0||spec.moisturePercent>100)errors.push('specification.moisturePercent');
+  } else {
+    if(record.elasticity!=='isotropic')errors.push('elasticity');
+    const expected=elastic.E/(2*(1+elastic.nu));
+    // 0.5% accommodates explicitly rounded input moduli; values are not overwritten.
+    if(!Number.isFinite(expected)||Math.abs(elastic.G-expected)>0.005*Math.abs(expected))errors.push('elastic.G-nu-inconsistent');
+  }
+  if(record.kind==='masonry') {
+    for(const key of ['unitType','mortar','grout'])if(!nonEmpty(spec[key]))errors.push(`specification.${key}`);
+    if(typeof spec.reinforced!=='boolean')errors.push('specification.reinforced');
+  }
+  return errors;
 }
 
 function validThicknessRange(value) {

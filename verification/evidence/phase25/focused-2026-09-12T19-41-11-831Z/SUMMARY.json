@@ -1,0 +1,33 @@
+{
+  "sourceHash": "58796c0588bde50e68a9765c47de57c3d99c24dd02ad014a11d8c07b9550e06e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:41:20.705Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-shear-section-repair.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 5534,
+      "sha256": "f9efd8c8715f2526407c543bc5f6c7e2cefc95141171f7d8eef593ff74ee1bb6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2769,
+      "sha256": "d1a90ff7fdae76a2c31353c374ed69498f77d0f29fc2de5b951123877d8d74a8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 320,
+      "sha256": "6719a7618c20bedb33e594b38379eee5925e7ac3f9120afc9a7a806edbb382df",
+      "error": null
+    }
+  ]
+}

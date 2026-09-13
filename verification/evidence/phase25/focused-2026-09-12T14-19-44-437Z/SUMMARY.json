@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a15e6dec8248bb6a87b6c4be78e334f13e0c2265a202530069a1d0a33aff8ad2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:19:45.466Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-splice-placement.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 787,
+      "sha256": "f233bf09053b10e174046826ab8beddb62ea41c4fd2b56b5beada03c05c9d4d9",
+      "error": null
+    }
+  ]
+}

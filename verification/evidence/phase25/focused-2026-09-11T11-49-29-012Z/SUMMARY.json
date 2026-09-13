@@ -1,0 +1,41 @@
+{
+  "sourceHash": "af26e7d9b73799168384b6e833f3ae93ac6fec0e5d13a6f2a97832784b81175b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:49:33.754Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-hoop-distribution.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 48,
+      "sha256": "7d2e09b09e8be12d1ec114af6d2440adea1379098871d1385954bdeb7c901ebe",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "9cffcccfbc9cb98fa4e27304e16cb86b3ebdbc670de25338e8161977b6352769",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-compound-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4295,
+      "sha256": "d60392943863b7be18704284e1a2884c8efce46ff73eb6d7ec6a79f085a43104",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 138,
+      "sha256": "13b9d0933409d733d01961a5d68fe7a1b123c228f7da68d8c0c22c65c123d993",
+      "error": null
+    }
+  ]
+}

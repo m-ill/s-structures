@@ -1,0 +1,41 @@
+{
+  "sourceHash": "6ff6a83115fdb4bb46b1e4a1b808cabd741ffd3ec08e82a7cece7d82e136afdb",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:39:42.212Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 309,
+      "sha256": "d1d748923017393ef2bb71504393ede359dd2fb5cea2375caf9b5710d74a684c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-check-filter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "8d9b01d3078d78d1eab605685d9fea2b4629a9533e1864632e78cf980a4882ca",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-stored-evaluation-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 182,
+      "sha256": "e27ea35dd9bcc764526476035a058165e4a6de5b72d3597922ad61c80458a5b9",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m8-drawings.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 628,
+      "sha256": "9105c28fac505512b70d9270d3cd0cc62dd2c789c9b060bf5531b6c0976dca4f",
+      "error": null
+    }
+  ]
+}

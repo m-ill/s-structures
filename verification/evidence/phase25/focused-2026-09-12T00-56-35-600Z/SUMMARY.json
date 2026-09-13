@@ -1,0 +1,25 @@
+{
+  "sourceHash": "218110f5833e600ef5b8d067dbc19346e0e2cf7708cf9242470669b0ea9af580",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:56:43.263Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 167,
+      "sha256": "f13573d99ba089dfbfc91f253b05acbcd14b8706c1528312b6a010ed482a7f6e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7272,
+      "sha256": "30a381cb8d6d137a00990a68bf4c011717196fcb07a349439a11007b70527c7a",
+      "error": null
+    }
+  ]
+}

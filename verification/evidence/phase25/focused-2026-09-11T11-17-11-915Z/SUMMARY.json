@@ -1,0 +1,33 @@
+{
+  "sourceHash": "e218c974df2e3d7d3b9a5a36156a3c7ce57b244fa535c1b5cc7b2608451309ee",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:17:13.717Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 697,
+      "sha256": "848e4ca8eb29d4d0fc7faf9e625f41ff2c45b73a14ed6081512513c084a3aa65",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 713,
+      "sha256": "0c48a69c1df9d03a5e300455b8465cd31860d2b7414575945e7a2bc0a7a7bade",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m4-kds-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 191,
+      "sha256": "a0bf45c886b51b6d0012e3a1c97dedffd68eb144e79c829cb29d9d97e5f49da9",
+      "error": null
+    }
+  ]
+}

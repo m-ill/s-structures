@@ -1,0 +1,17 @@
+{
+  "sourceHash": "cedb0889b26d9e312ade1a20e57b931a7ff9595655834f03d594222209977414",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:38:47.750Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-repair-outcome.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 66,
+      "sha256": "6a4f730e6e4a6b32970d17aaa9703d14f8144ef6d29a1d32b89d2bcd4affecf6",
+      "error": null
+    }
+  ]
+}

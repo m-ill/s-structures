@@ -469,6 +469,14 @@ function render(target, bridge, state, panel, api) {
     storageKey: 's-structures:elastic-workflow-panel',
     viewportPadding: 8,
   });
+  // The ribbon wraps as modules add commands. A fixed 96px top covered its
+  // third row and intercepted design-review clicks on desktop viewports.
+  const ribbonBottom=doc.getElementById?.('subbar')?.getBoundingClientRect?.().bottom;
+  const currentTop=panel.getBoundingClientRect?.().top;
+  if(state.open&&target.innerWidth>520&&Number.isFinite(ribbonBottom)&&currentTop<ribbonBottom+8) {
+    panel.style.top=`${ribbonBottom+8}px`;
+    panel.style.maxHeight=`${Math.max(160,target.innerHeight-ribbonBottom-16)}px`;
+  }
   refreshRibbon(target);
 }
 

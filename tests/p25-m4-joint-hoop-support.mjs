@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {jointHoopSupport} from '../src/design/connection/jointHoopSupport.js';
+import {outerHoopClosure} from '../src/design/rc/outerHoopClosure.js';
+const p=.125+.015/Math.sqrt(2),detail={id:'R',version:1,memberId:'C',bars:[[p,p],[-p,p],[-p,-p],[p,-p]].map(([y,z])=>({y,z,diameter:.02})),cover:.04,stirrups:{diameter:.01},tieBendInsideRadius:.025,tieHookTail:.06,tieClosure:'standard-135',tieClosureCorner:'+y+z',tieClosureSeparation:0};
+const prepared={columnMemberId:'C',columnDetailId:'R',columnDetailVersion:1,hoops:{height:1},stirrupDistribution:{status:'OK',explicitEnds:true,count:4,first:.2,last:.8,spacing:.2},outerHoop:{closureGeometry:outerHoopClosure(detail,{B:.4,H:.4})}};
+const model={designDetails:{reinforcement:[detail]}},congestion={pathCoordinates:'column-local-y,z,x; metres from joint node',barPaths:detail.bars.map((b,i)=>({id:`C:B${i+1}`,diameter:b.diameter,sagitta:0,segments:[[[b.y,b.z,-.5],[b.y,b.z,.5]]]}))};
+const r=jointHoopSupport(model,prepared,congestion);assert.equal(r.status,'OK');assert.equal(new Set(r.cornerSupport.supportedBarIndices).size,4);assert.deepEqual(r.missingPerimeterBarIndices,[]);assert.equal(r.fabricationApproved,false);
+const short={...congestion,barPaths:congestion.barPaths.map((b,i)=>i===2?{...b,segments:b.segments.map(([a,b])=>[a,[b[0],b[1],0]])}:b)};
+assert.equal(jointHoopSupport(model,prepared,short).status,'NOT_CHECKED');
+assert.equal(prepared.outerHoop.closureGeometry.contactCoverage,undefined,'do not mutate prepared source');
+assert.equal(jointHoopSupport(model,{...prepared,columnDetailVersion:2},congestion).status,'NOT_CHECKED');
+console.log('PASS mapped joint outer closure and four distinct corner supports, shortened path and immutable source');

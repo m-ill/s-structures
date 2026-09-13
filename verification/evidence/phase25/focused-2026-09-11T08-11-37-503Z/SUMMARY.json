@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-11T08:11:40.444Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 155,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2780,
+      "sha256": "2358da038493584ecf4c082c6a8670bb31f6bb6f67f6fe19961eaea52dd9e3e8",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "72eaed2b083fee8b6e59c5be39c18754239b1b0692b9112893da4eb34a53b993",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T22:10:54.832Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-code-basis-blockers.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "deb67585936d7a374fed5ab7809ab7bf22ddf9e02ef831f31416a0d00260aab6",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m3-code-basis.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 219,
+      "sha256": "65d7e367a1e02bbb3bb992d3b33484021de7dd5ab5bbd92c573c25476e3d9824",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-profile-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4816,
+      "sha256": "46d2efa67010463894e485ee888a09c1cd4305a6a528b70569d0e604a32e4c47",
+      "error": null
+    }
+  ]
+}

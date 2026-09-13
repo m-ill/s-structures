@@ -1,0 +1,25 @@
+{
+  "sourceHash": "fcff372b6a271692e8061f8690056da4a89e87fba16ccafe58467a36e7ec59d5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:06:51.181Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4231,
+      "sha256": "579086f6ca9c9dbdfd454ca7f9109ac9cd634fa0d796e4e44b315f85750c4498",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-hoop-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 205,
+      "sha256": "4877e7b4e88dbf97a0ced164bafbfc548c1e9fc373bd556c57a8101397abe98b",
+      "error": null
+    }
+  ]
+}

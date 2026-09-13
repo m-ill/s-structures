@@ -1,9 +1,10 @@
 import { migrateToCurrent } from '../core/migration.js';
+import {installNativeBookFileInput} from './nativeBookFileInput.js';
 import { validateModel } from '../core/validation.js';
 import { stableHash } from '../core/stableHash.js';
 import { createIndexStartupSampleModel, INDEX_STARTUP_SAMPLE_VERSION } from '../examples/indexStartupSample.js';
 
-export const INDEX_NATIVE_PERSISTENCE_VERSION = 'p8-m0-native-persistence-v5';
+export const INDEX_NATIVE_PERSISTENCE_VERSION = 'p25-native-persistence-v7-book-file-input';
 export const INDEX_AUTOSAVE_KEY = 's-structures-autosave-v5';
 export const INDEX_LEGACY_AUTOSAVE_KEYS = Object.freeze(['s-structures-autosave-v4', 's-structures-autosave-v3']);
 export const PRODUCT_BOOK_FORMAT = 's-structures-product-book';
@@ -54,6 +55,7 @@ export function installIndexNativePersistence(target = globalThis, options = {})
   };
 
   target.SStructuresNativePersistence = api;
+  installNativeBookFileInput(target,api,{budget:options.bridge?.getResourceBudget?.(),getInputHash:()=>options.bridge?.getWorkflowInputIdentity?.().inputHash});
   return api;
 }
 
@@ -75,7 +77,7 @@ export function createProductBook(inputModel, options = {}) {
   const pageId = options.pageId || 'page-1';
   return {
     format: PRODUCT_BOOK_FORMAT,
-    version: 1,
+    version: hasPracticalInputs(model) ? 2 : 1,
     savedAt,
     activePageId: pageId,
     fixtureVersion: options.fixtureVersion || null,
@@ -107,7 +109,7 @@ export function extractProductModel(input) {
   const parsed = typeof input === 'string' ? JSON.parse(input) : input;
   const source = parsed?.book || parsed;
   if (!source) throw new Error('No product model data.');
-  if (source.format === PRODUCT_BOOK_FORMAT && source.version !== undefined && source.version !== 1) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
+  if (source.format === PRODUCT_BOOK_FORMAT && source.version !== undefined && ![1,2].includes(source.version)) throw new Error('PRODUCT_BOOK_VERSION_UNSUPPORTED');
   let inputModel = null;
   if (source.model) inputModel = source.model;
   if (Array.isArray(source.pages)) {
@@ -118,6 +120,7 @@ export function extractProductModel(input) {
   }
   if (!inputModel && Array.isArray(source.nodes) && Array.isArray(source.members)) inputModel = source;
   if (!inputModel) throw new Error('Unsupported product model payload.');
+  if(source.format===PRODUCT_BOOK_FORMAT&&hasPracticalInputs(inputModel)&&source.version!==2)throw Object.assign(new Error('New design records require product book version 2'),{code:'PRODUCT_BOOK_DETAIL_VERSION_REQUIRED'});
   const model = prepareProductModel(inputModel);
   verifyEmbeddedSignature(model, source.signature || parsed?.signature || null);
   return model;
@@ -243,6 +246,10 @@ function prepareProductModel(inputModel) {
     throw error;
   }
   return model;
+}
+
+function hasPracticalInputs(model) {
+  return !!model?.designDetails||['materials','sections'].some(key=>Array.isArray(model?.[key])&&model[key].some(row=>String(row?.inputContract||'').startsWith('p24-')));
 }
 
 function replaceObject(target, source) {

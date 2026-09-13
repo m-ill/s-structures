@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f54737e6da7e89342fe4df7937ce0076f67e9a9e35422d512b4975dffbf07e4a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:50:30.824Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-json-record-reader.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 124,
+      "sha256": "7382a26e1a6112bdeec8da5a56d8f323e9fd3a995a60f8c759a9e178d649fd0f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-compound-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5437,
+      "sha256": "e3763b907b2181c259b94f3221bac82c8e989efcb1a2405631a6800de51cdbea",
+      "error": null
+    }
+  ]
+}

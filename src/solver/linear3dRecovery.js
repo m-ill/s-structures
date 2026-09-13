@@ -1,9 +1,9 @@
+import {collectMemberSpanLoads,memberForceAt,taperedForceDisplacement,interpolateLoad} from './memberForceField.js';
+export {collectMemberSpanLoads,memberForceAt,taperedForceDisplacement} from './memberForceField.js';
 import { vadd, vlen, vscale } from '../core/vector.js';
-import { resolveLoadComponents } from '../loads/fixedEnd/common.js';
 import {
   fixedFixedDeflectionFunction,
   fixedFixedPointDeflectionFunction,
-  integratedUniformLoad,
   matVec,
   maxAbs,
   solveLinear,
@@ -18,7 +18,6 @@ import {
   buildFoundationEndActionContract,
   evaluateStationEndClosure,
   foundationSpanLoad,
-  integrateFoundationReactionTo,
   recoverWinklerLineResult,
 } from './foundation/index.js';
 
@@ -63,6 +62,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
   );
   const offset = buildMemberOffsetRecoveryTrace(md.offsetKinematics, structuralEnd);
   const spanLoads = collectMemberSpanLoads(member.id, loads, ax);
+  if(md.taper)for(const row of md.fixedEndLoads||[])if(row.recovery?.initialStrain)spanLoads.push(row.recovery.initialStrain);
   const constitutiveStations = recoverMemberStations(structuralEnd, spanLoads, L, stationCount);
   const foundationLoad = foundationSpanLoad(md.foundation, dl);
   if (foundationLoad) spanLoads.push(foundationLoad);
@@ -84,6 +84,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     stationCount,
     endActionContract.equilibriumEnd,
     md.timoshenko,
+    md.taper,
   );
   const foundation = recoverWinklerLineResult(md.foundation, dl, stationCount, ax);
 
@@ -93,6 +94,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
     structuralEnd: endActionContract.structuralEnd,
     foundationEnd: endActionContract.foundationEnd,
     equilibriumEnd: endActionContract.equilibriumEnd,
+    forceRecoveryInput: {version:'member-force-recovery-v1',L,endForces:[...endActionContract.equilibriumEnd],spanLoads},
     endActionContract,
     dl,
     ax,
@@ -141,63 +143,7 @@ export function recoverMemberResult(member, md, D, loads, stationCount) {
   return memberResult;
 }
 
-export function collectMemberSpanLoads(memberId, loads, ax) {
-  const spanLoads = [];
-  spanLoads.issues = [];
-  for (const load of loads) {
-    if (load.member !== memberId) continue;
-    if (load.type === 'temperature' || load.type === 'tgradient') continue;
-    if (load.type === 'mmoment') {
-      const M = Number(load.M);
-      const axis = load.axis || 'z';
-      if (!Number.isFinite(M)) {
-        spanLoads.issues.push(loadIssue(load, 'NONFINITE_LOAD_COMPONENT', 'M', load.M));
-        continue;
-      }
-      if (!['x', 'y', 'z'].includes(axis)) {
-        spanLoads.issues.push(loadIssue(load, 'UNSUPPORTED_MEMBER_MOMENT_AXIS', 'axis', axis));
-        continue;
-      }
-      spanLoads.push({ type: 'moment', a: clamp01(load.at ?? load.t, 0.5) * ax.L, axis, M });
-      continue;
-    }
-    if (load.type === 'point') {
-      const resolved = resolveLoadComponents(load, ax, load.P, 'P');
-      if (!resolved.ok) {
-        spanLoads.issues.push(resolved.issue);
-        continue;
-      }
-      spanLoads.push({ type: 'point', a: clamp01(load.t ?? load.at, 0.5) * ax.L, q: resolved.localComponents, sourceRange: load.sourceRange || null });
-    } else if (load.type === 'udl') {
-      const resolved = resolveLoadComponents(load, ax, load.w, 'w');
-      if (!resolved.ok) {
-        spanLoads.issues.push(resolved.issue);
-        continue;
-      }
-      spanLoads.push({ type: 'udl', q: resolved.localComponents, shape: load.shape || 'uniform' });
-    } else if (load.type === 'udl-partial') {
-      const resolved = resolveLoadComponents(load, ax, load.w, 'w');
-      if (!resolved.ok) {
-        spanLoads.issues.push(resolved.issue);
-        continue;
-      }
-      const from = clamp01(load.from, 0);
-      const to = clamp01(load.to, 1);
-      spanLoads.push({ type: 'distributed-linear', a: from * ax.L, b: to * ax.L, q1: resolved.localComponents, q2: resolved.localComponents, sourceRange: { from, to } });
-    } else if (load.type === 'trapezoid') {
-      const start = resolveLoadComponents(load, ax, load.w1, 'w1');
-      const end = resolveLoadComponents(load, ax, load.w2, 'w2');
-      if (!start.ok || !end.ok) {
-        spanLoads.issues.push(...[start.issue, end.issue].filter(Boolean));
-        continue;
-      }
-      const from = clamp01(load.from, 0);
-      const to = clamp01(load.to, 1);
-      spanLoads.push({ type: 'distributed-linear', a: from * ax.L, b: to * ax.L, q1: start.localComponents, q2: end.localComponents, sourceRange: { from, to } });
-    }
-  }
-  return spanLoads;
-}
+
 
 export function recoverMemberStations(endForces, spanLoads, L, stationCount) {
   const xset = new Set();
@@ -254,7 +200,9 @@ export function recoverMemberShape(
   stationCount,
   endForces = null,
   timoshenko = null,
+  taper = null,
 ) {
+  if(taper?.ok&&Array.isArray(endForces))return recoverTaperedShape(dl,endForces,spanLoads,ax,material,L,stationCount,timoshenko,taper);
   if (timoshenko?.enabled === true && Array.isArray(endForces)) {
     return recoverTimoshenkoShape(dl, endForces, spanLoads, ax, material, section, L, stationCount, timoshenko);
   }
@@ -353,48 +301,7 @@ function recoverTimoshenkoShape(dl, endForces, spanLoads, ax, material, section,
   };
 }
 
-function memberForceAt(endForces, spanLoads, L, x) {
-  let n = -endForces[0];
-  let vy = endForces[1];
-  let vz = endForces[2];
-  let tq = -endForces[3];
-  let mz = -endForces[5] + endForces[1] * x;
-  let my = endForces[4] + endForces[2] * x;
-  for (const load of spanLoads) {
-    if (load.type === 'point' && load.a <= x) {
-      n -= load.q[0];
-      vy += load.q[1];
-      vz += load.q[2];
-      mz += load.q[1] * (x - load.a);
-      my += load.q[2] * (x - load.a);
-    } else if (load.type === 'moment' && load.a <= x) {
-      if (load.axis === 'x') tq -= load.M;
-      else if (load.axis === 'y') my += load.M;
-      else if (load.axis === 'z') mz -= load.M;
-    } else if (load.type === 'udl') {
-      const { fI, mI } = integratedUniformLoad(load.shape, x, L);
-      n -= load.q[0] * fI;
-      vy += load.q[1] * fI;
-      vz += load.q[2] * fI;
-      mz += load.q[1] * mI;
-      my += load.q[2] * mI;
-    } else if (load.type === 'distributed-linear') {
-      const { f, m } = integrateDistributedLinearTo(load, x);
-      n -= f[0];
-      vy += f[1];
-      vz += f[2];
-      mz += m[1];
-      my += m[2];
-    } else if (load.type === 'foundation-distributed') {
-      const integrated = integrateFoundationReactionTo(load.foundation, load.localDisplacements, x);
-      vy += integrated.force.localY;
-      vz += integrated.force.localZ;
-      mz += integrated.moment.localY;
-      my += integrated.moment.localZ;
-    }
-  }
-  return { N: n, Vy: -vy, Vz: -vz, Tq: tq, My: my, Mz: mz };
-}
+
 
 function forEachRecoveryInterval(spanLoads, x, fn) {
   if (!(x > 0)) return;
@@ -410,32 +317,11 @@ function forEachRecoveryInterval(spanLoads, x, fn) {
   for (let i = 0; i < sorted.length - 1; i += 1) fn(sorted[i], sorted[i + 1]);
 }
 
-function clamp01(value, fallback = 0) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return fallback;
-  return Math.max(0, Math.min(1, n));
-}
 
-function loadIssue(load, code, component, value) {
-  return { code, entityType: 'load', entityId: load.id || null, memberId: load.member || null, component, value };
-}
 
-function integrateDistributedLinearTo(load, x) {
-  const lo = Math.max(0, Number(load.a) || 0);
-  const hi = Math.min(Number(x) || 0, Number(load.b) || 0);
-  const f = [0, 0, 0];
-  const m = [0, 0, 0];
-  if (!(hi > lo)) return { f, m };
-  integrateGaussPhysical(lo, hi, (s, weight) => {
-    const q = interpolateLoad(load, s);
-    const arm = x - s;
-    for (let i = 0; i < 3; i += 1) {
-      f[i] += q[i] * weight;
-      m[i] += q[i] * arm * weight;
-    }
-  });
-  return { f, m };
-}
+
+
+
 
 function integrateDistributedLinearDeflection(load, x, L) {
   const lo = Math.max(0, Number(load.a) || 0);
@@ -464,12 +350,7 @@ function fixedFixedPointMomentDeflectionFunction(a, x, L) {
   return (x2 ** 2 * (2 * position * h + position ** 2 * (-3 * L + 2 * x2))) / (6 * L ** 3);
 }
 
-function interpolateLoad(load, s) {
-  const a = Number(load.a) || 0;
-  const b = Number(load.b) || a;
-  const eta = Math.max(0, Math.min(1, (s - a) / Math.max(1e-12, b - a)));
-  return [0, 1, 2].map((i) => (Number(load.q1?.[i]) || 0) + ((Number(load.q2?.[i]) || 0) - (Number(load.q1?.[i]) || 0)) * eta);
-}
+
 
 function integrateGaussPhysical(a, b, fn) {
   const points = [
@@ -518,4 +399,18 @@ export function sectionCheck(section, material, memberResult, L) {
     status: ratio <= 1 ? 'OK' : 'NG',
     governing: rN + rM >= rV ? 'axial+bending' : 'shear',
   };
+}
+
+
+
+function recoverTaperedShape(dl,endForces,spanLoads,ax,material,L,count,timoshenko,taper){
+ const shape=[];let dmaxM=0,tip;
+ for(let i=0;i<count;i++){
+  const x=L*i/(count-1),d=taperedForceDisplacement(endForces,spanLoads,L,x,material,taper,timoshenko?.enabled===true);
+  d[0]+=dl[0];d[1]+=dl[1]+dl[5]*x;d[2]+=dl[2]-dl[4]*x;
+  for(let j=3;j<6;j++)d[j]+=dl[j];tip=d;
+  const global=vadd(vadd(vscale(ax.x,d[0]),vscale(ax.y,d[1])),vscale(ax.z,d[2]));
+  shape.push(global);dmaxM=Math.max(dmaxM,vlen(global));
+ }
+ return {shape,dmaxM,recoveryTrace:{formulation:timoshenko?.enabled?'timoshenko':'euler-bernoulli',method:'section-interval-force-integration',shearStrainIncluded:timoshenko?.enabled===true,endDisplacementResidual:Math.max(...tip.slice(0,3).map((v,i)=>Math.abs(v-dl[6+i]))),endRotationResidual:Math.max(...tip.slice(3).map((v,i)=>Math.abs(v-dl[9+i])))}};
 }

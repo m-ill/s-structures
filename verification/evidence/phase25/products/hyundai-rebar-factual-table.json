@@ -1,0 +1,164 @@
+{
+  "source": {
+    "id": "hyundai-ks-d3504-83e067dc",
+    "publisher": "Hyundai Steel",
+    "title": "Reinforcing Bar",
+    "url": "https://www.hyundai-steel.com/common/fileDownload/50086",
+    "listingUrl": "https://www.hyundai-steel.com/en/product-tech/rebar",
+    "sha256": "83e067dce67245506271b1bef2615f078c4267648cec3b3b280967cf114be330",
+    "retrievedAt": "2026-09-11",
+    "printedPages": [
+      14,
+      26
+    ],
+    "pdfPages": [
+      9,
+      15
+    ],
+    "edition": "PDF SHA-256 83e067dce67245506271b1bef2615f078c4267648cec3b3b280967cf114be330",
+    "editionDateConfirmed": false,
+    "ksEditionConfirmed": false,
+    "qualification": "manufacturer-table-transcribed-independent-review-pending",
+    "certificateVerified": false
+  },
+  "products": [
+    {
+      "designation": "D10",
+      "diameterMm": 9.53,
+      "areaMm2": 71.33,
+      "unitMassKgPerM": 0.56,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D13",
+      "diameterMm": 12.7,
+      "areaMm2": 126.7,
+      "unitMassKgPerM": 0.995,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D16",
+      "diameterMm": 15.9,
+      "areaMm2": 198.6,
+      "unitMassKgPerM": 1.56,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D19",
+      "diameterMm": 19.1,
+      "areaMm2": 286.5,
+      "unitMassKgPerM": 2.25,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D22",
+      "diameterMm": 22.2,
+      "areaMm2": 387.1,
+      "unitMassKgPerM": 3.04,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D25",
+      "diameterMm": 25.4,
+      "areaMm2": 506.7,
+      "unitMassKgPerM": 3.98,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D29",
+      "diameterMm": 28.6,
+      "areaMm2": 642.4,
+      "unitMassKgPerM": 5.04,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D32",
+      "diameterMm": 31.8,
+      "areaMm2": 794.2,
+      "unitMassKgPerM": 6.23,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D35",
+      "diameterMm": 34.9,
+      "areaMm2": 956.6,
+      "unitMassKgPerM": 7.51,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D38",
+      "diameterMm": 38.1,
+      "areaMm2": 1140,
+      "unitMassKgPerM": 8.95,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D41",
+      "diameterMm": 41.3,
+      "areaMm2": 1340,
+      "unitMassKgPerM": 10.5,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D43",
+      "diameterMm": 43,
+      "areaMm2": 1452,
+      "unitMassKgPerM": 11.4,
+      "standard": "KS D 3504",
+      "jisIncluded": false
+    },
+    {
+      "designation": "D51",
+      "diameterMm": 50.8,
+      "areaMm2": 2027,
+      "unitMassKgPerM": 15.9,
+      "standard": "KS D 3504",
+      "jisIncluded": true
+    },
+    {
+      "designation": "D57",
+      "diameterMm": 57.3,
+      "areaMm2": 2579,
+      "unitMassKgPerM": 20.3,
+      "standard": "KS D 3504",
+      "jisIncluded": false
+    }
+  ],
+  "grades": {
+    "SD300": 300,
+    "SD400": 400,
+    "SD500": 500,
+    "SD600": 600,
+    "SD700": 700,
+    "SD400W": 400,
+    "SD500W": 500,
+    "SD400S": 400,
+    "SD500S": 500,
+    "SD600S": 600
+  },
+  "units": {
+    "diameter": "mm",
+    "area": "mm2",
+    "unitMass": "kg/m",
+    "yieldStrength": "MPa"
+  },
+  "designTransferAllowed": false,
+  "extraction": "Visual transcription of PDF pages 9 and 15; original PDF held in OS temporary directory, not redistributed",
+  "sourceBytes": 22548387,
+  "sourcePdfMetadata": {
+    "created": "2024-07-18",
+    "modified": "2025-01-16",
+    "editionDateEvidence": false
+  }
+}

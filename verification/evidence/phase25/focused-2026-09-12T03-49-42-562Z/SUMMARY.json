@@ -1,0 +1,41 @@
+{
+  "sourceHash": "aa3bf47f296b5fe2efde42721a8751c9b9761db487117dfea0a7201a94644083",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:49:44.892Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-candidate-lifecycle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 181,
+      "sha256": "592f007908b0e0194313e451cf83ef6c571843bf54cc60eaedf674b660bcd259",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-auto-proposal-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 208,
+      "sha256": "17a203b5d8b51e7291456af326185f6f7b37e1bb74dbb8f50bb501baf1a15ff9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 198,
+      "sha256": "f13573d99ba089dfbfc91f253b05acbcd14b8706c1528312b6a010ed482a7f6e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-quarantine-status.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1304,
+      "sha256": "1ad7e5dec2e68c711e81cb9edf57f399359ae602621812a319652cd009f089b9",
+      "error": null
+    }
+  ]
+}

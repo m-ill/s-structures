@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {evaluateFootingPlanClearance} from '../src/design/foundation/footingPlanClearance.js';
+const current={footing:{id:'F1',version:1,B:2,L:2,footprintClearance:0,footprintClearanceReference:'synthetic'},node:{x:0,y:0}};
+const peer={footing:{id:'F2',version:1,B:2,L:2},node:{x:2,y:0}};
+let peers=new Map([['F1',current],['F2',peer]]);
+assert.equal(evaluateFootingPlanClearance({current,peers}).status,'OK');
+assert.equal(evaluateFootingPlanClearance({current:{...current,footing:{...current.footing,footprintClearance:.1}},peers}).status,'NG');
+const overlap=evaluateFootingPlanClearance({current,peers:new Map([['F2',{...peer,node:{x:1.9,y:0}}]])});assert.equal(overlap.status,'NG');assert.equal(overlap.governing.overlap,true);assert.equal(overlap.governing.ratio,null);
+const shifted=evaluateFootingPlanClearance({current:{...current,footing:{...current.footing,columnOffsetX:1}},peers});assert.equal(shifted.minimumClearance,1);
+const diagonal=evaluateFootingPlanClearance({current,peers:new Map([['F2',{...peer,node:{x:5,y:6}}]])});assert.equal(diagonal.minimumClearance,5);
+const mixed=evaluateFootingPlanClearance({current,peers:new Map([['F2',{...peer,node:{x:1,y:0}}],['bad',{footing:{id:'bad',B:2,L:2}}]])});assert.equal(mixed.status,'NG');assert.equal(mixed.incomplete,true);
+const bounded=evaluateFootingPlanClearance({current,peers,comparisonBudget:{remaining:0}});assert.equal(bounded.status,'NOT_CHECKED');assert.equal(bounded.notComparedCount,1);
+console.log('PASS projected clearance/touch/overlap, offset sign, diagonal distance and bounded incomplete coverage');
+
+const {assessCandidateScope}=await import('../src/compute/product/candidateScope.js');
+const model={members:[],designDetails:{foundations:[{id:'F1',version:1,nodeId:'A',footprintClearance:1},{id:'F2',version:1,nodeId:'C'}]}};
+const baselineChecks=[{entityId:'foundation:A',comboId:'S',checkId:'foundation-plan-clearance',status:'OK'},{entityId:'foundation:C',comboId:'S',checkId:'foundation-bearing',status:'NOT_CHECKED'}];
+const scopeInput={model,commands:[{type:'foundation-record',id:'F2',nodeId:'C'}],impact:'DESIGN_REVIEW_REQUIRED',baselineChecks,checks:[{...baselineChecks[0],status:'NG'},baselineChecks[1]]};
+const scope=assessCandidateScope(scopeInput);assert.ok(scope.entityIds.includes('foundation:A'));assert.equal(scope.unaffectedRegressionCount,0);
+const removed=assessCandidateScope({...scopeInput,model:{...model,designDetails:{foundations:[...model.designDetails.foundations,{id:'F1',version:2,nodeId:'A'}]}}});assert.equal(removed.unaffectedRegressionCount,1);
+const many=new Map(Array.from({length:60},(_,i)=>['F'+i,{footing:{id:'F'+i,version:1,B:2,L:2},node:{x:i<59?100+i:0,y:0}}]));many.delete('F1');
+const late=evaluateFootingPlanClearance({current,peers:many});assert.equal(late.status,'NG');assert.equal(late.detailsTruncated,true);assert.equal(late.governing.peerId,'F59');assert.equal(late.pairs.length,50);
+console.log('PASS neighbor candidate scope, latest-only constraints and governing collision beyond detail window');

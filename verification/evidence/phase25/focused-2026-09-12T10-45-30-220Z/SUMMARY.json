@@ -1,0 +1,17 @@
+{
+  "sourceHash": "fb14e3b1a41ba8f1236b1addb1c21103d787ab90d45ec8b7e2637d36a73e1a4b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:45:30.649Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-spatial-bar-fit.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 189,
+      "sha256": "a1f894a4f33e667c9e196fe2bc3b92fcd74e4454937d12a4d790434ac093281a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c557e363fe852059a89fafa0199c2488e6dbcff4bd6be6242e30653ea3cc9f13",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:56:48.187Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-plane-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 163,
+      "sha256": "a89f3bd5c3bf56bb326afdd54b7c28c1b9b006106ac98b515207193df986560b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-dependent-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "a7fb3951c8f627ce14fa2f90a05dd286827c45f994664ae2625fa9297b3f8b43",
+      "error": null
+    }
+  ]
+}

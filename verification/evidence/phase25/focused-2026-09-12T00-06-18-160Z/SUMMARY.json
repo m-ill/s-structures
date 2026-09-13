@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3d60d3413c82f688118e1c3c9c1356af6b609586d93c9bcfddf957a11f6fcc33",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:06:18.469Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-prescribed.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 101,
+      "sha256": "337abcfb1af9863f31a6b4e2494dfd6317e97d68e1ca5788a798ba5b9b5f0b09",
+      "error": null
+    }
+  ]
+}

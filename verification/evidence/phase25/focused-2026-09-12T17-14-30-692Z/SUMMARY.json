@@ -1,0 +1,41 @@
+{
+  "sourceHash": "df4630f0a13f9a3e7998c335cda7b18ee77ac6e4f635ebe41f2b2c4fbecadf2a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:14:34.714Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-class-a-envelope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 89,
+      "sha256": "fec9cf8ec8582a63ceb38592bd1b4d6ec88c864583c9640bb2b270131595af0f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-continuous-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 96,
+      "sha256": "54c23e88f173e50ca1a54b3782e363d40227d604cc1df949ec45f16c8f04cbe1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-direct-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2311,
+      "sha256": "01c2df67a0148564ff56304d9aad913c8ced1985f9933291b7d41c864c6d953f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1222,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

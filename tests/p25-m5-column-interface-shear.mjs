@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {columnInterfaceShear} from '../src/design/foundation/columnInterfaceShear.js';
+const input={area:.04,steelArea:.0001,fck:24,fy:400,V:10,surface:'monolithic',reference:'synthetic specified interface'};
+assert.ok(Math.abs(columnInterfaceShear(input).capacity-42)<1e-10);
+assert.equal(columnInterfaceShear({...input,surface:'roughened-6mm',clean:true}).capacity,30);
+assert.equal(columnInterfaceShear({...input,surface:'unroughened',clean:true}).capacity,18);
+assert.equal(columnInterfaceShear({...input,surface:'roughened-6mm'}).reason,'COLUMN_INTERFACE_PREPARATION_REQUIRED');
+assert.equal(columnInterfaceShear({...input,reference:''}).reason,'COLUMN_INTERFACE_PREPARATION_REQUIRED');
+assert.equal(columnInterfaceShear({...input,V:42.001}).status,'NG');
+const capped=columnInterfaceShear({...input,fck:60,steelArea:.01,surface:'roughened-6mm',clean:true});assert.ok(Math.abs(capped.capacity-243)<1e-10);
+assert.ok(Math.abs(columnInterfaceShear({...input,fck:60,steelArea:.01,surface:'unroughened',clean:true}).capacity-165)<1e-10);
+assert.equal(columnInterfaceShear({...input,fy:600}).designFy,500);
+assert.equal(columnInterfaceShear(input).permanentCompressionCredit,0);
+assert.ok(columnInterfaceShear(input).codeReferences.some(r=>r.id==='142022'&&r.clause.includes('4.6.2')));
+console.log('PASS KDS perpendicular interface shear friction, surface evidence, coefficients, stress caps and 500MPa design-yield cap');

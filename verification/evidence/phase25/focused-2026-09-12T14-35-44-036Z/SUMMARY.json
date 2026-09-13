@@ -1,0 +1,33 @@
+{
+  "sourceHash": "061d8b33548b315ffbf0b2d17691020246cd6632aa30793010c116461768ac87",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:35:57.885Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4899,
+      "sha256": "ce9311d3a4a737b80e09220a14c6feb541e294a351ccc3b8218c06105c50d686",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4736,
+      "sha256": "2ba24c13da2ae3e8e387f3bb3c7093964070986b7697c8516b687ba4d5c0062e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-splice-placement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3984,
+      "sha256": "d6b92972ee85d16308c6688d04c395790a14e852db3de62f6ea616783a450083",
+      "error": null
+    }
+  ]
+}

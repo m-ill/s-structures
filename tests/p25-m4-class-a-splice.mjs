@@ -1,0 +1,92 @@
+import {classAActualPieceLayouts} from '../src/design/rc/classAActualPieceLayouts.js';
+import {classASpliceProof} from '../src/design/rc/classASpliceProof.js';
+import {concurrentMemberDemands} from '../src/design/evaluation/practicalEvaluation.js';
+import {compressionLap} from '../src/design/rc/kdsAnchorage.js';
+import {validateModel} from '../src/core/validation.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+import {evaluateMemberSplices,spliceGeometry} from '../src/design/rc/spliceGeometry.js';
+import {validateStoredDesignDetails} from '../src/modeling/designDetailValidation.js';
+assert.ok(Math.abs(compressionLap({db:20,fy:400,fck:24,lambda:1}).requiredMm-576)<1e-10);
+assert.equal(compressionLap({db:20,fy:400,fck:18,lambda:1}).requiredMm,768);
+assert.equal(compressionLap({db:35,fy:400,fck:24,lambda:1}).status,'NOT_CHECKED');
+assert.equal(compressionLap({db:34.9,fy:400,fck:24,lambda:1}).status,'CALCULATED');
+assert.equal(compressionLap({db:40,fy:400,fck:24,lambda:1}).status,'NOT_CHECKED');
+const biaxialMode=process.env.P25_CLASS_A_BIAXIAL==='1';
+const tensionMode=process.env.P25_CLASS_A_TENSION==='1',multiLayerMode=process.env.P25_CLASS_A_LAYERS==='1',piecewise=process.env.P25_CLASS_A_PIECEWISE==='1',distributed=process.env.P25_CLASS_A_DISTRIBUTED==='1'||piecewise,ctx=designContext(),m=ctx.model;
+m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:4,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+const bars={type:'reinforcement-record',id:'R',name:'test',version:1,memberId:'AB',start:0,end:1,cover:.04,strengthStandard:'KDS-142020-2022',barMaterialId:'steel@1',sourceNote:'synthetic',bars:[{y:-.2,z:-.08,diameter:20},{y:-.2,z:.08,diameter:20}],reinforcementForm:'single-deformed',concreteWeight:'normal',barPosition:'other',barCoating:'uncoated',lapRequired:true,aggregateMaxSize:.02,stirrupDiameter:10,stirrupSpacing:150,stirrupLegs:2};
+m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'F',type:'nodal',node:'B',dir:'-z',P:1,case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',name:'E',kind:'static',status:'not-run',settings:{comboId:'U',pDeltaMethod:'off'}}];
+const heightPieces=process.env.P25_CLASS_A_HEIGHT==='1',actualPieces=process.env.P25_CLASS_A_PIECES==='1'||heightPieces;
+if(actualPieces)Object.assign(bars,{bars:bars.bars.map(b=>({...b,z:b.z*.75})),startFabricationShape:'straight',endFabricationShape:'straight',endSetbackStart:.04,endSetbackEnd:.04});
+const splice={type:'splice-record',id:'SP',name:'test lap',version:1,sourceNote:'synthetic only',memberId:'AB',reinforcementId:'R@1',barIndices:['1'],start:.125,end:.875,offsetY:.02,offsetZ:0,spliceType:'tension-A',spliceSystem:'ordinary-no-seismic-detail'};
+if(actualPieces)Object.assign(splice,{offsetY:heightPieces?.02:0,offsetZ:heightPieces?0:.02,continuationSide:'offset-toward-end'});
+if(biaxialMode)m.loads.push({id:'FY',type:'nodal',node:'B',dir:'-y',P:.02,case:'D'});
+try{
+ const debug=structuredClone(m);for(const c of [bars,splice])stagePracticalDesignInput(debug,c,[]);assert.equal(validateModel(debug).ok,true,JSON.stringify(validateModel(debug)));
+ const preview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'sp-preview',commands:[bars,splice]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:preview.handle,requestId:'sp-apply'})).ok,true);
+ const stored=(await ctx.call('get_design_records',{channel:'splices',id:'SP'})).rows[0];
+ assert.deepEqual(validateStoredDesignDetails(m),[]);
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'splice-run'});
+ const evaluated=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const snapshot=ctx.bridge.getPracticalDesignSnapshot(evaluated.evaluationId),check=snapshot.checks.find(x=>x.checkId==='rc-splices');assert.equal(check.status,'OK');assert.equal(check.codeBasis.status,'CLAUSE_APPLIED');
+ assert.equal(check.checks[0].classAProof.splicedFraction,.5);assert.equal(check.checks[0].calculation.spliceClass,'A');assert.ok(check.checks[0].classAProof.stationCount>=2);
+ const detail=m.designDetails.reinforcement[0],tuples=concurrentMemberDemands('AB','U',snapshot.sets[0].set.memberResults.AB,{length:4});
+ const proof=(input=m,d=detail,sp=m.designDetails.splices,t=tuples)=>classASpliceProof(input,m.members[0],d,sp,t);
+ assert.equal(proof().status,'OK');if(biaxialMode){assert.equal(proof().bendingEnvelope.kind,'proportional-biaxial');assert.ok(Math.abs(proof().bendingEnvelope.direction.My)>0);}
+ if(actualPieces){assert.equal(proof().actualPieceEnvelope.layoutCount,2);assert.equal(proof().actualPieceEnvelope.extraLapAreaCredited,false);assert.equal(check.continuity.status,'OK');assert.equal(proof(m,detail,[{...stored,offsetY:.02}]).status,'OK');const original=JSON.stringify(detail);const layout=classAActualPieceLayouts(detail,[stored],4);assert.equal(JSON.stringify(detail),original);assert.equal(layout.layouts[0].reduce((n,b)=>n+b.area,0),detail.bars.reduce((n,b)=>n+b.area,0));assert.equal(classAActualPieceLayouts(detail,[{...stored,start:.1,end:.3},{...stored,id:'NEXT',start:.6,end:.8}],4).reason,'SPLICE_PIECE_LANE_DISCONTINUITY');}
+assert.equal(proof(m,detail,[{...stored,barIndices:['1','2']}]).reason,'CLASS_A_SPLICED_AREA_ABOVE_HALF');
+ assert.equal(proof(m,detail,m.designDetails.splices,null).reason,'CLASS_A_ANALYSIS_ENVELOPE_REQUIRED');
+ assert.equal(proof(m,detail,m.designDetails.splices,tuples.map(t=>({...t,Mz:t.Mz*100000}))).reason,'CLASS_A_HALF_AREA_STRENGTH_NOT_PROVEN');
+ assert.equal(proof(m,detail,m.designDetails.splices,tuples.map((t,i)=>({...t,Mz:t.Mz+(i===1?1:0)}))).reason,'CLASS_A_LINEAR_MOMENT_ENVELOPE_REQUIRED');
+ assert.equal(proof({...m,loads:[...m.loads,{member:'AB'}]}).reason,'CLASS_A_PRISMATIC_NODAL_LOAD_SCOPE_REQUIRED');
+ assert.equal(proof(m,{...detail,bars:detail.bars.map((b,i)=>({...b,y:i?.2:-.2}))}).reason,'CLASS_A_SINGLE_TENSION_LAYER_REQUIRED');
+ if(heightPieces){
+  const nominal=[{...stored,continuationSide:undefined}],adverse=[{...stored,offsetY:-.02}],small=tuples.map(t=>({...t,Mz:t.Mz*.1})),unmoved=proof(m,detail,nominal,small),moved=proof(m,detail,adverse,small);
+  assert.ok(moved.worst.ratio>unmoved.worst.ratio+1e-10,JSON.stringify({unmoved:unmoved.worst,moved:moved.worst}));
+  const multiplier=(1/moved.worst.ratio+1/unmoved.worst.ratio)/2,threshold=small.map(t=>({...t,Mz:t.Mz*multiplier}));
+  assert.equal(proof(m,detail,nominal,threshold).status,'OK');assert.equal(proof(m,detail,adverse,threshold).reason,'CLASS_A_HALF_AREA_STRENGTH_NOT_PROVEN');
+ }
+ const staggered=[{...stored,id:'S1',barIndices:['1'],start:.1,end:.3},{...stored,id:'S2',barIndices:['2'],start:.7,end:.9}];
+ const staggerProof=proof(m,detail,staggered);assert.equal(staggerProof.status,'OK',JSON.stringify(staggerProof));assert.equal(staggerProof.splicedFraction,.5);assert.ok(Math.abs(staggerProof.windowLength-.8)<1e-10);
+ assert.equal(proof(m,detail,[staggered[0],{...staggered[1],start:.35,end:.55}]).reason,'CLASS_A_SPLICED_AREA_ABOVE_HALF');
+ assert.equal(proof(m,detail,[{...stored,reinforcementId:'R@9'}]).reason,'CLASS_A_CURRENT_SPLICE_DETAIL_REQUIRED');
+ const symmetric={...detail,bars:[...detail.bars,...detail.bars.map(b=>({...b,y:-b.y}))]};
+ const bothFaces=[...staggered,{...staggered[0],id:'T1',barIndices:['3']},{...staggered[1],id:'T2',barIndices:['4']}];
+ const faceProof=proof(m,symmetric,bothFaces);assert.equal(faceProof.status,'OK',JSON.stringify(faceProof));assert.equal(faceProof.fractionProof.faces.length,2);assert.equal(faceProof.splicedFraction,.5);
+ const layered={...symmetric,bars:[...symmetric.bars,...symmetric.bars.map(b=>({...b,y:b.y*.6}))]};
+ const layeredSplices=[...bothFaces,...bothFaces.map(s=>({...s,id:'INNER-'+s.id,barIndices:s.barIndices.map(i=>String(Number(i)+4))}))];
+ const layerProof=proof(m,layered,layeredSplices);assert.equal(layerProof.status,'OK',JSON.stringify(layerProof));assert.equal(layerProof.fractionProof.faces.length,4);assert.equal(layerProof.splicedFraction,.5);if(actualPieces)assert.equal(layerProof.actualPieceEnvelope.layoutCount,31);
+ if(actualPieces&&!biaxialMode){const a=tuples.reduce((a,b)=>a.x<b.x?a:b),b=tuples.reduce((a,b)=>a.x>b.x?a:b),dense=Array.from({length:600},(_,i)=>({...a,x:4*i/599,My:a.My+(b.My-a.My)*i/599,Mz:a.Mz+(b.Mz-a.Mz)*i/599}));const denseProof=proof(m,layered,layeredSplices,dense);assert.equal(denseProof.status,'OK',JSON.stringify(denseProof));assert.equal(denseProof.strengthStationSelection.inputCount,600);assert.ok(denseProof.strengthStationSelection.selectedCount<=2);assert.ok(denseProof.strengthStationSelection.strengthChecks<=62);}
+ assert.equal(proof(m,layered,[...layeredSplices,{...stored,id:'FULL-INNER',barIndices:['5','6']}]).reason,'CLASS_A_SPLICED_AREA_ABOVE_HALF');
+ assert.equal(proof(m,{...layered,bars:layered.bars.map((b,i)=>i===4?{...b,y:b.y+.01}:b)},layeredSplices).status,'NOT_CHECKED');
+ const tensionProof=proof(m,symmetric,bothFaces,tuples.map(t=>({...t,N:1})));assert.equal(tensionProof.status,'OK',JSON.stringify(tensionProof));assert.equal(tensionProof.axialEnvelope.force,1);
+ assert.equal(proof(m,symmetric,bothFaces,tuples.map((t,i)=>({...t,N:i?1:0}))).reason,'CLASS_A_CONSTANT_TENSION_REQUIRED');
+ assert.equal(proof(m,symmetric,bothFaces,tuples.map(t=>({...t,N:1e6}))).reason,'CLASS_A_HALF_AREA_STRENGTH_NOT_PROVEN');
+ const moved=[{...stored,barIndices:['1'],version:1},{...stored,barIndices:['3'],version:2}];assert.equal(proof(m,symmetric,moved).fractionProof.faces.find(f=>f.y<0).status,'N_A');
+ assert.equal(proof(m,symmetric,[{...stored,barIndices:['1','2']}]).reason,'CLASS_A_SPLICED_AREA_ABOVE_HALF','opposite face cannot dilute full-face splice');
+ m.nodes.find(n=>n.id==='B').x=12;m.loads.find(l=>l.id==='F').P=.1;if(biaxialMode)m.loads.find(l=>l.id==='FY').P=.002;
+ if(distributed)m.loads.push({id:'UDL',type:'udl',member:'AB',dir:'-z',w:.01,shape:'asc',case:'D'});
+ if(biaxialMode&&distributed)m.loads.push({id:'UDLY',type:'udl',member:'AB',dir:'-y',w:.0002,shape:'asc',case:'D'});
+ const additionalLoads=piecewise?[{id:'PART',type:'udl-partial',member:'AB',dir:'-z',w:.01,from:.2,to:.7,case:'D'},{id:'TRAP',type:'trapezoid',member:'AB',dir:'-z',w1:.01,w2:.02,from:.3,to:.8,case:'D'},{id:'POINT',type:'point',member:'AB',dir:'-z',P:.01,t:.4,case:'D'},{id:'MOMENT',type:'mmoment',member:'AB',dir:'+y',M:.01,at:.4,case:'D'}]:[];
+ if(tensionMode)additionalLoads.push({id:'AXIAL',type:'nodal',node:'B',dir:'+x',P:1,case:'D'});
+ const innerCommands=multiLayerMode?[1,2,3,4].map(i=>({...splice,id:'INNER-'+i,reinforcementId:'R@2',barIndices:[String(i+4)],start:i%2?.1:.7,end:i%2?.3:.9})):[];
+ const staggerPreview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'stagger-preview',commands:[...additionalLoads.map(value=>({type:'load',mode:'create',value:{...value,unit:['udl-partial','trapezoid'].includes(value.type)?'kN/m':['point','nodal'].includes(value.type)?'kN':'kN.m'}})),{...bars,version:2,bars:[...bars.bars,...bars.bars.map(b=>({...b,y:-b.y})),...(multiLayerMode?[...bars.bars,...bars.bars.map(b=>({...b,y:-b.y}))].map(b=>({...b,y:b.y*.6})):[])]},{...splice,version:2,reinforcementId:'R@2',start:.1,end:.3},{...splice,id:'SP2',reinforcementId:'R@2',barIndices:['2'],start:.7,end:.9},{...splice,id:'SP3',reinforcementId:'R@2',barIndices:['3'],start:.1,end:.3},{...splice,id:'SP4',reinforcementId:'R@2',barIndices:['4'],start:.7,end:.9},...innerCommands]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:staggerPreview.handle,requestId:'stagger-apply'})).ok,true);
+ const staggerRun=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'stagger-source'});
+ const staggerEval=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:staggerRun.steps[0].analysisRunId,comboId:'U'}]});
+ const staggerCheck=ctx.bridge.getPracticalDesignSnapshot(staggerEval.evaluationId).checks.find(c=>c.checkId==='rc-splices');assert.equal(staggerCheck.status,'OK',JSON.stringify(staggerCheck));assert.equal(staggerCheck.checks.length,multiLayerMode?8:4);assert.ok(staggerCheck.checks.every(c=>c.classAProof.fractionProof.faces.length===(multiLayerMode?4:2)&&c.classAProof.splicedFraction===.5&&c.calculation.spliceClass==='A'&&c.providedLength>=c.requiredLength));assert.equal(staggerEval.summary.complete,false);
+ const artifact=await ctx.call('export_design_drawings',{evaluationId:staggerEval.evaluationId,format:'json'}),parts=[];let offset=0;
+ do{const part=await ctx.call('get_design_drawing_artifact',{artifactId:artifact.artifactId,offset});parts.push(Buffer.from(part.content,'base64'));offset=part.nextOffset;}while(offset!==null);
+ const report=JSON.parse(Buffer.concat(parts).toString()),reported=report.checks.find(c=>c.checkId==='rc-splices');assert.equal(reported.status,'OK');assert.equal(reported.checks[0].classAProof.fractionProof.providedLengthsMustSatisfyRequired,true);assert.ok(reported.codeReferences.length);
+ const lastSnapshot=ctx.bridge.getPracticalDesignSnapshot(staggerEval.evaluationId),lastDemands=concurrentMemberDemands('AB','U',lastSnapshot.sets[0].set.memberResults.AB,{length:12});
+ if(tensionMode)assert.ok(Math.abs(reported.checks[0].classAProof.axialEnvelope.force-1.4)<1e-8);
+ if(distributed)assert.equal(reported.checks[0].classAProof.momentEnvelope.verification.status,'OK');
+ if(piecewise){const e=reported.checks[0].classAProof.momentEnvelope;assert.ok(e.polynomialSegments.length>=6);assert.ok(e.positions.some(x=>Math.abs(x-4.8)<1e-9));}
+ const shared=evaluateMemberSplices(m,m.members[0],lastDemands,lastSnapshot.sets[0].set.memberResults.AB);assert.equal(shared.checks[0].classAProof,shared.checks[1].classAProof);
+ const rechecked=evaluateMemberSplices(m,m.members[0],lastDemands.map(t=>({...t,Mz:t.Mz*100000})),lastSnapshot.sets[0].set.memberResults.AB);assert.notEqual(rechecked.checks[0].classAProof,shared.checks[0].classAProof);assert.notEqual(rechecked.checks[0].classAProof.status,'OK');
+ console.log('PASS actual WebMCP class A input, analysis-derived half-area proof, splice fraction and KDS result');
+}finally{await ctx.dispose();}

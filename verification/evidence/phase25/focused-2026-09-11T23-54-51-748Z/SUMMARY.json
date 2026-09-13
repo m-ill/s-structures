@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f0f3c62c8a46bff80a528a7c1eeb50186deb32b9f8bd3063589bddd9a5ee5e2c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:54:52.048Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-geometric-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 78,
+      "sha256": "555689d19ccdc2b193b559f249b13ab2fb1e6d881152cbed25ba205a5205b555",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f1e2a67abd269d22de57e082cafbcac162c66b890d4fdc1c2ea52b13e7b604c8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:11:40.052Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 47,
+      "sha256": "56a574c468f561168f4fa84cea386c823c33b6db60dd2750a3fae4a7de9a8b1d",
+      "error": null
+    }
+  ]
+}

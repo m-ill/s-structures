@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f3c0c72f4fa8e3ecf3b5b84746cc3b5855caaa64b437304dd1135f004f7556f2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:36:09.417Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-splice-independent-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8241,
+      "sha256": "8e61bd365b25ab2573f42df161dd636861476e6a1d03cd947f1ac3226b0506cb",
+      "error": null
+    }
+  ]
+}

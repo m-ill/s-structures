@@ -1,0 +1,33 @@
+{
+  "sourceHash": "6bb55a6755d7b70ad45eaeb20943b7d310fc27a0a65536890b8eb6de774f5dcb",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:48:45.106Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-spatial-perimeter-order.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "e4ada8ff964d1e29f4ed1297489863810074160a92c2f1515f840dffe3b90934",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-closure-contact-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 71,
+      "sha256": "333228c33b9c0a9716c8a3ad2222fdf8495105f39bc55a035c93b8e0e9ca03d6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-spatial-face-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "ce666195fe145dceb074dfa3c311037c146be356be381f253ecf8c5de121f596",
+      "error": null
+    }
+  ]
+}

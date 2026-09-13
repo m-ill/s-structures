@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f60bf8a164ecb394c978a4273ba559e4cf26bba7e9c7b248c9649c904d839890",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:52:45.497Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-blockers.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 66,
+      "sha256": "44ed8bf8fdec7723636e488f98f7fef3ab52840f7fa204b98eba3ff8c9f960a4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m0-steel-test-evidence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2767,
+      "sha256": "1dc146f81f7706780d969ce2894bf24666ecac0c4924bd93ce9ef4fc241f3bbf",
+      "error": null
+    }
+  ]
+}

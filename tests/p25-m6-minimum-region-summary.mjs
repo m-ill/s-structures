@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {evaluateProvidedKdsDetailing} from '../src/design/rc/kdsDetailing.js';
+import {longitudinalBarProposal} from '../src/compute/product/longitudinalBarProposal.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+const member={id:'AB',n1:'A',n2:'B',secId:'rc3060',matId:'concrete'};
+const detail={id:'R',version:1,start:0,end:.5,barMaterialId:'steel@1',strengthStandard:'KDS-142020-2022',detailingStandard:'KDS-142020-2022',memberRole:'flexural-member',concreteWeight:'normal',reinforcementForm:'single-deformed',stirrups:{diameter:.01,spacing:.1,legs:2},bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,diameter:.016,area:Math.PI*.016**2/4})))};
+const details=[detail,{...detail,id:'R2',start:.5,end:1}];
+const tuple=x=>({x,N:0,My:0,Mz:1,T:0,Vy:0,Vz:0,signConvention:'rc-section'});
+const evaluate=(ds,ts)=>evaluateProvidedKdsDetailing(model,member,ds,ts)['rc-reinforcement-ratio'];
+const check=evaluate(details,Array.from({length:1000},(_,i)=>tuple(i%2?.3:2.7)));
+assert.equal(check.reinforcementRepairRegions.length,2);assert.equal(check.reinforcementRepairRegions.reduce((s,r)=>s+r.evaluatedLocations,0),1000);
+assert.ok(check.reinforcementRepairRegions.every(r=>r.needsRepair&&!r.blocked));
+const bad=evaluate([detail,{...details[1],reinforcementForm:'unknown'}],[tuple(.3),tuple(2.7)]);
+assert.equal(bad.incomplete,true);assert.equal(bad.reinforcementRepairRegions.find(r=>r.detailId==='R2').blocked,true);
+const many=Array.from({length:33},(_,i)=>({...detail,id:`D${i}`,start:i/33,end:(i+1)/33}));
+const capped=evaluate(many,many.map((_,i)=>tuple((i+.5)*3/33)));
+assert.equal(capped.reinforcementRepairRegions.length,32);assert.equal(capped.reinforcementRepairRegionsTruncated,true);
+console.log('PASS bounded all-location minimum reinforcement repair summary and unsupported-region preservation');
+
+const commands=details.map(d=>({...d,memberId:'AB',bars:d.bars.map(b=>({...b,diameter:b.diameter*1000}))}));
+const proposal=longitudinalBarProposal(commands,[{...check,entityId:'AB',checkId:'rc-reinforcement-ratio'}]);assert.equal(proposal.ok,true);assert.deepEqual(proposal.regionConstraints.map(r=>r.detailId).sort(),['R','R2']);
+assert.equal(longitudinalBarProposal(commands,[{...check,entityId:'AB',checkId:'rc-reinforcement-ratio',reinforcementRepairRegionsTruncated:true}]).ok,false);

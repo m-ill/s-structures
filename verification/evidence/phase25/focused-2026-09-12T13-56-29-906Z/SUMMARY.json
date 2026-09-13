@@ -1,0 +1,17 @@
+{
+  "sourceHash": "8d0d613a99c811701c135975496f1a5968fd5d22c69222d05febec96e2208586",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:56:34.110Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-splice-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3962,
+      "sha256": "d36f3f969edfac79f730bb587f657ca467f9d1200ec06f0328ba4cfc085e396e",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "e739427f24180a88f6176583848503f4200a9ee369bd521ccbd4e66302a34917",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:55:25.246Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoop-support.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 80,
+      "sha256": "077ed9a30c499e07e28d788a633114fddb5301f3680678bababb716acd91efae",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-cross-tie-support.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 78,
+      "sha256": "29e69de396595a730b59b89b8505d7bf70ee1f28ef8de569372f657bafe1ae78",
+      "error": null
+    }
+  ]
+}

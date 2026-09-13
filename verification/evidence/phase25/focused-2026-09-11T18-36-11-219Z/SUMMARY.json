@@ -1,0 +1,17 @@
+{
+  "sourceHash": "81bd3d1eff5fd0f856ca897051a36125226fc5e94c843d8b1e6a23385106d375",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:36:11.539Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-review-ui-lifecycle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 106,
+      "sha256": "3fd16c48808cba15df329964673c63d5f7b9aa74c3db0e09180920904c62baf7",
+      "error": null
+    }
+  ]
+}

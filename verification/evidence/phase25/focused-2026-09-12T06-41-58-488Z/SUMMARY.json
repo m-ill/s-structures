@@ -1,0 +1,17 @@
+{
+  "sourceHash": "ef9a8376c70525227cd842569c3e588da17b37674fdfe65424bfc13a42933028",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:41:58.806Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-appended-splice-mapping.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 69,
+      "sha256": "92da28217642f011bc95cf7285cc0dd02f18986c2d9cc08623ac2123014d968b",
+      "error": null
+    }
+  ]
+}

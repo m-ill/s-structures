@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d92b854840606efefc81b67e05cf587df4c3251c421a3fad689ec232457fe96a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T22:54:08.205Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3164,
+      "sha256": "e2a349a9bc1b9751dc3cf7a8cba82df44462cb750262cc6121d73a1c06a31432",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-direct-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3539,
+      "sha256": "9de076034ee71c1baa96212efc382bb71373747760b69b90521a7316d1b483da",
+      "error": null
+    }
+  ]
+}

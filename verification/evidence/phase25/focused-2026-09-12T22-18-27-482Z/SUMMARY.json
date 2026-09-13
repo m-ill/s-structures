@@ -1,0 +1,41 @@
+{
+  "sourceHash": "5c731d02c1560bdfaacb62379b217fc057f13f143533a2f7c076b73d29011f18",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T22:18:30.142Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-crack-width.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 52,
+      "sha256": "2128e687f24706345a22082fc3781772d4222693430153043d2952910dcfee58",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-provided-crack-width.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2063,
+      "sha256": "b5d5684a925cdc8227c9cbaf4cbe118dce644c2e5e806bac033336a08bc6c76a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-crack-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 88,
+      "sha256": "acce85f04f819202299a4282291174c7f0b1ec7adef87ce883ded4e2215cad2d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-crack-stations.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 220,
+      "sha256": "6e171fc1c04b69382c30d9e12ce026fd7dc8c8ce9af718c6490cc3e4344ecad9",
+      "error": null
+    }
+  ]
+}

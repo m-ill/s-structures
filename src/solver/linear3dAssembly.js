@@ -157,7 +157,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       foundation,
       T,
       dof,
-      f0: new Array(12).fill(0),
+      f0: elastic.initialFixedEnd?[...elastic.initialFixedEnd]:new Array(12).fill(0),
       fixedEndLoads: [],
       section,
       material,
@@ -206,9 +206,9 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
       F[i + 2] += direction[2] * force;
     } else if (load.type === 'nmoment') {
       if (idx[load.node] == null || !Number.isFinite(Number(load.M))) continue;
-      const axisIndex = { x: 0, y: 1, z: 2 }[load.axis || 'z'];
-      if (axisIndex == null) continue;
-      F[idx[load.node] * 6 + 3 + axisIndex] += Number(load.M);
+      const direction=resolveMomentDirection(load);
+      if(!direction.ok)return {ok:false,reason:direction.reason,loadId:load.id||null};
+      direction.global.forEach((v,k)=>{F[idx[load.node]*6+3+k]+=v*Number(load.M);});
     } else if (load.type === 'pressure' || load.type === 'shellPressure') {
       const pressure = resolveShellPressureLoad(load);
       if (!pressure.ok) return { ok: false, reason: pressure.reason, loadId: load.id || null, shellId: null };
@@ -243,7 +243,7 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
         profile: md.taper.profile,
         gaussPoints: md.taper.gaussPoints,
         hash: md.taper.hash,
-        loadInterpolation: 'consistent-member-shape-integration',
+        loadInterpolation: fixedEnd.method === 'variable-section-force-compatibility' ? fixedEnd.method : 'consistent-member-shape-integration',
       };
       md.fixedEndLoads.push(fixedEndTraceRow(fixedEnd));
       for (let i = 0; i < 12; i += 1) md.f0[i] += fixedEnd.q0[i];
@@ -565,8 +565,8 @@ export function analyzeComponent3D(nodes, members, loads, ctx = {}) {
     solver.diaphragmCount = diaphragmGroups.length;
     solver.generalConstraintCount = generalConstraints.length;
     solver.generalConstraintEquationCount = reduced?.constraintContract?.generalConstraintEquationCount || 0;
-    solver.constraintForces = reduced?.constraintContract
-      ? recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, reduced.constraintContract)
+    solver.constraintForces = reduced?.constraintContract || diaphragmGroups.length
+      ? recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, reduced?.constraintContract, diaphragmGroups)
       : { applied: false, method: 'not-applicable', rows: [] };
     solver.reducedDofCount = systemDofCount;
     solver.prescribedDofCount = prescribed.dofs.length;
@@ -727,23 +727,26 @@ function reduceWithCanonicalConstraintsSparse(K, F, nodes, groups, constraints) 
   };
 }
 
-function recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, contract) {
+function recoverGeneralConstraintForces(nodes, K, F, D, fixedDofs, contract, diaphragmGroups = []) {
   const residual = matrixMatVec(K, D).map((value, index) => value - F[index]);
   const dofs = new Set();
-  for (const equation of contract.generalConstraintEquations || []) {
+  for (const equation of contract?.generalConstraintEquations || []) {
     dofs.add(equation.slave.fullDof);
     for (const term of equation.terms || []) dofs.add(term.fullDof);
   }
+  const nodeIndex = new Map(nodes.map((node,index)=>[node.id,index]));
+  for(const group of diaphragmGroups)for(const id of group.nodeIds||[]){const index=nodeIndex.get(id);if(index!==undefined)for(const d of [0,1,5])dofs.add(index*6+d);}
   const rows = [...dofs].sort((a, b) => a - b).map((fullDof) => ({
     nodeId: nodes[Math.floor(fullDof / 6)]?.id || null,
     dof: ['ux', 'uy', 'uz', 'rx', 'ry', 'rz'][fullDof % 6],
     fullDof,
-    force: -residual[fullDof],
+    force: residual[fullDof],
     supportCoupled: fixedDofs.has(fullDof),
   }));
   return {
     applied: rows.length > 0,
-    method: 'negative-full-system-residual-on-constraint-participating-dofs',
+    version: 'p25-constraint-actions-v1',
+    method: 'full-system-residual-on-constraint-participating-dofs',
     signConvention: 'force applied by constraint to structural DOF',
     rows,
   };
@@ -2008,3 +2011,4 @@ function cscDescriptor(matrix) {
     storageEntries: matrix.values.length + matrix.rowIdx.length + matrix.colPtr.length,
   };
 }
+import {resolveMomentDirection} from '../loads/momentDirection.js';

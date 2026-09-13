@@ -242,6 +242,14 @@ class FakeElement {
     this._textContent = this._innerHTML.replace(/<[^>]*>/g, ' ');
   }
 
+  replaceChildren(...children) {
+    for (const child of [...this.children]) this.removeChild(child);
+    this._textContent = '';
+    this._innerHTML = '';
+    if (this.tagName === 'SELECT') { this.value = ''; this.selectedIndex = -1; }
+    for (const child of children) this.appendChild(child);
+  }
+
   appendChild(child) {
     if (child.parentNode) child.parentNode.removeChild(child);
     child.parentNode = this;

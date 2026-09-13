@@ -1,0 +1,22 @@
+import {appendRecordedCalculationPages} from '../src/report/phase24/recordedCalculationPages.js';
+import assert from 'node:assert/strict';
+import {proposalProvenance} from '../src/compute/product/proposalProvenance.js';
+const ref={code:'KDS 14 20 22',edition:'2022',clause:'4.3.2',sha256:'source-hash'};
+const check={id:'A',checkId:'rc-shear-y',codeReferences:[ref],ratio:1.2};
+const base={id:'E',inputHash:'input',rulePackHash:'rule',checks:[check]};
+const generation={ok:true,version:'proposal-v1',basis:'recorded shear demand',basisCheckIds:['A'],regionConstraints:[{detailId:'R',spacings:[100]}]};
+const p=proposalProvenance(generation,base);
+assert.equal(p.sourceEvaluationId,'E');assert.equal(p.basisCheckCount,1);assert.equal(p.codeReferences[0].clause,'4.3.2');
+assert.equal(p.missingBasisCheckCount,0);assert.equal(p.designTransferAllowed,false);
+assert.notEqual(proposalProvenance({...generation,regionConstraints:[]},base).proposalHash,p.proposalHash);
+assert.notEqual(proposalProvenance(generation,{...base,checks:[{...check,ratio:2}]}).basisChecksHash,p.basisChecksHash);
+assert.equal(proposalProvenance(null,base),null);
+assert.equal(proposalProvenance({...generation,basisCheckIds:['missing']},base).missingBasisCheckCount,1);
+const large=Array.from({length:100},(_,i)=>({...check,id:`C${i}`,codeReferences:[{...ref,clause:'x'.repeat(10000)+i}]}));
+const bounded=proposalProvenance({...generation,basisCheckIds:large.map(c=>c.id)}, {...base,checks:large});
+assert.equal(bounded.truncated,true);assert.ok(JSON.stringify(bounded).length<6000);
+console.log('PASS bounded proposal provenance with calculation and code source hashes');
+
+const lines=[];
+appendRecordedCalculationPages({snapshot:{checks:[],designComparison:{counts:{resolvedNg:1,remainingNg:0,newNg:0,ngToIncomplete:0,remainingIncomplete:1,newIncomplete:0,removed:0},affectedScope:{complete:false,projectComplete:false},proposalProvenance:p}},pages:[],quantities:[],createPage:()=>({}),writeText:(_page,_x,_y,text)=>lines.push(String(text)),maxPages:60});
+assert.ok(lines.join(' ').includes('KDS 14 20 22'));assert.ok(lines.join(' ').includes('4.3.2'));assert.ok(lines.join(' ').includes('proposal-v1'));

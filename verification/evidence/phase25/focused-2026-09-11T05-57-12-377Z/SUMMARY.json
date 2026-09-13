@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-11T05:57:13.774Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1392,
+      "sha256": "95d342c35005a53628ba1b2729b9af57d3fcb0b181305c131ebfed6e2eb2ab47",
+      "error": null
+    }
+  ]
+}

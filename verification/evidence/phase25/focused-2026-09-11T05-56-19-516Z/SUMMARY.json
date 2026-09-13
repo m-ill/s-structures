@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-11T05:56:21.271Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 882,
+      "sha256": "278c6b315a843ce684eeb13dcc49e271d9de4bd24e0fc29484e4956447c35963",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 866,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    }
+  ]
+}

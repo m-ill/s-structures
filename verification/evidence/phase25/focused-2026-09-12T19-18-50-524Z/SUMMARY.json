@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5d90fd466ca9472bdd364f6b5da4e2b39bd5f62f9a6d507173f46e334a98728e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:19:00.848Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-segmented-strength.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 246,
+      "sha256": "9a4a67cf03e72610c84ce6858525989b8fcf44ba6196e739bf6863541294c6ed",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9840,
+      "sha256": "d5f448172198a67eb0af04e787ad516f83f04609fdbe528d924cbe337a98ad9a",
+      "error": null
+    }
+  ]
+}

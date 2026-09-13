@@ -25,6 +25,7 @@ import { validateAnalysisCriteria } from './analysisCriteria.js';
 import { PROJECT_SETUP_STATUSES } from './projectSetup.js';
 import { validateSourceRecord, validateSourceRegistry } from './sourceRegistry.js';
 import { validateMaterialRecord } from '../materials/materialSchema.js';
+import { validateStoredDesignDetails } from '../modeling/designDetailValidation.js';
 import { validateSectionRecord } from '../materials/sectionSchema.js';
 import { NONLINEAR_REGISTRY_COLLECTIONS, validateNonlinearRegistries } from './nonlinearSchema.js';
 import { resolveMemberOffsetKinematics } from '../solver/memberOffsets.js';
@@ -73,6 +74,7 @@ export function validateModel(model) {
   validateLoads(model, nodeIds, memberIds, error, warning);
   const foundationValidation = validateFoundationModel(model);
   for (const item of foundationValidation.errors) error(item.code, item.code, item.target);
+  for (const item of validateStoredDesignDetails(model)) error(item.code, item.message, item.target);
   validateLoadCasesAndCombinations(model, error, warning);
   validatePhase7Contracts(model, error, warning);
   validateNonlinearRegistries(model).forEach((item) => error(ERROR_CODES[item.code] || item.code, item.message, item.target));

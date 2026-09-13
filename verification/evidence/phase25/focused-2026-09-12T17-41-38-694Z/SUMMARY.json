@@ -1,0 +1,33 @@
+{
+  "sourceHash": "ab8b222ca95a66c44a19247fa672df6315960355b6602b31fd599344bcad96b1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:41:46.679Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-quantity-csv.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "13cb05427c37ea3215777fe9f4a4f56befc3daf68238bd958147a8b48baca108",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6476,
+      "sha256": "dbb5cd2af8ae6165aff807b682a763c1e28bab5102f1eb8d9f8220b1e3c5acb4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1208,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

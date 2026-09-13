@@ -1,0 +1,33 @@
+{
+  "sourceHash": "627975d3d07620d446237892fab5faa98a4b5a06ffaca557814fb41abd4befd1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:01:16.933Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-splice-crack-stations.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 235,
+      "sha256": "65783cb3f89ab91c6259e381aab482885dd9dd2a25abe1f1d8a5e92c6d6b7db6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1691,
+      "sha256": "348df0a19424dd90c05ee455c8aaf859f6f8af207364274558f90fec2131b1f8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "e77a65246f932019def2924e34fd3da971143d0d90ea052e041e54891633ae78",
+      "error": null
+    }
+  ]
+}

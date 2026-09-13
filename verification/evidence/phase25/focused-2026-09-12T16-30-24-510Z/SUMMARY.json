@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c4f59de66abc8adb50647496645dc17a398399124006eb7785ce3f3c1c3495ef",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:30:37.075Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 12302,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

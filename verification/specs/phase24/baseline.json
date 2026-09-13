@@ -1,0 +1,80 @@
+{
+  "version": "p24-m0-baseline-v1",
+  "sourceCommit": "ed24e04809957754cdde38e7b949d7c184a0fd2b",
+  "branch": "work/phase21-consistency-20260910",
+  "nodeVersion": "v24.16.0",
+  "sourceMode": "git HEAD bytes before Phase24 implementation",
+  "files": [
+    {
+      "path": "src/materials/materialSchema.js",
+      "sha256": "3be9d89a4d5464540407982e54f150096bd890a68fa8fed7b7998d653de4373a"
+    },
+    {
+      "path": "src/materials/sectionSchema.js",
+      "sha256": "ae8e2c2923d0417fc8c8f62b1cd10932ac61b5484508f45b1dc8d01f49c54657"
+    },
+    {
+      "path": "src/modeling/designInputCommands.js",
+      "sha256": "8732b8f602d23533361837a5cc44f9ca93e4bb7dac7474d2436d1b05361d4376"
+    },
+    {
+      "path": "src/core/workflowIdentity.js",
+      "sha256": "2dbfe57031e372ca81acb49dfcc1224c7145471ccb52c854d621ebeebea3f652"
+    },
+    {
+      "path": "src/design/concrete.js",
+      "sha256": "ea1e137d9f9ccdaa6d8962ffc52b1977058ef66e29ad1124ce5490fe86637d35"
+    },
+    {
+      "path": "src/design/rcDetailing.js",
+      "sha256": "181e65175ec50415670682c457b45265d752976e74c357cf5f2ec087663af241"
+    },
+    {
+      "path": "src/design/rc/beam.js",
+      "sha256": "332b719a9f1029ffbc5b463576b9565badddb5322ef36c28bfad03a35301eedb"
+    },
+    {
+      "path": "src/design/rc/pmCurve.js",
+      "sha256": "7c97c33510faf8653d795c1329fcd2cf9fc356de9f6ecc34910092b58b5256d1"
+    },
+    {
+      "path": "src/design/connectionFoundation.js",
+      "sha256": "5e8e3da7c91f3fd5540b81ac9cc0a8fd10e16cd352105f71e8bc9d6a67c006fc"
+    },
+    {
+      "path": "src/design/foundation/footing.js",
+      "sha256": "c7a9d89fdc05440e382ba7f0d0cbbd14e31fda09f63f2374a9f4dbac4fd5f60d"
+    },
+    {
+      "path": "src/compute/product/elasticAnalysisWorkflow.js",
+      "sha256": "be231add0c79a82ca219aa92dcb693f6c4e1a626767f63506d5e8309ffd63696"
+    },
+    {
+      "path": "src/compute/product/elasticReviewService.js",
+      "sha256": "09bdc6665a3b8f867f0795d1ed7a4813c666c4751be61eaaee93b8e97fda5ecd"
+    },
+    {
+      "path": "src/ui/webmcp/tools.js",
+      "sha256": "d998ca557c56cf8334a82090e113137709cb5b22928a519bbb89c713e8f0cd09"
+    },
+    {
+      "path": "src/ui/webmcp/workflowTools.js",
+      "sha256": "d8577c20c50175d70a6b307231f3677ce592fa034ddbefaa39c650f3f1604adf"
+    },
+    {
+      "path": "src/ui/webmcp/schemas.js",
+      "sha256": "8bd426d57994a686dcdd8e232f960ece2dffe02ec910693790e2a5d0f69005ab"
+    },
+    {
+      "path": "src/nonlinear/fiber/sectionResponse.js",
+      "sha256": "fa5476eeb7be6e7f99de922ef0aaacb26da743c48223e42fe0e33055e9637310"
+    }
+  ],
+  "preservedWorktree": [
+    "docs/README.md planning edit",
+    "docs/phase24 and docs/reviews untracked planning documents",
+    "unrelated BAT/output files left untouched"
+  ],
+  "historicEvidence": "output/phase21/m6-pilot-node-r5/review.json (not rerun or copied)",
+  "qualification": "not inherited"
+}

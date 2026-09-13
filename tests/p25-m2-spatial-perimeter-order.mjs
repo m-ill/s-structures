@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {outerHoopClosure} from '../src/design/rc/outerHoopClosure.js';
+import {closureHookContactCoverage} from '../src/design/rc/closureHookContactCoverage.js';
+import {spatialHoopSupportCoverage} from '../src/design/rc/spatialHoopSupportCoverage.js';
+import {lineBarContactCoverage} from '../src/design/rc/lineBarContactCoverage.js';
+import {spatialHoopPerimeterLayout} from '../src/design/rc/spatialHoopPerimeterLayout.js';
+const c=.13+.01/Math.sqrt(2),bars=[[-c,-c],[-.14,0],[-c,c],[0,.14],[c,c],[.14,0],[c,-c],[0,-.14]].map(([y,z])=>({y,z,diameter:.02}));
+const d={bars,cover:.04,stirrups:{diameter:.01},tieBendInsideRadius:.02,tieHookTail:.06,tieClosure:'standard-135',tieClosureCorner:'+y+z',tieClosureSeparation:0};
+const closure=outerHoopClosure(d,{B:.4,H:.4}),p={length:1,stirrupDistribution:{status:'OK',explicitEnds:true,count:4,first:.2,last:.8,spacing:.2},outerHoop:{closureGeometry:closure},bars:bars.map(b=>({cutLength:1,points:[[0,b.y],[1,b.y]],segmentErrors:[0]}))};
+closure.contactCoverage=closureHookContactCoverage(d,p);closure.supportCoverage=spatialHoopSupportCoverage(d,p);closure.faceContactCoverage=lineBarContactCoverage(d,p,{lines:closure.path.primitives.filter(p=>p.kind==='line').slice(1,-1),diameter:.01});
+const r=spatialHoopPerimeterLayout(d,p);assert.equal(r.status,'OK',JSON.stringify(r));assert.deepEqual(r.positions.map(p=>p.barIndex),[5,4,3,2,1,8,7,6]);assert.deepEqual(r.cornerBarIndices,[5,3,1,7]);
+assert.ok(Math.abs(r.gaps.reduce((s,g)=>s+g.length,0)-r.perimeter)<1e-12);assert.equal(r.metric,'longitudinal-center-polygon');assert.equal(r.fabricationQuantity,false);
+const missing=structuredClone(p);missing.outerHoop.closureGeometry.faceContactCoverage.checks[0].candidates[0].recordPositionMatches=false;
+assert.equal(spatialHoopPerimeterLayout(d,missing).status,'NOT_CHECKED');
+const moving=structuredClone(p);moving.outerHoop.closureGeometry.faceContactCoverage.checks[0].candidates[0].parameterRange=[.4,.5];assert.equal(spatialHoopPerimeterLayout(d,moving).status,'NOT_CHECKED');
+console.log('PASS actual contact-derived cyclic order, polygon metric and refusal of changing longitudinal positions');

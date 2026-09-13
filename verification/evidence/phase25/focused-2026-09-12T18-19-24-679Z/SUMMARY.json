@@ -1,0 +1,25 @@
+{
+  "sourceHash": "037e445b683c6f728f3cc8b183895e1d3608ee7f9abfa742d465648de66e8296",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:19:31.387Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3040,
+      "sha256": "69fe7e8576198e2917ea1649ebb4753b6d8e6c5600839acf1ac14cc837fcc995",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-direct-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3412,
+      "sha256": "9de076034ee71c1baa96212efc382bb71373747760b69b90521a7316d1b483da",
+      "error": null
+    }
+  ]
+}

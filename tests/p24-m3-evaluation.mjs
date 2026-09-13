@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {runDesignChecks} from '../src/design/steel.js';
+import {concurrentMemberDemands} from '../src/design/evaluation/practicalEvaluation.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];
+model.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+// Explicit purpose is required by the Phase25 applicability contract.
+model.loadCombinations=[{id:'C',type:'strength',factors:{}}];
+const demand={xs:[0,3],N:[-10,-100],My:[80,2],Mz:[2,90],Vy:[1,2],Vz:[3,4],T:[0,0],Nmax:100,Mymax:80,Mzmax:90,Vymax:2,Vzmax:4,Tmax:0};
+const set={ok:true,anyOk:true,combo:{id:'C'},memberResults:{AB:demand},disp:{A:[0,0,0],B:[0,0,0]}};
+const result=runDesignChecks(model,{ok:true,byCombo:{C:set},envelope:set},{resultSet:set});
+assert.ok(result.practical,'canonical evaluation must include required practical checks');
+assert.deepEqual(result.practical.demands.map(x=>[x.x,x.N,x.My,x.Mz]),[[0,-10,80,2],[3,-100,2,90]]);
+assert.ok(result.practical.checks.some(x=>x.checkId==='rc-section-strength'&&x.reason==='MISSING_REINFORCEMENT'));
+assert.ok(result.practical.checks.some(x=>x.checkId==='foundation-flexure'&&x.reason==='MISSING_FOUNDATION_GEOMETRY'));
+assert.equal(new Set(result.practical.checks.map(x=>x.id)).size,result.practical.checks.length);
+assert.equal(result.practical.complete,false);
+const {T,...native}=demand;
+assert.equal(concurrentMemberDemands('AB','C',{...native,Tq:T}).length,2,'native solver torsion array is Tq');
+console.log('PASS T06/T07 concurrent tuples, required checks, missing geometry and unique check identities');

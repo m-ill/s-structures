@@ -1,0 +1,41 @@
+{
+  "sourceHash": "f6e0f8c241757836617497b1ac3863647adaa3296217880811fc24722605546f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:17:32.334Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-native-worker-cancel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 633,
+      "sha256": "250c9ca18ee044333131b1f41081c50b61215d0cd8056055c347505ba26d173b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-termination-deadline.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1251,
+      "sha256": "7a988634f06489d60a9f04d0f0cb8b2fab430834e6d8f8abafc7fabd94c48614",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-late-worker-lease.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 89,
+      "sha256": "b69b7683ce7ef8f54681c45d2c73b23ff62916d86f01c8d10970fddc6918177c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2670,
+      "sha256": "d1a90ff7fdae76a2c31353c374ed69498f77d0f29fc2de5b951123877d8d74a8",
+      "error": null
+    }
+  ]
+}

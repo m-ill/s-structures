@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {jointHoopDistribution} from '../src/design/connection/jointHoopDistribution.js';
+const input={jointPanelHeight:.6,jointFirstStart:.025,jointFirstEnd:.025,reinforcement:{spacing:.1}};
+const r=jointHoopDistribution(input);
+assert.equal(r.status,'OK');assert.equal(r.count,7);assert.equal(r.positions[0],.025);assert.equal(r.positions.at(-1),.575);
+assert.ok(r.positions.slice(1).every((x,i)=>x-r.positions[i]<=.1+1e-12));
+assert.equal(jointHoopDistribution({...input,jointFirstStart:undefined}).status,'NOT_CHECKED');
+assert.equal(jointHoopDistribution({...input,jointFirstEnd:.59}).status,'NG');
+const huge=jointHoopDistribution({...input,reinforcement:{spacing:1e-6}});
+assert.equal(huge.count,550001);assert.equal(huge.positions,null);assert.equal(huge.reason,'JOINT_HOOP_POSITION_LIMIT');
+assert.equal(jointHoopDistribution({...input,jointFirstStart:.3,jointFirstEnd:.3}).count,1);
+console.log('PASS panel-height hoop distribution, explicit end offsets, shortened final bay and bounded allocation');

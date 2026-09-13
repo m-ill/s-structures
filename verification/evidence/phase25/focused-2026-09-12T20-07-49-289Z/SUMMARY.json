@@ -1,0 +1,17 @@
+{
+  "sourceHash": "5df63704b848c02c233a4e5b4221151205717a87d0bd9fc027a4966fe6b9874f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:07:56.422Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-profile-closure.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 6899,
+      "sha256": "0473b5bda7d7c12e92a69cec8759e57a46d2df75ac865f603fe422293271b493",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {proportionalBending} from '../src/compute/product/proportionalBending.js';
+import {classAMomentEnvelope} from '../src/compute/product/classAMomentEnvelope.js';
+import {memberForceFromRecovery} from '../src/solver/memberForceField.js';
+assert.equal(proportionalBending([{My:1,Mz:2},{My:-2,Mz:-4},{My:0,Mz:0}]).kind,'proportional-biaxial');
+assert.equal(proportionalBending([{My:1,Mz:2},{My:2,Mz:1}]).reason,'CLASS_A_PROPORTIONAL_BENDING_REQUIRED');
+assert.equal(proportionalBending([{My:1.7e308,Mz:1.7e308}]).status,'NOT_CHECKED');
+const input={version:'member-force-recovery-v1',L:4,endForces:[0,8,4,0,0,0,0,0,0,0,0,0],spanLoads:[{type:'udl',q:[0,-4,-2]}]};
+const tuples=[0,1,4].map(x=>({x,N:0,T:0,My:4*x-x*x,Mz:8*x-2*x*x,Vy:-8+4*x,Vz:-4+2*x}));
+const envelope=classAMomentEnvelope(input,tuples,4);assert.equal(envelope.status,'OK',JSON.stringify(envelope));assert.ok(envelope.positions.some(x=>Math.abs(x-2)<1e-10));
+const maximum=envelope.tuples.find(t=>Math.abs(t.x-2)<1e-10);assert.ok(Math.abs(maximum.My-4)<1e-10);assert.ok(Math.abs(maximum.Mz-8)<1e-10);
+assert.equal(envelope.bending.kind,'proportional-biaxial');assert.equal(envelope.polynomialSegments[0].component,'signed-proportional-moment');
+const varied=structuredClone(input);varied.spanLoads[0].q[2]=-3;
+const recovered=i=>[0,1,4].map(x=>{const f=memberForceFromRecovery(i,x);return {...f,T:f.Tq,x};});
+assert.equal(classAMomentEnvelope(varied,recovered(varied),4).reason,'CLASS_A_PROPORTIONAL_BENDING_REQUIRED');
+const myOnly=structuredClone(input);myOnly.endForces[1]=0;myOnly.spanLoads[0].q[1]=0;
+const myEnvelope=classAMomentEnvelope(myOnly,recovered(myOnly),4);assert.equal(myEnvelope.status,'OK');assert.ok(myEnvelope.positions.some(x=>Math.abs(x-2)<1e-10));
+console.log('PASS proportional biaxial scalar extrema match independent parabola; varying direction rejected and pure My supported');

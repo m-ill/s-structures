@@ -1,0 +1,33 @@
+{
+  "sourceHash": "b78b11b0b043118693f9cd68707a9297defc8cab89fd3422750388a33e630af2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:58:48.536Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-check-input-navigation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 237,
+      "sha256": "b7d4b7eecafa7d86f7939f70ce8f8ee98ed58c76d3c63efafd4ac0bbae5fc6c1",
+      "error": null
+    },
+    {
+      "file": "tests/p19-m2-design-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3268,
+      "sha256": "6d8f07cf43378e59537fbb36307e0e67415c8d32c85654abac60444fd14d12d6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4516,
+      "sha256": "9165d425d97e8c08444fd8bd56126d2b8332a0a06f2aa56dfaa7fe60f1df1818",
+      "error": null
+    }
+  ]
+}

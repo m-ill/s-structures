@@ -1,0 +1,17 @@
+{
+  "sourceHash": "05b4c597a2014cd52470f4cc1f87326712914a3c50624b125cb73775c2a1fa31",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:37:10.173Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-shared-result-cache.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 228,
+      "sha256": "ac4ea8da0e753e9e7ba0c7bd23c17c5bbbd606bd3d59f1c6913bf51b65abcfdc",
+      "error": null
+    }
+  ]
+}

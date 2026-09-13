@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {torsionExtensionAt} from '../src/design/rc/torsionExtension.js';
+const detail={start:0,end:1,cover:.04,startFabricationShape:'straight',endFabricationShape:'straight',endSetbackStart:.04,endSetbackEnd:.04,tieFirstStart:.05,tieFirstEnd:.05,stirrups:{spacing:.1}};
+const x={detail,memberLength:4,x:2,bt:.3,d:.5};
+assert.equal(torsionExtensionAt(x).status,'OK');
+assert.equal(torsionExtensionAt(x).requiredExtension,.8);
+const short=torsionExtensionAt({...x,x:.82});
+assert.equal(short.status,'NG');assert.ok(short.deficits.transverseStart>0);
+assert.equal(torsionExtensionAt({...x,x:0}).status,'NOT_CHECKED');
+assert.equal(torsionExtensionAt({...x,detail:{...detail,tieFirstEnd:undefined}}).status,'NOT_CHECKED');
+assert.equal(torsionExtensionAt({...x,detail:{...detail,endFabricationShape:'L90'}}).status,'NOT_CHECKED');
+assert.equal(torsionExtensionAt({...x,detail:{...detail,end:.55}}).status,'NOT_CHECKED');
+assert.equal(torsionExtensionAt({...x,detail:{...detail,tieFirstEnd:3.5}}).status,'NG');
+assert.equal(torsionExtensionAt({...x,x:NaN}).status,'NOT_CHECKED');
+console.log('PASS torsion b_t+d extension, physical end offsets, internal shortage and unresolved continuation');

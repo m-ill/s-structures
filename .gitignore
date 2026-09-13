@@ -35,3 +35,12 @@ output/verification/**/*.aux
 output/verification/**/*.out
 output/pdf/**/*.aux
 output/pdf/**/*.out
+
+# Local generated validation checkouts and publication scratch (not release source).
+output/phase19/
+output/phase20/
+output/phase21/
+output/review-20260907/
+output/legacy/
+output/docx/
+output/reports/

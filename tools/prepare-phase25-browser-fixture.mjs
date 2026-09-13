@@ -1,0 +1,11 @@
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {createModel} from '../src/core/model.js';
+import {ordinaryBeamFixture} from '../tests/fixtures/p25/ordinaryBeam.js';
+import {stageDesignInputCommand} from '../src/modeling/designInputCommands.js';
+import {createProductBook} from '../src/ui/indexNativePersistence.js';
+const model=createModel();model.meta={...model.meta,projectId:'P25-CLOSEOUT-BEAM',name:'Phase25 합성 RC 보 — 실제 건물 아님'};
+const {section,reinforcement,profile}=ordinaryBeamFixture(model);
+for(const command of [section,{type:'member-assignment',memberIds:['AB'],secId:'S@1'},reinforcement,profile])stageDesignInputCommand(model,command,{},[]);
+const directory='output/playwright/phase25-closeout';mkdirSync(directory,{recursive:true});
+writeFileSync(`${directory}/ordinary-beam.book.json`,JSON.stringify(createProductBook(model),null,2));
+console.log(`${directory}/ordinary-beam.book.json`);

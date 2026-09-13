@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6cf6c2b6f18e07dab0a1632c1264d16eb656ed0cb6696830fd2552770ec353ab",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:28:37.770Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-refined-arc-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 88,
+      "sha256": "a00e7e127d73c719276c30cf2ff4b442c257eb19e76ecb4a8569acb4459da3a2",
+      "error": null
+    }
+  ]
+}

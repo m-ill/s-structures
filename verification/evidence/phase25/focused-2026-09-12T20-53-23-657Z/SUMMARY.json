@@ -1,0 +1,17 @@
+{
+  "sourceHash": "985d88b251569913501083281f6a8a6c5379596782cf7b844f0a6d0663033782",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:53:26.085Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-published-result-currentness.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2199,
+      "sha256": "946250ec363f0790b88e0bb98e58a5a237d1c896a49589515eeafccacd500eb6",
+      "error": null
+    }
+  ]
+}

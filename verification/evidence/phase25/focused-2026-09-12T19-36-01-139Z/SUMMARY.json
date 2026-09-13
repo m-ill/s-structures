@@ -1,0 +1,17 @@
+{
+  "sourceHash": "be040db10e868a9bf3f90f79d67d58f955d295de39a30e68dadab87b845aa437",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:36:01.441Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-dependent-candidates.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 57,
+      "sha256": "d315643d000bbf6e41449af9e19b1114618ee88ea51bd5a44ddeb022bb46dd9d",
+      "error": null
+    }
+  ]
+}

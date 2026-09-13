@@ -1,0 +1,17 @@
+{
+  "sourceHash": "48208e9485a8498e1e698a8afcbb31ca565d393daca20db9939f02d1530f32e4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:56:05.855Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-report-volumes.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1055,
+      "sha256": "ee81c3a14dd08dac49f1bd1816ab9ec892f6178d847e8bd7dfb60b2aaa34e767",
+      "error": null
+    }
+  ]
+}

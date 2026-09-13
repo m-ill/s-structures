@@ -1,0 +1,41 @@
+{
+  "sourceHash": "81c11fd4e8ff712407353c1f8519a19f86998b09914b236f774756c27a64a07d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:37:29.949Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-worker-termination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 166,
+      "sha256": "28cff6a4b272b2d00f1e933a803b375f2eace6c547841d2bc7a89f9613c70a86",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 677,
+      "sha256": "b2d54459acfb177c90b40a0cebf5fbc84ce0da68b6d45b8539d6807d148d3332",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 167,
+      "sha256": "225b23a4dd095eedb3c1e0ae06e7e49faae178a4f0fdec556003a173583f5a23",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-frame-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2707,
+      "sha256": "c2088c77a810f02dcf2f2083577f69a5ecb430c461581c2938aeb59874044e3a",
+      "error": null
+    }
+  ]
+}

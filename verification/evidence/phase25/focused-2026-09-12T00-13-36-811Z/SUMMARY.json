@@ -1,0 +1,25 @@
+{
+  "sourceHash": "99a039fcbaa220c17d15731b6702cbefd08afa424db363b10b996a940dcb64c0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:13:39.130Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-temperature-gradient.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 919,
+      "sha256": "db137635ddb2dbce3ba2458bf25891d1636cc810d58592e1556ec020606ee521",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-initial-strain.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1149,
+      "sha256": "29c8d717a1360593df3db701add32b6dfae02e65c20ca9045f17da02015b409c",
+      "error": null
+    }
+  ]
+}

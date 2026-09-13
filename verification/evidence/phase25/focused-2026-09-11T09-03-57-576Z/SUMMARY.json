@@ -1,0 +1,33 @@
+{
+  "sourceHash": "aded8220a4909b0201a6f5684fb16cc8c9c937872cb9eb074f5c9c8ea452c423",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:03:59.719Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 714,
+      "sha256": "106c334eeef8e8292e2d77d86e12d25ae04fe653cd0139a35fe556fc4dba3432",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 157,
+      "sha256": "435c5effbac773359fb6460afc3d4c65931e8a701b307af480c68befb3a7947a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 991,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    }
+  ]
+}

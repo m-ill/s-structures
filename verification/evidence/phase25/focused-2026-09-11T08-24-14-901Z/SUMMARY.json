@@ -1,0 +1,25 @@
+{
+  "sourceHash": "3e337474eac250023842f32851d3b4a1fff999a6fa10b4f2fad56ce66541b09b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T08:24:18.980Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3697,
+      "sha256": "7b0dbb9894c639b61362fa03e45d2b7283917137b4f77f28df3eb222a9b4c65b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 139,
+      "sha256": "435c5effbac773359fb6460afc3d4c65931e8a701b307af480c68befb3a7947a",
+      "error": null
+    }
+  ]
+}

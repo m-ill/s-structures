@@ -1,0 +1,33 @@
+{
+  "sourceHash": "38d3e0751397960b56448692a0bf3ace89e0bc02bb46662e2847213214993179",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:19:00.415Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-shear-spacing-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 127,
+      "sha256": "d8baea5b85520c600a6271ea870be7f3cb3f6a64ab272096fc2db13ab2e6192c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4753,
+      "sha256": "e7977aee389627fa0f0df12ed60f485855251ed5f1f5413358fb894bea3ce9d2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 77,
+      "sha256": "64d29d2733f4467b78be853feb184918d381ee62439fd05d7af0965ec93f848a",
+      "error": null
+    }
+  ]
+}

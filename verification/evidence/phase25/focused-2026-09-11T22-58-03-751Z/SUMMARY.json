@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7156ecc9811f978dd2b1acb4e16817923997dce0c0b87c27f02bd31e06a3841b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T22:58:06.441Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2473,
+      "sha256": "cd576c8be4f61422ba6d38e29a78655d6fef2200b4af06779c50ff83a4cfde5b",
+      "error": null
+    }
+  ]
+}

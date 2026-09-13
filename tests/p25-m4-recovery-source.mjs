@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {verifyRecoverySource} from '../src/compute/product/recoverySourceVerification.js';
+const input={version:'member-force-recovery-v1',L:4,endForces:[0,10,0,0,0,0,0,0,0,0,0,0],spanLoads:[]};
+const tuples=[0,1,4].map(x=>({x,N:0,Vy:-10,Vz:0,T:0,My:0,Mz:10*x,side:'point'}));
+assert.equal(verifyRecoverySource(input,tuples,4).status,'OK');
+const changed=structuredClone(input);changed.endForces[5]=1;
+assert.equal(verifyRecoverySource(changed,tuples,4).reason,'BOUNDARY_RECOVERY_SOURCE_MISMATCH');
+assert.equal(verifyRecoverySource(input,tuples,5).reason,'BOUNDARY_RECOVERY_LENGTH_MISMATCH');
+assert.equal(verifyRecoverySource({...input,spanLoads:[{type:'unknown'}]},tuples,4).reason,'BOUNDARY_RECOVERY_LOAD_TYPE_UNSUPPORTED');
+assert.equal(verifyRecoverySource(input,tuples.map((t,i)=>i===1?{...t,Mz:NaN}:t),4).status,'NOT_CHECKED');
+assert.equal(verifyRecoverySource(input,tuples,4,[{code:'BAD_LOAD'}]).reason,'BOUNDARY_RECOVERY_LOAD_ISSUES');
+console.log('PASS recovery input consistency, all supplied stations, invalid load type and coordinate length mismatch');

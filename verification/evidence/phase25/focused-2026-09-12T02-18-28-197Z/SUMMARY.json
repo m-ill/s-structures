@@ -1,0 +1,33 @@
+{
+  "sourceHash": "38d3e0751397960b56448692a0bf3ace89e0bc02bb46662e2847213214993179",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:18:34.393Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-shear-spacing-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 103,
+      "sha256": "33d2e575365a724da4e126a070897bdc3b7c9fccff3d4fa71a0b46d29c8c8994",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5148,
+      "sha256": "a1dac272204b72b97fcff135eb1e63de6c06e1e91aad61f11a3f024d462b7bfe",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 413,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    }
+  ]
+}

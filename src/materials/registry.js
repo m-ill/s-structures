@@ -1,3 +1,4 @@
+import {activeLibraryReferences} from './activeLibraryReferences.js';
 import { ALL_BUILTIN_MATERIAL_RECORDS } from './db/builtinMaterials.js';
 import { KS_H_SECTIONS } from './db/ksH.js';
 import { ADDITIONAL_PRACTICAL_SECTIONS } from './db/practicalSections.js';
@@ -14,37 +15,52 @@ export function parseVersionedId(ref) {
   return { id: match[1], version: Number(match[2]) };
 }
 
-export function resolveMaterialRecord(model, ref, builtins = []) {
-  const key = parseVersionedId(ref);
-  if (!key.id) return null;
-  const all = [
-    ...modelScopeRows(model, 'materials'),
-    ...asVersioned(builtins, 'builtin'),
-    ...asVersioned(ALL_BUILTIN_MATERIAL_RECORDS, 'builtin'),
-  ].map((item) => normalizeMaterialRecord(item));
-  return selectVersion(all.filter((item) => item.id === key.id), key.version);
+// Choose identity/version/scope before material assessment or section geometry work.
+// Do not cache across calls: models and their libraries are mutable during editing.
+function selectRawRecord(model,collection,ref,builtinGroups){
+  const key=parseVersionedId(ref);if(!key.id)return null;
+  const capitalized=collection[0].toUpperCase()+collection.slice(1);
+  const groups=[[model?.[collection],'project'],[model?.[`global${capitalized}`],'global'],[model?.[`office${capitalized}`],'global'],...builtinGroups.map(rows=>[rows,'builtin'])];
+  const candidates=[];
+  for(const [rows,fallbackScope] of groups){
+    let index=0;
+    for(const raw of rows||[]){
+      if(!raw)continue;
+      const priority=index++;
+      if(raw.id!==key.id)continue;
+      const source=raw.source||{},scope=source.scope||(source.db?'builtin':fallbackScope);
+      candidates.push({id:raw.id,version:Object.hasOwn(raw,'version')?raw.version:1,deleted:raw.deleted,source:{...source,scope},_registryScope:scope,_priority:priority,raw});
+    }
+  }
+  const selected=selectVersion(candidates,key.version);if(!selected)return null;
+  const {_registryScope,_priority,...record}=selected.raw;
+  return {version:1,...record,source:selected.source,...(selected._softDeletedReference?{_softDeletedReference:true}:{})};
 }
 
-export function resolveSectionRecord(model, ref, builtins = []) {
-  const key = parseVersionedId(ref);
-  if (!key.id) return null;
-  const all = [
-    ...modelScopeRows(model, 'sections'),
-    ...asVersioned(builtins, 'builtin'),
-    ...asVersioned(KS_H_SECTIONS, 'builtin'),
-    ...asVersioned(ADDITIONAL_PRACTICAL_SECTIONS, 'builtin'),
-  ].map(normalizeSection);
-  return selectVersion(all.filter((item) => item.id === key.id), key.version);
+export function resolveMaterialRecord(model,ref,builtins=[]){
+  const selected=selectRawRecord(model,'materials',ref,[builtins,ALL_BUILTIN_MATERIAL_RECORDS]);
+  return selected?normalizeMaterialRecord(selected):null;
+}
+
+export function resolveSectionRecord(model,ref,builtins=[]){
+  const selected=selectRawRecord(model,'sections',ref,[builtins,KS_H_SECTIONS,ADDITIONAL_PRACTICAL_SECTIONS]);
+  return selected?normalizeSection(selected):null;
 }
 
 export function buildLibraryAudit(model = {}) {
-  const refs = new Set((model.members || []).flatMap((member) => [member.matId, member.secId]).filter(Boolean));
-  const materialRefs = [...new Set((model.members || []).map((member) => member.matId).filter(Boolean))];
-  const sectionRefs = [...new Set((model.members || []).map((member) => member.secId).filter(Boolean))];
+  const {materialRefs,sectionRefs,scope:referenceScope}=activeLibraryReferences(model);
+  const refs=new Set([...materialRefs,...sectionRefs]);
   const materials = model.materials || [];
   const sections = model.sections || [];
-  const resolvedMaterials = materialRefs.sort().map((ref) => resolvedRef(ref, resolveMaterialRecord(model, ref)));
-  const resolvedSections = sectionRefs.sort().map((ref) => resolvedRef(ref, resolveSectionRecord(model, ref)));
+  const inspect=(ref,resolve,validate)=>{
+    const record=resolve(model,ref),checked=record?validate(record):null;
+    return {reference:resolvedRef(ref,record),validation:{ref,resolved:record?`${record.id}@${record.version||1}`:null,status:checked?(checked.ok?'VALID':'INVALID'):'UNRESOLVED',errors:checked?.errors||[],warnings:checked?.warnings||[]}};
+  };
+  const materialReferences=materialRefs.map(ref=>inspect(ref,resolveMaterialRecord,validateMaterialRecord));
+  const sectionReferences=sectionRefs.map(ref=>inspect(ref,resolveSectionRecord,validateSectionRecord));
+  const resolvedMaterials=materialReferences.map(row=>row.reference),resolvedSections=sectionReferences.map(row=>row.reference);
+  const projectMaterialValidation=materials.map(item=>({id:item.id||'?',checked:validateMaterialRecord(item)}));
+  const projectSectionValidation=sections.map(item=>({id:item.id||'?',checked:validateSectionRecord(item)}));
   return {
     version: MATERIAL_REGISTRY_VERSION,
     registryPolicy: {
@@ -55,6 +71,8 @@ export function buildLibraryAudit(model = {}) {
       legacyMigration: 'unversioned-reference-resolves-latest-with-warning',
       unresolvedPolicy: 'resolver-null-catalog-helper-throws',
     },
+    referencedValidation:{scope:'resolved-active-references-after-library-scope-selection',materials:materialReferences.map(row=>row.validation),sections:sectionReferences.map(row=>row.validation)},
+    referenceScope,
     referenceCount: refs.size,
     references: [...refs].sort(),
     unversionedReferences: [...refs].filter((ref) => parseVersionedId(ref).version == null).sort(),
@@ -76,10 +94,10 @@ export function buildLibraryAudit(model = {}) {
     migrationWarnings: [...refs]
       .filter((ref) => parseVersionedId(ref).version == null)
       .map((ref) => `legacy-unversioned-reference:${ref}`),
-    materialErrors: materials.flatMap((item) => validateMaterialRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
-    materialWarnings: materials.flatMap((item) => validateMaterialRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
-    sectionErrors: sections.flatMap((item) => validateSectionRecord(item).errors.map((error) => `${item.id || '?'}:${error}`)),
-    sectionWarnings: sections.flatMap((item) => validateSectionRecord(item).warnings.map((warning) => `${item.id || '?'}:${warning}`)),
+    materialErrors: projectMaterialValidation.flatMap(row=>row.checked.errors.map(value=>`${row.id}:${value}`)),
+    materialWarnings: projectMaterialValidation.flatMap(row=>row.checked.warnings.map(value=>`${row.id}:${value}`)),
+    sectionErrors: projectSectionValidation.flatMap(row=>row.checked.errors.map(value=>`${row.id}:${value}`)),
+    sectionWarnings: projectSectionValidation.flatMap(row=>row.checked.warnings.map(value=>`${row.id}:${value}`)),
   };
 }
 

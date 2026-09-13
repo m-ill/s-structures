@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {selectStirrups} from '../src/design/rcDetailing.js';
+import {detailRcBeam} from '../src/design/rc/beam.js';
+const insufficient=selectStirrups(4,{stirrupBar:'D10',stirrupLegs:2,minStirrupSpacing:75,maxStirrupSpacing:250});
+assert.equal(insufficient.status,'NG');assert.equal(insufficient.reason,'INSUFFICIENT_REINFORCEMENT');
+assert.ok(Math.abs(insufficient.providedAvPerLength-142.6/75)<1e-12);
+const detail=detailRcBeam({status:'OK',requiredRebar:{AvsZ:4,AvsY:4}});
+assert.equal(detail.summary.shearStatus,'NG');assert.equal(detail.status,'NG');
+assert.equal(selectStirrups(Number.NaN).status,'NOT_CHECKED');
+assert.equal(detailRcBeam({}).summary.serviceabilityStatus,'NOT_CHECKED');
+console.log('PASS T08 insufficient provided stirrups, no silent OK, unknown input and fake serviceability blocked');

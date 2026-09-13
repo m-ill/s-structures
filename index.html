@@ -414,7 +414,12 @@ document.addEventListener('contextmenu',function(e){e.preventDefault();});docume
     model:function(){return nativeModel();},
     reanalyze:function(force){return nativeReanalyze(force);},
     activeResult:function(){return nativeActiveResult();},
-    draw:function(){return nativeDraw();}
+    draw:function(){return nativeDraw();},
+    clearAnalysisView:function(){ST.analysis=null;ST.result=null;ST.design=null;},
+    publishAnalysisView:function(analysis,result,comboId){
+      ST.analysis=analysis;ST.result=result;ST.design=null;ST.activeCombo=comboId;
+      updateComboSel();
+    }
   };
   window.model=window.SStructuresNativeRuntime.model;
   window.reanalyze=window.SStructuresNativeRuntime.reanalyze;

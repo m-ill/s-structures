@@ -1,0 +1,25 @@
+{
+  "sourceHash": "3ecf44ce3fbc531934b61395aea6709b8b6d0c117c53c4eddbbfe4f46b947257",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:34:26.766Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-consolidation-time.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 71,
+      "sha256": "14d005258aa78643b1ae2625454590358cf0deb7fe0ad075bd0be05836ab3373",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6249,
+      "sha256": "5436b2ab4175d4becd129244fba7b3b708b34b348fdd3801932e68213f7e213c",
+      "error": null
+    }
+  ]
+}

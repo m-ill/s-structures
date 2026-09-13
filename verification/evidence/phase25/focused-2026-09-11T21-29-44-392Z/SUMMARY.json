@@ -1,0 +1,33 @@
+{
+  "sourceHash": "9f99614e668d26c80e804b911076164e966a1873333399064837103efe49b162",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:30:01.897Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-frame-sign.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2184,
+      "sha256": "fe50c9001f05608e16d5e129297b42b6754de298b9c6d5d04b7e2c32017da08c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-coupled-policy.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7684,
+      "sha256": "39297e87134449dfdaeebf6578b5ffeab4c4386beea8a8aa8526203656d9ed15",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7411,
+      "sha256": "30a381cb8d6d137a00990a68bf4c011717196fcb07a349439a11007b70527c7a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "sourceHash": "f08b8996e2d2a1eafc10b5458a1806bee93c90652dd7a41c08b871ceb8799935",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T05:56:51.715Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-attachment-state.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "24ec7c8cf75882488f41b48e2cf3fa77eb00afc99f8ca1e948bc9248d57e6f3b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-stage-time-state.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "fdb5c9599e35dccd71a178798e09e2538fcde6a63feec84987015efe9847d9a4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-post-attachment-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 153,
+      "sha256": "db9c1503389b18f649f91ba756ba6c0719c622669c1d1456c9eea268e39c285d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-attachment-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3959,
+      "sha256": "160d4e29152d2ffdd098aa3b519fff74c80edc1f28dde9c44dae325f2e7cb490",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-attachment-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 114,
+      "sha256": "2b84f79e90667f4996ccde370c9df1d2c48777fbdf320d9fbbe544fb266b0118",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 150,
+      "sha256": "4687a72c004d8a466498c7a56ee289861b9cecbe8fbfed0c61b9e1ba467bccf6",
+      "error": null
+    }
+  ]
+}

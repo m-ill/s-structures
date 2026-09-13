@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {spliceWindowFraction} from '../src/design/rc/spliceWindowFraction.js';
+const detail={id:'R',version:2,memberId:'M',bars:[{area:3},{area:1}]},splice=(id,index,start,end)=>({id,version:1,memberId:'M',reinforcementId:'R@2',barIndices:[String(index)],start,end});
+const far=[splice('A',1,.1,.2),splice('B',2,.8,.9)];
+assert.equal(spliceWindowFraction(detail,far,10).splicedFraction,.75,'use area, not half the bar count');
+const equal={...detail,bars:[{area:1},{area:1}]};assert.equal(spliceWindowFraction(equal,far,10).splicedFraction,.5);
+assert.equal(spliceWindowFraction(equal,[far[0],splice('B',2,.3,.4)],10).splicedFraction,1,'closed window touches both intervals');
+assert.equal(spliceWindowFraction(equal,[far[0],splice('B',1,.15,.25)],10).splicedFraction,.5,'same original bar counted once');
+assert.equal(spliceWindowFraction(equal,[{...far[0],reinforcementId:'R@1'}],10).reason,'CLASS_A_CURRENT_SPLICE_DETAIL_REQUIRED');
+assert.equal(spliceWindowFraction(equal,[{...far[0],barIndices:['0']}],10).status,'NOT_CHECKED');
+assert.equal(spliceWindowFraction(equal,[{...far[0],version:0,barIndices:['2']},far[0]],10).splicedFraction,.5);
+assert.equal(spliceWindowFraction(equal,Array.from({length:101},(_,i)=>splice(String(i),1,.1,.2)),10).status,'NOT_CHECKED');
+console.log('PASS weighted interval union, endpoint conservatism, current versions and bounded inputs');
+
+const {classASpliceFaces}=await import('../src/design/rc/classASpliceFaces.js');
+const faces={...equal,bars:[-1,1].flatMap(y=>[-1,1].map(z=>({area:1,y,z,diameter:.02})))};
+const varied=[splice('SHORT1',1,.1,.2),splice('SHORT2',2,.5,.6),splice('LONG',3,.1,.5)];
+const variedProof=classASpliceFaces(faces,varied,10);assert.equal(variedProof.status,'OK');assert.equal(variedProof.splicedFraction,1,'short layer must retain the member-wide length bound');assert.ok(variedProof.faces.filter(f=>f.status==='OK').every(f=>f.windowLength===4));
+assert.equal(spliceWindowFraction({...equal,bars:[{area:1e308},{area:1e308}]},far,10).status,'NOT_CHECKED');
+console.log('PASS all layers share conservative maximum lap length; nonfinite area totals reject');

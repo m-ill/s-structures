@@ -1,0 +1,41 @@
+{
+  "sourceHash": "80bda94bece734601c9ad375d381a85e978738170840a9ea136409c6d8423632",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:35:50.844Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-kds-frame-sign.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2409,
+      "sha256": "1505ea6acb5b10ac35aa7d422d5fcbacada21ea82a0072ea0f3cf41e24b7f8f3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-class-a-splice.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2117,
+      "sha256": "a15a892449327274c6b3d189f60275cc06bb2aab8b0a7595fe5fe85cf1b73fa4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-beam-minimum.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 72,
+      "sha256": "034e7a968a8b0467eb15f4700e7274db04379ba8e119e2c6934f9dd57688704f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-crack-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "acce85f04f819202299a4282291174c7f0b1ec7adef87ce883ded4e2215cad2d",
+      "error": null
+    }
+  ]
+}

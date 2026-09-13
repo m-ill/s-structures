@@ -1,0 +1,17 @@
+{
+  "sourceHash": "88295ba8cf5deae112df51c84b91cf38444dfc5fd57669ef2608d8c6efbda4ce",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:05:49.674Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-stage-timing.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "011374b0bf2776f3d1f953c9e5a84c03d734b7223f4b2b1a425cdf5b16e910c2",
+      "error": null
+    }
+  ]
+}

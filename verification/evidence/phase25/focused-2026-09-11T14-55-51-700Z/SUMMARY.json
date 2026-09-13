@@ -1,0 +1,33 @@
+{
+  "sourceHash": "0c59f155e0e30a88d269c811f0c5673cf46f13615779d4192c910ba3ae7b4181",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:55:55.488Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 262,
+      "sha256": "4670c0dd278ad3c24de4c63050cd450a4dbae6c457b3409dbcef63305e8626b5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-eccentric-punching.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "4035ad426ec92cb3a1fe6c0eef45b5e8ba43f014e279fc552db784c993265b09",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-webmcp-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3278,
+      "sha256": "d9401339ef8f8ad0d6137f8921584b0771f5a3c697cfcb234a605df339bf12a5",
+      "error": null
+    }
+  ]
+}

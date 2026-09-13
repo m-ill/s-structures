@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c734e7f67d3b2b8706cd897ea2435043a77a3854cea25c08ef9ce9b8d029ef86",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:48:48.610Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 105,
+      "sha256": "67283154bf568a9c1044ec218af8a209176aff65bba0a963da9af4ecc27e47a5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-footing-depth-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7708,
+      "sha256": "bce3ae6efdf7f9084546222a5ca86cdad1226ef974603b25bf1256d260abf2c2",
+      "error": null
+    }
+  ]
+}

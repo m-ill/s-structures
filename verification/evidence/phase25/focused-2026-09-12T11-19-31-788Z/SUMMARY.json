@@ -1,0 +1,25 @@
+{
+  "sourceHash": "01bafb891badd4dbcd9e42b1545984972239f637d9b9c9f3e75b3b929090c140",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:19:36.065Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3607,
+      "sha256": "1bd0651814266fd044fe796f4a878dcd99093fedebd29d80204d979ab0dca7cc",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 381,
+      "sha256": "c1e522604283170463b478e7226007b3d25b9ad182a38dfbc855452b4dc2329b",
+      "error": null
+    }
+  ]
+}

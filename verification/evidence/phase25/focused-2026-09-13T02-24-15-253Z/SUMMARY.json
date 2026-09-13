@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f8f6404d7b872570e768a8d18ac886101c71e0c55c32766640e138fdc5bb0a9a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:24:18.025Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-input-history-restore.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 954,
+      "sha256": "d04a247fbebb997d0cb28d3d17dc16ac5bd120ae89463efe5d8b51aec7679648",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-targeted-undo.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1582,
+      "sha256": "c9b4be6c43a46edfd4a5729950abbbfa7b26c22dc5de0542aa70fbf9b2b4afcf",
+      "error": null
+    }
+  ]
+}

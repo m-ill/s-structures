@@ -1,0 +1,17 @@
+{
+  "sourceHash": "77d690cfdd652c3b2f043f2ab258b1cbe02d65d119ea09c031910c224706104e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:51:10.897Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 118,
+      "sha256": "7ab874ef995c2e15064217b79fb8f5ac34e3c4705a6df6a81d181ac868996561",
+      "error": null
+    }
+  ]
+}

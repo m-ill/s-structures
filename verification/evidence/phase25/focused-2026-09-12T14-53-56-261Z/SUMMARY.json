@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c1d242f0ebdbf601aedc48dad9e1cb6d1914a4aa3bc0e102a8ac3076d6ffa88a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:54:01.562Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-class-a-piece-layouts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "940f915b8a636206ee995e1c62136cd30a76a7ed6c5653d5584cbd724a4fe5ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5010,
+      "sha256": "c849b2b2d1febf44e545aad50835d7c336fbdb8074c64ffcb1c7130fd3ab265d",
+      "error": null
+    }
+  ]
+}

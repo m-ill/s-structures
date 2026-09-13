@@ -1,0 +1,17 @@
+{
+  "sourceHash": "1abd03b47f5f4024d693124527bc1c8a3b53c7520fc389122075554b3a117da1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T22:42:51.057Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-rc-splice-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 162,
+      "sha256": "d4f42235639f5d67ededb2e51868991566d0f2c6662b6d348015027cf4b63511",
+      "error": null
+    }
+  ]
+}

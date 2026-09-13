@@ -1,0 +1,50 @@
+import assert from 'node:assert/strict';
+import {EventEmitter} from 'node:events';
+import {createRcSpliceExecution} from '../src/compute/product/rcSpliceExecution.js';
+import {createResourceBudget} from '../src/core/resourceBudget.js';
+let hash='h',notify;
+const budget=createResourceBudget(),bridge={getCurrentModel:()=>({nodes:[],members:[]}),getWorkflowInputIdentity:()=>({inputHash:hash})};
+class FakeWorker extends EventEmitter{postMessage(payload){this.payload=payload;notify?.();}terminate(){this.terminated=true;}}
+let worker;
+const flow=createRcSpliceExecution({bridge,budget,workerFactory:async()=>{worker=new FakeWorker();return worker;}});
+const args={inputHash:'h',spliceId:'SP',endLoads:[1,0,0,0,0,0]};
+let started=new Promise(r=>notify=r),pending=flow.run(args);await started;
+assert.ok(budget.snapshot().totalBytes>=32*1024**2);
+await assert.rejects(flow.run(args),{code:'RC_SPLICE_BUSY'});
+hash='changed';worker.emit('message',{ok:true,result:{ok:true}});await assert.rejects(pending,{code:'STALE_INPUT'});
+assert.equal(worker.terminated,true);assert.equal(budget.snapshot().totalBytes,0);
+hash='h';started=new Promise(r=>notify=r);pending=flow.run(args);await started;assert.equal(flow.cancel().cancelled,true);await assert.rejects(pending,{code:'CANCELLED'});assert.equal(budget.snapshot().totalBytes,0);
+started=new Promise(r=>notify=r);pending=flow.run(args);await started;flow.dispose();await assert.rejects(pending,{code:'CANCELLED'});await assert.rejects(flow.run(args),{code:'SESSION_DISPOSED'});assert.equal(budget.snapshot().totalBytes,0);
+flow.resume();started=new Promise(r=>notify=r);pending=flow.run(args);await started;worker.emit('message',{ok:true,result:{ok:true}});assert.equal((await pending).inputHash,'h');
+const small=createResourceBudget({maxBytes:1024}),limited=createRcSpliceExecution({bridge,budget:small,workerFactory:()=>{throw Error('must not start');}});
+await assert.rejects(limited.run(args),{code:'MANAGED_MEMORY_BUDGET_EXCEEDED'});assert.equal(small.snapshot().totalBytes,0);
+const timed=createRcSpliceExecution({bridge,budget,timeoutMs:10,workerFactory:async()=>new FakeWorker()});
+await assert.rejects(timed.run(args),{code:'TASK_TIMEOUT'});assert.equal(budget.snapshot().totalBytes,0);
+console.log('PASS RC interval Worker admission, busy/cancel, stale publication, dispose/resume and reservation release');
+
+started=new Promise(r=>notify=r);pending=flow.run({inputHash:'h',comboId:'S'},'model');await started;
+worker.emit('message',{ok:true,result:{ok:true,segments:Array.from({length:7},(_,i)=>({index:i}))}});
+const first=await pending;assert.equal(first.segmentPage.total,7);assert.equal(first.segments.length,3);assert.ok(budget.snapshot().totalBytes>0);assert.ok(budget.snapshot().totalBytes<1024*1024);
+first.segments[0].index=999;assert.equal(flow.query({inputHash:'h'}).segments[0].index,0);
+assert.deepEqual(flow.query({inputHash:'h',offset:3}).segments.map(s=>s.index),[3,4,5]);
+assert.equal(flow.query({inputHash:'h',offset:6}).segmentPage.nextOffset,null);
+assert.throws(()=>flow.query({inputHash:'h',limit:4}),{code:'RC_SPLICE_RESULT_PAGE_INVALID'});
+hash='changed';assert.throws(()=>flow.query({inputHash:'h'}),{code:'STALE_INPUT'});assert.equal(budget.snapshot().totalBytes,0);
+hash='h';assert.throws(()=>flow.query({inputHash:'h'}),{code:'RC_SPLICE_MODEL_RESULT_REQUIRED'});
+started=new Promise(r=>notify=r);pending=flow.run({inputHash:'h',comboId:'S'},'model');await started;worker.emit('message',{ok:true,result:{ok:true,segments:[]}});await pending;flow.dispose();assert.equal(budget.snapshot().totalBytes,0);
+console.log('PASS prepared model result paging without Worker rerun, copy isolation, stale invalidation and retained budget release');
+
+flow.resume();hash='h';
+const publish=async(comboId,value)=>{started=new Promise(r=>notify=r);const task=flow.run({inputHash:'h',comboId},'model');await started;worker.emit('message',{ok:true,result:{ok:true,comboId,segments:[{value}]}});return task;};
+const comboA=await publish('A',1),comboB=await publish('B',2);
+assert.equal(flow.metadata(comboA.sourceId).comboId,'A');assert.equal(flow.query({inputHash:'h',sourceId:comboA.sourceId}).segments[0].value,1);
+const comboA2=await publish('A',3);assert.throws(()=>flow.metadata(comboA.sourceId),{code:'RC_SPLICE_SOURCE_REQUIRED'});assert.equal(flow.metadata(comboB.sourceId).comboId,'B');
+assert.equal(flow.query({inputHash:'h',sourceId:comboA2.sourceId}).segments[0].value,3);
+flow.dispose();assert.equal(budget.snapshot().totalBytes,0);
+console.log('PASS per-combination source retention, explicit source paging, scoped replacement and full release');
+
+flow.resume();const kept=[];for(let i=0;i<8;i++)kept.push(await publish(`C${i}`,i));
+await assert.rejects(flow.run({inputHash:'h',comboId:'C8'},'model'),{code:'RC_SPLICE_SOURCE_LIMIT'});
+assert.equal(flow.context().sources.length,8);assert.throws(()=>flow.query({inputHash:'obsolete',sourceId:kept[0].sourceId}),{code:'STALE_INPUT'});assert.equal(flow.context().sources.length,8);assert.equal(flow.release({sourceId:kept[0].sourceId}).released,true);await publish('C8',8);assert.equal(flow.context().sources.length,8);
+flow.dispose();assert.equal(budget.snapshot().totalBytes,0);
+console.log('PASS eight-source bound rejects without eviction and explicit release frees capacity');

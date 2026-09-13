@@ -1,0 +1,342 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - button "메뉴" [ref=e3] [cursor=pointer]: ☰
+    - generic [ref=e4]: S-STRUCTURES
+    - tablist "작업 탭" [ref=e6]:
+      - tab "모델링" [ref=e7] [cursor=pointer]
+      - tab "탄성해석" [selected] [ref=e8] [cursor=pointer]
+      - tab "비선형해석" [ref=e9] [cursor=pointer]
+      - tab "태블릿메모" [ref=e10] [cursor=pointer]
+    - button "이전 페이지" [ref=e12] [cursor=pointer]: ◀
+    - generic [ref=e13]: 1 / 1
+    - button "다음 페이지" [ref=e14] [cursor=pointer]: ▶
+    - button "새 페이지" [ref=e15] [cursor=pointer]: ＋
+    - button "Phase 13 실무 워크벤치 열기" [ref=e17] [cursor=pointer]: 실무 워크벤치
+    - link "계정" [ref=e18] [cursor=pointer]:
+      - /url: app.html#/login
+    - button "실행 취소 (Ctrl+Z)" [ref=e19] [cursor=pointer]: ↶
+    - button "다시 실행 (Ctrl+Y)" [ref=e20] [cursor=pointer]: ↷
+    - button "−" [ref=e22] [cursor=pointer]
+    - button "기본 뷰로" [ref=e23] [cursor=pointer]: ⌂
+    - button "＋" [ref=e24] [cursor=pointer]
+    - generic [ref=e26]:
+      - generic [ref=e27]: 기본
+      - generic [ref=e28]:
+        - text: "보기:"
+        - button "3D" [ref=e29] [cursor=pointer]
+        - button "평면" [ref=e30] [cursor=pointer]
+        - button "정면" [ref=e31] [cursor=pointer]
+        - button "측면" [ref=e32] [cursor=pointer]
+        - text: "결과:"
+        - generic [ref=e33]: © 단국대 허석재
+  - generic [ref=e34]:
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]: 해석 절차
+        - generic [ref=e104]:
+          - button "1단계 기본설정" [ref=e105] [cursor=pointer]:
+            - generic [ref=e106]: "1"
+            - generic [ref=e107]: 기본설정
+            - generic [ref=e108]: ✓
+          - button "2단계 하중·질량" [ref=e109] [cursor=pointer]:
+            - generic [ref=e110]: "2"
+            - generic [ref=e111]: 하중·질량
+            - generic [ref=e112]: "!"
+          - button "3단계 하중조합" [ref=e113] [cursor=pointer]:
+            - generic [ref=e114]: "3"
+            - generic [ref=e115]: 하중조합
+            - generic [ref=e116]: "!"
+          - button "4단계 모델검증" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "4"
+            - generic [ref=e119]: 모델검증
+            - generic [ref=e120]: ✓
+          - button "5단계 1차해석" [ref=e121] [cursor=pointer]:
+            - generic [ref=e122]: "5"
+            - generic [ref=e123]: 1차해석
+            - generic [ref=e124]: "!"
+          - button "6단계 고급해석" [ref=e125] [cursor=pointer]:
+            - generic [ref=e126]: "6"
+            - generic [ref=e127]: 고급해석
+          - button "7단계 결과검토" [ref=e128] [cursor=pointer]:
+            - generic [ref=e129]: "7"
+            - generic [ref=e130]: 결과검토
+            - generic [ref=e131]: "!"
+          - button "상세 하중 입력 표시" [ref=e132] [cursor=pointer]:
+            - generic [ref=e133]: ⋯
+      - generic [ref=e134]:
+        - generic [ref=e135]: 해석
+        - generic [ref=e136]:
+          - button "전체 탄성해석 실행" [ref=e137] [cursor=pointer]:
+            - generic [ref=e138]: ▶
+            - generic [ref=e139]: 전체 탄성해석
+          - button "해석 케이스 설정 열기" [ref=e140] [cursor=pointer]:
+            - generic [ref=e141]: ⚙
+      - generic [ref=e142]:
+        - generic [ref=e143]: 결과
+        - generic [ref=e144]:
+          - button "1차 정적해석 결과 열기" [disabled] [ref=e145]:
+            - generic [ref=e146]: K
+            - generic [ref=e147]: 1차
+          - button "Direct P-Delta 결과 열기" [disabled] [ref=e148]:
+            - generic [ref=e149]: PΔ
+            - generic [ref=e150]: P-Delta
+          - button "모달해석 결과 열기" [disabled] [ref=e151]:
+            - generic [ref=e152]: T
+            - generic [ref=e153]: 모달
+          - button "응답스펙트럼해석 결과 열기" [disabled] [ref=e154]:
+            - generic [ref=e155]: S
+            - generic [ref=e156]: RSA
+          - button "탄성 고유치 좌굴 결과 열기" [disabled] [ref=e157]:
+            - generic [ref=e158]: λ
+            - generic [ref=e159]: 좌굴
+          - button "선형 시간이력 (예비) 결과 열기" [disabled] [ref=e160]:
+            - generic [ref=e161]: t
+            - generic [ref=e162]: THA
+      - generic [ref=e163]:
+        - generic [ref=e164]: 조합
+        - combobox "하중조합" [ref=e166]:
+          - option "1.4D" [selected]
+          - option "1.2D + 1.6L"
+          - option "Service D + L"
+          - option "포락 (Envelope)"
+      - generic [ref=e167]:
+        - generic [ref=e168]: 결과
+        - generic [ref=e169]:
+          - button "변형" [ref=e170] [cursor=pointer]
+          - button "M" [ref=e171] [cursor=pointer]
+          - button "Q" [ref=e172] [cursor=pointer]
+          - button "N" [ref=e173] [cursor=pointer]
+          - button "반력" [ref=e174] [cursor=pointer]
+          - button "수치" [ref=e175] [cursor=pointer]
+          - button "T" [ref=e176] [cursor=pointer]
+          - button "검정" [ref=e177] [cursor=pointer]
+          - button "절점#" [ref=e178] [cursor=pointer]
+          - button "부재#" [ref=e179] [cursor=pointer]
+          - button "길이" [ref=e180] [cursor=pointer]
+          - button "로컬축" [ref=e181] [cursor=pointer]
+          - button "설계" [ref=e182] [cursor=pointer]
+          - button "처짐" [ref=e183] [cursor=pointer]
+      - generic [ref=e184]:
+        - generic [ref=e185]: 보고
+        - generic [ref=e186]:
+          - button "하중조합" [ref=e187] [cursor=pointer]:
+            - generic [ref=e188]: ☷
+          - button "설계요약" [ref=e190] [cursor=pointer]:
+            - generic [ref=e191]: ▤
+          - button "검증" [ref=e193] [cursor=pointer]:
+            - generic [ref=e194]: ✓
+      - generic [ref=e196]:
+        - generic [ref=e197]: 상태
+        - status [ref=e199]: 경고 1 · 해석 OK · δmax 4.73mm · 평형✓ · 검정 0.40 전체 OK
+      - generic [ref=e200]:
+        - generic [ref=e201]: 변형 배율
+        - generic [ref=e203]:
+          - generic [ref=e204]: Scale
+          - combobox "Scale" [ref=e205]:
+            - option "auto" [selected]
+            - option "10"
+            - option "50"
+            - option "100"
+            - option "500"
+      - button "설계 입력 변경" [ref=e206] [cursor=pointer]
+      - button "탄성 설계 검토" [active] [ref=e207] [cursor=pointer]
+      - status [ref=e208]: WebMCP unsupported · 도구 0개 · 작업 없음 · 해석 결과 없음 · 탄성 예비 검토 · 비선형 candidate
+    - button "해석 케이스" [ref=e43] [cursor=pointer]
+    - button "ratio" [ref=e44] [cursor=pointer]
+  - button "▶ 스텝 재생" [ref=e100] [cursor=pointer]
+  - dialog "탄성 설계 검토" [ref=e307]:
+    - heading "탄성 설계 검토" [level=2] [ref=e308]
+    - paragraph [ref=e309]: 기존 케이스를 명시적으로 실행하고, 완료된 정적·P–Delta 조합을 골라 예비 설계 검토를 수행합니다. 조합마다 검토할 기록을 하나만 선택하세요. 최종 설계 승인과는 구분합니다.
+    - textbox "실행할 해석 케이스 ID" [ref=e310]
+    - button "선택 케이스 실행" [ref=e311] [cursor=pointer]
+    - button "완료 기록 새로고침" [ref=e312] [cursor=pointer]
+    - paragraph [ref=e314]: 현재 입력에 맞는 완료 정적 조합이 없습니다. 설계 입력 변경에서 조합 ID가 지정된 정적 케이스를 만들고 실행하세요.
+    - button "설계 검토 실행" [ref=e315] [cursor=pointer]
+    - button "설계 검토 취소" [disabled] [ref=e316]
+    - button "검토 결과 조회" [disabled] [ref=e317]
+    - button "보고서 생성" [disabled] [ref=e318]
+    - generic [ref=e319]:
+      - heading "실제 상세 검토 · 배근 후보 · 도면" [level=3] [ref=e320]
+      - button "실행 자원 상태" [ref=e321] [cursor=pointer]
+      - generic [ref=e322]: 함께 보완할 접합부·기초 조건 (선택)
+      - textbox "연결 접합부·기초 후보 조건 JSON" [ref=e323]:
+        - /placeholder: "[{\"connectionId\":\"J1\",\"detailCandidates\":[{\"tieSpacing\":100}]}]"
+      - generic [ref=e324]: 구간별 후보 허용 조건 (선택, 공통 조건보다 우선)
+      - textbox "구간별 후보 허용 조건 JSON" [ref=e325]:
+        - /placeholder: "[{\"detailId\":\"R1\",\"tieClosureCorners\":[\"+y+z\",\"-y-z\"],\"tieClosureSeparations\":[0.02,0.03],\"closureBarFits\":[\"preserve\",\"contact\"],\"crossTieCageFits\":[\"preserve\",\"separate\"],\"perimeterYCounts\":[3,4],\"perimeterZCounts\":[3,4],\"crossTieLayerSteps\":[0.012,0.015],\"spacings\":[80,100],\"tieFirstStarts\":[0.02],\"tieFirstEnds\":[0.02],\"layersPerFace\":[1,2],\"layerClearSpacings\":[0.04]},{\"detailId\":\"R2\",\"diameters\":[20,25]}]"
+      - paragraph [ref=e326]: 부재 후보는 해당 부재의 모든 배근 구간을 함께 검토합니다. 지정한 조건은 모든 구간에 적용하고, 생략한 피복·간격은 구간별로 유지합니다. 잠긴 구간이 있으면 변경하지 않습니다.
+      - button "KDS 지원 범위·출처 확인" [ref=e327] [cursor=pointer]
+      - paragraph [ref=e328]: 등록한 배근·접합·기초를 선택 조합으로 검토합니다. 계산가정을 입력해도 미확정 기준이나 누락 검토는 합격으로 바뀌지 않습니다.
+      - group [ref=e329]:
+        - generic "명시적 단면 계산가정 입력 - KDS 적합 판정과 별도" [ref=e330]
+      - group [ref=e331]:
+        - generic "이음 탄성 전달 계산" [ref=e332]
+        - 'option "KDS22-ST-01: 1.4D" [selected]'
+        - 'option "KDS22-ST-02: 1.2D + 1.6L"'
+        - 'option "SLS1: Service D + L"'
+      - generic [ref=e333]:
+        - heading "이음 해석 결과로 상세 검토" [level=4] [ref=e334]
+        - paragraph [ref=e335]: 응력·프레임 수렴과 탄성범위가 확인된 조합을 선택하세요. 평가 결과에는 해석 방법의 미검증 자격과 미완료 검토가 유지됩니다.
+        - button "이음 해석 조합 새로고침" [ref=e336] [cursor=pointer]
+        - paragraph [ref=e338]: 보관된 이음 해석 결과가 없습니다. 원본 모델 해석을 먼저 실행하세요.
+        - button "선택한 이음 조합으로 상세 검토" [disabled] [ref=e339]
+        - button "이음 조합 검토 취소" [disabled] [ref=e340]
+        - status
+      - generic [ref=e341]:
+        - paragraph [ref=e342]: KDS 탄성 2차 강성 모드는 보·기둥 역할과 기둥의 횡방향 지속하중 비율을 설계 입력에서 지정하고 모델의 Direct 해석을 선택해야 합니다. 강도 조합도 선택할 수 있으며 국부 안정 검토 완료를 뜻하지 않습니다.
+        - heading "RC 강성 반복해석" [level=4] [ref=e343]
+        - paragraph [ref=e344]: 유효강성 방식은 무축력·단축 순간 강성과 부착 후 장기 처짐을 계산합니다. 완전균열 탄성 방식은 선택 조합의 축력·양축휨을 계산하며 인장강화는 포함하지 않습니다. 수렴은 KDS 전체 적합성을 뜻하지 않습니다. 공간 분할은 응답 수렴을 확인하며 모델의 direct P-delta 설정을 반영합니다. 지속하중 모드는 재료에 지정한 크리프 유효계수와 선택 입력한 균일 수축 초기변형률을 반영합니다. 재령별 응력이력·이음 미끄럼·독립 방법 검증은 미완료입니다.
+        - combobox "RC 반복해석 강성 방식" [ref=e345]:
+          - option "KDS 유효강성 · 무축력 단축" [selected]
+          - option "완전균열 탄성 · 축력·양축휨"
+          - option "KDS 탄성 2차 강성 · 모델 Direct 설정 필요"
+          - option "최종 재령 · 지정 크리프 유효계수"
+          - option "부착 재령 · 지정 크리프 유효계수"
+        - combobox "RC 반복해석 조합" [ref=e346]
+        - combobox "저장된 RC 반복해석" [ref=e347]:
+          - option "저장된 결과 선택" [selected]
+        - button "RC 강성 반복해석" [disabled] [ref=e348]
+        - button "반복해석 취소" [disabled] [ref=e349]
+        - button "반복 결과로 상세 검토" [disabled] [ref=e350]
+        - button "반복 결과 해제" [disabled] [ref=e351]
+        - paragraph [ref=e352]: "완전균열 탄성 결과의 철근력 조회: 조합 ID(한 조합이면 생략)와 단면 번호(1부터)를 입력하세요. 완전 부착을 가정한 철근력이며 이음 미끄럼은 반영하지 않습니다."
+        - textbox "철근력 조회 조합 ID" [ref=e353]
+        - spinbutton "철근력 조회 단면 번호" [ref=e354]: "1"
+        - button "반복 결과 철근력 조회" [disabled] [ref=e355]
+        - button "다음 철근력" [disabled] [ref=e356]
+        - button "반복 조합·결과 새로고침" [ref=e358] [cursor=pointer]
+        - status
+        - generic [ref=e359]:
+          - heading "부착 후 축변형·양방향 처짐" [level=4] [ref=e360]
+          - paragraph [ref=e361]: 동일한 지속하중과 동일 타설 재령을 가정한 부착/최종 유효탄성 해석 결과를 선택합니다. 허용변위는 부재 로컬 u(축), v, w 방향의 검토 기준이며 단위는 m입니다. KDS 한계값 자동 산정이나 추가 활하중 검토를 뜻하지 않습니다.
+          - generic [ref=e362]:
+            - text: 부착 재령 해석 결과
+            - combobox "부착 재령 해석 결과" [ref=e363]:
+              - option "결과 선택" [selected]
+          - generic [ref=e364]:
+            - text: 최종 재령 해석 결과
+            - combobox "최종 재령 해석 결과" [ref=e365]:
+              - option "결과 선택" [selected]
+          - generic [ref=e366]:
+            - text: 검토 부재 ID
+            - textbox "검토 부재 ID" [ref=e367]
+          - generic [ref=e368]:
+            - text: 동일 지속하중 조합 ID
+            - textbox "동일 지속하중 조합 ID" [ref=e369]
+          - generic [ref=e370]:
+            - text: 부착 재령 (일)
+            - spinbutton "부착 재령 (일)" [ref=e371]
+          - generic [ref=e372]:
+            - text: 최종 재령 (일)
+            - spinbutton "최종 재령 (일)" [ref=e373]
+          - generic [ref=e374]:
+            - text: 상대변형 기준
+            - combobox "상대변형 기준" [ref=e375]:
+              - option "양 끝 연결선" [selected]
+              - option "시작 절점 고정 캔틸레버"
+              - option "끝 절점 고정 캔틸레버"
+          - generic [ref=e376]:
+            - text: u축 허용변위 (m, 미검토 축은 비움)
+            - spinbutton "u축 허용변위 (m, 미검토 축은 비움)" [ref=e377]
+          - generic [ref=e378]:
+            - text: v축 허용변위 (m, 미검토 축은 비움)
+            - spinbutton "v축 허용변위 (m, 미검토 축은 비움)" [ref=e379]
+          - generic [ref=e380]:
+            - text: w축 허용변위 (m, 미검토 축은 비움)
+            - spinbutton "w축 허용변위 (m, 미검토 축은 비움)" [ref=e381]
+          - generic [ref=e382]:
+            - text: 허용변위 산정·검토 근거
+            - textbox "허용변위 산정·검토 근거" [ref=e383]
+          - button "부착·최종 결과 목록 갱신" [ref=e384] [cursor=pointer]
+          - button "부착 후 변형 판정" [ref=e385] [cursor=pointer]
+      - button "제공 상세 검토" [ref=e387] [cursor=pointer]
+      - combobox "저장된 상세 검토" [ref=e388]
+      - button "저장된 상세 검토 목록 새로고침" [ref=e389] [cursor=pointer]
+      - button "선택한 상세 검토 불러오기" [ref=e390] [cursor=pointer]
+      - button "상세 검토 취소" [ref=e391] [cursor=pointer]
+      - generic [ref=e392]:
+        - text: 검사 상태
+        - combobox "검사 필터 검사 상태" [ref=e393]:
+          - option "모든 상태" [selected]
+          - option "OK"
+          - option "NG"
+          - option "미검토"
+          - option "비대상"
+          - option "실패"
+      - generic [ref=e394]:
+        - text: 대상 ID
+        - textbox "검사 필터 대상 ID" [ref=e395]
+      - generic [ref=e396]:
+        - text: 조합 ID
+        - textbox "검사 필터 조합 ID" [ref=e397]
+      - generic [ref=e398]:
+        - text: 검사 종류
+        - textbox "검사 필터 검사 종류" [ref=e399]
+      - generic [ref=e400]:
+        - text: 미검토·실패 사유 코드
+        - textbox "검사 필터 미검토·실패 사유 코드" [ref=e401]
+      - button "검사 필터 적용" [ref=e402] [cursor=pointer]
+      - button "검사 필터 해제" [ref=e403] [cursor=pointer]
+      - button "상세 결과 새로고침" [ref=e404] [cursor=pointer]
+      - button "이전 검사" [ref=e405] [cursor=pointer]
+      - button "다음 검사" [ref=e406] [cursor=pointer]
+      - combobox "후보 대상 종류" [ref=e407]:
+        - option "부재 배근" [selected]
+        - option "독립기초"
+        - option "접합 구속"
+      - generic [ref=e408]:
+        - text: 기초 후보 BxLx두께 (m, 쉼표 구분)
+        - textbox "기초 후보 BxLx두께 (m)" [ref=e409]
+      - generic [ref=e410]:
+        - text: 기초 철근 분배 후보
+        - combobox "기초 철근 분배 후보" [ref=e411]:
+          - option "현재 배치 유지" [selected]
+          - option "균등"
+          - option "KDS 중앙 유효폭"
+      - generic [ref=e412]:
+        - text: 후보 대상 ID
+        - textbox "후보 대상 ID" [ref=e413]
+      - generic [ref=e414]:
+        - text: 허용 스터럽 간격 (mm, 쉼표 구분)
+        - textbox "허용 스터럽 간격" [ref=e415]: 150, 100, 75
+      - generic [ref=e416]:
+        - text: 상·하단 각 층의 주근 개수 후보 (쉼표 구분, 선택)
+        - textbox "각 면의 층당 주근 개수 후보" [ref=e417]
+      - generic [ref=e418]:
+        - text: 허용 피복 후보 (m, 쉼표 구분, 선택)
+        - textbox "허용 피복 후보" [ref=e419]
+      - generic [ref=e420]:
+        - text: 허용 단면 BxH (mm, 쉼표 구분, 선택)
+        - textbox "허용 단면 후보" [ref=e421]
+      - button "프로젝트 적용 범위·하중 검토 상태" [ref=e422] [cursor=pointer]
+      - button "허용 조건으로 후보 찾기" [ref=e423] [cursor=pointer]
+      - button "계산 요구량으로 자동 후보" [ref=e424] [cursor=pointer]
+      - paragraph [ref=e425]: 자동 후보는 현재 검토 결과와 저장된 배근·기초 정보를 사용합니다.
+      - status
+      - button "남은 후보 이어서 검토" [ref=e426] [cursor=pointer]
+      - button "후보 탐색 취소" [ref=e427] [cursor=pointer]
+      - combobox "배근 후보 선택" [ref=e428]
+      - button "후보 조건·수량 상세 보기" [ref=e429] [cursor=pointer]
+      - button "선택 후보 KDS 근거" [ref=e430] [cursor=pointer]
+      - button "다음 KDS 근거" [ref=e431] [cursor=pointer]
+      - status
+      - button "선택 후보 적용·재해석·검토" [ref=e432] [cursor=pointer]
+      - button "선택 후보 적용" [ref=e433] [cursor=pointer]
+      - button "해석 재사용 후 재검토" [ref=e434] [cursor=pointer]
+      - generic [ref=e435]: PDF 권 번호 (권당 최대 60쪽)
+      - spinbutton "PDF 권 번호" [ref=e436]: "1"
+      - paragraph [ref=e437]: 보관된 출력 파일 · 메모리에서 해제해도 다운로드한 파일은 유지됩니다.
+      - combobox "보관된 출력 파일" [ref=e438]
+      - button "보관 파일 목록 새로고침" [ref=e439] [cursor=pointer]
+      - button "선택 파일 메모리 해제" [ref=e440] [cursor=pointer]
+      - status
+      - button "상세 PDF 저장" [ref=e441] [cursor=pointer]
+      - button "상세 PDF 전권 ZIP 저장" [ref=e442] [cursor=pointer]
+      - button "상세 SVG 저장" [ref=e443] [cursor=pointer]
+      - button "상세 JSON 저장" [ref=e444] [cursor=pointer]
+      - button "상세 CSV 저장" [ref=e445] [cursor=pointer]
+      - button "도면 출력 취소" [ref=e446] [cursor=pointer]
+      - status
+    - button "닫기" [ref=e447] [cursor=pointer]
+    - status
+    - paragraph

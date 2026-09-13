@@ -1,0 +1,101 @@
+{
+  "scope": "focused changes only; synthetic fixtures; no real building",
+  "tests": [
+    {
+      "file": "tests/p24-m3-code-basis.mjs",
+      "exitCode": 0,
+      "seconds": 0.097
+    },
+    {
+      "file": "tests/p24-m3-direct-source.mjs",
+      "exitCode": 0,
+      "seconds": 0.055
+    },
+    {
+      "file": "tests/p24-m4-kds-strength.mjs",
+      "exitCode": 0,
+      "seconds": 0.078
+    },
+    {
+      "file": "tests/p24-m4-kds-shear.mjs",
+      "exitCode": 0,
+      "seconds": 0.068
+    },
+    {
+      "file": "tests/p24-m4-provided.mjs",
+      "exitCode": 0,
+      "seconds": 0.235
+    },
+    {
+      "file": "tests/p24-m6-kds-joint.mjs",
+      "exitCode": 0,
+      "seconds": 0.141
+    },
+    {
+      "file": "tests/p24-m7-kds-punching.mjs",
+      "exitCode": 0,
+      "seconds": 0.136
+    },
+    {
+      "file": "tests/p24-m8-fabrication.mjs",
+      "exitCode": 0,
+      "seconds": 0.057
+    },
+    {
+      "file": "tests/p24-m8-drawings.mjs",
+      "exitCode": 0,
+      "seconds": 0.178
+    },
+    {
+      "file": "tests/p24-m0-scope.mjs",
+      "method": null,
+      "exitCode": 0,
+      "seconds": 0.768
+    },
+    {
+      "file": "tests/p24-m1-details-input.mjs",
+      "method": null,
+      "exitCode": 0,
+      "seconds": 1.215
+    },
+    {
+      "file": "tests/p24-m5-section-candidates.mjs",
+      "method": "off",
+      "exitCode": 0,
+      "seconds": 1.7
+    },
+    {
+      "file": "tests/p24-m5-section-candidates.mjs",
+      "method": "direct",
+      "exitCode": 0,
+      "seconds": 2.03
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "method": "direct",
+      "exitCode": 0,
+      "seconds": 3.007
+    },
+    {
+      "file": "tests/p24-m4-kds-service.mjs",
+      "exitCode": 0,
+      "seconds": 0.171
+    },
+    {
+      "file": "tests/p19-m3-design-workflow.mjs",
+      "exitCode": 0,
+      "seconds": 5.604
+    },
+    {
+      "file": "tests/p19-m4-webmcp-workflow.mjs",
+      "exitCode": 0,
+      "seconds": 3.743
+    },
+    {
+      "file": "tests/p24-m0-kcsc-sources.mjs",
+      "exitCode": 0,
+      "seconds": 0.074
+    }
+  ],
+  "totalSeconds": 19.357
+}

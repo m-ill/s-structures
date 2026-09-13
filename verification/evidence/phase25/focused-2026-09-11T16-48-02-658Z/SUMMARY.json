@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4db3971c9f6f6b1e59ea8c553013910b3e4f9ff9319a41188ef2c3d4030bb880",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:48:02.907Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-bent-bar-path-3d.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "e595dfed9d57891b90b86f88d8b995fb9a7acf2bbb887aa242e13c9d70d00cd1",
+      "error": null
+    }
+  ]
+}

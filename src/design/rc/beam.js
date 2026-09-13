@@ -14,7 +14,7 @@ export function detailRcBeam(check = {}, options = {}) {
   const serviceRatio = serviceabilityRatio(check, options);
   const torsion = torsionCheck(check, options);
   const widthMm = Math.round((section.bz || section.b || 0.3) * 1000);
-  const status = worstStatus([check.status, serviceRatio.status, torsion.status, spacingCheck(bottom, widthMm).status]);
+  const status = worstStatus([check.status||'NOT_CHECKED',stirrup.status, serviceRatio.status, torsion.status, spacingCheck(bottom, widthMm).status]);
   return {
     version: RC_BEAM_DETAIL_VERSION,
     contract: {
@@ -28,8 +28,8 @@ export function detailRcBeam(check = {}, options = {}) {
     status,
     utilization: check.utilization || 0,
     summary: {
-      flexureStatus: check.status || 'OK',
-      shearStatus: stirrup.status || 'OK',
+      flexureStatus: check.status || 'NOT_CHECKED',
+      shearStatus: stirrup.status || 'NOT_CHECKED',
       torsionStatus: torsion.status,
       serviceabilityStatus: serviceRatio.status,
       bottomBarLabel: bottom.label,
@@ -45,8 +45,7 @@ export function detailRcBeam(check = {}, options = {}) {
 }
 
 function serviceabilityRatio(check, options) {
-  const ratio = Math.min(1.5, Math.max(0, (check.utilization || 0) * (options.serviceFactor || 0.7)));
-  return { ratio, status: ratio > 1 ? 'NG' : ratio > 0.8 ? 'WARN' : 'OK', formulaId: 'KDS-RC-BEAM-SERVICE-V1' };
+  return {ratio:null,status:'NOT_CHECKED',reason:'CRACKED_STIFFNESS_SUSTAINED_LOAD_AND_SERVICE_CRITERIA_REQUIRED'};
 }
 
 function torsionCheck(check, options) {
@@ -56,6 +55,7 @@ function torsionCheck(check, options) {
 
 function worstStatus(values) {
   if (values.includes('NG')) return 'NG';
+  if (values.includes('NOT_CHECKED')) return 'NOT_CHECKED';
   if (values.includes('WARN')) return 'WARN';
   return 'OK';
 }

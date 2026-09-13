@@ -1,0 +1,17 @@
+{
+  "sourceHash": "be4d7d2b56e4e8631eedf830fc4ace781d9e1b341d6cc779670da2d7f6fea4b5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:46:25.494Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 169,
+      "sha256": "f13573d99ba089dfbfc91f253b05acbcd14b8706c1528312b6a010ed482a7f6e",
+      "error": null
+    }
+  ]
+}

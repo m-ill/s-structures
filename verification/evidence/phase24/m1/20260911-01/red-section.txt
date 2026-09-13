@@ -1,0 +1,19 @@
+file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:197
+function fail(code, message) { throw Object.assign(new Error(message), { code }); }
+                                                   ^
+
+Error: Invalid typed input: input.commands[0]
+    at fail (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:197:52)
+    at validate (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:199:132)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:200:183
+    at Array.forEach (<anonymous>)
+    at validate (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:200:165)
+    at validate (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:209:7)
+    at Object.execute (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:84:9)
+    at Object.call (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/fixtures/p24/context.js:15:19)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m1-section-input.mjs:8:24
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25) {
+  code: 'INVALID_INPUT'
+}
+
+Node.js v24.16.0

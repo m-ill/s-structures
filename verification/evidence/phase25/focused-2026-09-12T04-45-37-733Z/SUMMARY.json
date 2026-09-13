@@ -1,0 +1,17 @@
+{
+  "sourceHash": "42b2b7e3e7cc31a693b6a420cb6eead4f21d91f6d64b3ce9d9b89111d449b47e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:45:38.063Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-cross-tie-support.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 53,
+      "sha256": "29e69de396595a730b59b89b8505d7bf70ee1f28ef8de569372f657bafe1ae78",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a899bcf968e338ef7d201640b738a40cb86ff8b510275c5b17b43c5bebd0f2f4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:16:59.682Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-webmcp-end-collision.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1538,
+      "sha256": "146524da9ceb766465147e2f3a7b1f74bf2eef04e9181c4daddbd63b2855c0d9",
+      "error": null
+    }
+  ]
+}

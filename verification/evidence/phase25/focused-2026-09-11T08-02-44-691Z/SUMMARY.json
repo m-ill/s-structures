@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T08:02:50.757Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3741,
+      "sha256": "4a09e7269f48e70d86f48c7eb77e43cb1d95ae9b86b666cf7edb85f9f2f59939",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2122,
+      "sha256": "11e576f0e793673414c57ad3166b57d19688b72a6e795bfa2f2bb570988523c8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-pagination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 196,
+      "sha256": "45797056d82feeb09999fbd1f17d9c3c907648d6f855fa477793ee9304e5f718",
+      "error": null
+    }
+  ]
+}

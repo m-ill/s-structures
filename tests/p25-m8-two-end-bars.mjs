@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {buildBarFabrication} from '../src/report/phase24/barFabrication.js';
+const detail={cover:.04,endSetbackStart:.04,endSetbackEnd:.04,startFabricationShape:'L90',endFabricationShape:'L90',startBendInsideRadius:.06,endBendInsideRadius:.06,startHookTailLength:.24,endHookTailLength:.24};
+const bar={diameter:.02,y:-.2};
+const r=buildBarFabrication(detail,bar,{length:3,H:.6});
+assert.ok(r.cutLength>0,JSON.stringify(r));assert.equal(r.shape,'L90-L90');
+assert.ok(Math.abs(r.cutLength-(2*(1.5-.04-.01-.07+Math.PI/2*.07+.24)))<1e-12);
+assert.ok(r.points[0][0]<r.points.at(-1)[0]);
+assert.equal(r.ends.start.shape,'L90');assert.equal(r.ends.end.shape,'L90');
+assert.equal(buildBarFabrication({...detail,startHookTailLength:.01},bar,{length:3,H:.6}).cutLength,null);
+assert.equal(buildBarFabrication({...detail,startFabricationShape:'straight',endFabricationShape:'straight'},bar,{length:3,H:.6}).cutLength,2.92);
+const extension=buildBarFabrication({...detail,startExtension:.29},bar,{length:3,H:.6});
+assert.ok(Math.abs(extension.cutLength-r.cutLength-.29)<1e-10);
+assert.ok(Math.min(...extension.ends.start.bendPoints.map(p=>p[0]))<0);
+console.log('PASS two-end bar centerline length, end trace and invalid hook');

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4ac66b095f0648a35672504b44d8b066f9252f937664318d0827f568b534fd86",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:25:02.396Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-differential-settlement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9237,
+      "sha256": "a2a869ccc65975968707e60a81a25abc3c178948f79138369102071d59611bee",
+      "error": null
+    }
+  ]
+}

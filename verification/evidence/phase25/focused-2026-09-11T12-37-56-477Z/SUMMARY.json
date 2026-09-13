@@ -1,0 +1,33 @@
+{
+  "sourceHash": "2b60debac932ba1a0ef917f9391b9b83e7675ac2e08ddac5d6e4272beab50caf",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:38:00.954Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-torsion-hooks.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "454c713dcea988c0a02b165882f936f9185e058cef8051e468e11a50f110498b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-hooks.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1993,
+      "sha256": "1a15edbe538bb701b7fe513ea2b80f26743f67c0103a97f79870b79b8394eff9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-anchorage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2198,
+      "sha256": "79189d51d4ed2d9aed45a436bf523cc091c407580ddbdd7753949b0c1b44ef40",
+      "error": null
+    }
+  ]
+}

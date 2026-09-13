@@ -1,0 +1,24 @@
+import {jointHoopSpacingProposal} from '../src/compute/product/jointHoopSpacingProposal.js';
+import assert from 'node:assert/strict';
+import {jointCrossTiePlaneProposal} from '../src/compute/product/jointCrossTiePlaneProposal.js';
+import {outerHoopClosure} from '../src/design/rc/outerHoopClosure.js';
+import {crossTieGeometry} from '../src/design/rc/crossTieGeometry.js';
+import {spatialHoopCrossTieAssembly} from '../src/design/rc/spatialHoopCrossTieAssembly.js';
+import {validJointHookSides} from '../src/design/connection/jointBarPairs.js';
+const q=.13+.01/Math.sqrt(2),bars=[[-q,-q],[-.14,0],[-q,q],[0,.14],[q,q],[.14,0],[q,-q],[0,-.14]].map(([y,z])=>({y,z,diameter:.02}));
+const model={members:[{id:'C',n1:'A',n2:'N',secId:'S@1'}],sections:[{id:'S',version:1,shape:'RECT',params:{B:400,H:400}}],designDetails:{reinforcement:[{id:'R',version:1,memberId:'C',bars}]}};
+const command={nodeId:'N',memberIds:['C'],columnMemberId:'C',jointTieClosure:'seismic-135',jointHoopForm:'closed-rectangular-two-leg',jointPanelHeight:.6,jointCover:.04,tieDiameter:10,tieSpacing:200,jointBendInsideRadius:.02,jointHookTail:.075,jointClosureCorner:'+y+z',jointClosureSeparation:.03,jointFirstStart:.1,jointFirstEnd:.1,jointCrossTieBarPairs:['2:6','4:8'],jointCrossTieHookSides:['left','left'],jointCrossTiePlaneOffsets:['0','0']};
+const rows=[{columnDetailId:'R',columnDetailVersion:1}],checks=[{entityId:'joint:N',checkId:'joint-hoop-detail',spatialClosure:{crossTieAssembly:{status:'NG'}}}];
+const before=structuredClone(command),p=jointCrossTiePlaneProposal(command,rows,checks,model);assert.equal(p.ok,true,JSON.stringify(p));assert.deepEqual(command,before);
+const c={...command,...p.edit},detail={bars,cover:.04,start:0,end:1,stirrups:{diameter:.01,spacing:.2},tieClosure:'standard-135',tieClosureCorner:'+y+z',tieClosureSeparation:.03,tieBendInsideRadius:.02,tieHookTail:.075,tieFirstStart:.1,tieFirstEnd:.1,crossTieBarPairs:c.jointCrossTieBarPairs,crossTieHookSides:c.jointCrossTieHookSides,crossTiePlaneOffsets:c.jointCrossTiePlaneOffsets};
+const prepared={stirrupDistribution:{status:'OK',count:3,spacing:.2,first:.1,last:.5,explicitEnds:true},outerHoop:{closureGeometry:outerHoopClosure(detail,{B:.4,H:.4})},crossTies:crossTieGeometry(detail,{B:.4,H:.4,length:.6})};
+assert.equal(spatialHoopCrossTieAssembly(detail,prepared).status,'OK');
+assert.equal(p.automaticApplicationAllowed,false);assert.ok(p.planeTrials<=20);assert.ok(p.orientationTrials<=4);
+assert.equal(jointCrossTiePlaneProposal(command,rows,checks,model,{tieSpacing:25,jointFirstStart:.0125,jointFirstEnd:.0125}).reason,'CROSS_TIE_FIT_NO_SEPARATED_PLANE');
+assert.equal(jointCrossTiePlaneProposal(command,rows,[],model).reason,'NO_JOINT_CROSS_TIE_PLANE_CHANGE_REQUIRED');
+assert.equal(validJointHookSides(['left','right']),true);assert.equal(validJointHookSides(['up']),false);
+console.log('PASS bounded joint plane fit, actual hoop clearance, infeasible envelope and preservation');
+
+const tight={...command,connectionType:'rc-joint',tieSpacing:25,jointFirstStart:.0125,jointFirstEnd:.0125};
+const infeasible=jointHoopSpacingProposal(tight,[{...rows[0],id:'Q',entityId:'joint:N',checkId:'joint-confinement',status:'NG',spacing:.025,spacingRepairLimit:.025},...checks],model);
+assert.equal(infeasible.reason,'CROSS_TIE_FIT_NO_SEPARATED_PLANE');

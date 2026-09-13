@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f49414bfa2cdc0f73ca58f0b81b2b3998e5d31fe7e16ddaa3c1c599d4f7b292f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:19:58.566Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-footing-depth.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 94,
+      "sha256": "c622080789c402e89bcf6ce1a23cad7cd6289d36802870d332180e830c9ce2ab",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-auto-proposal-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 212,
+      "sha256": "17a203b5d8b51e7291456af326185f6f7b37e1bb74dbb8f50bb501baf1a15ff9",
+      "error": null
+    }
+  ]
+}

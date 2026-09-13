@@ -1,0 +1,17 @@
+{
+  "sourceHash": "2afb22df7ca3a8af9f391eab7b8a89bf95ae44cf84d37bcc851f666e411de5c1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:23:13.195Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 847,
+      "sha256": "0d7087763d28501135694dc0f0b191a7e32c6bb27ba6fa549141d9195b06b13a",
+      "error": null
+    }
+  ]
+}

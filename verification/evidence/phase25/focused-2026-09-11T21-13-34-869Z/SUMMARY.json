@@ -1,0 +1,41 @@
+{
+  "sourceHash": "ae0de0ccee48f49ff50537d750223bb0a8689bcc32ac20d5100b63953139cabe",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:13:47.353Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-rc-bar-forces-ui.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 56,
+      "sha256": "83c9394cff21310c84bfdc51c2594a31895994d9724d4d82e23cdbb2cae924ec",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4733,
+      "sha256": "d7678f4a0fa4569dafc35faa25e70c6ec751fde5a8d5b4d4bb8bccf7214d1031",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-working-set.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 168,
+      "sha256": "78c2c9ec0d51f00f7732dd860f8a7d07fd5c90fa429226cd9bc30920c9a47594",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7319,
+      "sha256": "30a381cb8d6d137a00990a68bf4c011717196fcb07a349439a11007b70527c7a",
+      "error": null
+    }
+  ]
+}

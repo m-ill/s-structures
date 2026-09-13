@@ -1,0 +1,17 @@
+{
+  "sourceHash": "20cbcb9297c88ae7e301f2324ec3800432e21d58e6c177d67c31f1a317d9d92c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:45:41.070Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-remaining-repairs.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 73,
+      "sha256": "fa95681f45b6e6f2ad55889af6a7f91b5cbc59a0ef20d07856ce85a4b9dfd177",
+      "error": null
+    }
+  ]
+}

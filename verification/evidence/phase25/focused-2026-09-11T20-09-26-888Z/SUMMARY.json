@@ -1,0 +1,41 @@
+{
+  "sourceHash": "33d27145650d5f8adab34977d43dc2297996804ace79456f315dce59319d6425",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T20:09:44.499Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-spatial-convergence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "27eadbdfece73e2956784b4ac63db3e42b9e07d1dd7d17da2e49705b74924833",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-coupled-policy.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7522,
+      "sha256": "a0362c0a88014ae0cd4ef4460c9e8a099a22bd16bb2fe49a5a5dfe413df51931",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 131,
+      "sha256": "764981d6b88125237525b0014d23bf68e987db0c2137b937e7e2de0213b2ee92",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-service-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9703,
+      "sha256": "5ad4d25086df3b324805c251de96189197ddc003027225aa0244d6645a088bad",
+      "error": null
+    }
+  ]
+}

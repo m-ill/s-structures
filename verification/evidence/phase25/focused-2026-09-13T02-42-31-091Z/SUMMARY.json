@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7be719bfb287ff196007e3e5d12ac68a685865804761b4869da37045e23aa5cd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:42:44.706Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 7630,
+      "sha256": "a648aeac5f60f38be3ea79102bad52dcc25632a17e543a8e1300d22a56975824",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5711,
+      "sha256": "6082ff38c8ae49ed2def518e111287d31a6cfbd78815a5f60c9fa85f19ba70b4",
+      "error": null
+    }
+  ]
+}

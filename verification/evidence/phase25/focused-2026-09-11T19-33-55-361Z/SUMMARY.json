@@ -1,0 +1,17 @@
+{
+  "sourceHash": "40d85c81850616c00ac5b83cb69f1023561fa1bb4e6ece1c2a6fefc51ef796a6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:33:55.718Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 129,
+      "sha256": "151109e3dceece035e675ee884f1e620a2207f389610992db6a57fa53672df32",
+      "error": null
+    }
+  ]
+}

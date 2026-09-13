@@ -1,0 +1,41 @@
+{
+  "sourceHash": "2ab8a32d16fc06fa308602f28a1f90a5f8323f27a951ce3dffd08efc432e9e30",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:23:56.382Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-offset-stations.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 227,
+      "sha256": "427058527ea91cda9f49b4ea77ceaa9a7d8a3d6526d12351ef3eed0c362f9460",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9751,
+      "sha256": "e7a1c7c2eed455f2ed29f843514904c8ce6e186a92cf5bd7ea64520f8dea1512",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1248,
+      "sha256": "4bcfeb6e83b7cbb41eae080e6d373160022062549219081846368d02f43f3fd3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 279,
+      "sha256": "6719a7618c20bedb33e594b38379eee5925e7ac3f9120afc9a7a806edbb382df",
+      "error": null
+    }
+  ]
+}

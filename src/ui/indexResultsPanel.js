@@ -1,3 +1,4 @@
+import {selectRcMemberResults} from '../results/designResultSelection.js';
 import { buildDesignWorkflow, renderDesignWorkflowMarkup } from './indexDesignWorkflow.js';
 import { equivalentShellBadge } from '../results/equivalentShellScope.js';
 
@@ -262,6 +263,7 @@ function renderPDelta(pDelta) {
         formatForce(row.maxPDeltaShear),
         formatMoment(row.maxPDeltaMoment),
         statusPill(row.status),
+        row.incompleteCheckCount,
       ]), { rawColumns: new Set([7]) })}
       <h4>Story Stability Table</h4>
       ${renderTable(['Combo', 'Dir', 'Story', 'P', 'Drift', 'V', 'PΔ shear', 'theta', 'BΔ'], pDelta.design.storyRows.slice(0, 12).map((row) => [
@@ -325,12 +327,13 @@ function renderDesign(design) {
       </div>
       ${renderDesignWorkflowMarkup(design.workflow)}
       ${renderUtilizationBars(design.rows)}
-      ${renderTable(['Member', 'Type', 'Ratio', 'Check', 'Status'], design.rows.map((row) => [
+      ${renderTable(['Member', 'Type', 'Ratio', 'Check', 'Status', 'Unreviewed'], design.rows.map((row) => [
         row.memberId,
         row.type,
         formatRatio(row.utilization),
         row.check,
         statusPill(row.status),
+        row.incompleteCheckCount,
       ]), { rawColumns: new Set([4]) })}
     </div>
   `;
@@ -426,7 +429,7 @@ function renderUtilizationBars(rows) {
     return `<div class="sse-bar ${statusClass(row.status)}">
       <span>${escapeHtml(row.memberId)}</span>
       <i style="width:${width}%"></i>
-      <b>${escapeHtml(formatRatio(ratio))}</b>
+      <b>${escapeHtml(formatRatio(row.utilization))}</b>
     </div>`;
   }).join('')}</div>`;
 }
@@ -536,7 +539,7 @@ function buildDesignView(model, analysis) {
   for (const check of Object.values(analysis?.design?.steel?.memberResults || {})) {
     rows.push(designRow(check, 'Steel'));
   }
-  for (const check of Object.values(analysis?.design?.concrete?.memberResults || {})) {
+  for (const check of Object.values(selectRcMemberResults(analysis))) {
     rows.push(designRow(check, 'RC'));
   }
   rows.sort((a, b) => b.utilization - a.utilization);
@@ -554,7 +557,10 @@ function designRow(check, type) {
   return {
     memberId: check.memberId || '-',
     type,
-    utilization: Number(check.utilization) || 0,
+    incomplete:check.incomplete===true,
+    incompleteCheckCount:check.incompleteCheckCount??0,
+    basis:check.basis??'legacy-preliminary',
+    utilization: Number.isFinite(check.utilization)?check.utilization:null,
     check: check.governingCheck || '-',
     status: check.status || (check.ok ? 'OK' : 'Check'),
   };
@@ -624,7 +630,7 @@ function format(value, digits = 3) {
 }
 
 function formatRatio(value) {
-  return format(value, 3);
+  return value===null||value===undefined?'-':format(value, 3);
 }
 
 function formatForce(value) {

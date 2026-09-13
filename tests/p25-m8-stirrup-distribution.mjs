@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {stirrupDistribution} from '../src/design/rc/stirrupDistribution.js';
+const detail={end:1,tieFirstStart:.05,tieFirstEnd:.05,stirrups:{spacing:.3}};
+const r=stirrupDistribution(detail,1);
+assert.equal(r.status,'OK');assert.equal(r.count,4);assert.deepEqual(r.positions,[.05,.35,.65,.95]);
+const fractional=stirrupDistribution({...detail,tieFirstEnd:.1},1);
+assert.equal(fractional.count,4);assert.equal(fractional.last,.9);
+const shared=stirrupDistribution({...detail,end:.5,tieFirstStart:0,tieFirstEnd:0,stirrups:{spacing:.25}},1);
+assert.equal(shared.count,4);assert.equal(shared.last,.75);
+assert.equal(stirrupDistribution({...detail,tieFirstEnd:undefined},1).status,'NOT_CHECKED');
+assert.equal(stirrupDistribution({...detail,tieFirstEnd:2},1).status,'NG');
+const long=stirrupDistribution(detail,1000);assert.equal(long.positions,null);assert.ok(Math.abs(long.last-999.95)<1e-9);assert.ok(long.count>200);
+const legacy=stirrupDistribution({end:1,stirrups:{spacing:.3}},1);assert.equal(legacy.count,4);assert.equal(legacy.explicitEnds,false);
+console.log('PASS shared stirrup endpoints, shortened final gap, region ownership, missing input and bounded arrays');

@@ -1,0 +1,31 @@
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+const ctx=designContext(),m=ctx.model;
+try{
+ m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+ m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'V',type:'nodal',node:'B',dir:'-z',P:1,case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',kind:'static',name:'E',status:'not-run',settings:{comboId:'U',pDeltaMethod:'off'}}];
+ const detail={tieClosure:'standard-135',tieHookTail:.02,tieBendInsideRadius:.026,torsionHookCorner:'+y+z',anchorageStandard:'KDS-142052-2024',anchorageMode:'straight-tension',barPosition:'other',barCoating:'uncoated',lapRequired:false,startFabricationShape:'straight',endFabricationShape:'straight',endSetbackStart:.04,endSetbackEnd:.04,anchorageStartCriticalX:0,anchorageEndCriticalX:3,startExtension:1.5,endExtension:.05,type:'reinforcement-record',id:'R',name:'synthetic torsion',version:1,sourceNote:'targeted torsion test',memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',reinforcementForm:'single-deformed',strengthStandard:'KDS-142020-2022',torsionStandard:'KDS-142022-2022',torsionDesignMode:'solid-rectangular-45deg',torsionLongitudinalFraction:.75,concreteWeight:'normal',shearStandard:'KDS-142022-2022',shearScope:'ordinary-prismatic-no-opening',stirrupForm:'closed-rectangular-two-leg',stirrupDiameter:13,stirrupSpacing:80,stirrupLegs:2,bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,diameter:25})))};
+ const preview=await ctx.call('preview_design_changes',{requestId:'torsion-input',inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,commands:[detail,{type:'load',mode:'create',value:{id:'T',type:'nmoment',node:'B',dir:'+x',M:5,case:'D',unit:'kN.m'}}]});assert.equal(preview.ok,true);
+ assert.equal((await ctx.call('apply_design_changes',{requestId:'torsion-apply',handle:preview.handle})).ok,true);
+ assert.equal((await ctx.call('get_design_records',{channel:'reinforcement',id:'R'})).rows[0].torsionLongitudinalFraction,.75);
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'torsion-source'});assert.equal(run.ok,true);
+ const evaluation=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const checks=[];let offset=0;do{const page=await ctx.call('get_practical_design_result',{evaluationId:evaluation.evaluationId,offset});checks.push(...page.checks);offset=page.nextOffset;}while(offset!==null);
+ const torsion=checks.find(c=>c.checkId==='rc-torsion'),strength=checks.find(c=>c.checkId==='rc-section-strength');
+ assert.ok(torsion.requiredAt>0,JSON.stringify(torsion));assert.equal(torsion.strengthStatus,'OK',JSON.stringify(torsion));assert.equal(torsion.status,'NG');assert.equal(torsion.transverseHook.status,'NG');assert.equal(torsion.transverseHook.requiredTail,.078);assert.ok(torsion.transverseHook.codeReferences.some(r=>r.clause==='4.5.3(2)'));assert.equal(torsion.endAnchorage.status,'NG');assert.equal(torsion.endAnchorage.governing.end,'end');assert.ok(torsion.endAnchorage.codeReferences.some(r=>r.clause==='4.5.3(3)'));assert.equal(torsion.codeBasis.status,'NOT_ESTABLISHED');
+ assert.ok(strength.torsionReservedArea>0);assert.equal(strength.torsionAllocationFraction,.75);
+ assert.ok(torsion.locationCoverage.total>0);
+ const shear=checks.find(c=>c.checkId==='rc-shear-y');assert.ok(shear.reservedTorsionAreaPerLeg>0,JSON.stringify(shear));
+ const sources=[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}];
+ const reviewPlan=await ctx.call('plan_design_review',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources});
+ const review=await ctx.call('start_design_review',{handle:reviewPlan.handle,requestId:'torsion-canonical-review'});
+ const summary=await ctx.call('get_design_result',{designRunId:review.designRunId,channel:'summary'});
+ assert.deepEqual(summary.data.practical,evaluation.summary);
+ const report=ctx.bridge.createDesignReviewReport(review.designRunId);assert.equal(report.ok,true,JSON.stringify(report));
+ assert.match(report.reports['ko-KR'].html,/RC 실무 검토 집계/);
+ assert.match(report.reports['en-US'].html,/RC practical review counts/);
+ assert.deepEqual(JSON.parse(report.json).designReview.summary.practical,evaluation.summary);
+ assert.match(report.csv,/practicalSummaryCounts/);
+ const storedReview=ctx.bridge.getDesignReview(review.designRunId);const reviewed=storedReview.result.checks.find(c=>c.id===torsion.id);assert.equal(reviewed.requiredAt,torsion.requiredAt);assert.equal(reviewed.status,torsion.status);assert.deepEqual(reviewed.transverseHook,torsion.transverseHook);
+ console.log('PASS actual WebMCP torsion hook input, short tail NG, KDS references and canonical review parity');
+}finally{await ctx.dispose();}

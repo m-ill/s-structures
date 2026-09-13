@@ -1,4 +1,5 @@
 import { analyzeModel } from './elasticAnalysisWorkflow.js';
+import {assertSupportedRcStiffness} from '../../core/rcStiffnessContract.js';
 import { defaultCombos } from '../../solver/linear3dPost.js';
 import { normalizePDeltaMethod } from '../../solver/pdelta/method.js';
 import { analyzeDynamics } from '../../dynamics/modal.js';
@@ -12,7 +13,7 @@ import {
   runNonlinearAnalysisCaseAsync,
 } from '../../nonlinear/analysisRouter.js';
 
-export const ANALYSIS_CASE_ENGINE_VERSION = 'p9-m9-analysis-case-engine-v1';
+export const ANALYSIS_CASE_ENGINE_VERSION = 'p25-analysis-case-engine-v5-thermal-strain';
 export { normalizePDeltaMethod as normalizeAnalysisPDeltaMethod };
 
 const LINEAR_KINDS = new Set(['static', 'modal', 'responseSpectrum', 'buckling', 'linearTha']);
@@ -22,6 +23,7 @@ export function hasAnalysisCaseEngine(kind, nonlinearKinds = new Set()) {
 }
 
 export function executeAnalysisCase(model, analysisCase, settings, options = {}, nonlinearKinds = new Set()) {
+  if(LINEAR_KINDS.has(analysisCase.kind))assertSupportedRcStiffness(model,analysisCase.settings,settings);
   if (nonlinearKinds.has(analysisCase.kind)) {
     return runNonlinearAnalysisCase(model, analysisCase, settings, options);
   }
@@ -29,6 +31,7 @@ export function executeAnalysisCase(model, analysisCase, settings, options = {},
 }
 
 export async function executeAnalysisCaseAsync(model, analysisCase, settings, options = {}, nonlinearKinds = new Set()) {
+  if(LINEAR_KINDS.has(analysisCase.kind))assertSupportedRcStiffness(model,analysisCase.settings,settings);
   if (nonlinearKinds.has(analysisCase.kind)) {
     return runNonlinearAnalysisCaseAsync(model, analysisCase, settings, options);
   }

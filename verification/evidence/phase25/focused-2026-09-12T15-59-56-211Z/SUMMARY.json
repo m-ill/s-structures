@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7f831658a4e92af41103d60da09ee2348d8a2427e74da114bd3c2e178155e531",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:59:59.555Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-provided-report-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 323,
+      "sha256": "d1e24f9d8a5a40445fc4ec4c31840adc2c7624ad50d9c598a9fb0f1f697e4578",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m0-steel-test-evidence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2775,
+      "sha256": "1dc146f81f7706780d969ce2894bf24666ecac0c4924bd93ce9ef4fc241f3bbf",
+      "error": null
+    }
+  ]
+}

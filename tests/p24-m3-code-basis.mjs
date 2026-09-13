@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {designCodeBasis} from '../src/metadata/designCodeBasis.js';
+import {getKcscRuleSources} from '../src/metadata/kcscRuleSources.js';
+import {formatDesignCodeBasis} from '../src/report/designCodeBasisFormat.js';
+import {practicalCheck} from '../src/design/evaluation/practicalEvaluation.js';
+const ref={...getKcscRuleSources(['142020'])[0],clause:'4.1.1'};
+const applied=designCodeBasis('rc-section-strength',{status:'OK',codeReferences:[ref]});
+assert.equal(applied.status,'CLAUSE_APPLIED');
+for(const token of [ref.code,ref.edition,ref.clause,ref.url,ref.sha256])assert.ok(formatDesignCodeBasis(applied).includes(token));
+const missing=designCodeBasis('steel-flexure',{status:'OK'});
+assert.equal(missing.status,'NOT_ESTABLISHED');assert.ok(formatDesignCodeBasis(missing).includes('미확정'));
+assert.equal(designCodeBasis('rc-section-strength',{status:'NOT_CHECKED',codeReferences:[ref]}).applied.length,0);
+assert.equal(designCodeBasis('rc-section-strength',{status:'OK',codeReferences:[{code:'KDS unknown'}]}).applied.length,0,'incomplete reference must never qualify');
+assert.equal(practicalCheck('M','C','rc-spacing').codeBasis.status,'NOT_ESTABLISHED');
+console.log('PASS mandatory code basis, official reference completeness, missing/unapplied distinction, full report provenance');

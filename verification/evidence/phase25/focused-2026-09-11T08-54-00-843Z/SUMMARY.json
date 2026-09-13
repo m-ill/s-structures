@@ -1,0 +1,17 @@
+{
+  "sourceHash": "ec05f6df20a48a227f932bf7640ba702d977972674e4de15d1601765f1fe8002",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T08:54:05.771Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 4672,
+      "sha256": "ebbf19853d731ddd0e22a3743aa9bb3d8a391c19946b9b4024f5dd056cb5768c",
+      "error": null
+    }
+  ]
+}

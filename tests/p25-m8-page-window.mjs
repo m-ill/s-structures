@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];model.members=[{id:'AB',n1:'A',n2:'B',secId:'rc3060'}];
+model.designDetails={reinforcement:[{id:'R',version:1,memberId:'AB',start:0,end:1,cover:.04,bars:[{y:0,z:0,diameter:.02,area:.000314}]}]};
+const snapshot={id:'window',inputHash:'a'.repeat(64),model,sets:[],checks:Array.from({length:180},(_,i)=>({entityId:'AB',checkId:`C${i}`,status:'NOT_CHECKED',reason:`${i}: `+'distinct evidence '.repeat(60)}))};
+const all=buildDetailDrawings(snapshot,{maxPages:600}),window=buildDetailDrawings(snapshot,{maxPages:600,pageOffset:60,pageLimit:10});
+assert.ok(all.pages.length>60);assert.equal(window.pages.length,Math.min(10,all.pages.length-60));
+assert.equal(window.totalPages,all.pages.length);assert.deepEqual(window.pages,all.pages.slice(60,70));
+assert.deepEqual(window.quantities,all.quantities);
+assert.equal(window.retainedPageCount,window.pages.length);
+assert.throws(()=>buildDetailDrawings(snapshot,{maxPages:600,pageLimit:0}),/PAGE_WINDOW/);
+console.log('PASS retained page window equals full-layout slice, including global footers and reference page numbering');

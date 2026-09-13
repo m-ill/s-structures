@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d4ec6827c2d6ea48f91f8b1a95418130e914a35afc158d5447c12a99d3fa6049",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:03:32.065Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footprint-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "bacf84070d8fabe9fccb7753e1ce2ae952b41509f4ef85845e36339e180e7672",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 838,
+      "sha256": "0840ce985ffb1f4741523ae247f86a91caeddee9a0c2b0e931bbdfa8126d717e",
+      "error": null
+    }
+  ]
+}

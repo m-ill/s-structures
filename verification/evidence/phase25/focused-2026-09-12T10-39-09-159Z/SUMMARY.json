@@ -1,0 +1,25 @@
+{
+  "sourceHash": "1685d562d1dadcc6b0112426de060dbffde62d3c4e09c1ed7110d931eef0f98b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:39:10.551Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-layer-groups.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1048,
+      "sha256": "985936809b82aa1b0e2093b2575477982414b418974431013eb6a816720ef1b3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 80,
+      "sha256": "5b2ccad4977a63cb6bd47502ed1f2fa6ec8f55c51ba27c8ff7feecf0968e8adb",
+      "error": null
+    }
+  ]
+}

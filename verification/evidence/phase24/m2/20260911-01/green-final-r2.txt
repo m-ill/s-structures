@@ -1,0 +1,2 @@
+PASS T05 native detail roundtrip, corrupted area, future version, references and geometry rejection
+{"milestone":"M2","cases":["T05"],"file":"tests/p24-m2-detail-persistence.mjs","elapsedMs":1051,"exitCode":0,"error":null}

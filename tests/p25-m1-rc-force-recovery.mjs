@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {prepareRcSegmentForces} from '../src/compute/product/rcSegmentForceRecovery.js';
+const source={memberId:'M',detailId:'R',detailVersion:1,startX:2,endX:6},endForces=Array(12).fill(0);endForces[1]=11;endForces[5]=17;
+const memberLoads=[{type:'distributed-linear',a:0,b:4,q1:[0,-2,0],q2:[0,-2,0]},{type:'point',a:1,q:[0,-3,0]},{type:'directional-moment',components:[{type:'moment',a:2,axis:'z',M:2}]}];
+const args={source,localEndForces:endForces,memberLoads};
+const r=prepareRcSegmentForces(args),row=(x,side)=>r.stations.find(s=>s.localX===x&&s.side===side);
+assert.equal(row(1,'left').Vy,-9);assert.equal(row(1,'right').Vy,-6);assert.equal(row(1,'right').x,3);
+assert.ok(Math.abs(row(2,'left').Mz+2)<1e-10);assert.ok(Math.abs(row(2,'right').Mz+4)<1e-10);
+assert.ok(Math.abs(r.stations.at(-1).Mz)<1e-10);assert.ok(r.equilibriumResidual<1e-10);assert.equal(r.signConvention,'solver-native');
+assert.equal(r.forceRecoveryInput.spanLoads.length,3);assert.equal(r.forceRecoveryInput.L,4);
+const broken=[...endForces];broken[1]+=1;assert.throws(()=>prepareRcSegmentForces({...args,localEndForces:broken}),{code:'RC_SEGMENT_FORCE_EQUILIBRIUM_FAILED'});
+assert.throws(()=>prepareRcSegmentForces({...args,memberLoads:[{type:'unknown'}]}),{code:'RC_SEGMENT_LOAD_RECOVERY_UNSUPPORTED'});
+console.log('PASS RC segment force recovery: independent shear/moment diagrams, one-sided jumps, original stations and equilibrium guard');

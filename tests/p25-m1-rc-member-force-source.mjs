@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {prepareRcMemberForceSources} from '../src/compute/product/rcMemberForceSources.js';
+import {prepareRcSegmentForces} from '../src/compute/product/rcSegmentForceRecovery.js';
+import {verifyRecoverySource} from '../src/compute/product/recoverySourceVerification.js';
+const a=Array(12).fill(0),b=Array(12).fill(0);a[1]=8;a[5]=16;a[7]=-4;a[11]=-4;b[1]=4;b[5]=4;
+const segments=[a,b].map((f,i)=>{const source={memberId:'M',startX:i*2,endX:i*2+2},memberLoads=[{type:'distributed-linear',a:0,b:2,q1:[0,-2,0],q2:[0,-2,0]}];return {...source,localEndForces:f,forceRecovery:prepareRcSegmentForces({source,localEndForces:f,memberLoads})};});
+const row=prepareRcMemberForceSources(segments).M;
+assert.equal(row.forceRecoveryInput.L,4);assert.deepEqual(row.forceRecoveryInput.spanLoads.map(l=>[l.a,l.b]),[[0,2],[2,4]]);
+assert.equal(row.xs[0],0);assert.equal(row.xs.at(-1),4);assert.equal(row.N.length,row.xs.length);
+const tuples=row.xs.map((x,i)=>({x,side:row.stationSides[i],...Object.fromEntries(['N','Vy','Vz','T','My','Mz'].map(k=>[k,row[k][i]]))}));
+assert.equal(verifyRecoverySource(row.forceRecoveryInput,tuples,4).status,'OK');
+const wrong=structuredClone(segments);wrong[1].forceRecovery.stations[0].Vy+=1;assert.throws(()=>prepareRcMemberForceSources(wrong),{code:'RC_MEMBER_SEGMENT_SOURCE_MISMATCH'});
+const gap=structuredClone(segments);gap[1].startX=2.1;assert.throws(()=>prepareRcMemberForceSources(gap),{code:'RC_MEMBER_SOURCE_COVERAGE_INVALID'});
+console.log('PASS original-member force contract, local load translation, standard recovery verification and corrupted segment rejection');

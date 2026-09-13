@@ -1,0 +1,21 @@
+import {evaluateDesign} from '../src/design/evaluation/designEvaluation.js';
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {evaluatePracticalDesign} from '../src/design/evaluation/practicalEvaluation.js';
+import {preparePracticalResult} from '../src/design/evaluation/practicalResultPreparation.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:0,y:0,z:3}];model.members=[{id:'AB',n1:'A',n2:'B',type:'frame',matId:'concrete',secId:'rc3060'}];model.loadCases=[{id:'D',type:'dead'}];model.loadCombinations=[{id:'U',type:'strength',factors:{D:1.4}}];
+const y=.3-.07+.01/Math.sqrt(2),z=.15-.07+.01/Math.sqrt(2);
+model.designDetails={reinforcement:[{id:'R',version:1,memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',bars:[[-y,-z],[-y,z],[y,z],[y,-z]].map(([y,z])=>({y,z,diameter:.02,area:Math.PI*.02**2/4})),stirrups:{diameter:.01,spacing:.2,legs:2},memberRole:'compression-member',confinementSystem:'ordinary-tied-column',confinementStandard:'KDS-142050-2022',tieClosure:'standard-135',tieClosureCorner:'+y+z',tieClosureSeparation:0,tieBendInsideRadius:.02,tieHookTail:.06,tieFirstStart:.1,tieFirstEnd:.1,fabricationShape:'straight',endSetbackStart:.04,endSetbackEnd:.04,topAnchorBolts:false}]};
+const set={ok:true,anyOk:true,combo:{id:'U'},memberResults:{AB:{xs:[0,3],N:[-10,-10],Vy:[0,0],Vz:[0,0],My:[0,0],Mz:[0,0],T:[0,0]}}};
+const rows=[{source:{analysisRunId:'run',comboId:'U'},set,method:'off'}],direct=evaluatePracticalDesign(model,{byCombo:{U:set}}),worker=preparePracticalResult(model,rows),review=preparePracticalResult(model,rows,{includeGeometry:false});
+const check=result=>result.checks.find(c=>c.checkId==='rc-confinement');
+assert.ok(check(direct).outerHoop?.closureGeometry,'ordinary four-bar column must prepare its closure without a cross-tie trigger');
+assert.deepEqual(check(direct).outerHoop,check(worker).outerHoop);assert.deepEqual(check(review).outerHoop,check(worker).outerHoop);
+assert.equal(review.preparedDetails,undefined);assert.ok(worker.preparedDetails);
+assert.equal(check(direct).outerHoop.closureGeometry.hookPair.status,'NG');
+console.log('PASS identical ordinary-hoop geometry in direct, shared worker and omit-geometry review paths');
+
+const finalizer=evaluateDesign(model,{ok:true,byCombo:{U:set},envelope:set},{resultSet:set,practicalResultSet:null,analysisMethod:'off'});
+assert.deepEqual(check(finalizer.practical).outerHoop,check(worker).outerHoop);
+assert.equal(finalizer.summary.uncheckedCount,finalizer.practical.incompleteCheckCount);
+console.log('PASS elastic finalizer design entry uses the same ordinary-hoop preparation');

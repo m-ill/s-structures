@@ -1,0 +1,33 @@
+{
+  "sourceHash": "25649d124721bba674b40dd10857e5374eede5861c19a968229ce3967d46333e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:37:30.641Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-longitudinal-quantity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "ce5a9a762177712cc654f125b4fb1cf917c871d1503cebd79e5d1913cff7cbf9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 337,
+      "sha256": "7732c92202c04804e4a07eaa683d716ee758b40c56ccfcf522bf8079d3123ec4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-transverse-quantity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "e11b177553925b095b61ebd1b168faad295fad2af0b7f0b87cc0046fe6f0ffc8",
+      "error": null
+    }
+  ]
+}

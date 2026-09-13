@@ -1,0 +1,629 @@
+{
+  "version": "p25-requirement-evidence-audit-v1",
+  "date": "2026-09-13T03:10:36.209Z",
+  "inventory": {
+    "ok": true,
+    "complete": false,
+    "requirementCount": 85,
+    "pending": [
+      "M0-entry",
+      "M0-1",
+      "M0-2",
+      "M0-3",
+      "M0-4",
+      "M0-5",
+      "M0-verification",
+      "M0-completion",
+      "M1-entry",
+      "M1-1",
+      "M1-2",
+      "M1-3",
+      "M1-4",
+      "M1-5",
+      "M1-6",
+      "M1-verification",
+      "M1-completion",
+      "M2-entry",
+      "M2-1",
+      "M2-2",
+      "M2-3",
+      "M2-4",
+      "M2-5",
+      "M2-verification",
+      "M2-completion",
+      "M3-entry",
+      "M3-1",
+      "M3-2",
+      "M3-3",
+      "M3-4",
+      "M3-5",
+      "M3-verification",
+      "M3-completion",
+      "M4-entry",
+      "M4-1",
+      "M4-2",
+      "M4-3",
+      "M4-4",
+      "M4-verification",
+      "M4-completion",
+      "M5-entry",
+      "M5-1",
+      "M5-2",
+      "M5-3",
+      "M5-4",
+      "M5-5",
+      "M5-verification",
+      "M5-completion",
+      "M6-entry",
+      "M6-1",
+      "M6-2",
+      "M6-3",
+      "M6-4",
+      "M6-5",
+      "M6-verification",
+      "M6-completion",
+      "M7-entry",
+      "M7-1",
+      "M7-2",
+      "M7-3",
+      "M7-4",
+      "M7-verification",
+      "M7-completion",
+      "M8-entry",
+      "M8-1",
+      "M8-2",
+      "M8-3",
+      "M8-4",
+      "M8-5",
+      "M8-verification",
+      "M8-completion",
+      "M9-entry",
+      "M9-1",
+      "M9-2",
+      "M9-3",
+      "M9-4",
+      "M9-verification",
+      "M9-completion",
+      "M10-entry",
+      "M10-1",
+      "M10-2",
+      "M10-3",
+      "M10-4",
+      "M10-verification",
+      "M10-completion"
+    ],
+    "errors": []
+  },
+  "evidence": [
+    {
+      "path": "src/design/rc/kdsServiceability.js",
+      "sha256": "1288d3314eb33879b561090e34626c7ce3e1a2dc89459969c995f28efaa48ac4",
+      "exists": true
+    },
+    {
+      "path": "src/design/rc/regionalServiceability.js",
+      "sha256": "c59747705b9d7e4b96aaf6ec3c43a8806ddfc1fd2cc0770d4b3833d4e1247aa9",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m3-column-profile-closure.mjs",
+      "sha256": "01c429af41153d077a3f3c659e704499b7281d6000415c3c47aa8ed3a5fa99df",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-27-44-146Z/SUMMARY.json",
+      "sha256": "6d70d17f2f1bfdcbee1fb71859c3bea777065118fd882e4383dad563388a9042",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "1f5dcc957ecbfde0ffe3f3967099e5d9cf289f29a501035d42dbb2950594ab42",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/candidateAnalysisSnapshot.js",
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcCoupledIteration.js",
+        "src/compute/product/rcIterationWorkingSet.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/design/rc/frameServiceResponse.js",
+        "src/metadata/rcServicePolicy.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-column-profile-closure.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "src/compute/product/rcCoupledIteration.js",
+      "sha256": "c794eed7b157cba823c64ce73f192e3c290f6957c54b4668ea57df237e6d604f",
+      "exists": true
+    },
+    {
+      "path": "src/design/rc/frameServiceResponse.js",
+      "sha256": "c52ca20ad2b818dc2545318337dfb99277720cb7a603634c7022579a9a743f87",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m3-staged-frame-response.mjs",
+      "sha256": "c2bb7fa9114af962784465b0e4836783bc7e8370d8a712057ea0e61ec24ab0c6",
+      "exists": true
+    },
+    {
+      "path": "src/compute/product/rcServiceWorkflow.js",
+      "sha256": "59dc1c01ae634cbd744b9b1b124e5f90eeb918f25ba64a60cc9b3f575d3f995a",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-35-50-855Z/SUMMARY.json",
+      "sha256": "c5391149f29ae9ae757dfc60dc5372ab5d08dc996d4671220d6a0497a430b364",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "5fddadbca460eee3eb4d04a1aa5c6b1f455a48c62269ed54a851b4c10b102087",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/candidateAnalysisSnapshot.js",
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcCoupledIteration.js",
+        "src/compute/product/rcIterationWorkingSet.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/metadata/rcServicePolicy.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "src/compute/product/rcIntegratedDisplacements.js",
+      "sha256": "45f19e4cd9f838a95aa19d0834bfbebadd5e2e9ff8d9bdffade03e72b6bcca4d",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-39-58-338Z/SUMMARY.json",
+      "sha256": "340aa54a240a144d56528db59cbec3cab6a89bd7c221d1e4c64bdf41865c23d9",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "4be2abee206bd43b4879c211d20fd553b73a71402141de385f1d76de82d0297f",
+      "currentSourceMatches": false,
+      "currentTestsMatch": false,
+      "changedSources": [
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-rc-creep-iteration.mjs",
+          "passed": true,
+          "testHashMatches": false
+        },
+        {
+          "file": "tests/p25-m7-rc-working-set.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-43-15-998Z/SUMMARY.json",
+      "sha256": "566b25de113e7c49a597d74b0cde7291676f23e467b3406911d5e8cc4986e7b1",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "7be719bfb287ff196007e3e5d12ac68a685865804761b4869da37045e23aa5cd",
+      "currentSourceMatches": false,
+      "currentTestsMatch": false,
+      "changedSources": [
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-rc-creep-iteration.mjs",
+          "passed": true,
+          "testHashMatches": false
+        }
+      ]
+    },
+    {
+      "path": "tests/p25-m3-integrated-coupled-load.mjs",
+      "sha256": "39593b86fa5a418c8a92f62a7eadddde2d96143d2ee291ff61691c485fec0443",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-48-03-324Z/SUMMARY.json",
+      "sha256": "80536a2e69baebe2fda632a8f5ce3f53fd33185ae86f0a016fb1c5a32dfeacd2",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "a727c433570004de8acbef855ab72998a5bde03290427224c0dfa0ffe73ce713",
+      "currentSourceMatches": false,
+      "currentTestsMatch": false,
+      "changedSources": [
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-integrated-coupled-load.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p25-m3-rc-creep-iteration.mjs",
+          "passed": true,
+          "testHashMatches": false
+        }
+      ]
+    },
+    {
+      "path": "src/compute/product/rcIntegratedExtrema.js",
+      "sha256": "efa0306b4951bf5a90f21105a6b13de800d68441e0ad65406aebe0ac6e25879d",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m3-integrated-extrema.mjs",
+      "sha256": "7a4d0eebd5c18250685ac49013d4c15eda8e6e077478eac6dbffc95a03a1deb1",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-53-12-674Z/SUMMARY.json",
+      "sha256": "be9bf20a44b8dd5092c61bafa7837739e73f5819f1a2fd7272b9fea685e5cf83",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "c152d4099f5228fc64ff89bd21c5065d298b0e62f04dc25d6f420d1e8453a806",
+      "currentSourceMatches": false,
+      "currentTestsMatch": false,
+      "changedSources": [
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-integrated-extrema.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p25-m3-rc-creep-iteration.mjs",
+          "passed": true,
+          "testHashMatches": false
+        }
+      ]
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T03-01-03-508Z/SUMMARY.json",
+      "sha256": "15b83c606ebcb446a2a5621cba15c2b2a5afa9a481f4442188648a7ec1e4b01a",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "7e3de64df4a454a9c54be3963ef2ba43208db7ec6c60769f87daf461d0811f06",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m3-stage-time-state.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p25-m3-rc-creep-iteration.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "tests/p25-m6-mixed-hook-webmcp.mjs",
+      "sha256": "79b507be919afa5f3e3bd46111d577ce3453ae09727326d82d68951ce2b92034",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m6-apply-review.mjs",
+      "sha256": "96fa286585240a49dfd0d7d3a98124e666dd2bf2cbcc2ada275f6a08295a7235",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m6-apply-retry.mjs",
+      "sha256": "8b5d998a2657a88be59b0ee3642b5bacc69ef62001c449729642440d9ba1deca",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-18-36-007Z/SUMMARY.json",
+      "sha256": "d4a1a5655ef866f804d793dd91d42adc7e40613383a795145c13eaaee639d869",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "f08991e8b0f1ddfadd67ec6c0ae7f93619ec6783df20a20749ae961e2f9f8260",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/candidateAnalysisSnapshot.js",
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcCoupledIteration.js",
+        "src/compute/product/rcIterationWorkingSet.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/design/evaluation/practicalEvaluation.js",
+        "src/design/rc/frameServiceResponse.js",
+        "src/design/rc/kdsServiceability.js",
+        "src/metadata/rcServicePolicy.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexAgentApi.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/ui/webmcp/tools.js",
+        "src/ui/webmcp/workflowTools.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m6-apply-retry.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "src/modeling/designInputService.js",
+      "sha256": "7af9d8958d180e993707781796b531fd82efd8644878e93abcdbe5fe9e8dae82",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m6-targeted-undo.mjs",
+      "sha256": "c9b4be6c43a46edfd4a5729950abbbfa7b26c22dc5de0542aa70fbf9b2b4afcf",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m6-apply-rollback.mjs",
+      "sha256": "4ec431a49c8b1f7340479d4eab3410d40300fe084c6e7ed7f3069dc463eaa5e8",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-21-28-989Z/SUMMARY.json",
+      "sha256": "a5dcdbf6b781002fd37fbf24129410f92e311237075f1269ab72855f9b27ae95",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "162de4f7390a56668732475333ca01402fb4bd633a027be333d196401f3dbbf3",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/candidateAnalysisSnapshot.js",
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcCoupledIteration.js",
+        "src/compute/product/rcIterationWorkingSet.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/design/evaluation/practicalEvaluation.js",
+        "src/design/rc/frameServiceResponse.js",
+        "src/design/rc/kdsServiceability.js",
+        "src/metadata/rcServicePolicy.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m6-targeted-undo.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p24-m2-history.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-21-53-523Z/SUMMARY.json",
+      "sha256": "8c57f7d638920e2dbcd83a7e3a988f7a54703b09c59e91665a7067f645057d04",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "162de4f7390a56668732475333ca01402fb4bd633a027be333d196401f3dbbf3",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/candidateAnalysisSnapshot.js",
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcCoupledIteration.js",
+        "src/compute/product/rcIterationWorkingSet.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/design/evaluation/practicalEvaluation.js",
+        "src/design/rc/frameServiceResponse.js",
+        "src/design/rc/kdsServiceability.js",
+        "src/metadata/rcServicePolicy.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m6-apply-rollback.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "tests/p25-m4-through-bars.mjs",
+      "sha256": "2ddf90bcff2e8cbc7c775327c0b4370239717ef09e23db96f365a4c0a3a56e0e",
+      "exists": true
+    },
+    {
+      "path": "src/design/rc/throughBarSchedule.js",
+      "sha256": "963dbbed541d9726f2992c0240d97649c6b2cd990b94c344b989ae93e1d8ffc1",
+      "exists": true
+    },
+    {
+      "path": "src/ui/webmcp/practicalTools.js",
+      "sha256": "65bcc4f7286fc0f0e91c832efd84874e526636d87d4a6b58eee60340dbb572b2",
+      "exists": true
+    },
+    {
+      "path": "tests/p25-m9-input-history-restore.mjs",
+      "sha256": "d04a247fbebb997d0cb28d3d17dc16ac5bd120ae89463efe5d8b51aec7679648",
+      "exists": true
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T02-24-15-253Z/SUMMARY.json",
+      "sha256": "dccf6d88a7ebd4a5242ab1172c997138d1dd4367e631b951f666f7f385f7ddcc",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "f8f6404d7b872570e768a8d18ac886101c71e0c55c32766640e138fdc5bb0a9a",
+      "currentSourceMatches": false,
+      "currentTestsMatch": true,
+      "changedSources": [
+        "src/compute/product/candidateAnalysisSnapshot.js",
+        "src/compute/product/practicalWorkflowService.js",
+        "src/compute/product/rcCoupledIteration.js",
+        "src/compute/product/rcIterationWorkingSet.js",
+        "src/compute/product/rcServiceWorkflow.js",
+        "src/compute/product/rcSpliceExecution.js",
+        "src/design/evaluation/practicalEvaluation.js",
+        "src/design/rc/frameServiceResponse.js",
+        "src/design/rc/kdsServiceability.js",
+        "src/metadata/rcServicePolicy.js",
+        "src/modeling/designInputService.js",
+        "src/ui/indexBridge.js",
+        "src/ui/webmcp/practicalTools.js",
+        "src/compute/product/rcIntegratedDisplacements.js",
+        "src/compute/product/rcIntegratedExtrema.js",
+        "src/compute/product/rcStageTimeState.js"
+      ],
+      "tests": [
+        {
+          "file": "tests/p25-m9-input-history-restore.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p25-m6-targeted-undo.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T03-06-02-892Z/SUMMARY.json",
+      "sha256": "7d98f5fa58a31add15541022669a78db24b0b70dc9356e0b5ba3db10f7e9e9c9",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "2afb22df7ca3a8af9f391eab7b8a89bf95ae44cf84d37bcc851f666e411de5c1",
+      "currentSourceMatches": true,
+      "currentTestsMatch": false,
+      "changedSources": [],
+      "tests": [
+        {
+          "file": "tests/p25-m9-checkpoint-failure-history.mjs",
+          "passed": true,
+          "testHashMatches": true
+        },
+        {
+          "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+          "passed": true,
+          "testHashMatches": false
+        }
+      ]
+    },
+    {
+      "path": "verification/evidence/phase25/focused-2026-09-13T03-06-41-374Z/SUMMARY.json",
+      "sha256": "9d2b072956ff8e32b6016e7311f14a4253ef30531dc310f62608c9fa08ca3337",
+      "exists": true,
+      "valid": true,
+      "sourceHash": "2afb22df7ca3a8af9f391eab7b8a89bf95ae44cf84d37bcc851f666e411de5c1",
+      "currentSourceMatches": true,
+      "currentTestsMatch": true,
+      "changedSources": [],
+      "tests": [
+        {
+          "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+          "passed": true,
+          "testHashMatches": true
+        }
+      ]
+    },
+    {
+      "path": "README.md",
+      "sha256": "02f407603f97ab566300ed7823c78c9f06649e820d7ee04051853fb203c72c9f",
+      "exists": true
+    },
+    {
+      "path": "docs/phase25/USAGE.md",
+      "sha256": "3a81ef0ea7b640a3df8eb5d9f074569633ee5691ee41068389959f9fae421258",
+      "exists": true
+    },
+    {
+      "path": "tools/build-pages.py",
+      "sha256": "c91e130b986d2eaffec92f819103a89b9829b973c834031851e63871d44571de",
+      "exists": true
+    },
+    {
+      "path": "tools/pages_asset_validation.py",
+      "sha256": "57b00265bec6d1ae29a58685cece53a321c28abfc00947b587f12e47bebe46ed",
+      "exists": true
+    }
+  ],
+  "completionProven": false,
+  "note": "Inventory and hash checks do not prove requirement coverage. Historical source drift is reported; scoped evidence requires human/code review. No numerical tests executed."
+}

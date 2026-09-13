@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c49b38e798917502aae2c22a3689dc0a66b5d418b17673c12c610dcae8d4e669",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:31:09.364Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-end-anchorage.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 950,
+      "sha256": "1d27ce8d7d8245738766e62fa9b81e326449ae6e9b0ec2fd892527cc9ee2e14e",
+      "error": null
+    }
+  ]
+}

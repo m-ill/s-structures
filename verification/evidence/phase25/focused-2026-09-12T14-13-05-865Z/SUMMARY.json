@@ -1,0 +1,17 @@
+{
+  "sourceHash": "93bd29224e6e5a7b9abcdb5e405c97ebddd75c55c0e1d274a0f7990c98cb6c4e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:13:06.164Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-splice-change-view.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "2f7813e8ad1472ba7164c9cc37b61bda7a4a868a91a3df7ac7d83b9f64326d93",
+      "error": null
+    }
+  ]
+}

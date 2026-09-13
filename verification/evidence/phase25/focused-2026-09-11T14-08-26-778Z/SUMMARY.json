@@ -1,0 +1,25 @@
+{
+  "sourceHash": "9277ee6b544e52125ab02a5e2ff1a25b576ecad16c7fd16cbb4303b3ba0ab828",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:08:30.290Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-splice-bar-mapping.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "af30fddb2ca903d8a065c175d5ac5ecdb3a4401d29fbf1f8ab0efc0554b25769",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3256,
+      "sha256": "9545edd7b636c9465bb78f28905682ece63be4aa17e16a0b510e25e209bc074d",
+      "error": null
+    }
+  ]
+}

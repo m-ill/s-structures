@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T08:09:08.949Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 649,
+      "sha256": "b2d54459acfb177c90b40a0cebf5fbc84ce0da68b6d45b8539d6807d148d3332",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m8-drawings.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 329,
+      "sha256": "9105c28fac505512b70d9270d3cd0cc62dd2c789c9b060bf5531b6c0976dca4f",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5014,
+      "sha256": "4defa854f1f97ea722108526e1a6940ef1f810c835e8d815cf82b8de4ef57b70",
+      "error": null
+    }
+  ]
+}

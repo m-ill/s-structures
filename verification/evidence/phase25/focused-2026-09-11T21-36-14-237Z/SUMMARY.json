@@ -1,0 +1,17 @@
+{
+  "sourceHash": "80bda94bece734601c9ad375d381a85e978738170840a9ea136409c6d8423632",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:36:16.874Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-kds-frame-sign.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2431,
+      "sha256": "c8e554ca160c739bec085e41331fe509ce44aa162c58a98db25b6bb79e70a681",
+      "error": null
+    }
+  ]
+}

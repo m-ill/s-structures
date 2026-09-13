@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e67dac40f30fcb57ecb78bdb5d0e855bf563feb28726b7f73420db0f08275c71",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:55:20.651Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-flexural-iteration.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1140,
+      "sha256": "d3351ca331a29a38b9b5b41e3c32294eb52a2ac0ba0f8f3a4374e072e92cafa9",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "0a13ae0f6013010fabd75631faad0ef911a25e4765f2f117aec0f3b3e4ad799e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:22:07.748Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-regional-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 339,
+      "sha256": "a8809a4e847c9f01e0ad37121ec412ad475a2f397ff5dc71991a2fa3a292df2b",
+      "error": null
+    }
+  ]
+}

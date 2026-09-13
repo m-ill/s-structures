@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f0bb22be166daf41fc64e5b2f23ee2699bf0d3c1763f3b2f6d73ee8a922b79ce",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:33:06.233Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-rc-service-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 124,
+      "sha256": "151109e3dceece035e675ee884f1e620a2207f389610992db6a57fa53672df32",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-service-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4345,
+      "sha256": "b0a06a933bfc0e0fb7da9f0b63ba321d95bcf6a5b90352bd6336bcf097d8a608",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "cb334a89d6a07381f75a36930ef76c3c5fad14cab43f3f9d06822e946f8ded17",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:46:18.892Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-cross-tie-support.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "29e69de396595a730b59b89b8505d7bf70ee1f28ef8de569372f657bafe1ae78",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "982ce05a2f8eabff4b8e8a889f2f7a805273f812e80002bfc5b4d5348864b301",
+      "error": null
+    }
+  ]
+}

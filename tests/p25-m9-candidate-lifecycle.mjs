@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {installPracticalDesignControls} from '../src/ui/indexPracticalDesign.js';
+const document=createFakeIndexDocument(),panel=document.createElement('div'),events=new Map(),timers=new Map(),cancelled=[];document.body.appendChild(panel);
+let nextTimer=0,job=0,queries=0,resolveStart;
+const target={document,addEventListener:(event,fn)=>events.set(event,[...(events.get(event)||[]),fn]),setTimeout:fn=>{timers.set(++nextTimer,fn);return nextTimer;},clearTimeout:id=>timers.delete(id)};
+const bridge={getWorkflowInputIdentity:()=>({inputHash:'h'}),evaluatePracticalDesign:async()=>({ok:true,evaluationId:'E',summary:{checkCount:0},checks:[],nextOffset:null}),planDesignCandidates:()=>({ok:true,planId:'P',generation:{ok:true}}),startDesignCandidates:()=>({jobId:`J${++job}`}),getDesignCandidateJob:()=>{queries++;return {status:'running',candidates:[],candidateCount:0,nextOffset:null};},cancelDesignCandidates:({jobId})=>{cancelled.push(jobId);return {ok:true};}};
+installPracticalDesignControls({target,bridge,panel,getSources:()=>[],refreshSources:()=>{}});
+const click=t=>panel.querySelectorAll('button').find(b=>b.textContent===t).click(),tick=()=>new Promise(r=>setTimeout(r,0));
+click('제공 상세 검토');await tick();panel.querySelector('[aria-label="후보 대상 ID"]').value='M';panel.querySelector('[aria-label="후보 대상 종류"]').value='member';
+click('계산 요구량으로 자동 후보');await tick();const queued=[...timers.values()][0];
+click('제공 상세 검토');await tick();assert.deepEqual(cancelled,['J1']);assert.equal(timers.size,0);const count=queries;queued();assert.equal(queries,count,'queued stale poll cannot query again');
+click('계산 요구량으로 자동 후보');await tick();for(const fn of events.get('pagehide')||[])fn();await tick();assert.deepEqual(cancelled,['J1','J2']);assert.equal(timers.size,0);
+click('제공 상세 검토');await tick();bridge.startDesignCandidates=()=>new Promise(r=>{resolveStart=r;});click('계산 요구량으로 자동 후보');await tick();for(const fn of events.get('pagehide')||[])fn();resolveStart({jobId:'LATE'});await tick();assert.equal(cancelled.at(-1),'LATE');assert.equal(timers.size,0);
+console.log('PASS review replacement/pagehide cancellation and no late poll or start publication');

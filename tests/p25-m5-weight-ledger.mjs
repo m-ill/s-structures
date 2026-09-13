@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {resolveFootingLoadLedger,netFootingCut} from '../src/design/foundation/footingLoadLedger.js';
+import {createModel} from '../src/core/model.js';
+import {footingContact,evaluateProvidedFooting} from '../src/design/foundation/providedFooting.js';
+const m=createModel();m.loadCases=[{id:'D',type:'dead'}];m.loadCombinations=[{id:'U',type:'strength',factors:{D:1.4}}];
+const f={B:2,L:2,thickness:0.5,materialId:'concrete@1',reactionBasis:'superstructure-only',footingWeightCaseId:'D'};
+const r={rx:0,ry:0,rz:400,rmx:0,rmy:0};
+const ledger=resolveFootingLoadLedger(m,f,r,m.loadCombinations[0]);assert.equal(ledger.ok,true);
+const W=2*2*0.5*2.4*9.80665*1.4;
+assert.ok(Math.abs(ledger.totalN-(400+W))<1e-9);
+const contact=footingContact({B:2,L:2,N:ledger.totalN,Mx:0,My:0});
+const cut=netFootingCut(contact,f,ledger,'B',1,0.5);
+assert.ok(Math.abs(cut.force-100)<1e-9);assert.ok(Math.abs(cut.moment-25)<1e-9,'self-weight cancels from centered net cantilever action');
+const included=resolveFootingLoadLedger(m,{...f,reactionBasis:'includes-footing-weight'},{...r,rz:400+W},m.loadCombinations[0]);
+assert.ok(Math.abs(included.totalN-ledger.totalN)<1e-9);assert.ok(Math.abs(included.columnN-400)<1e-9);
+assert.equal(resolveFootingLoadLedger(m,{...f,footingWeightCaseId:undefined},r,m.loadCombinations[0]).ok,false);
+const outside=footingContact({B:2,L:2,N:400,Mx:0,My:-200});
+assert.ok(netFootingCut(outside,f,{uniformDownwardPressure:20},'B',-1,0.8).moment<0,'reverse net moment is never clamped to zero');
+console.log('PASS footing gravity/factors, no double counting, net cut equilibrium and reverse moment');
+
+m.designDetails={ground:[{id:'G',version:1,allowableBearing:150,bearingBasis:'gross',friction:0.5}]};
+const detail={...f,id:'F',version:1,nodeId:'A',groundId:'G@1',cover:0.05,columnWidth:0.4,columnDepth:0.4,flexureStandard:'KDS-142020-2022',concreteWeight:'normal',reinforcement:{materialId:'steel@1',bottomB:{diameter:0.016,spacing:0.15},bottomL:{diameter:0.016,spacing:0.15}}};
+const checked=evaluateProvidedFooting(m,detail,{combo:{id:'U'},reactions:{A:r}});
+assert.ok(['OK','NG'].includes(checked['foundation-flexure'].status),JSON.stringify(checked));
+assert.ok(Math.abs(checked['foundation-flexure'].demand-64)<1e-9);
+assert.ok(checked['foundation-flexure'].codeReferences.some(x=>x.id==='142020'));
+assert.ok(checked['foundation-one-way-shear'].codeReferences.some(x=>x.id==='142022'));
+console.log('PASS provided footing -> net-load cuts -> KDS section and one-way shear without mechanicsLaw');

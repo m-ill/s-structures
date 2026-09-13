@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6bf1675eca8ceb2186a8d909fb4e922ead9d25949655fc6a28695be8d7441c92",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T08:22:59.880Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-class-a-envelope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 76,
+      "sha256": "4787ecf70f98f163c44d14b54e9d7c29b165ace28244c3c8913bef2e77443cee",
+      "error": null
+    }
+  ]
+}

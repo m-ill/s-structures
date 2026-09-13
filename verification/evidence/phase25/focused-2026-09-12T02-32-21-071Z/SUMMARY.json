@@ -1,0 +1,25 @@
+{
+  "sourceHash": "a80518d18a6f9136fe80847b2fadb912384b3ddbe1e8bfa1d653d665be6ec58f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:32:25.436Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-proposal-provenance.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 106,
+      "sha256": "c5f3de77c19d61f610c847f7476fc86f0d67c4c8f3e223d2484c391dd1be0d2c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 4020,
+      "sha256": "89b7f0515452f3de69027cd18e1bfd5ceea2813060c37ed8e5d27f4d11de7b5b",
+      "error": null
+    }
+  ]
+}

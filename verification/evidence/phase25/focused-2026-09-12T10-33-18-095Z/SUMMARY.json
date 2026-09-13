@@ -1,0 +1,17 @@
+{
+  "sourceHash": "8f0220d787bacbf56ab6923da81c81f0de632d057fe278291adc04a07d4a94ee",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:33:18.475Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 96,
+      "sha256": "5b2ccad4977a63cb6bd47502ed1f2fa6ec8f55c51ba27c8ff7feecf0968e8adb",
+      "error": null
+    }
+  ]
+}

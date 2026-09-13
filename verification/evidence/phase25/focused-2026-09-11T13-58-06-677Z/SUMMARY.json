@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d8a1f36867706c347f4e57b31eed379a8d32b17e3fff6cb8aac42f187c1d1df0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:58:13.938Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3278,
+      "sha256": "94f2d3148801481a16f0807c3323489e8b206c45c926cb446c963de2f6f90ca7",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3762,
+      "sha256": "5c1f8ac0e02678b32eaf93fb0f7942357ab79ea35e939d1bf1dc959ea13a10e3",
+      "error": null
+    }
+  ]
+}

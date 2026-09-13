@@ -1,0 +1,33 @@
+{
+  "sourceHash": "7e3de64df4a454a9c54be3963ef2ba43208db7ec6c60769f87daf461d0811f06",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:01:20.020Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-stage-time-state.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "fdb5c9599e35dccd71a178798e09e2538fcde6a63feec84987015efe9847d9a4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10630,
+      "sha256": "a551cef62355931eed8ef0f3b6d64448f2df6ba1a956d53acb9ac1590265900e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5568,
+      "sha256": "6082ff38c8ae49ed2def518e111287d31a6cfbd78815a5f60c9fa85f19ba70b4",
+      "error": null
+    }
+  ]
+}

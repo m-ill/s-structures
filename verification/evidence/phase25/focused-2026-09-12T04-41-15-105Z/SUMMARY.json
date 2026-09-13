@@ -1,0 +1,17 @@
+{
+  "sourceHash": "ae887dd2548d003f65744648903803685b918c88b6dfb1378158dfe39e9aebdd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:41:15.434Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 53,
+      "sha256": "e083a9c7e120ded846f20fd842554e6f8f9af2a19f53f56e558f016be6d5af82",
+      "error": null
+    }
+  ]
+}

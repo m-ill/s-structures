@@ -1,0 +1,31 @@
+import {profileLoadScopeHash} from '../src/design/evaluation/projectProfile.js';
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+import {LOAD_FAMILIES} from '../src/loads/loadCaseMetadata.js';
+import {PRACTICAL_RULE_PACK_HASH} from '../src/metadata/practicalRuleImplementations.js';
+import {designCombinationCoverage,summarizePracticalChecks} from '../src/design/evaluation/practicalEvaluation.js';
+import {validateStoredDesignDetails} from '../src/modeling/designDetailValidation.js';
+const ctx=designContext(),m=ctx.model;
+m.loadCases=[{id:'D',name:'D',type:'dead'}];
+m.loadCombinations=[{id:'U',type:'strength',factors:{D:1.4}},{id:'S',type:'service',factors:{D:1}}];
+const sets={U:{ok:true},S:{ok:true}};
+try {
+ assert.equal(designCombinationCoverage(m,sets).projectProfile.status,'NOT_CHECKED');
+ const command={type:'design-profile-record',id:'project',name:'synthetic scope',version:1,structuralSystem:'ordinary-rc-frame',construction:'cast-in-place',concreteWeight:'normal',sectionScope:'rectangular-single-bars',stiffnessBasis:'gross-section-only',requiredFamilies:['D'],excludedFamilies:LOAD_FAMILIES.filter(x=>x!=='D'),confirmedCaseIds:['D'],loadScopeHash:profileLoadScopeHash(m),decisionReference:'Synthetic family exclusions; not a building design',rulePackHash:PRACTICAL_RULE_PACK_HASH};
+ assert.ok((await ctx.call('get_design_input_schema',{type:command.type})).schema.properties.requiredFamilies);
+ const preview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'profile-preview',commands:[command]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:preview.handle,requestId:'profile-apply'})).ok,true);
+ assert.equal((await ctx.call('get_design_records',{channel:'profiles',id:'project'})).rows[0].rulePackHash,PRACTICAL_RULE_PACK_HASH);
+ assert.deepEqual(validateStoredDesignDetails(m),[]);
+ assert.equal(designCombinationCoverage(m,sets).projectProfile.status,'OK');
+ assert.equal((await ctx.call('get_practical_design_context')).loadScopeHash,profileLoadScopeHash(m));
+ const mutated=structuredClone(m);mutated.loadCombinations[0].factors.D=1.5;assert.ok(designCombinationCoverage(mutated,sets).projectProfile.issues.some(x=>x.code==='PROFILE_LOAD_REVIEW_STALE'));
+ const changed=structuredClone(m);changed.loadCases.push({id:'WX',type:'wind'});
+ assert.ok(designCombinationCoverage(changed,sets).projectProfile.issues.some(x=>x.code==='EXCLUDED_FAMILY_HAS_CASES'));
+ changed.designDetails.profiles[0].rulePackHash='old';
+ assert.ok(designCombinationCoverage(changed,sets).projectProfile.issues.some(x=>x.code==='PROFILE_RULE_PACK_STALE'));
+ assert.equal(summarizePracticalChecks([{status:'OK'}],designCombinationCoverage(changed,sets)).complete,false);
+ const lateral=structuredClone(m);Object.assign(lateral.designDetails.profiles[0],{requiredFamilies:['D','W'],excludedFamilies:LOAD_FAMILIES.filter(x=>!['D','W'].includes(x)),confirmedCaseIds:['D','WX']});lateral.loadCases.push({id:'WX',type:'wind',direction:'x',sign:1});
+ assert.ok(designCombinationCoverage(lateral,sets).projectProfile.issues.some(x=>x.code==='LATERAL_DIRECTIONS_INCOMPLETE'));
+ console.log('PASS profile actual WebMCP input/read/persistence and missing/excluded/stale/lateral coverage gates');
+}finally{await ctx.dispose();}

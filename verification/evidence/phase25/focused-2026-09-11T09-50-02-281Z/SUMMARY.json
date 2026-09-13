@@ -1,0 +1,41 @@
+{
+  "sourceHash": "040d2588ccbd244c2ff63ed3d575c4fbb285cdd0cbf0e26aac04d1e5fc7e1764",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:50:08.692Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3139,
+      "sha256": "480f858ac78f7ad9be1e07bdb22c397a43d2b29a60c9fa8506eac301436ad6c8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-congestion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 73,
+      "sha256": "443e8f6b045ec2f6afce348b6c571cb373069e24bdae0800f201cd80a0eda8e4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2232,
+      "sha256": "239c40ad7d1441bc4c3f0c1e132162fb0ff465ddea0d0a620b67d09cbf90787d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 762,
+      "sha256": "d5faa580819068abf380265060d192c402853f20aec3e49c75246843db91caec",
+      "error": null
+    }
+  ]
+}

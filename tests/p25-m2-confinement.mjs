@@ -1,0 +1,55 @@
+import assert from 'node:assert/strict';
+import {kdsRectangularTies} from '../src/design/rc/kdsConfinement.js';
+const bars=[[-1,-1],[-1,1],[1,-1],[1,1]].map(([y,z])=>({y:y*(.05+.01/Math.sqrt(2)),z:z*(.05+.01/Math.sqrt(2)),diameter:.02}));
+const x={B:.24,H:.24,cover:.04,bars,diameter:.01,spacing:.15,firstStart:.075,firstEnd:.075,anchorBolts:false,closure:'standard-135',tail:.075,insideRadius:.02,system:'ordinary-tied-column'};
+assert.equal(kdsRectangularTies(x).status,'OK');
+assert.equal(kdsRectangularTies({...x,spacing:.241}).status,'NG');
+assert.equal(kdsRectangularTies({...x,firstEnd:.076}).status,'NG');
+assert.equal(kdsRectangularTies({...x,anchorBolts:true}).status,'NOT_CHECKED');
+assert.equal(kdsRectangularTies({...x,tail:.04}).status,'NG');
+assert.equal(kdsRectangularTies({...x,bars:bars.map(b=>({...b,z:b.z*2}))}).status,'NG');
+assert.equal(kdsRectangularTies({...x,bars:[...bars,{y:0,z:0,diameter:.02}]}).status,'NOT_CHECKED');
+assert.equal(kdsRectangularTies({...x,bars:bars.map(b=>({...b,y:b.y*.8,z:b.z*.8}))}).status,'NG','bars floating inside the tie are not corner-supported');
+console.log('PASS ordinary rectangular ties geometry and end spacing');
+
+const mixed=kdsRectangularTies({...x,spacing:.5,anchorBolts:true});
+assert.equal(mixed.status,'NG','known spacing failure must survive incomplete anchor detail');
+assert.equal(mixed.anchorBoltTies.status,'NOT_CHECKED');assert.equal(mixed.incomplete,true);
+
+const spatialSupport={status:'OK',supportedBarIndices:[4,2,1,3]};
+const shifted=bars.map((b,i)=>({...b,y:b.y+(i===0?.001:0)}));
+const spatial=kdsRectangularTies({...x,bars:shifted,spatialSupport});
+assert.equal(spatial.status,'OK');assert.equal(spatial.checks.filter(c=>c.kind==='spatial-tie-corner-support').length,4);assert.equal(spatial.checks.filter(c=>c.kind==='supported-bar-clearance').length,4);assert.equal(spatial.methodReviewRequired,true);
+const incompleteSpatial=kdsRectangularTies({...x,bars:shifted,spacing:.5,spatialSupport:{status:'NOT_CHECKED',supportedBarIndices:[]}});
+assert.equal(incompleteSpatial.status,'NG');assert.equal(incompleteSpatial.incomplete,true);
+assert.ok(incompleteSpatial.incompleteReasons.includes('SPATIAL_CORNER_SUPPORT_COVERAGE_REQUIRED'));
+const incompleteNominal=kdsRectangularTies({...x,bars:shifted,spacing:.5});assert.equal(incompleteNominal.status,'NG');assert.equal(incompleteNominal.incomplete,true);
+assert.equal(kdsRectangularTies({...x,bars:shifted,spatialSupport:{status:'OK',supportedBarIndices:[1,1,2,3]}}).status,'NOT_CHECKED');
+console.log('PASS actual spatial support order and known spacing NG preserved across missing support geometry');
+
+const {kdsFlexuralTies}=await import('../src/design/rc/kdsConfinement.js');
+const beam={...x,system:'ordinary-flexural-member'};
+assert.equal(kdsFlexuralTies(beam).status,'OK');
+assert.equal(kdsFlexuralTies({...beam,spacing:.241}).status,'NG');
+assert.equal(kdsFlexuralTies({...beam,closure:'open'}).status,'NOT_CHECKED');
+assert.equal(kdsFlexuralTies({...beam,system:'special-frame'}).status,'NOT_CHECKED');
+assert.equal(kdsFlexuralTies({...beam,anchorBolts:true}).status,'NOT_CHECKED');
+assert.ok(kdsFlexuralTies(beam).codeReferences.some(r=>r.clause.includes('4.4.1')));
+assert.equal(kdsFlexuralTies(beam).designTransferAllowed,false);
+console.log('PASS ordinary flexural closed ties reuse KDS size, spacing and bar support checks');
+
+const {evaluateProvidedKdsConfinement}=await import('../src/design/rc/kdsConfinement.js');
+const {createModel}=await import('../src/core/model.js');
+const {stagePracticalDesignInput}=await import('../src/modeling/practicalDesignInputs.js');
+const m=createModel();stagePracticalDesignInput(m,{type:'section-record',id:'C',name:'square',version:1,shape:'RECT',dimensionUnit:'mm',B:240,H:240,sourceNote:'test'},[]);
+m.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+const member={id:'M',n1:'A',n2:'B',secId:'C@1',matId:'concrete'};
+const detail={id:'R1',version:1,start:0,end:.5,confinementStandard:'KDS-142050-2022',memberRole:'flexural-member',reinforcementForm:'single-deformed',stirrupForm:'closed-rectangular-two-leg',cover:x.cover,bars:x.bars,stirrups:{diameter:x.diameter,spacing:x.spacing},tieFirstStart:x.firstStart,tieFirstEnd:x.firstEnd,topAnchorBolts:false,tieClosure:x.closure,tieHookTail:x.tail,tieBendInsideRadius:x.insideRadius,confinementSystem:'ordinary-flexural-member'};
+const second={...detail,id:'R2',start:.5,end:1};
+const evaluate=details=>evaluateProvidedKdsConfinement(m,member,details,[{x:0,side:'point'}])['rc-confinement'];
+assert.equal(evaluate([detail,second]).status,'OK');
+const failed=evaluate([detail,{...second,stirrups:{...second.stirrups,spacing:.5}}]);assert.equal(failed.status,'NG');assert.equal(failed.detailId,'R2');
+const gap=evaluate([detail,{...second,start:.6}]);assert.equal(gap.status,'NOT_CHECKED');assert.equal(gap.locationCoverage.complete,false);
+const mixedGap=evaluate([{...detail,end:.4},{...second,stirrups:{...second.stirrups,spacing:.5}}]);assert.equal(mixedGap.status,'NG');assert.equal(mixedGap.incomplete,true);
+assert.equal(evaluate([detail,{...second,start:.4}]).status,'NOT_CHECKED');
+console.log('PASS flexural confinement checks every region, gaps and overlap despite sparse force stations');

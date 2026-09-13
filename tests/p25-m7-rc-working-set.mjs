@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {estimateRcIterationWorkingSet} from '../src/compute/product/rcIterationWorkingSet.js';
+import {createRcServiceWorkflow} from '../src/compute/product/rcServiceWorkflow.js';
+import {createResourceBudget} from '../src/core/resourceBudget.js';
+import {createModel} from '../src/core/model.js';
+const m=createModel();m.nodes=Array.from({length:100},(_,i)=>({id:`N${i}`,x:i,y:0,z:0}));m.members=[];m.loadCombinations=[{id:'L'}];
+const estimate=estimateRcIterationWorkingSet(m,{liveComboId:'L'});
+assert.equal(estimate.components.denseWorking,240*600**2);
+assert.ok(estimate.estimatedBytes>estimate.components.denseWorking);assert.equal(estimate.measuredHeap,false);
+const small=structuredClone(m);small.nodes=small.nodes.slice(0,50);
+assert.equal(estimate.components.denseWorking,4*estimateRcIterationWorkingSet(small,{}).components.denseWorking);
+const members={...small,members:[{id:'M'}]};
+const one=estimateRcIterationWorkingSet(members,{stiffnessMode:'fully-cracked-elastic',comboIds:['A']}),two=estimateRcIterationWorkingSet(members,{stiffnessMode:'fully-cracked-elastic',comboIds:['A','B']});
+assert.equal(two.components.resultRecords,2*one.components.resultRecords);
+const budget=createResourceBudget({maxBytes:8*1024**2}),workflow=createRcServiceWorkflow({budget,bridge:{getWorkflowInputIdentity:()=>({inputHash:'h'}),getCurrentModel:()=>m}});
+await assert.rejects(workflow.run({inputHash:'h',liveComboId:'L'}),{code:'MANAGED_MEMORY_BUDGET_EXCEEDED'});
+assert.equal(workflow.context().active,false);assert.equal(workflow.context().iterations.length,0);assert.equal(budget.snapshot().totalBytes,0);
+workflow.dispose();
+console.log('PASS RC working-set admission accounts for quadratic matrices and releases failed pre-Worker reservation');
+
+const reinforced={...members,designDetails:{reinforcement:[{memberId:'M',bars:Array(4).fill({})}]}};
+const prepared=estimateRcIterationWorkingSet(reinforced,{stiffnessMode:'fully-cracked-elastic',comboIds:['A']});
+assert.equal(prepared.components.barForceRecords,4*100*64*4);
+assert.equal(estimateRcIterationWorkingSet(reinforced,{liveComboId:'A'}).components.barForceRecords,0);

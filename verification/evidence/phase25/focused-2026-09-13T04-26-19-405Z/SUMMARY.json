@@ -1,0 +1,17 @@
+{
+  "sourceHash": "1dc188991ec2f12380d9943d9d839969962d6aabbfa0ce7177ab20aba1054a78",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T04:26:26.668Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-mixed-hook-webmcp.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 7021,
+      "sha256": "72dada34c43578819a1f611dc4a2a9cd703beb47cd00a4e7fdcd1c99fae39e3e",
+      "error": null
+    }
+  ]
+}

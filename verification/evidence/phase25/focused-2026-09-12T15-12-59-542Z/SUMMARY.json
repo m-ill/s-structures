@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b519bf56c7a69be091a310e5c76b10ba06a81aad5e1f907d06918fe87a77c116",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:13:01.956Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-stepped-axial-splice.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2138,
+      "sha256": "2c5abc593eadeaaf89613fd451fa68a8d3ff2f3b08194b381b6c1bc27d451c6c",
+      "error": null
+    }
+  ]
+}

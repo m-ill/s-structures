@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c13df08f9bc143cc27b182b39941ae30b5245c8b7b82a5fbadd35ba26fd8d763",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T01:15:38.595Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-profile-closure.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2342,
+      "sha256": "6445467b754f798562cec5abb59f1283df3e5317122286eaf1a79be89c2d95bb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "982ce05a2f8eabff4b8e8a889f2f7a805273f812e80002bfc5b4d5348864b301",
+      "error": null
+    }
+  ]
+}

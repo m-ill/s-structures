@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6c455cf44831278ccf822b5326958fbc621f12394dbbc61d1f121dd62674057b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:39:42.710Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-remaining-repairs.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 48,
+      "sha256": "db36de4a21965796962e946c7baa8169aed2720b9474f1a00d0d63041a32bb33",
+      "error": null
+    }
+  ]
+}

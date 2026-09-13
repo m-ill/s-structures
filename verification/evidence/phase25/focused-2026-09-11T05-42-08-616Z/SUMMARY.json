@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-11T05:42:12.969Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2699,
+      "sha256": "aa2bb1f2be20a69d57d38a7c95dfd13afff1b665d293b80fc0156295f199c0c0",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m5-section-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1649,
+      "sha256": "aeb7a79cec42d0b99a7be9318929cd53d0e1e9dac06728010b842d15e0a7ed19",
+      "error": null
+    }
+  ]
+}

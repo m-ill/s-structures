@@ -1,0 +1,33 @@
+{
+  "sourceHash": "272ca3f8edc8411eff44614aa21accfecf60e0a20fa5675bb0a2ae3535c562d6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:58:15.196Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-drawing-worker-quarantine.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "10df9e248118136503139ad7539875be4503a7d6cc331740736809c34c223e86",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-review-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2417,
+      "sha256": "ce00731e8500b42854dc4e81018e8afb0fcf597f8833230e9f9e271927b49da9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 308,
+      "sha256": "0f031219ec81816c1cb50d5f1e826239a2f925d618fb7903afb10aa44d3f73ed",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {mergeLocatedCheck} from '../src/design/evaluation/locationCoverage.js';
+import {summarizePracticalChecks} from '../src/design/evaluation/practicalEvaluation.js';
+import {designCodeBasis} from '../src/metadata/designCodeBasis.js';
+import {getKcscRuleSources} from '../src/metadata/kcscRuleSources.js';
+const mixed={status:'NG',ratio:2,entityId:'C',incomplete:true,incompleteReasons:['ANCHOR_INPUT_REQUIRED'],concurrentDemand:{x:1}};
+let merged=mergeLocatedCheck(undefined,mixed);
+merged=mergeLocatedCheck(merged,{status:'NG',ratio:3,entityId:'C',concurrentDemand:{x:2}});
+assert.equal(merged.status,'NG');assert.equal(merged.locationCoverage.complete,false);assert.equal(merged.locationCoverage.incompleteCount,1);
+assert.equal(merged.locationCoverage.missingLocations[0].x,1);assert.equal(merged.incomplete,true);
+const summary=summarizePracticalChecks([mixed]);assert.equal(summary.counts.NG,1);assert.equal(summary.counts.NOT_CHECKED,0);assert.equal(summary.incompleteCheckCount,1);assert.equal(summary.uncheckedEntityCount,1);
+assert.equal(summarizePracticalChecks([{...mixed,status:'OK'}]).complete,false);
+const refs=getKcscRuleSources(['142050']).map(r=>({...r,clause:'4.4.2'}));
+assert.equal(designCodeBasis('rc-confinement',{status:'NG',codeReferences:refs}).status,'CLAUSE_APPLIED');
+assert.equal(designCodeBasis('rc-confinement',{...mixed,codeReferences:refs}).status,'NOT_ESTABLISHED');
+console.log('PASS nested incomplete NG remains visible in located coverage, entity summary and KDS basis');

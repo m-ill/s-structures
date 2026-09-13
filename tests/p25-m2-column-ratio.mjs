@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {kdsCompressionReinforcement} from '../src/design/rc/kdsDetailing.js';
+const base={grossArea:1,steelArea:0.01,barCount:4,lapRequired:false};
+assert.equal(kdsCompressionReinforcement(base).status,'OK');
+assert.equal(kdsCompressionReinforcement({...base,steelArea:0.01-1e-8}).status,'NG');
+assert.equal(kdsCompressionReinforcement({...base,steelArea:0.08}).status,'OK');
+assert.equal(kdsCompressionReinforcement({...base,steelArea:0.08+1e-8}).status,'NG');
+assert.equal(kdsCompressionReinforcement({...base,steelArea:0.04,lapRequired:true}).status,'OK');
+assert.equal(kdsCompressionReinforcement({...base,steelArea:0.04+1e-8,lapRequired:true}).status,'NG');
+assert.equal(kdsCompressionReinforcement({...base,barCount:3}).reason,'MINIMUM_LONGITUDINAL_BAR_COUNT');
+assert.equal(kdsCompressionReinforcement({...base,lapRequired:undefined}).status,'NOT_CHECKED');
+assert.equal(kdsCompressionReinforcement({...base,grossArea:NaN}).status,'NOT_CHECKED');
+assert.ok(kdsCompressionReinforcement(base).codeReferences.every(r=>r.clause==='4.3.2(1),(2)'&&r.sha256));
+console.log('PASS KDS compression reinforcement lower/upper/lap limits, four-bar requirement, missing input');

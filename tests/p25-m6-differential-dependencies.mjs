@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {rebindDifferentialPeerCommands} from '../src/design/foundation/differentialDependencies.js';
+const f=(id,peers=[])=>({id,name:id,version:1,nodeId:id,foundationType:'isolated',B:2,L:2,thickness:.5,cover:.05,materialId:'concrete@1',groundId:'G@1',sourceNote:'fixture',...(peers.length?{differentialSettlementBasis:'primary-ultimate',differentialPeerIds:peers,differentialSettlementLimit:.01,differentialRotationLimit:.002,differentialReference:'fixture'}:{})});
+const model={designDetails:{foundations:[f('A',['B@1']),f('B',['A@1']),f('C',['A@1'])]}};
+const commands=[{type:'foundation-record',...f('B',['A@1']),version:2,B:3}];const before=JSON.stringify({model,commands});
+const r=rebindDifferentialPeerCommands(model,commands);assert.equal(r.commands.length,3);const byId=new Map(r.commands.map(c=>[c.id,c]));
+assert.deepEqual(byId.get('A').differentialPeerIds,['B@2']);assert.deepEqual(byId.get('B').differentialPeerIds,['A@2']);assert.deepEqual(byId.get('C').differentialPeerIds,['A@2']);assert.equal(byId.get('B').B,3);assert.ok(r.commands.every(c=>c.version===2));assert.equal(JSON.stringify({model,commands}),before);
+assert.throws(()=>rebindDifferentialPeerCommands({...model,designDetails:{foundations:[{...model.designDetails.foundations[0],locked:true},...model.designDetails.foundations.slice(1)]}},commands),/DIFFERENTIAL_DEPENDENT_LOCKED/);
+assert.throws(()=>rebindDifferentialPeerCommands(model,commands,{maxCommands:2}),/CANDIDATE_COMMAND_LIMIT/);
+const stale={designDetails:{foundations:[f('A',['B@1']),{...f('B'),version:2}]}};const untouched=rebindDifferentialPeerCommands(stale,[{type:'foundation-record',...f('B'),version:3,B:3}]);assert.equal(untouched.commands.length,1);
+console.log('PASS transitive cyclic reference rebinding, bounded command count, locks and stale reference preservation');

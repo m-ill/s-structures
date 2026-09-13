@@ -1,0 +1,17 @@
+{
+  "sourceHash": "428afcab4e4fcbcfb99dbf815150eae5b212ead6c26e32ec628c0536773a3aad",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:52:04.596Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4025,
+      "sha256": "cf12137a0bc1e0025b857c6988c4ced6b0c9466d66e0575f711a07e1207eb9c1",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/compute/product/practicalWorkflowService.js:11
+const reject=code=>{throw Object.assign(new Error(code),{code});};
+                                        ^
+
+Error: STALE_INPUT
+    at reject (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/compute/product/practicalWorkflowService.js:11:41)
+    at current (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/compute/product/practicalWorkflowService.js:17:93)
+    at Object.applyCandidate [as applyDesignCandidate] (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/compute/product/practicalWorkflowService.js:108:100)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/practicalTools.js:15:268
+    at Object.execute (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/ui/webmcp/tools.js:87:29)
+    at Object.call (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/fixtures/p24/context.js:15:19)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m9-smoke.mjs:33:26 {
+  code: 'STALE_INPUT'
+}
+
+Node.js v24.16.0

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f9adb88076f675c6f7d36f162972ed42489de61215c8145f9a3610a98b998b88",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:18:28.968Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-spring-support.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 946,
+      "sha256": "0ab525f4746083c56e3dae57caa0721453a3e323f60cd51c29d48ed965e14689",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10970,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

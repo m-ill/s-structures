@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {evaluateRcJoint} from '../src/design/connection/rcJoint.js';
+const model={nodes:[{id:'A',x:0,y:0,z:0},{id:'B',x:-3,y:0,z:0},{id:'C',x:3,y:0,z:0}],members:[{id:'BA',n1:'B',n2:'A'},{id:'AC',n1:'A',n2:'C'}],loads:[],loadCombinations:[{id:'U',factors:{D:1}}]};
+const joint={nodeId:'A',memberIds:['BA','AC'],connectionType:'rc-joint',restraint:'rigid'};
+const set={combo:{id:'U'},memberResults:{BA:{end:[0,0,0,0,0,0,10,0,0,0,0,0]},AC:{end:[-10,0,0,0,0,0,0,0,0,0,0,0]}},reactions:{}};
+for(const row of Object.values(set.memberResults))row.ax={x:[1,0,0],y:[0,1,0],z:[0,0,1]};
+const check=()=>evaluateRcJoint(model,joint,set)['joint-equilibrium'];
+model.loads=[{type:'unknown',node:'A',case:'OFF',dir:'?',P:NaN}];assert.equal(check().status,'OK');
+model.loadCombinations[0].factors.OFF=1;assert.equal(check().reason,'NODAL_LOAD_MAPPING_REQUIRED');
+for(const factor of [NaN,Infinity,'1',null]){model.loadCombinations[0].factors.OFF=factor;assert.equal(check().reason,'JOINT_COMBINATION_FACTOR_INVALID');assert.equal(check().ratio,null);}
+model.loads=[{type:'nodal',node:'A',case:'D',dir:'+x',P:5}];model.loadCombinations[0].factors={D:-1};set.memberResults.AC.end[0]=-15;assert.equal(check().status,'OK');assert.deepEqual(check().externalAction,[-5,0,0,0,0,0]);
+model.loadCombinations[0].factors.D=2;model.loads[0].P=2.5;model.loads.push({type:'nmoment',node:'A',case:'D',dir:'+z',M:1.5});set.memberResults.AC.end[0]=-5;set.memberResults.BA.end[11]=3;assert.equal(check().status,'OK');assert.deepEqual(check().externalAction,[5,0,0,0,0,3]);
+model.loads[0].P=1e308;assert.equal(check().reason,'JOINT_EXTERNAL_ACTION_NONFINITE');assert.equal(check().ratio,null);
+model.loads=[];set.memberResults.BA.end[6]=1e308;set.memberResults.AC.end[0]=1e308;assert.equal(check().reason,'JOINT_MEMBER_ACTION_NONFINITE');
+console.log('PASS joint external action mapping: inactive loads skipped, invalid factors rejected, signed force/moment equilibrium and overflow diagnostics');
+
+model.loads=[];model.loadCombinations[0].factors={D:1};
+set.memberResults.BA.end=[0,0,0,0,0,0,10,0,0,0,0,0];
+set.memberResults.AC.end=[-9,0,0,0,0,0,0,0,0,0,0,0];
+let blocked=evaluateRcJoint(model,joint,set)['joint-shear'];
+assert.equal(blocked.reason,'JOINT_SHEAR_EQUILIBRIUM_REQUIRED');
+assert.equal(blocked.blockingChecks[0].checkId,'joint-equilibrium');
+assert.equal(blocked.blockingChecks[0].status,'NG');
+assert.equal(blocked.blockingChecks[0].reason,'JOINT_EQUILIBRIUM_RESIDUAL');
+assert.ok(blocked.codeReferences.length);assert.equal(blocked.incomplete,true);
+set.memberResults.AC.end[0]=-10;
+blocked=evaluateRcJoint(model,{...joint,restraint:'pinned'},set)['joint-shear'];
+assert.equal(blocked.reason,'JOINT_SHEAR_RESTRAINT_REQUIRED');
+assert.equal(blocked.blockingChecks[0].checkId,'joint-stiffness');
+assert.equal(blocked.blockingChecks[0].reason,'ANALYSIS_DETAIL_RESTRAINT_MISMATCH');
+blocked=evaluateRcJoint(model,{...joint,restraint:'semi-rigid'},set)['joint-shear'];
+assert.equal(blocked.reason,'JOINT_SHEAR_RESTRAINT_REQUIRED');
+assert.equal(blocked.blockingChecks[0].reason,'SEMI_RIGID_DETAIL_MAPPING_REQUIRED');
+delete set.memberResults.AC;
+blocked=evaluateRcJoint(model,joint,set)['joint-shear'];
+assert.equal(blocked.blockingChecks[0].reason,'JOINT_ACTIONS_REQUIRED');
+console.log('PASS joint shear dependency diagnostics retain equilibrium and stiffness cause');

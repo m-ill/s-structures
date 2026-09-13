@@ -1,0 +1,41 @@
+{
+  "sourceHash": "1c215baf1e7b35759cb176961fcd9c03d47dc043d2487db271f637c860de8ff2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:42:49.760Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4842,
+      "sha256": "6451455a57b9f29cfe4d2cd3a334db1058886ef625e4709d38d427e70c00d9f8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-length-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4639,
+      "sha256": "2ba24c13da2ae3e8e387f3bb3c7093964070986b7697c8516b687ba4d5c0062e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-geometry-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 596,
+      "sha256": "0b3644e0e99cc101ee0d434689b3295b700492e4004b5995f560ca7b1ec209d6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-splice-change-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "2f7813e8ad1472ba7164c9cc37b61bda7a4a868a91a3df7ac7d83b9f64326d93",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "94e03e88d9939f69ec7bb9626e30a7a15ce26942a67b4f8b003ee64276c923dd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:23:32.892Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 97,
+      "sha256": "c62e09b0db48b31906f221d9e0acbe8d9e8f1e203c01f62b3b5d0a2be3362827",
+      "error": null
+    }
+  ]
+}

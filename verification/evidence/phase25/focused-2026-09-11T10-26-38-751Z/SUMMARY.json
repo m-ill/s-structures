@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b2fd29b1d7646a354ab27e04fa556be28f71d4a560826c4b6e802ee046400a8f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:26:41.016Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2045,
+      "sha256": "ff21a5d45aede4dadce9f08dc7efc7ab6d4013a3ecf3bac0f6f72baf9c449013",
+      "error": null
+    }
+  ]
+}

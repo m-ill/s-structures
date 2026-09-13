@@ -1,0 +1,25 @@
+{
+  "sourceHash": "57973cc485f10a4cc8a42d0ff1190b4c96c507c840af13effdf70002467048bc",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:22:44.250Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3008,
+      "sha256": "6aeed960419d37931128ae78b3b94dd4fbb0804568eb34c2fe02fb40e763d07e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-stored-evaluation-ui.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 211,
+      "sha256": "2e9ede26a7f3548f3a91095a756a464fe7a4f416d41603732f8159b19aa6fdc3",
+      "error": null
+    }
+  ]
+}

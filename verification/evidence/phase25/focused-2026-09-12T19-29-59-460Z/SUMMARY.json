@@ -1,0 +1,25 @@
+{
+  "sourceHash": "072532eb880f20165c0404195139288abe2ca82297843453d513f5c7d837f6e8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:30:01.238Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1330,
+      "sha256": "988ac10bd79db6a3a04d0954db3d6f0acc383385acccdb2ae057fe5d388a9f86",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-section-size-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 208,
+      "sha256": "65ad735085b5d178cc4f54cc78338d714ddbbfb0306dae49bfb021bcddd461c6",
+      "error": null
+    }
+  ]
+}

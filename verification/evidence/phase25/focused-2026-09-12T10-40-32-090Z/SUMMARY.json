@@ -1,0 +1,17 @@
+{
+  "sourceHash": "27f69b96be314c9fcfc1b716d1215120828c3f78cad01173fb5a75489c8f637d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:40:34.325Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-layer-groups.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1993,
+      "sha256": "48ed72983be2db0e32f63f7ad6bc972723c936c2702ef40db778c3177c54288e",
+      "error": null
+    }
+  ]
+}

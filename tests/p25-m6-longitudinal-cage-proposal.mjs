@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {longitudinalBarProposal} from '../src/compute/product/longitudinalBarProposal.js';
+import {memberCandidateCommands} from '../src/design/rc/memberCandidateCommands.js';
+import {regionCandidateVariants} from '../src/design/rc/regionCandidateConstraints.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];model.members=[{id:'M',n1:'A',n2:'B',secId:'rc3060',matId:'concrete'}];
+const command={type:'reinforcement-record',id:'R',version:1,memberId:'M',start:0,end:1,cover:.04,strengthStandard:'KDS-142020-2022',confinementStandard:'KDS-142050-2022',confinementSystem:'ordinary-flexural-member',tieClosure:'standard-135',tieClosureCorner:'+y+z',tieClosureSeparation:.03,tieBendInsideRadius:.02,tieHookTail:.06,tieFirstStart:.1,tieFirstEnd:.1,stirrupDiameter:10,stirrupSpacing:200,bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,diameter:20})))};
+const row={id:'S',entityId:'M',checkId:'rc-section-strength',status:'NG',detailId:'R',detailVersion:1};
+const proposal=longitudinalBarProposal([command],[row]);
+assert.deepEqual(proposal.regionConstraints[0].perimeterYCounts,[3,4,6]);
+assert.deepEqual(proposal.regionConstraints[0].perimeterZCounts,[2]);
+assert.deepEqual(proposal.regionConstraints[0].crossTieCageFits,['separate']);
+const regionEdits=regionCandidateVariants(proposal.regionConstraints).next().value;
+const result=memberCandidateCommands(model,[command],{regionEdits}).commands[0];
+assert.equal(result.bars.length,6);assert.deepEqual(result.crossTieBarPairs,['2:5']);
+assert.equal(result.crossTieHookSides.length,1);assert.ok(Number.isFinite(Number(result.crossTiePlaneOffsets[0])));
+assert.equal(result.stirrupDiameter,10);assert.ok(result.bars.every(b=>b.diameter===20));
+assert.equal(command.crossTieBarPairs,undefined);
+const repeat=longitudinalBarProposal([result],[{...row,detailVersion:2}],model);
+assert.equal(repeat.ok,true,JSON.stringify(repeat));
+assert.deepEqual(repeat.regionConstraints[0].perimeterYCounts,[4,5,7]);
+const next=memberCandidateCommands(model,[result],{regionEdits:regionCandidateVariants(repeat.regionConstraints).next().value}).commands[0];
+assert.equal(next.bars.length,8);assert.deepEqual(next.crossTieBarPairs,['2:6','3:7']);
+assert.equal(longitudinalBarProposal([{...result,crossTieBarPairs:['1:5']}],[{...row,detailVersion:2}],model).ok,false);
+const moved=structuredClone(result);moved.bars[1].z+=.005;
+assert.equal(longitudinalBarProposal([moved],[{...row,detailVersion:2}],model).ok,false);
+console.log('PASS new flexural longitudinal bars acquire paired cross ties and separated geometry');
+
+const cornerOnly=memberCandidateCommands(model,[command],{perimeterYCount:2,perimeterZCount:2,crossTieCageFit:'separate',section:{B:350,H:600}}).commands[0];
+assert.equal(cornerOnly.bars.length,4);assert.equal(cornerOnly.crossTieBarPairs,undefined);assert.equal(cornerOnly.crossTiePlaneOffsets,undefined);
+assert.throws(()=>memberCandidateCommands(model,[command],{crossTieCageFit:'separate'}),{code:'CROSS_TIE_FIT_INPUT_REQUIRED'},'missing input is not the same as a generated zero-pair topology');
+console.log('PASS generated four-corner cage needs no cross-tie plane; unspecified missing pairs still reject');
+
+const planningModel=new Proxy(model,{get(target,key){if(key==='nodes')throw Error('spatial fit must execute within the candidate worker budget');return target[key];}});
+assert.equal(longitudinalBarProposal([command],[row],planningModel).ok,true);
+console.log('PASS longitudinal planning does not execute the spatial fit before the candidate job');

@@ -1,0 +1,52 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {footingColumnGeometry} from '../src/design/foundation/footingColumnGeometry.js';
+import {resolveFootingLoadLedger,netFootingCut} from '../src/design/foundation/footingLoadLedger.js';
+import {footingContact,evaluateProvidedFooting} from '../src/design/foundation/providedFooting.js';
+import {evaluateFootingBarAnchorage} from '../src/design/foundation/footingAnchorage.js';
+import {footingBarLayout,footingDistribution} from '../src/design/foundation/footingBarLayout.js';
+const m=createModel();m.loadCases=[{id:'D',type:'dead'}];m.loadCombinations=[{id:'U',type:'strength',factors:{D:1.4}}];
+m.designDetails={ground:[{id:'G',version:1,allowableBearing:150,bearingBasis:'gross'}]};
+const bar={diameter:.016,spacing:.15};
+const f={id:'F',version:1,nodeId:'A',groundId:'G@1',B:3,L:3,thickness:.5,cover:.05,columnWidth:.4,columnDepth:.4,columnOffsetX:.3,columnOffsetY:-.2,reactionMomentReference:'column-center',materialId:'concrete@1',reactionBasis:'superstructure-only',footingWeightCaseId:'D',barShape:'straight',concreteWeight:'normal',barCoating:'uncoated',flexureStandard:'KDS-142020-2022',reinforcement:{materialId:'steel@1',bottomB:bar,bottomL:bar,topB:bar,topL:bar}};
+const g=footingColumnGeometry(f);assert.equal(g.ok,true);assert.equal(g.axes.B.cut(1),.5);assert.ok(Math.abs(g.axes.B.cut(-1)+.1)<1e-12);
+assert.equal(footingColumnGeometry({...f,columnOffsetX:1.4}).reason,'COLUMN_OUTSIDE_FOOTING');
+const r={rx:0,ry:0,rz:400,rmx:10,rmy:-20},combo=m.loadCombinations[0],ledger=resolveFootingLoadLedger(m,f,r,combo);
+assert.equal(ledger.totalMx,-70);assert.equal(ledger.totalMy,-140);assert.equal(ledger.columnMx,10);assert.equal(ledger.columnMy,-20);
+assert.equal(resolveFootingLoadLedger(m,{...f,reactionMomentReference:undefined},r,combo).reason,'FOOTING_REACTION_MOMENT_REFERENCE_REQUIRED');
+const included=resolveFootingLoadLedger(m,{...f,reactionBasis:'includes-footing-weight'},{...r,rz:ledger.totalN,rmx:10-ledger.distributedN*f.columnOffsetY,rmy:-20+ledger.distributedN*f.columnOffsetX},combo);
+for(const k of ['totalN','totalMx','totalMy','columnN','columnMx','columnMy'])assert.ok(Math.abs(included[k]-ledger[k])<1e-9,k);
+const centered=resolveFootingLoadLedger(m,{...f,reactionMomentReference:'footing-center'},{...r,rmx:ledger.totalMx,rmy:ledger.totalMy},combo);
+assert.equal(centered.columnMx,10);assert.equal(centered.columnMy,-20);
+const contact=footingContact({B:f.B,L:f.L,N:ledger.totalN,Mx:ledger.totalMx,My:ledger.totalMy});
+const checked=evaluateProvidedFooting(m,f,{combo:{id:'U'},reactions:{A:r}});
+for(const row of checked['foundation-flexure'].axisChecks){
+ const cut=g.axes[row.axis].cut(row.side);assert.equal(row.cutCoordinate,row.side*cut);
+ assert.ok(Math.abs(row.signedMoment-netFootingCut(contact,f,ledger,row.axis,row.side,cut).moment)<1e-8);
+}
+const anchor=evaluateFootingBarAnchorage(m,f),a=anchor.checks.find(x=>x.axis==='B'&&x.face==='bottom');
+assert.ok(Math.abs(a.available-.95)<1e-12);assert.deepEqual(a.sideChecks.map(x=>x.side),[-1,1]);
+const band={...f,B:2,L:4,columnOffsetY:.3,barDistribution:'kds-centered-band'};
+const layout=footingBarLayout(band,'bottom','B');assert.equal(layout.status,'OK');assert.equal(layout.centerBand.low,1.3);assert.equal(layout.centerBand.high,3.3);assert.equal(footingDistribution(band).status,'OK');
+assert.equal(footingBarLayout({...band,columnOffsetY:1.2},'bottom','B').reason,'CENTER_BAND_OUTSIDE_USABLE_WIDTH');
+const uniform=evaluateProvidedFooting(m,f,{combo:{id:'U'},reactions:{A:{...r,rmx:80,rmy:120}}});
+const plus=uniform['foundation-flexure'].axisChecks.find(row=>row.axis==='B'&&row.side===1),minus=uniform['foundation-flexure'].axisChecks.find(row=>row.axis==='B'&&row.side===-1);
+assert.ok(Math.abs(plus.signedMoment-400/9*3*1**2/2)<1e-8);
+assert.ok(Math.abs(minus.signedMoment-400/9*3*1.6**2/2)<1e-8);
+console.log('PASS column offsets, reaction-reference translation, no weight moment duplication, section cuts, anchorage and column-centered distribution');
+
+const independentFooting={...f,foundationType:'isolated',thickness:.18,B:2,L:4,aggregateMaxSize:.02};
+const invalidColumn=evaluateProvidedFooting(m,{...independentFooting,columnOffsetX:10},{combo:{id:'U'},reactions:{A:r}});
+assert.equal(invalidColumn['foundation-depth']?.status,'NG','invalid column must not erase known bottom-depth deficiency');
+assert.ok(invalidColumn['foundation-spacing']);
+const noReaction=evaluateProvidedFooting(m,independentFooting,{combo:{id:'U'},reactions:{}});
+assert.equal(noReaction['foundation-distribution']?.status,'NG','bar distribution is available without reaction');
+const noGround=evaluateProvidedFooting({...m,designDetails:{...m.designDetails,ground:[]}},f,{combo:{id:'U'},reactions:{A:r}});
+assert.deepEqual(noGround['foundation-flexure'],checked['foundation-flexure'],'missing soil resistance must not erase structural demand/capacity');
+assert.equal(noGround['foundation-bearing'].reason,'GROUND_REFERENCE_REQUIRED');
+assert.equal(noGround['foundation-sliding'].status,'NOT_CHECKED');
+assert.equal(noGround['foundation-settlement'].status,'NOT_CHECKED');
+console.log('PASS independent geometry and strength retained across unrelated missing ground/reaction paths');
+
+assert.equal(noReaction['foundation-flexure'].reason,'CONCURRENT_REACTION_REQUIRED');
+assert.equal(evaluateProvidedFooting(m,{...f,groundId:undefined},{combo:{id:'U'},reactions:{A:r}})['foundation-bearing'].reason,'GROUND_REFERENCE_REQUIRED');

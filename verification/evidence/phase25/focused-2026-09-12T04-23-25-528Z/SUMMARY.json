@@ -1,0 +1,17 @@
+{
+  "sourceHash": "447b17932dd5d731ae90602ac3c8b949ea15875977d2ae144825eafd00e868bd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:23:35.392Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footing-distribution-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9505,
+      "sha256": "4ec04adbdbeb602fe411431058dec39c3edaf5d525ba802e7f5468d3b51048b8",
+      "error": null
+    }
+  ]
+}

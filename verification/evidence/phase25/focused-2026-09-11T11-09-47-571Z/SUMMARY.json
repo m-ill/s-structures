@@ -1,0 +1,57 @@
+{
+  "sourceHash": "0d87f7c0a1fe0cbe1d17ace4c820ebfb0eb052b44bb8338131c2d8250ae8f87e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:09:50.364Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-location-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 148,
+      "sha256": "b1023866682121bd2e2792855196193680e60216f86a873564ee453303083fc6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cover.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "a636752638b64d5ceee6ac964d32451dfc2b467102c00c9de3b1a22acbf17129",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "2b6ac3163c11ad416406f7a10dc363e2d8b60c4f5a0ba85713fdff3752f1066a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "d97dbc848f87a57e9cc08fc6c975f3939e7a0c18e636bfd844f0116aa13f12a1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-beam-minimum.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "034e7a968a8b0467eb15f4700e7274db04379ba8e119e2c6934f9dd57688704f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2110,
+      "sha256": "7b7cfc514937fc0f1d50699fbb19c03cce73b2a41f0cc1efb983690ec1f1b82a",
+      "error": null
+    }
+  ]
+}

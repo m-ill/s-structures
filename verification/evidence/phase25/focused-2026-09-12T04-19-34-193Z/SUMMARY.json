@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a2d3f240db2fe7cea881d2e90e3cd40afc239e780b9feee0d6204ab63f6ffd01",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:19:42.745Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footing-depth-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8293,
+      "sha256": "bce3ae6efdf7f9084546222a5ca86cdad1226ef974603b25bf1256d260abf2c2",
+      "error": null
+    }
+  ]
+}

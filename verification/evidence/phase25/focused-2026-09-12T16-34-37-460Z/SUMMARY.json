@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b38b7a296920d584e5056ff256fed51320bbbe05e5f2a5b4b8da217028834ddf",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:34:39.555Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-constraint-actions.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1841,
+      "sha256": "4c61cbc18f858d02be0ee6804c026464eac4c6b73d8a93a78f9800a853a94361",
+      "error": null
+    }
+  ]
+}

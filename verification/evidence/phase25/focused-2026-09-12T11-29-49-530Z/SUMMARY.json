@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7e022a7fd3f3ba1465ad910bc9f49a26af4ecc0d85160a4d3305dc8b53470e9e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:29:49.849Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-consolidation-time.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "a6a5c963f25c2709b7f96cfdd091109490b7a6677b4da092c860ef97d949b697",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "88a9c18201abb30fe820833f14cd864b7f2ec750ae911b7386410f148234513f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:07:30.009Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-auto-proposal-ui.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 255,
+      "sha256": "37858d2c8c2b477ad44e22f40f77308682ce9817122f59794ba4a141a6f9e29e",
+      "error": null
+    }
+  ]
+}

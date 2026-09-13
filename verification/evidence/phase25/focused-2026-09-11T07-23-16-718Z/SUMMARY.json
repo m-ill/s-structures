@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-11T07:23:17.044Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-eccentric-punching.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "b5a77c0ea9707fd2c21a795ec77e9b30f57257f7943b4620f676897a40531222",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-top-reinforcement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 260,
+      "sha256": "30a750b2e548ec3ba5a1f64e8cba08ada9d7164cc7d27bf8e4cc401384e59c6c",
+      "error": null
+    }
+  ]
+}

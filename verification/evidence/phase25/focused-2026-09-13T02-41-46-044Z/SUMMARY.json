@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4be2abee206bd43b4879c211d20fd553b73a71402141de385f1d76de82d0297f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:41:51.763Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 5454,
+      "sha256": "a648aeac5f60f38be3ea79102bad52dcc25632a17e543a8e1300d22a56975824",
+      "error": null
+    }
+  ]
+}

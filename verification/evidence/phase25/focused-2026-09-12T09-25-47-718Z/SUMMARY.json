@@ -1,0 +1,17 @@
+{
+  "sourceHash": "84e4e12c4db837810707f952f28818d429e735a344e9a1e86421b84d00334b06",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:25:48.158Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rule-input-diagnostics.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 207,
+      "sha256": "159fe95cec9f7c81466f9f34af781fe5c34505d89653b93a618b8ba83f0be71c",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {automaticDependentProposals} from '../src/compute/product/automaticDependentProposals.js';
+const commands=[{type:'connection-record',id:'J',nodeId:'B',memberIds:['M'],connectionType:'rc-joint',tieSpacing:150},{type:'foundation-record',id:'F',nodeId:'A',columnMemberId:'M',columnEmbedmentLength:.2,columnDevelopmentAbove:.2,thickness:.5}];
+const member={id:'M',n1:'A',n2:'B'};
+const checks=[{id:'Q',entityId:'joint:B',checkId:'joint-confinement',status:'NG',spacing:.15,spacingRepairLimit:.05},{id:'FQ',entityId:'foundation:A',checkId:'foundation-column-transfer',requiredBelow:.3,requiredAbove:.3,criteria:[{id:'embedment-envelope',capacity:.4},{id:'column-region-envelope',capacity:1}]}];
+const r=automaticDependentProposals(member,commands,checks);
+assert.equal(r.dependentCandidates.length,2);assert.equal(r.dependentCandidates[0].detailCandidates[0].tieSpacing,50);
+assert.ok(Math.abs(r.dependentCandidates[1].detailCandidates[0].columnEmbedmentLength-.3)<1e-12);
+assert.deepEqual(r.basisCheckIds,['Q','FQ']);
+assert.equal(automaticDependentProposals(member,[{...commands[0],locked:true}],checks).unavailable[0].reason,'DETAIL_LOCKED');
+assert.equal(automaticDependentProposals(member,[{...commands[0],nodeId:'ELSE'}],checks).dependentCandidates.length,0);
+assert.equal(automaticDependentProposals(member,[{...commands[1],columnMemberId:'OTHER'}],checks).dependentCandidates.length,0);
+const many=automaticDependentProposals(member,Array.from({length:40},(_,i)=>({...commands[0],id:`J${i}`})),checks);
+assert.equal(many.dependentCandidates.length,8);assert.equal(many.unavailable.length,16);assert.equal(many.unavailableCount,32);assert.equal(many.truncated,true);
+console.log('PASS automatic connected proposals, locked/unrelated exclusion and bounded omissions');

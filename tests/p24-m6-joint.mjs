@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import * as api from '../src/design/evaluation/practicalEvaluation.js';
+assert.equal(typeof api.evaluateRcJoint,'function');
+const model={nodes:[{id:'A',x:0,y:0,z:0},{id:'B',x:-3,y:0,z:0},{id:'C',x:3,y:0,z:0}],members:[{id:'BA',n1:'B',n2:'A'},{id:'AC',n1:'A',n2:'C'}],loads:[],loadCombinations:[{id:'C1',factors:{D:1}}]};
+const joint={nodeId:'A',memberIds:['BA','AC'],connectionType:'rc-joint',restraint:'rigid'};
+const set={combo:{id:'C1'},memberResults:{BA:{end:[0,0,0,0,0,0,10,0,0,0,0,0]},AC:{end:[-10,0,0,0,0,0,0,0,0,0,0,0]}},reactions:{}};
+const result=api.evaluateRcJoint(model,joint,set);assert.equal(result['joint-equilibrium'].status,'OK');
+assert.equal(result['joint-equilibrium'].actions.length,2);
+model.loads=[{type:'nodal',node:'A',case:'D',dir:'+x',P:5}];
+assert.equal(api.evaluateRcJoint(model,joint,set)['joint-equilibrium'].status,'NG');
+joint.restraint='pinned';assert.equal(api.evaluateRcJoint(model,joint,set)['joint-stiffness'].status,'NG');
+assert.equal(result['joint-shear'].status,'NOT_CHECKED');
+console.log('PASS T14 concurrent transformed endpoint actions, equilibrium failure and restraint mismatch; no arbitrary joint capacity');

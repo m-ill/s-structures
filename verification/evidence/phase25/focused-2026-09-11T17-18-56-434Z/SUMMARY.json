@@ -1,0 +1,17 @@
+{
+  "sourceHash": "09d3c560f93fa0672f14994f65ef5d7064547bdc0b6a9b0476588e795a6b5828",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:18:56.733Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-closure-contact-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "b662e924f5182cc3776514670b1c155f75a894bc74937c2775a9f584511c514d",
+      "error": null
+    }
+  ]
+}

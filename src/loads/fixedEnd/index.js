@@ -1,3 +1,5 @@
+import {collectMemberSpanLoads,taperedForceDisplacement} from '../../solver/memberForceField.js';
+import {localTaperedK12} from '../../solver/taperedMember.js';
 import { fixedEndMemberMoment } from './memberMoment.js';
 import { fixedEndPartialUdl } from './udlPartial.js';
 import { fixedEndPointLoad } from './pointLoad.js';
@@ -5,7 +7,7 @@ import { fixedEndTemperature, fixedEndTemperatureGradient } from './temperature.
 import { fixedEndTrapezoid } from './trapezoid.js';
 import { fixedEndUdl } from './udl.js';
 
-export const FIXED_END_LOAD_VERSION = 'p7-m7-axis-aware-fixed-end-load-v1';
+export const FIXED_END_LOAD_VERSION = 'p25-variable-section-fixed-end-load-v4-thermal';
 
 export function buildFixedEndLoad(load = {}, ax = {}, md = {}) {
   let result = null;
@@ -17,6 +19,14 @@ export function buildFixedEndLoad(load = {}, ax = {}, md = {}) {
   else if (load.type === 'temperature') result = fixedEndTemperature(load, ax, md);
   else if (load.type === 'tgradient') result = fixedEndTemperatureGradient(load, ax, md);
   if (!result) return null;
+  if(md.taper?.ok&&result.ok!==false&&['udl','udl-partial','trapezoid','point','mmoment','temperature','tgradient'].includes(load.type)){
+    const spans=collectMemberSpanLoads(load.member,[load],ax);
+    if(result.recovery?.initialStrain)spans.push(result.recovery.initialStrain);
+    const end=taperedForceDisplacement(result.q0,spans,ax.L,ax.L,md.material,md.taper,md.timoshenko?.enabled===true);
+    const K=md.klStructural||localTaperedK12(md.material,md.taper,ax.L,{shearDeformation:md.timoshenko?.enabled===true}).kl;
+    const q0=result.q0.map((v,i)=>v-end.reduce((sum,d,j)=>sum+K[i][j+6]*d,0));
+    result={...result,q0,fe:q0.map(v=>-v),method:'variable-section-force-compatibility',compatibilityCorrection:end};
+  }
   const fe = sanitizeVector(result.fe, 12, load, 'fe');
   const q0 = sanitizeVector(result.q0, 12, load, 'q0');
   const issues = [...(result.issues || []), ...fe.issues, ...q0.issues];

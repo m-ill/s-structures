@@ -1,0 +1,25 @@
+{
+  "sourceHash": "3ca550e03d80f3aedde1eb40646786645d1147257c4c2cf32e31d9ab33ce2403",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:21:56.043Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-related-longitudinal-quantity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "6a241c74deb800ce7197740fdb24c1c2bb9062ce56d2deb35ea7c61016f12a53",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-support-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 264,
+      "sha256": "8c2916b0b01b64f9b0a80eb0316f0f1decc0867af4e68d84a26b6b2c91ad9af6",
+      "error": null
+    }
+  ]
+}

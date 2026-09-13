@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-11T08:06:51.441Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-high-strength.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 128,
+      "sha256": "51fac9f0bced51490810809c7b924a9c28d36075babe5bfa6cb572524400bc34",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2764,
+      "sha256": "574b38f037e1499a6ccb1f5ca93839458d3dd94d32e60eb5f65764fcd326a11c",
+      "error": null
+    }
+  ]
+}

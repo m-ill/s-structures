@@ -1,3 +1,4 @@
+import {selectMemberDesignResult} from '../results/designResultSelection.js';
 import {
   addLoadCombination,
   factorText,
@@ -320,8 +321,7 @@ export function entitySummary(state) {
     if (!member) return null;
     const result = activeResult(state)?.memberResults?.[member.id];
     const governing = result?.governing?.utilization;
-    const design = state.analysis?.design?.steel?.memberResults?.[member.id]
-      || state.analysis?.design?.concrete?.memberResults?.[member.id];
+    const design = selectMemberDesignResult(state.analysis,member.id);
     return {
       title: member.id,
       rows: [

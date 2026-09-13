@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {runRcServiceIteration} from '../src/compute/product/rcServiceIteration.js';
+import {stableHash} from '../src/core/stableHash.js';
+const m=createModel();m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];
+m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loadCombinations=[{id:'S',type:'service',name:'S',factors:{D:1}}];
+m.loads=[{id:'N',type:'nodal',node:'B',dir:'-x',P:100,case:'D'},{id:'V',type:'nodal',node:'B',dir:'-z',P:3,case:'D'}];
+m.analysisSettings.pDeltaMethod='off';
+stagePracticalDesignInput(m,{type:'reinforcement-record',id:'R',name:'R',version:1,memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',bars:[-.2,.2].flatMap(y=>[-.08,.08].map(z=>({y,z,diameter:20}))),sourceNote:'synthetic',concreteWeight:'normal',stirrupDiameter:10,stirrupLegs:2,stirrupSpacing:100},[]);
+const settings={stiffnessMode:'fully-cracked-elastic',comboIds:['S'],spatialTolerance:.002,maxRefinements:2};
+const first=await runRcServiceIteration(m,settings);assert.equal(first.ok,true,JSON.stringify(first));
+m.analysisSettings.pDeltaMethod='direct';const before=stableHash(m);
+const direct=await runRcServiceIteration(m,settings);assert.equal(direct.ok,true,JSON.stringify(direct));
+assert.equal(direct.spatialConverged,true);assert.equal(stableHash(m),before);
+const set=direct.analysis.byCombo.S;
+assert.equal(set.stiffnessProvenance.stiffnessMode,'fully-cracked-elastic');assert.equal(set.stiffnessProvenance.coupledAxialBendingIncluded,true);assert.equal(set.stiffnessProvenance.timeEffect,'instantaneous');
+assert.equal(set.method,'direct');assert.ok(set.secondOrderTrace.converged);assert.ok(set.secondOrderTrace.iterations>0);
+assert.equal(set.memberResults.AB.forceRecoveryInput.version,'member-force-recovery-v2-geometric');
+assert.ok(Math.abs(set.disp.B[2])>Math.abs(first.analysis.byCombo.S.disp.B[2]));
+assert.equal(direct.globalMethodQualified,false);assert.equal(direct.designTransferAllowed,false);
+const unstable=structuredClone(m);unstable.loads[0].P=1e8;
+const failed=await runRcServiceIteration(unstable,settings);assert.equal(failed.ok,false);assert.equal(failed.analysis,undefined);
+console.log('PASS coupled RC direct P-delta iteration, amplified response, source immutability and unstable-result rejection');
+const {designContext}=await import('./fixtures/p24/context.js');const ctx=designContext();
+try{
+ Object.assign(ctx.model,structuredClone(m));const inputHash=ctx.bridge.getWorkflowInputIdentity().inputHash;
+ const saved=await ctx.call('run_rc_service_iteration',{inputHash,...settings});
+ assert.equal(saved.converged,true,JSON.stringify(saved));assert.equal(saved.pDeltaMethod,'direct');assert.equal(saved.secondOrderByCombo.S.converged,true);
+ assert.equal(saved.workingSetEstimate.measuredHeap,false);assert.equal(saved.workingSetEstimate.components.denseWorking,240*12**2);
+ const snapshot=ctx.bridge.readRcServiceIterationCombination(saved.iterationId,'S');assert.equal(snapshot.method,'direct');assert.equal(snapshot.secondOrderTrace.converged,true);
+ assert.deepEqual(snapshot.stiffnessProvenance,saved.stiffnessByCombo.S);
+ const review=await ctx.call('evaluate_practical_design',{inputHash,sources:[{rcIterationId:saved.iterationId,comboId:'S'}]});assert.equal(review.ok,true,JSON.stringify(review));assert.equal(review.summary.complete,false);
+ const stored=ctx.bridge.getRcServiceIterationMetadata(saved.iterationId);assert.equal(stored.pDeltaMethod,'direct');
+}finally{await ctx.dispose();}
+console.log('PASS actual WebMCP RC direct Worker result carries second-order method and convergence into detailed review');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "8111095a9c3c40eb6cc3143db6c54035fc603e6e310b46b8ec552b3a8344f453",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:54:14.827Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 200,
+      "sha256": "7732c92202c04804e4a07eaa683d716ee758b40c56ccfcf522bf8079d3123ec4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2739,
+      "sha256": "eb1c42be1f6d1f41fac5d305b6ab8a5cf8efa465f68fa90cc7b4332f5c31abaf",
+      "error": null
+    }
+  ]
+}

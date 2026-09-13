@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {rcStageTimeState} from '../src/compute/product/rcStageTimeState.js';
+const effect={method:'effective-modulus-constant-sustained-load',creepCoefficient:2,loadingAgeDays:28,evaluationAgeDays:365,elasticModulusAtLoading:30000,effectiveE:10000,reference:'specified test',shrinkageIncluded:false,shrinkageInitialStrain:0,materialId:'C',materialVersion:1};
+const state=rcStageTimeState('sustained-effective-modulus',effect);
+assert.equal(state.loadingAgeDays,28);assert.equal(state.evaluationAgeDays,365);
+assert.equal(state.attachmentAgeDays,null);assert.equal(state.chronologyQualified,false);
+assert.equal(rcStageTimeState('instantaneous').evaluationAgeDays,null);
+assert.throws(()=>rcStageTimeState('sustained-effective-modulus'),/TIME_STATE_REQUIRED/);
+assert.throws(()=>rcStageTimeState('sustained-effective-modulus',{...effect,evaluationAgeDays:20}),/TIME_STATE_INVALID/);
+assert.throws(()=>rcStageTimeState('sustained-effective-modulus',{...effect,effectiveE:20000}),/TIME_STATE_INVALID/);
+assert.throws(()=>rcStageTimeState('instantaneous',effect),/TIME_STATE_CONFLICT/);
+assert.throws(()=>rcStageTimeState('sustained-effective-modulus',{...effect,shrinkageIncluded:true,shrinkageInitialStrain:-.0003}),/TIME_STATE_INVALID/);
+const shrink=rcStageTimeState('sustained-effective-modulus',{...effect,shrinkageIncluded:true,shrinkageInitialStrain:-.0003,shrinkageReference:'specified interval'});
+assert.equal(shrink.shrinkageInitialStrain,-.0003);
+assert.throws(()=>rcStageTimeState('unexpected'),/TIME_STATE_INVALID/);
+console.log('PASS explicit source ages, unspecified attachment, modulus/age/shrinkage and mode guards');

@@ -1,3 +1,6 @@
+import {groupRcMemberReviewChecks} from '../evaluation/practicalMemberSummary.js';
+import {hasPreparedRcResults} from '../../results/designResultSelection.js';
+import {buildRcDetailingReport} from '../rcDetailing.js';
 import { detailRcBeam } from './beam.js';
 import { detailRcColumn } from './column.js';
 import { detailRcSlab } from './slab.js';
@@ -9,6 +12,7 @@ export const RC_DESIGN_GATE_VERSION = 'p3-m17-rc-design-gate-v1';
 
 export function buildRcDetailedDesignReport(model, analysis, options = {}) {
   const analysisStatus = buildAnalysisStatus(analysis);
+  if(hasPreparedRcResults(analysis))return buildProvidedRcDetailedReport(model,analysis,analysisStatus);
   const checks = Object.values(analysis?.design?.concrete?.memberResults || {});
   const beams = checks.filter((check) => check.role === 'beam').map((check) => detailRcBeam(check, options));
   const columns = checks.filter((check) => check.role === 'column').map((check) => detailRcColumn(check, options));
@@ -210,4 +214,26 @@ function collectFormula(row) {
     id: row.memberId || row.wallId || row.slabId,
     role: row.role,
   });
+}
+
+function buildProvidedRcDetailedReport(model,analysis,analysisStatus){
+ const schedule=buildRcDetailingReport(model,analysis),byMember=groupRcMemberReviewChecks(analysis.design?.practical?.checks||[]);
+ const members=new Map((model.members||[]).map(m=>[m.id,m]));
+ const rows=schedule.rows.map(row=>({...row,role:members.get(row.memberId)?.design?.role||'member',checks:byMember.get(row.memberId)||[]}));
+ const formulaTrace=rows.flatMap(row=>row.checks.map(check=>({...check,moduleId:'rc',itemId:row.memberId,role:row.role,formulaId:check.checkId,standard:check.codeBasis?.status==='CLAUSE_APPLIED'?(check.codeReferences||[]).map(r=>r.code).filter(Boolean).join('; ')||'KDS clause recorded':'UNREGISTERED',expression:check.expression??null})));
+ const schedules=Object.fromEntries(['beam','column','wall','slab'].map(role=>[role==='column'?'columns':role+'s',rows.filter(r=>r.role===role)]));
+ const gate=buildRcDesignGate({...schedules,formulaTrace,analysisStatus});
+ const incomplete=rows.filter(r=>r.incomplete||!['OK','N_A'].includes(r.status));
+ // The old role gate describes preliminary ticket coverage. Preserve it as
+ // compatibility metadata, while actual member checks govern review readiness.
+ gate.contract={...gate.contract,maturity:'provided-reinforcement-review'};
+ const evidenceComplete=rows.length>0&&rows.every(r=>r.checks.length>0&&r.checks.every(c=>c.status==='N_A'||c.codeBasis?.status==='CLAUSE_APPLIED'));
+ const ready=analysisStatus.ok===true&&incomplete.length===0&&evidenceComplete;
+ gate.rcReview={...gate.rcReview,status:ready?'trace-ready':'review-required',finalPermitDesign:false,providedMemberCount:rows.length,unreviewedMemberCount:incomplete.length,methodQualificationRequired:!evidenceComplete,missing:[...(!analysisStatus.ok?['analysis-status']:[]),...(!evidenceComplete?['provided-check-evidence']:[]),...(incomplete.length?['design-issues']:[])]};
+ gate.summary={...gate.summary,readyForAgentReview:ready,rcReview:gate.rcReview};
+ return {version:'p25-rc-detailed-provided-v2-material-evidence',basis:'provided-practical-checks',designTransferAllowed:false,
+  modelName:model?.meta?.name??null,analysisStatus,contract:{scope:'Recorded provided reinforcement regions and actual practical checks; no preliminary bar sizing during export.'},
+  summary:{...summarize(rows),unreviewedCount:incomplete.length},rows,schedules,formulaTrace,rcDesignGate:gate,
+  issueRows:rows.flatMap(row=>row.checks.filter(c=>c.incomplete||!['OK','N_A'].includes(c.status)).map(c=>({moduleId:'rc',itemId:row.memberId,role:row.role,status:c.status,incomplete:c.incomplete===true,comboId:c.comboId,formulaIds:[c.checkId],reason:c.reason??null,codeBasis:c.codeBasis??null,action:c.reason||'Resolve incomplete RC checks.'}))),
+  limitations:['This report records evaluated reinforcement inputs and checks. Missing inputs are not filled by preliminary recommendations.','Legacy ticket role coverage is compatibility metadata, not project applicability or final design qualification.']};
 }

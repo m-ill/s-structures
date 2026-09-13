@@ -1,0 +1,33 @@
+{
+  "sourceHash": "25fc76f570b101f054fda8476734f0f795a88327b95d3a0f4c45d65820d8b388",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:13:08.372Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-stiffness-dependency.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 545,
+      "sha256": "218b16386f2141592afa299f26b4dd8012e27d21df670bac05e45911642bcbd3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2313,
+      "sha256": "31bb560d6fc7b4cccbc693e2767379ca52485542dcf592c5ec0d85b03d371699",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-apply-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3201,
+      "sha256": "96fa286585240a49dfd0d7d3a98124e666dd2bf2cbcc2ada275f6a08295a7235",
+      "error": null
+    }
+  ]
+}

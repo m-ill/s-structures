@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {installSpliceSourceControls} from '../src/ui/spliceSourceControls.js';
+const document=createFakeIndexDocument(),panel=document.createElement('div'),events={};let selected,cancelled=0,finish;
+let rows=[{sourceId:'a',comboId:'S',ok:true,converged:true,elasticRangeSatisfied:true},{sourceId:'b',comboId:'U',ok:true,converged:true,elasticRangeSatisfied:true},{sourceId:'old',comboId:'X',ok:true,converged:true,elasticRangeSatisfied:true,stale:true}];
+const bridge={getPracticalDesignContext:()=>({rcSpliceInterval:{sources:rows}}),getRcSpliceSourceMetadata:id=>rows.find(r=>r.sourceId===id)};
+const ui=installSpliceSourceControls({target:{document,addEventListener:(name,fn)=>events[name]=fn},bridge,panel,onEvaluate:async s=>{selected=s;return {ok:true};},onCancelReview:()=>cancelled++});
+ui.refresh();assert.equal(ui.selection.length,3);assert.equal(ui.selection[2].input.disabled,true);
+ui.selection[0].input.checked=true;ui.selection[1].input.checked=true;ui.selection[1].input.dispatchEvent({type:'change'});assert.equal(ui.evaluate.disabled,false);ui.evaluate.click();await new Promise(r=>setTimeout(r,0));
+assert.equal(ui.evaluate.disabled,false);assert.deepEqual(selected,[{rcSpliceId:'a',comboId:'S'},{rcSpliceId:'b',comboId:'U'}]);
+rows[0].stale=true;selected=null;ui.evaluate.click();await new Promise(r=>setTimeout(r,0));assert.equal(selected,null);assert.ok(ui.status.textContent.includes('RC_SPLICE_SOURCE_NOT_CURRENT'));
+rows[0].stale=false;
+const pendingUi=installSpliceSourceControls({target:{document,addEventListener:(name,fn)=>events[name]=fn},bridge,panel,onEvaluate:()=>new Promise(r=>finish=r),onCancelReview:()=>cancelled++});
+pendingUi.refresh();pendingUi.selection[0].input.checked=true;pendingUi.selection[0].input.dispatchEvent({type:'change'});pendingUi.evaluate.click();assert.equal(pendingUi.refreshButton.disabled,true);events.pagehide();finish();await new Promise(r=>setTimeout(r,0));assert.equal(cancelled,1);assert.ok(pendingUi.status.textContent.includes('취소'));
+console.log('PASS native multiple splice source selection, eligibility recheck, cancellation and late completion rejection');

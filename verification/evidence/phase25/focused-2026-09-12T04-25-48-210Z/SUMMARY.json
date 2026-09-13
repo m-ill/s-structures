@@ -1,0 +1,41 @@
+{
+  "sourceHash": "c2bdfba1043c41ef1ba9ea05c90f6335561f90b8eb2699c84a8d237b1aff9e6a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:25:49.736Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 452,
+      "sha256": "3c9f764df6f887c9ba03e3c406170edf53b115e0db620df18c6a15ab7b2ae6df",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-weight-ledger.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 256,
+      "sha256": "5d929ed5a0707f7980e7f4f6f957bf616a123c2e5ade9c2b00603f114d9934ac",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-reaction-height.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 204,
+      "sha256": "c1c6bd096e0865afc49a9a9af9d86251caca80faa2bf38e59c3bcb86d9e87391",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-top-reinforcement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 268,
+      "sha256": "30a750b2e548ec3ba5a1f64e8cba08ada9d7164cc7d27bf8e4cc401384e59c6c",
+      "error": null
+    }
+  ]
+}

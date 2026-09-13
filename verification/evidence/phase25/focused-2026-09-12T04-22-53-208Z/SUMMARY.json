@@ -1,0 +1,33 @@
+{
+  "sourceHash": "0f4e6dda866aea78db31efea71021f70196f87ca9e2b0e45a80148cf562af723",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:23:00.846Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-foundation-distribution-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 86,
+      "sha256": "692d05d15bcc3b23fd0db6ab5f29d961d991da3b0641094a4dec8aa6875ca2b8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 93,
+      "sha256": "ae5ba917843e76b673366c6c1c2ca65cadbe87cece2fd7ff243c45fb879e195f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7103,
+      "sha256": "913b78d14f300686ed88eeae3b865dbad9c799c08466b941bc6af82eaa55829e",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7617f92dd8d1c023dab0108990fd4a4c0e6e43350ffecbadcce177c78608115a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:11:06.676Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-minimum-steel.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 61,
+      "sha256": "0b4bae0a6b3b82c28c9c56363efb40af11c51a62805011f956430f2c5a2845d3",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "sourceHash": "5ac79e9bc5491130ec240b7cc869b5951737267dd457bc0d3bcf0a2cff7d18e1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:57:14.638Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-shared-worker-lease.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "4b88c569377a1fa2ede264594e692d2088788554afb0de73f200221b466479f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-worker-quarantine.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 153,
+      "sha256": "f94d678e185b88fc17e4e358906458e15283ee1d613c78e78ba29599162374ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 698,
+      "sha256": "b2d54459acfb177c90b40a0cebf5fbc84ce0da68b6d45b8539d6807d148d3332",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4351,
+      "sha256": "6b397e39788360ec801ada96f2be42308a5b1e3a5086b28b4e115abc12928e3f",
+      "error": null
+    }
+  ]
+}

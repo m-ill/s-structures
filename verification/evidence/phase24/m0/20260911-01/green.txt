@@ -1,0 +1,2 @@
+PASS T00/T18 module scope, unavailable rules, actual WebMCP, input/response isolation
+{"milestone":"M0","cases":["T00","T18"],"file":"tests/p24-m0-scope.mjs","elapsedMs":652,"exitCode":0,"error":null}

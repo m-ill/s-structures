@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+const ctx=designContext(),m=ctx.model;
+try{
+ m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:0,y:0,z:3}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'F',type:'nodal',node:'B',P:10,dir:'-z',case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',name:'E',kind:'static',settings:{comboId:'U',pDeltaMethod:'off'}}];
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'review-source'});assert.equal(run.ok,true);
+ const sources=[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}];
+ const plan=await ctx.call('plan_design_review',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources});
+ const cancelled=ctx.call('start_design_review',{handle:plan.handle,requestId:'review-cancel'});
+ const rejection=assert.rejects(cancelled,/CANCELLED/);
+ assert.equal((await ctx.call('cancel_design_review')).cancelRequested,true);await rejection;
+ assert.equal(ctx.bridge.getDesignReviewExecution().active,false);
+ assert.ok(!Object.keys(ctx.bridge.getResourceBudget().snapshot().owners).some(k=>k.startsWith('design-review-transient')));
+ const args={handle:plan.handle,requestId:'review-success'};
+ const [a,b]=await Promise.all([ctx.call('start_design_review',args),ctx.call('start_design_review',args)]);assert.equal(a.designRunId,b.designRunId);
+ const beforeReuse=ctx.bridge.getPracticalDesignContext().sharedResultCache.hits;
+ const practical=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources});
+ assert.deepEqual(a.summary.practical,practical.summary);assert.ok(ctx.bridge.getPracticalDesignContext().sharedResultCache.hits>beforeReuse);
+ const legacy=ctx.bridge.startDesignReview({plan:ctx.bridge.planDesignReview({sources}),requestId:'review-compatibility'});
+ assert.equal(legacy.ok,true);assert.deepEqual(legacy.result.summary,a.summary);
+ assert.equal(ctx.bridge.getDesignReviewExecution().mode,'module-worker');
+ const currentPlan=ctx.bridge.planDesignReview({sources});
+ const stalePending=ctx.bridge.startDesignReviewAsync({plan:currentPlan,requestId:'review-stale'});
+ const busy=await ctx.bridge.startDesignReviewAsync({plan:currentPlan,requestId:'review-busy'});assert.equal(busy.code,'DESIGN_REVIEW_BUSY');
+ m.loads[0].P=11;assert.equal((await stalePending).code,'STALE_INPUT');m.loads[0].P=10;
+ const budget=ctx.bridge.getResourceBudget(),budgetBefore=budget.snapshot();
+ budget.reserve('test-exhausted',budgetBefore.maxBytes-budgetBefore.totalBytes);
+ const denied=await ctx.bridge.startDesignReviewAsync({plan:currentPlan,requestId:'review-budget'});assert.equal(denied.code,'MANAGED_MEMORY_BUDGET_EXCEEDED');budget.release('test-exhausted');
+ assert.ok(!Object.keys(budget.snapshot().owners).some(k=>k.startsWith('design-review-transient')));
+ const disposed=ctx.bridge.startDesignReviewAsync({plan:currentPlan,requestId:'review-dispose'});await ctx.dispose();assert.equal((await disposed).code,'CANCELLED');
+ console.log('PASS actual WebMCP review Worker cancellation, duplicate request, canonical/compatibility parity and resource release');
+}finally{await ctx.dispose();}

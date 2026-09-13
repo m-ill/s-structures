@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7847c0a26a51a6a140f7030d85aa0f62c752821ab191e3c884353f500aa00cb7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:54:05.221Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-webmcp-joint-credit.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 6860,
+      "sha256": "937675a4b4454421dca64121cd9ed31cd5fb99c36f303192b0c4ee5f4ee62374",
+      "error": null
+    }
+  ]
+}

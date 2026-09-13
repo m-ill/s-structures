@@ -1,0 +1,41 @@
+{
+  "sourceHash": "6a134bcf419af55f3efedabb6d93e4f0bc6e9e83aa6d088b5f936d8b934861e5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:17:47.032Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 926,
+      "sha256": "0888b1492ed1096f5ac03dd6db4f57af4d84a72c295f91ca27e9e808df215c52",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3067,
+      "sha256": "97ab7ed97890e80d62becf22dd1b8bbc35855ace84cb276616a299286a518fcb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1018,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m1-details-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1205,
+      "sha256": "d51059eb59a2087160395171a90c7517d82658fd81d960f22b80a21f935d5132",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "985d88b251569913501083281f6a8a6c5379596782cf7b844f0a6d0663033782",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:33:10.467Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-browser-definitions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 297,
+      "sha256": "f477b45609e8aab4835df4557c4e89c8aeeacc3d5d4437cb5da8571817a7d53d",
+      "error": null
+    }
+  ]
+}

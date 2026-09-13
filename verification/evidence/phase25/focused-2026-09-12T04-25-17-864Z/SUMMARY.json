@@ -1,0 +1,17 @@
+{
+  "sourceHash": "447b17932dd5d731ae90602ac3c8b949ea15875977d2ae144825eafd00e868bd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:25:18.594Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 380,
+      "sha256": "3c9f764df6f887c9ba03e3c406170edf53b115e0db620df18c6a15ab7b2ae6df",
+      "error": null
+    }
+  ]
+}

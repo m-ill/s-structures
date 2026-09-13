@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {crossTieGeometry} from '../src/design/rc/crossTieGeometry.js';
+const d={bars:[{y:0,z:-.14,diameter:.02},{y:0,z:.14,diameter:.02}],crossTieBarPairs:['1:2'],crossTieHookSides:['left'],crossTiePlaneOffsets:['0.015'],tieClosure:'standard-135',tieBendInsideRadius:.02,tieHookTail:.06,cover:.02,stirrups:{diameter:.01}};
+const g=crossTieGeometry(d,{B:.4,H:.4});
+assert.equal(g.status,'OK');assert.equal(g.fabricationApproved,false);
+assert.ok(Math.abs(g.pieces[0].cutLength-(.26+1.5*Math.PI*.025+.12))<1e-12);
+assert.equal(g.pieces[0].planeOffset,.015);assert.ok(g.pieces[0].points.every(p=>p.length===2&&p.every(Number.isFinite)));
+const reversed=crossTieGeometry({...d,crossTieHookSides:['right']},{B:.4,H:.4});
+assert.ok(reversed.pieces[0].points.every(([y,z],i)=>Math.abs(y+g.pieces[0].points[i][0])<1e-12&&Math.abs(z-g.pieces[0].points[i][1])<1e-12));
+assert.equal(crossTieGeometry({...d,crossTieHookSides:undefined},{B:.4,H:.4}).reason,'CROSS_TIE_ORIENTATION_AND_PLANE_REQUIRED');
+assert.equal(crossTieGeometry({...d,tieBendInsideRadius:.019},{B:.4,H:.4}).status,'NG');
+assert.equal(crossTieGeometry({...d,stirrups:{diameter:.02},tieBendInsideRadius:.04,tieHookTail:.12},{B:.6,H:.6}).status,'NG');
+assert.equal(crossTieGeometry(d,{B:.3,H:.4}).status,'NG');
+assert.equal(crossTieGeometry({...d,crossTiePlaneOffsets:['Infinity']},{B:.4,H:.4}).status,'NOT_CHECKED');
+console.log('PASS paired 135-degree cross-tie centerline, exact arc length, mirrored orientation and invalid geometry');

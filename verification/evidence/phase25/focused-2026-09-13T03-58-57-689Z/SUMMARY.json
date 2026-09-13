@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6ba4d2b3b2fa099cf3f4930d524df87feb1b68ff98dd9f680f45cf3c2b82c3b5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:58:58.006Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-book-file-input.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 53,
+      "sha256": "411b7b209a6f5b6e1237220d546840943d0572957357d0e2006c43176581108a",
+      "error": null
+    }
+  ]
+}

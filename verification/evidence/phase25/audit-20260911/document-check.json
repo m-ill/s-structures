@@ -1,0 +1,9 @@
+{
+  "relativeLinksChecked": 120,
+  "brokenLinks": [],
+  "gapCount": 32,
+  "milestoneCount": 11,
+  "implementationFileChanges": [],
+  "productTestsRunThisPlanningTask": false,
+  "observations": "six read-only supplied-demand probes, no solver"
+}

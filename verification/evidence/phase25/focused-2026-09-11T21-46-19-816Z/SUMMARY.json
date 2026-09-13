@@ -1,0 +1,33 @@
+{
+  "sourceHash": "82dc1d2e4a462a44a8b79cfa72a9929438e73fa233fe7b0cd1f0ce24bcd6b7da",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:46:21.426Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-lap-frame-coupling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 112,
+      "sha256": "f3002fa9baadf3b9751509bebe2c9e72b0a75b72f06070e595d286a65f5fc2ad",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-elastic-transfer.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1146,
+      "sha256": "3e293772b2c93ee2819e4de88d3afa380c69b1d746adcb3c535bd8260c642522",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-splice-transfer-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 108,
+      "sha256": "fc0b3c87c56bdde25225931c65268152e343d83cd47c013a6bba3dc60cb4b833",
+      "error": null
+    }
+  ]
+}

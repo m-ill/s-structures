@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {interfaceBarSteelAllocation} from '../src/design/foundation/interfaceBarSteelAllocation.js';
+const normal={status:'OK',limits:{steelTensionLimit:340,steelCompressionLimit:260},bars:[{area:.001,force:170},{area:.001,force:0}]};
+const distribution={status:'CALCULATED',barForces:[{barIndex:1,area:.001,resultant:100},{barIndex:2,area:.001,resultant:0}]};
+const friction={status:'OK',phi:.75,mu:1,designFy:400};
+let result=interfaceBarSteelAllocation({normal,distribution,friction});
+assert.equal(result.status,'OK');assert.ok(Math.abs(result.rows[0].ratio-5/6)<1e-12);
+distribution.barForces[0].resultant=200;result=interfaceBarSteelAllocation({normal,distribution,friction});assert.equal(result.status,'NG');assert.equal(result.governingBarIndex,1);assert.ok(result.totalRequiredArea<result.providedArea,'total area is sufficient but one bar is overloaded');
+assert.equal(result.designTransferAllowed,false);assert.equal(result.interfaceCapacityQualified,false);
+assert.equal(interfaceBarSteelAllocation({normal,distribution,friction:null}).status,'NOT_CHECKED');
+assert.equal(interfaceBarSteelAllocation({normal,distribution:{...distribution,barForces:[...distribution.barForces].reverse()},friction}).status,'NOT_CHECKED');
+console.log('PASS local normal and friction steel reservations prevent area double counting');

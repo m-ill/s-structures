@@ -1,0 +1,17 @@
+{
+  "sourceHash": "cdebbdbaf3b7cdaa242d6f0db179a700990b7377c39ef57412e613a59487987d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:30:54.807Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-staged-frame-response.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "c2bb7fa9114af962784465b0e4836783bc7e8370d8a712057ea0e61ec24ab0c6",
+      "error": null
+    }
+  ]
+}

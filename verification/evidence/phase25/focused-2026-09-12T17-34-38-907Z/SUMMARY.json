@@ -1,0 +1,33 @@
+{
+  "sourceHash": "2928e459d8b80dccd081531ef82f342da684d1b5c6bb5b18cf5cae3515c507ba",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:34:54.993Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-continuous-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 91,
+      "sha256": "d2d7882b7cd59c6d7797ef1669d16288d87eb222f184cf2e9fae60524270f0e5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 14466,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1248,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

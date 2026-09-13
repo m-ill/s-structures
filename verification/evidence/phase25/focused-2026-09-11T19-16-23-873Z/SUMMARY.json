@@ -1,0 +1,25 @@
+{
+  "sourceHash": "705af3026565f02fb3a4fee9a2b1b8140aecfd7a56b869403a158093dbfc9b02",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:16:25.762Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-flexural-analysis-profile.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 739,
+      "sha256": "8c48b24491bb7c39bcf0e539fd4f0929fc4fc4220b1259bb6b7c45e5e131ca80",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-segmented-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 938,
+      "sha256": "957bfff75985acd43d0fd5bb9d7477d8154e1d5b0209f67c4ec1a712f1ce72f1",
+      "error": null
+    }
+  ]
+}

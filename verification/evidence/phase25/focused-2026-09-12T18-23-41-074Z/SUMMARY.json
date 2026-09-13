@@ -1,0 +1,25 @@
+{
+  "sourceHash": "09eb25e86c9e0471804d9732e68ac081c63f4e90f5daeaf86f2be4e2ec6cc3b8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:23:47.825Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-section-size-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 219,
+      "sha256": "6cdc0fe4ea12330db220e5d38f8c83c80ae4c35e3b628e95663798bd334f03fa",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6228,
+      "sha256": "07f6bee91b637ce9921c7ca8f2ac424096cf7b644799c36cb8ac0da16d6054dc",
+      "error": null
+    }
+  ]
+}

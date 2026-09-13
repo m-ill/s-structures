@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {spliceBarPath} from '../src/design/rc/spliceBarPath.js';
+const bar={y:-.2,z:0,diameter:.02,area:.0003};
+const detail={start:0,end:1,cover:.04,startFabricationShape:'straight',endFabricationShape:'straight',endSetbackStart:.04,endSetbackEnd:.04};
+const a={id:'S1',startX:1,endX:1.6,offsetY:.02,offsetZ:0,continuationSide:'offset-toward-end'};
+const b={id:'S2',startX:2.4,endX:3,offsetY:.02,offsetZ:0,continuationSide:'offset-toward-start'};
+const x={detail,bar,memberLength:4,H:.6,splices:[a,b]};
+const r=spliceBarPath(x);assert.equal(r.status,'OK');assert.equal(r.pieces.length,3);
+assert.ok(r.pieces.every((p,i)=>Math.abs(p.y-[-.2,-.18,-.2][i])<1e-12));
+assert.ok(Math.abs(r.totalCutLength-(3.92+.6+.6))<1e-10);
+assert.equal(r.pieces[1].startX,1);assert.equal(r.pieces[1].endX,3);
+assert.equal(spliceBarPath({...x,splices:[a,{...b,continuationSide:'offset-toward-end'}]}).reason,'SPLICE_PIECE_LANE_DISCONTINUITY');
+assert.equal(spliceBarPath({...x,splices:[{...a,continuationSide:undefined}]}).status,'NOT_CHECKED');
+assert.equal(spliceBarPath({...x,splices:[b,a]}).status,'OK');
+assert.equal(spliceBarPath({...x,splices:[a,{...b,startX:1.5}]}).status,'NOT_CHECKED');
+const hooked=spliceBarPath({...x,detail:{...detail,startFabricationShape:'L90',endFabricationShape:'L90',startBendInsideRadius:.06,endBendInsideRadius:.06,startHookTailLength:.24,endHookTailLength:.24}});assert.equal(hooked.status,'OK');assert.equal(hooked.pieces[0].shape,'L90-straight');assert.equal(hooked.pieces[2].shape,'straight-L90');assert.equal(hooked.pieces[1].shape,'straight-straight');
+console.log('PASS explicit splice piece lanes, overlap conservation and disconnected path rejection');

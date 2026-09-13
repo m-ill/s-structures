@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c49b38e798917502aae2c22a3689dc0a66b5d418b17673c12c610dcae8d4e669",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:29:18.261Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-end-anchorage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 153,
+      "sha256": "a15948cfa14109dc7457c467a48953f58cbed8ba458e5b1629a95d1af1b9fc9a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rule-input-diagnostics.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 773,
+      "sha256": "096934eef8cba00a4214a96c289d008276dca250c46cd0dc1ae2dbc0f3be1fd0",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "2e099669e8414d9d30af7c54bd68a3f4d82590140b0e05e9d496bcc790c41079",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T20:56:15.069Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-pdf-bundle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 16500,
+      "sha256": "3b0cd7030af1bb03351d96e7aad00213ac8bcb121a5eab336c6eab855bc1af18",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-report-volumes.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1038,
+      "sha256": "9380888c12d2e2c7e1ef09150def2a6d91d34675a0ffd0290d07c701b31bbf46",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-export-source-currentness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 303,
+      "sha256": "5d2ddd64c63c385c6d39addbefe58d33b9c35738e7c54e19c89ddc835b068847",
+      "error": null
+    }
+  ]
+}

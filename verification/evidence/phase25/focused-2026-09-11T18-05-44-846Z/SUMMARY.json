@@ -1,0 +1,33 @@
+{
+  "sourceHash": "a96628dbbeb5d5776e2198bf43a255070cbe7036ac700be9de5740fcce36584d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:05:51.855Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-cross-tie-cage-fit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 185,
+      "sha256": "d43201a20dc58b2af2bdb9466ee725d9c02ba36cf2a6209286bfe7cbc86adbd9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "64d29d2733f4467b78be853feb184918d381ee62439fd05d7af0965ec93f848a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6573,
+      "sha256": "b2129329186840e07f15be777917c0e58dd14013a9a6638ac417d4b9c34d714d",
+      "error": null
+    }
+  ]
+}

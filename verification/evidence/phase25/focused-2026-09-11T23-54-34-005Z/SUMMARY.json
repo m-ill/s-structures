@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f0f3c62c8a46bff80a528a7c1eeb50186deb32b9f8bd3063589bddd9a5ee5e2c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:54:34.491Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-geometric-recovery.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 79,
+      "sha256": "dc9ee74616d4c220d1f85205e1c8b554ca55b605be67c29bd2d5fa1b98c4a551",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-force-extrema.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 81,
+      "sha256": "147d31806a1d1122f0fab046edfe2d0dbb830eb403f95d007459dfa6c8669f10",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-force-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 80,
+      "sha256": "1b0a50fbcb72fc28bd4f655d6a25f697deee1d1462f59865c8869cd8aae40074",
+      "error": null
+    }
+  ]
+}

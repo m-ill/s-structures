@@ -1,0 +1,33 @@
+{
+  "sourceHash": "ec05a2a175767dcd49b7bf747c9b9a39c83d84d3eed2d813985bead11a931232",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:51:55.695Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-differential-dependencies.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "da469123c19cb202ad9cc82bec23784a02315a47057b317fa2ebba6534938b73",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-query.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2803,
+      "sha256": "04f4d8617c0e7258fdde156bc3fbceb91e0142b092013e9fc897970db18e4409",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-json-record-reader.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 117,
+      "sha256": "7382a26e1a6112bdeec8da5a56d8f323e9fd3a995a60f8c759a9e178d649fd0f",
+      "error": null
+    }
+  ]
+}

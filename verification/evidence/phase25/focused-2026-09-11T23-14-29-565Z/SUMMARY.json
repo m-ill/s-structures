@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f66ea65a8911746933738c3722f8ff5dc5c34e3e5a7e0eb2c6b1ae656357d973",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:14:30.145Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-splice-transfer-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 219,
+      "sha256": "240fdd08da2aefa642d23f5cd33ed941417a41ab62593bf4b8f75b2af63a60af",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 166,
+      "sha256": "aa6e1bc1040bc91fba4d4d6c5aee2c6f4d1859972799c54485c56ac13e341aee",
+      "error": null
+    }
+  ]
+}

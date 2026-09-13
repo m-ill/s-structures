@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {spliceIntervalCoverage} from '../src/design/rc/spliceIntervalCoverage.js';
+const detail={id:'R',version:1,memberId:'M'},splice={id:'S',version:1,reinforcementId:'R@1',memberId:'M',start:.4,end:.41,continuationSide:'offset-toward-end'};
+const model={designDetails:{splices:[splice]}};
+const inspect=tuples=>spliceIntervalCoverage(model,'M',[detail],10,tuples);
+const gap=inspect([{x:0},{x:5},{x:10}]);assert.equal(gap.complete,false);assert.equal(gap.unvisited.length,1);assert.equal(gap.unvisited[0].startX,4);assert.ok(Math.abs(gap.unvisited[0].endX-4.1)<1e-12);
+assert.equal(inspect([{x:4,side:'left'}]).complete,false);
+assert.equal(inspect([{x:4,side:'right'}]).complete,true);
+assert.equal(inspect([{x:4.1,side:'left'}]).complete,true);
+assert.equal(inspect([{x:4.1,side:'right'}]).complete,false);
+assert.equal(inspect([{x:4.05}]).complete,true);
+model.designDetails.splices.push({...splice,version:2,start:.6,end:.7});assert.equal(inspect([{x:4.05}]).unvisited[0].version,2);
+console.log('PASS unvisited narrow splice interval, one-sided bounds and latest version selection');

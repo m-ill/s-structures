@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4882a53f3000c02f937455dc3b035f535b3e07026a553bd1a14ef7c0def154f6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:21:50.208Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-splice-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2929,
+      "sha256": "fcb2507cd574af5800c39a84f7466ecb2c45171131fbe04b4cd4b6d1cf4bb66c",
+      "error": null
+    }
+  ]
+}

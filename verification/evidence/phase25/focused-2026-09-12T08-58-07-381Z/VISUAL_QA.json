@@ -1,0 +1,13 @@
+{
+  "artifact": "output\\pdf\\phase25\\splice-schedule.pdf",
+  "sha256": "059cff2c0be58bc5f8df8d1fbe8dade5720afa84f41d3f619442587dfe45a3eb",
+  "totalPages": 44,
+  "visuallyInspectedPages": [
+    3,
+    4,
+    5
+  ],
+  "method": "Poppler PNG; assistant visual inspection of changed schedule pages",
+  "wholeDocumentVisualReview": false,
+  "result": "no clipping or overlap in changed schedule pages"
+}

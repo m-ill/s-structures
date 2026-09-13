@@ -1,0 +1,25 @@
+{
+  "sourceHash": "597dc69d8232abdae4aa0458e6a7b926810022b33a5579362d53864ba95b252a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:33:36.070Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 70,
+      "sha256": "2e59a376649a3c9e3d108257616f46ac5cba3512840245596e1368568227948c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4629,
+      "sha256": "52070b2e078356638ed6ac740a5e7ee6e2fe24239a4e35db16697bce7e051730",
+      "error": null
+    }
+  ]
+}

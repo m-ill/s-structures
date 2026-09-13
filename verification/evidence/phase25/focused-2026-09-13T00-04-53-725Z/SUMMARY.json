@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e70a00bae31e413f98c14309983cb835366d9a3397223c74cdfc4ecc540cdc00",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:04:54.106Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-pdf-bundle-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 105,
+      "sha256": "67747e7127cc566960b9dd7a0288fa5c76e09662cb131bf66a0159c7dad2f637",
+      "error": null
+    }
+  ]
+}

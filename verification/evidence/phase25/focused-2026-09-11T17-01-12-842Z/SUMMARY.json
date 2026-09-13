@@ -1,0 +1,41 @@
+{
+  "sourceHash": "0d6217e841a6e66caf3a7cbb480f2e7e569f902fdae13bd0d8eb939191a8aefd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:01:15.411Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2124,
+      "sha256": "39f68c3a6feeb0d9ac1a507ecb5bb54a1223c3d34de934296501261c80257b9b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-spatial-hoop-longitudinal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 101,
+      "sha256": "8c522b308fb9d015cb5c05d193f98e108ae93ed0b4ab5c205350fa957545ef89",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "dbffd2d52bde7abac538782b3131064cdabe2e20c931188156194c0b86a63639",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-bent-bar-path-3d.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 58,
+      "sha256": "bc9f02625338239c6b908fb38fe8bc876d87f78b5dbc0b11646fbe5357af0200",
+      "error": null
+    }
+  ]
+}

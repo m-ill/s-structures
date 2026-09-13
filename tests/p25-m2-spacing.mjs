@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {kdsBarSpacing} from '../src/design/rc/kdsSpacing.js';
+const bars=[{y:-.15,z:-.08,diameter:.02},{y:-.15,z:.08,diameter:.02}];
+const input={B:.3,H:.4,bars,role:'flexural-member',aggregate:.02};
+assert.equal(kdsBarSpacing(input).status,'OK');
+assert.equal(kdsBarSpacing({...input,bars:[bars[0],{...bars[0],z:-.04}]}).status,'NG');
+assert.equal(kdsBarSpacing({...input,aggregate:.061}).status,'NG');
+assert.equal(kdsBarSpacing({...input,aggregate:undefined}).status,'NOT_CHECKED');
+assert.equal(kdsBarSpacing({...input,bars:[...bars,{y:-.10,z:0,diameter:.02}]}).status,'NG');
+assert.equal(kdsBarSpacing({...input,bars:[...bars,{y:-.10,z:-.08,diameter:.02}]}).status,'OK');
+assert.equal(kdsBarSpacing({...input,role:'compression-member',bars:[bars[0],{...bars[0],z:-.021}]}).status,'NG');
+assert.equal(kdsBarSpacing({...input,role:'compression-member',bars:[bars[0],{...bars[0],z:-.02}]}).status,'OK');
+console.log('PASS spacing: role, aggregate, layers, alignment and boundary');
+
+const alignment=kdsBarSpacing({...input,bars:[...bars,{y:-.10,z:0,diameter:.02}]});
+assert.equal(alignment.ratio,null,'binary alignment failure has no engineering demand/capacity ratio');
+assert.ok(alignment.maximumClearanceRatio<1);assert.ok(alignment.checks.some(c=>c.kind==='layer-alignment'&&c.status==='NG'&&c.ratio===null));
+const overlap=kdsBarSpacing({...input,bars:[bars[0],{...bars[0],z:bars[0].z+.01}]});
+assert.equal(overlap.status,'NG');assert.equal(overlap.ratio,null);assert.ok(overlap.checks.some(c=>c.provided<=0&&c.status==='NG'&&c.ratio===null));
+assert.ok(kdsBarSpacing({...input,bars:[bars[0],{...bars[0],z:-.04}]}).ratio>1);
+console.log('PASS categorical alignment and physical overlap do not fabricate large quantitative utilization');

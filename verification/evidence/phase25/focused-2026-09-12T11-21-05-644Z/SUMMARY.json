@@ -1,0 +1,17 @@
+{
+  "sourceHash": "01bafb891badd4dbcd9e42b1545984972239f637d9b9c9f3e75b3b929090c140",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:21:05.930Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-layer-settlement.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 51,
+      "sha256": "e185b6e798c65961cf348351da3a8beea74ec674358251ae7d633c41e29d5e7f",
+      "error": null
+    }
+  ]
+}

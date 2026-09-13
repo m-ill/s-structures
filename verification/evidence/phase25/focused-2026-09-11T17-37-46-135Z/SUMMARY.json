@@ -1,0 +1,33 @@
+{
+  "sourceHash": "8958069a65b6d79c67cc89029773e4dd2678bd601eff587f6744389492ed30e7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:37:46.543Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-hoop-layout-owner.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "584f55e074e99ae0207eb3c21025a9cf58e298b5c930010fbbd2e97a978818a8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-torsion-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "25470a5fbebcc387ead6230f49c6b4fca5af3bd36a1466e67e1dec82c24353f8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-supports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 73,
+      "sha256": "f26d0ed80c937ce250d356c1ac27bf06b44fc3843a17167212ddca57a47d0d5a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "597dc69d8232abdae4aa0458e6a7b926810022b33a5579362d53864ba95b252a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:34:14.632Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-cross-tie-supports.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 70,
+      "sha256": "f26d0ed80c937ce250d356c1ac27bf06b44fc3843a17167212ddca57a47d0d5a",
+      "error": null
+    }
+  ]
+}

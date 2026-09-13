@@ -1,0 +1,25 @@
+{
+  "sourceHash": "39467f13e955c23543e127d1268f1aa87cb477625abb3f7388b3237de7baee6b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:45:21.640Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6527,
+      "sha256": "85cb5e0638dc8bf78f1d863d5620aaf7e9446420a43c9392126d2d116a4547f8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1227,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

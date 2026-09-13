@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {selectDesignCombination} from '../src/compute/product/designCombinationSource.js';
+const first={ok:true,anyOk:true,memberResults:{A:{N:[1]}}},second={ok:true,anyOk:true,memberResults:{A:{N:[2]}}};
+const payload={pDeltaMethod:'direct',byCombo:{U:first},pDelta:{method:'direct',ok:true,byCombo:{U:{ok:true,converged:true,result:second}}}};
+assert.equal(selectDesignCombination(payload,'U','direct'),second);
+assert.equal(selectDesignCombination(payload,'U','off'),null);
+payload.pDelta.byCombo.U.converged=false;
+assert.equal(selectDesignCombination(payload,'U','direct'),null,'never fall back to first-order on failed Direct');
+assert.equal(selectDesignCombination({byCombo:{U:first}},'U','direct'),null);
+assert.equal(selectDesignCombination({byCombo:{U:first}},'U','off'),first);
+console.log('PASS distinct Direct/first-order sources and convergence/method guards');

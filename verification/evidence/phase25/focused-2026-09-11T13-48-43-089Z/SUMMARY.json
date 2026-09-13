@@ -1,0 +1,33 @@
+{
+  "sourceHash": "8d3ec2f7e03ae4cc99b216bcb9989969ad48407aa047c3150f7ca0e1c59833bb",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:48:46.297Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2791,
+      "sha256": "eb1c42be1f6d1f41fac5d305b6ab8a5cf8efa465f68fa90cc7b4332f5c31abaf",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-assembly.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "ff555e9d4fa8a6ae8ff202c349955ba24e86ac082be49ec550c4510e4c8b2eee",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 47,
+      "sha256": "effea582e535f458da54a968ff68efe777ede1078568d506e2cef039c937d4a1",
+      "error": null
+    }
+  ]
+}

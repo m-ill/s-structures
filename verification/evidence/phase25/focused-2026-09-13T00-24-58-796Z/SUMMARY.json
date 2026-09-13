@@ -1,0 +1,17 @@
+{
+  "sourceHash": "57973cc485f10a4cc8a42d0ff1190b4c96c507c840af13effdf70002467048bc",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:24:59.147Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-shared-records.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 97,
+      "sha256": "993d9ba49486b806a5ca742efb059702f5e45fd8dc36ee2dfd165e9dc9775435",
+      "error": null
+    }
+  ]
+}

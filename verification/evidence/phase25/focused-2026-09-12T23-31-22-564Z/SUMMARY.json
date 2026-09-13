@@ -1,0 +1,17 @@
+{
+  "sourceHash": "dd32403ac8c8271e50bdccbe8b9aa45ecc5a2970fc1541d04fa463b10bb44ed1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:31:23.280Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-frame-initial-strain.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 428,
+      "sha256": "e421f7864d70f20c6c11916f088dade19770c50e2a4d1c5a1bcf0e154c34d122",
+      "error": null
+    }
+  ]
+}

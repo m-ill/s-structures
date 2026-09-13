@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: new design inputs require a product-book version rejected by older readers
+
+1 !== 2
+
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m2-detail-persistence.mjs:13:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 2,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.16.0

@@ -1,0 +1,55 @@
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {buildVectorDetailPdf} from '../src/report/phase24/vectorPdf.js';
+import {evaluateColumnTransfer} from '../src/design/foundation/columnTransfer.js';
+import {resolveFootingLoadLedger} from '../src/design/foundation/footingLoadLedger.js';
+import assert from 'node:assert/strict';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {validateModel} from '../src/core/validation.js';
+import {designContext} from './fixtures/p24/context.js';
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+import {validateStoredDesignDetails} from '../src/modeling/designDetailValidation.js';
+const ctx=designContext(),m=ctx.model;
+try{
+ m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:0,y:0,z:3}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'F',type:'nodal',node:'B',P:10,dir:'-z',case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',name:'E',kind:'static',status:'not-run',settings:{comboId:'U',pDeltaMethod:'off'}}];
+ const ground={type:'ground-record',id:'G',name:'synthetic',version:1,sourceNote:'test',sourceReference:'fixture',basisStatus:'specified',allowableBearing:150,bearingBasis:'gross'};
+ const columnBars={type:'reinforcement-record',id:'R',name:'continuous column bars',version:1,sourceNote:'synthetic',memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',reinforcementForm:'single-deformed',barCoating:'uncoated',lapRequired:false,bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,diameter:20})))};
+ const footing={columnTransferType:'cast-in-place-continuous-straight-bars',columnMemberId:'AB',columnEmbedmentLength:.3,columnDevelopmentAbove:.3,barShape:'straight',shrinkageRestraint:'ordinary-not-severely-restrained',type:'foundation-record',id:'F',name:'synthetic',version:1,sourceNote:'test',nodeId:'A',foundationType:'isolated',B:2,L:2,thickness:.5,cover:.05,materialId:'concrete@1',groundId:'G@1',barMaterialId:'steel@1',bottomDiameterB:16,bottomDiameterL:16,bottomSpacingB:150,bottomSpacingL:150,topDiameterB:16,topDiameterL:16,topSpacingB:150,topSpacingL:150,footingWeightCaseId:'D',reactionBasis:'superstructure-only',columnWidth:.6,columnDepth:.3,flexureStandard:'KDS-142020-2022',concreteWeight:'normal',barCoating:'uncoated',punchingStandard:'KDS-142022-2022',punchingMomentMethod:'conservative-perimeter-shear',punchingPerimeterScope:'interior-solid-no-openings'};
+ assert.ok((await ctx.call('get_design_input_schema',{type:'foundation-record'})).schema.properties.topDiameterB);
+ const staging=structuredClone(m);for(const c of [ground,columnBars,footing])stagePracticalDesignInput(staging,c,[]);assert.equal(validateModel(staging).ok,true,JSON.stringify(validateModel(staging)));
+ const preview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'footing-preview',commands:[ground,columnBars,footing]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:preview.handle,requestId:'footing-apply'})).ok,true);
+ const stored=(await ctx.call('get_design_records',{channel:'foundations',id:'F'})).rows[0];assert.equal(stored.reinforcement.topB.diameter,.016);assert.deepEqual(validateStoredDesignDetails(m),[]);
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'footing-source'});assert.equal(run.ok,true);
+ const result=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const checks=[...result.checks];let next=result.nextOffset;while(next!==null){const page=await ctx.call('get_practical_design_result',{evaluationId:result.evaluationId,offset:next});checks.push(...page.checks);next=page.nextOffset;}
+ assert.ok(['OK','NG'].includes(checks.find(x=>x.checkId==='foundation-reinforcement').status));
+ assert.equal(checks.find(x=>x.checkId==='foundation-anchorage').status,'OK');
+ assert.equal(checks.find(x=>x.checkId==='foundation-column-transfer').status,'OK');
+ const punching=checks.find(x=>x.checkId==='foundation-punching');assert.ok(punching.transfer);assert.equal(punching.codeBasis.status,'NOT_ESTABLISHED');
+ let text='',offset=0;do{const part=await ctx.call('get_practical_design_check',{evaluationId:result.evaluationId,checkId:punching.id,offset,limit:250});text+=part.chunk;offset=part.nextOffset;}while(offset!==null);assert.deepEqual(JSON.parse(text),punching);
+ const snapshot=ctx.bridge.getPracticalDesignSnapshot(result.evaluationId),reaction=snapshot.sets[0].set.reactions.A,ledger=resolveFootingLoadLedger(m,stored,reaction,m.loadCombinations[0]);
+ assert.equal(evaluateColumnTransfer(m,{...stored,columnEmbedmentLength:.1},reaction,ledger).status,'NG');
+ assert.equal(evaluateColumnTransfer(m,stored,{...reaction,rmx:1},ledger).normalTransfer.status,'OK');
+ assert.equal(evaluateColumnTransfer(m,stored,{...reaction,rmz:1},ledger).reason,'COLUMN_TRANSFER_DEVELOPMENT_BELOW_INSUFFICIENT');
+ const mixedTorsion=evaluateColumnTransfer(m,{...stored,columnEmbedmentLength:.1},{...reaction,rmz:1},ledger);
+ assert.equal(mixedTorsion.status,'NG','known development failure must survive unsupported torsion');assert.equal(mixedTorsion.incomplete,true);assert.ok(mixedTorsion.ratio>1);assert.equal(mixedTorsion.unreviewedActions[0].action,'torsion');assert.equal(mixedTorsion.unreviewedActions[0].value,1);
+ const torsionOnly=evaluateColumnTransfer(m,{...stored,columnEmbedmentLength:.4,columnDevelopmentAbove:.4},{...reaction,rmz:1},ledger);assert.equal(torsionOnly.status,'NOT_CHECKED');assert.equal(torsionOnly.ratio,null);assert.equal(torsionOnly.normalTransfer.status,'OK');assert.equal(torsionOnly.torsionDistribution.status,'CALCULATED');assert.ok(Math.abs(torsionOnly.torsionDistribution.resultant.T-1)<1e-9);assert.equal(torsionOnly.torsionDistribution.barForces.length,4);
+
+ assert.equal(evaluateColumnTransfer(m,{...stored,columnWidth:.3,columnDepth:.6},reaction,ledger).reason,'COLUMN_CONTACT_DIMENSION_MISMATCH');
+ const drawings=buildDetailDrawings(ctx.bridge.getPracticalDesignSnapshot(result.evaluationId));assert.equal(drawings.quantities.filter(q=>q.face==='top').length,2);assert.equal(drawings.quantities.filter(q=>q.face==='bottom').length,2);assert.equal(drawings.quantities.filter(q=>q.kind==='column-bar-extension').length,4);assert.ok(drawings.quantities.filter(q=>q.kind==='column-bar-extension').every(q=>q.aboveLengthIncludedInMember));
+ mkdirSync('output/pdf/phase25',{recursive:true});writeFileSync('output/pdf/phase25/foundation-continuity.pdf',buildVectorDetailPdf(drawings.pages,new Uint8Array(readFileSync('assets/fonts/phase24/SStructuresSans.ttf'))));
+ console.log(`Foundation continuity PDF: ${drawings.pages.length} pages`);
+ const cp=await ctx.call('plan_design_candidates',{evaluationId:result.evaluationId,foundationId:'F',detailCandidates:[{B:2.2,L:3.2,thickness:.55,barDistribution:'kds-centered-band'}],maxCandidates:1,maxMillis:10000});
+ const started=await ctx.call('start_design_candidates',{planId:cp.planId,requestId:'footing-candidate'});let job;for(let i=0;i<300;i++){job=await ctx.call('get_design_candidates',{jobId:started.jobId});if(job.status!=='running')break;await new Promise(resolve=>setTimeout(resolve,10));}assert.ok(job.best,JSON.stringify(job));assert.equal(job.best.changes.kind,'foundation-record');
+ const bandPreview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'band-preview',commands:[{...footing,version:2,L:4,barDistribution:'kds-centered-band'}]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:bandPreview.handle,requestId:'band-apply'})).ok,true);
+ const bandRun=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'band-run'});
+ const bandResult=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:bandRun.steps[0].analysisRunId,comboId:'U'}]});
+ const bandSnapshot=ctx.bridge.getPracticalDesignSnapshot(bandResult.evaluationId);
+ const distribution=bandSnapshot.checks.find(x=>x.checkId==='foundation-distribution');assert.equal(distribution.status,'OK');assert.equal(distribution.codeBasis.status,'CLAUSE_APPLIED');
+ const bandDrawings=buildDetailDrawings(bandSnapshot),prepared=bandSnapshot.preparedDetails.foundations['F@2'].bottomB;
+ assert.ok(prepared.centerBand);assert.equal(bandDrawings.quantities.find(q=>q.detailId==='F'&&q.face==='bottom'&&q.mark.includes('B')).count,prepared.count);
+ assert.equal(bandSnapshot.checks.find(x=>x.checkId==='foundation-flexure').axisChecks.find(x=>x.axis==='B'&&x.face==='bottom').barCount,prepared.count);
+ assert.equal((await ctx.call('undo_design_input',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash})).ok,true);
+ console.log('PASS actual WebMCP top/bottom footing input, canonical store, CPU source, Worker review, method gate and drawings');
+}finally{await ctx.dispose();}

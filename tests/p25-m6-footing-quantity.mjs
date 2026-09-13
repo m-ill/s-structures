@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {footingReinforcementQuantity} from '../src/design/foundation/footingReinforcementQuantity.js';
+const f={reinforcement:{bottomB:{},bottomL:{}},columnTransferType:'cast-in-place-continuous-straight-bars'};
+const prepared={bottomB:{status:'OK',count:10,area:.002,bodyLength:1.9},bottomL:{status:'OK',count:12,area:.0024,bodyLength:2.9},columnBars:[{memberId:'C',memberMark:'B1',additionalBodyVolume:.0002,above:1000}]};
+const q=footingReinforcementQuantity(f,prepared);
+assert.equal(q.status,'OK');assert.ok(Math.abs(q.steelVolume-(.002*1.9+.0024*2.9+.0002))<1e-15);
+assert.equal(q.columnExtensionVolume,.0002);assert.equal(q.fabricationQuantity,false);
+assert.equal(footingReinforcementQuantity(f,{...prepared,columnBars:[]}).status,'NOT_CHECKED');
+assert.equal(footingReinforcementQuantity(f,{...prepared,bottomL:{status:'NOT_CHECKED'}}).status,'NOT_CHECKED');
+assert.equal(footingReinforcementQuantity({...f,columnTransferType:undefined},prepared).columnExtensionVolume,0);
+console.log('PASS prepared foundation body volume, additional embedment only and incomplete geometry rejection');

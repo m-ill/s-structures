@@ -1,0 +1,33 @@
+{
+  "sourceHash": "922cb27528190637d48289bd68622eea4501a06ab6f4bc2aff1f5ba4863e6f1d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:15:55.554Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 116,
+      "sha256": "ee9113a5010bb985491d38a70f9a78abb92602c2996ff6f853c70e034632acba",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 124,
+      "sha256": "7ab874ef995c2e15064217b79fb8f5ac34e3c4705a6df6a81d181ac868996561",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 13929,
+      "sha256": "57a0ac0329bc5038d7dbb5bf6ba2570440a501d473535f47e552f85a13bab24c",
+      "error": null
+    }
+  ]
+}

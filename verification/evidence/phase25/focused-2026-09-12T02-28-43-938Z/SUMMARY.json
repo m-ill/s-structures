@@ -1,0 +1,25 @@
+{
+  "sourceHash": "1f766ac25ae9bc1fcfdd29efb8b4364050ffd167c13bef4022265130d9da2c0e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:28:47.842Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-tie-spacing-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "165c8ab07df099bea1917716dc784485e009e81d26de308e2c8aeb95a1febad1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3623,
+      "sha256": "563f0311ad438948d6d6142464f8be7ec458ca98e866c677fe3fa4ccc04e9f1d",
+      "error": null
+    }
+  ]
+}

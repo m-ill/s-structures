@@ -1,0 +1,17 @@
+{
+  "sourceHash": "82644c964d31e2f1dc7ac6ccc73afc40f2c3b1156e89bda5eaf4ef6a8a089b37",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:01:07.174Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 198,
+      "sha256": "85f4ef0533bc834fcc4398ff4e180ac539ff7d2db200eb3816cb8b699ee96146",
+      "error": null
+    }
+  ]
+}

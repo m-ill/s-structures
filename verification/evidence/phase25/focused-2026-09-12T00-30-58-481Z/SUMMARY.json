@@ -1,0 +1,33 @@
+{
+  "sourceHash": "e8ad3e0ddfc68a9088e0e495a5f7e9d7abb066c1dabf25502986d25e20367579",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:31:09.936Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-scope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 159,
+      "sha256": "10fe3b0b783c74603cb35661f0e90de1cb450711096b94ce0efcd5c030c4c8c7",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10902,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 166,
+      "sha256": "f13573d99ba089dfbfc91f253b05acbcd14b8706c1528312b6a010ed482a7f6e",
+      "error": null
+    }
+  ]
+}

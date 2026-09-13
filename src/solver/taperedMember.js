@@ -2,8 +2,9 @@ import { sectionOf } from '../core/catalogs.js';
 import { stableHash } from '../core/stableHash.js';
 import { resolveCriterion } from '../core/analysisCriteria.js';
 import { resolveSectionShearAreas } from '../materials/sectionProperties.js';
+import {coupledFrameStiffness,invertPositiveMatrix} from './coupledFrameFlexibility.js';
 
-export const TAPERED_MEMBER_VERSION = 'p10-m6-tapered-force-based-v1';
+export const TAPERED_MEMBER_VERSION = 'p25-tapered-force-based-v4-initial-deformation';
 export const TAPER_PROFILES = Object.freeze(['linear', 'parabolic-depth', 'segments']);
 
 const PROPERTY_KEYS = Object.freeze(['A', 'Ay', 'Az', 'Iy', 'Iz', 'J']);
@@ -42,6 +43,7 @@ export function resolveMemberTaper(model = {}, member = {}, sectionI = {}, optio
   const sectionJ = flattenSection(getSection(sectionJId));
   const start = flattenSection(sectionI);
   if (!validSection(start) || !validSection(sectionJ)) return failed('BAD_MEMBER_TAPER_SECTION', 'Taper endpoint sections require positive A, Iy, Iz, and J.');
+  if(profile!=='segments'&&(start.axialBendingFlexibility||sectionJ.axialBendingFlexibility))return failed('COUPLED_TAPER_SEGMENTS_REQUIRED','Coupled compliance requires explicit segments.');
   let segments = [];
   if (profile === 'segments') {
     if (!Array.isArray(input.segments) || !input.segments.length) return failed('BAD_MEMBER_TAPER_SEGMENTS', 'Segmented taper requires a non-empty segments array.');
@@ -82,6 +84,13 @@ export function localTaperedK12(material = {}, taper, length, options = {}) {
   if (!L || !E || !G || !taper?.ok) return failed('TAPERED_MEMBER_STIFFNESS_INVALID', 'Valid E, G, length, and taper contract are required.');
   const useShear = options.shearDeformation === true;
   const integrate = (fn) => integrateTaper(taper, L, fn);
+  const coupled=[taper.start,taper.end,...(taper.segments||[]).map(r=>r.section)].some(s=>s?.axialBendingFlexibility);
+  if(coupled){
+    if(options.axialOnly===true)return failed('COUPLED_TAPER_AXIAL_ONLY_UNSUPPORTED','Coupled sections require frame degrees of freedom.');
+    const result=coupledFrameStiffness(integrate,E,G,L,useShear);
+    if(!result)return failed('COUPLED_TAPER_FLEXIBILITY_INVALID','Integrated compliance must be positive definite.');
+    return {ok:true,version:TAPERED_MEMBER_VERSION,kl:result.kl,initialFixedEnd:result.initialFixedEnd,taper,length:L,shearDeformation:useShear,flexibility:{coupled:result.basicFlexibility},integratedProperties:integrateTaperedProperties(taper,L)};
+  }
   const axialFlexibility = integrate((section) => 1 / (E * section.A));
   const torsionFlexibility = integrate((section) => 1 / (G * section.J));
   if (options.axialOnly === true) {
@@ -161,10 +170,19 @@ function addBendingPlane(k, dofs, basic, sign, L) {
 function integrateTaper(taper, L, fn) {
   if (!(L > 0) || !taper?.ok) return NaN;
   const points = GAUSS[taper.gaussPoints] || GAUSS[5];
-  return points.reduce((sum, [coordinate, weight]) => {
-    const s = (coordinate + 1) / 2;
-    return sum + weight * fn(taperedSectionAt(taper, s), s, s * L);
-  }, 0) * L / 2;
+  // A quadrature rule spanning discontinuous sections can miss a short region
+  // entirely. Integrate each physical interval and use its own section directly.
+  const intervals = taper.profile === 'segments' ? taper.segments : [{ start: 0, end: 1 }];
+  let total = 0;
+  for (const interval of intervals) {
+    const half = (interval.end - interval.start) / 2;
+    const mid = interval.start + half;
+    for (const [coordinate, weight] of points) {
+      const s = mid + half * coordinate;
+      total += L * half * weight * fn(interval.section || taperedSectionAt(taper, s), s, s * L);
+    }
+  }
+  return total;
 }
 
 function normalizeSegments(input, getSection) {
@@ -211,11 +229,14 @@ function flattenSection(section = {}) {
 }
 
 function propertySnapshot(section) {
-  return Object.fromEntries(['id', 'H', 'B', ...PROPERTY_KEYS].map((key) => [key, section[key] ?? null]));
+  const out=Object.fromEntries(['id', 'H', 'B', ...PROPERTY_KEYS].map((key) => [key, section[key] ?? null]));
+  if(section.axialBendingFlexibility!=null)out.axialBendingFlexibility=structuredClone(section.axialBendingFlexibility);
+  if(section.initialGeneralizedStrain!=null)out.initialGeneralizedStrain=structuredClone(section.initialGeneralizedStrain);
+  return out;
 }
 
 function validSection(section) {
-  return PROPERTY_KEYS.every((key) => positive(section[key]));
+  return (section.initialGeneralizedStrain==null||!!section.axialBendingFlexibility&&Array.isArray(section.initialGeneralizedStrain)&&section.initialGeneralizedStrain.length===3&&section.initialGeneralizedStrain.every(Number.isFinite))&&PROPERTY_KEYS.every((key) => positive(section[key]))&&(section.axialBendingFlexibility==null||!!invertPositiveMatrix(section.axialBendingFlexibility,3));
 }
 
 function invert2(matrix) {
@@ -242,4 +263,13 @@ function positive(value) {
 
 function failed(reason, message) {
   return { version: TAPERED_MEMBER_VERSION, ok: false, reason, message };
+}
+
+// Integrate force recovery with the same quadrature order and section boundaries.
+export function forEachTaperedQuadrature(taper,L,x,breakpoints,fn){
+ const points=[...new Set([0,x,...breakpoints,...(taper.profile==='segments'?taper.segments.flatMap(r=>[r.start*L,r.end*L]):[])])].filter(s=>s>=0&&s<=x).sort((a,b)=>a-b);
+ for(let i=1;i<points.length;i++){
+  const half=(points[i]-points[i-1])/2,mid=points[i-1]+half;
+  for(const [p,w] of GAUSS[taper.gaussPoints]||GAUSS[5]){const s=mid+half*p;fn(s,half*w,taperedSectionAt(taper,s/L));}
+ }
 }

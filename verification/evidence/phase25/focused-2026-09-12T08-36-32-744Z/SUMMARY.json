@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f88aabb624b2552353d815f7a884d2f108abc78d2415556c5827c855b182b568",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T08:36:45.030Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 189,
+      "sha256": "fa810998e824277fb1fb457d8b69024f8d5d95b9ba494a1cd27b2e284fcb8def",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-catalog-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11768,
+      "sha256": "cb95f2d19803603969927e4216bfe22a5571820e857787ddf9faca8684fb9a66",
+      "error": null
+    }
+  ]
+}

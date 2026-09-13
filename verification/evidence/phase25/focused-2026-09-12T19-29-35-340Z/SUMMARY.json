@@ -1,0 +1,17 @@
+{
+  "sourceHash": "072532eb880f20165c0404195139288abe2ca82297843453d513f5c7d837f6e8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:29:41.171Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-shear-section-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5583,
+      "sha256": "e3e7a27e2b8fde2557211aedf9cd8b9680b497eab80634ed27baa241d5e22fb8",
+      "error": null
+    }
+  ]
+}

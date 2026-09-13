@@ -1,0 +1,25 @@
+{
+  "sourceHash": "05b4c597a2014cd52470f4cc1f87326712914a3c50624b125cb73775c2a1fa31",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:36:46.944Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-differential-settlement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7128,
+      "sha256": "1b8d0a4958e22d2941550d28a8fca2e1130980d1e1134507e2ff239ffa18cce0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1161,
+      "sha256": "c1bff6e77d3b499c07c6bad166e79d4c72642b163fa1126d12425b47c48ac350",
+      "error": null
+    }
+  ]
+}

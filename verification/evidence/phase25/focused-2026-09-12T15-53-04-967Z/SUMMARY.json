@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f60bf8a164ecb394c978a4273ba559e4cf26bba7e9c7b248c9649c904d839890",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:53:16.063Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9663,
+      "sha256": "7acd70fed7e0b86ba904efb6bc134d0eeea4eac5599f65e9344a45ddd0bfa8ac",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1199,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "version": "p24-synthetic-oracles-v1",
+  "codeQualification": false,
+  "fixtures": [
+    {
+      "id": "T09-D04",
+      "source": "legacy STANDARD_REBARS D10 area 71.3mm2; synthetic demand",
+      "input": {
+        "requiredAvPerLength": 4,
+        "stirrupBar": "D10",
+        "stirrupLegs": 2,
+        "minStirrupSpacing": 75,
+        "maxStirrupSpacing": 250
+      },
+      "oracle": {
+        "formula": "2 * 71.3 / 75",
+        "maxProvidedAvPerLength": 1.9013333333333333,
+        "unit": "mm2/mm",
+        "adequate": false
+      },
+      "owner": "M4"
+    },
+    {
+      "id": "T15-central-pressure",
+      "input": {
+        "compressionKN": 400,
+        "areaM2": 4,
+        "separateSelfWeightKN": 0
+      },
+      "oracle": {
+        "formula": "N/A",
+        "pressureKPa": 100
+      },
+      "owner": "M7"
+    }
+  ]
+}

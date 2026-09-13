@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6ba4d2b3b2fa099cf3f4930d524df87feb1b68ff98dd9f680f45cf3c2b82c3b5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:56:08.229Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-profile-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4874,
+      "sha256": "8ade333f66f59f007e286f014254384b53ccf1e0596c1e48ccdf90b33268ebc8",
+      "error": null
+    }
+  ]
+}

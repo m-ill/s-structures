@@ -1,0 +1,17 @@
+{
+  "sourceHash": "af193f801b6ac6eaa49e0bfa06ac6815dc17f38a0c7982217ceccdc1d3752d3d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:03:22.118Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-footing-spacing.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 65,
+      "sha256": "1edcabdb7ef790532527e8eb38214e9c8c76507220537444120a0fc4154012b8",
+      "error": null
+    }
+  ]
+}

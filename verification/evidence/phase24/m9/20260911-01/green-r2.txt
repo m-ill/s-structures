@@ -1,0 +1,1 @@
+PASS T12/T13/T17/T18 tiny real CPU solve -> provided checks -> bounded candidates/cancel -> SVG -> apply/stale/replay; final transfer blocked

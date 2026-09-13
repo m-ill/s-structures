@@ -1,0 +1,35 @@
+import {classASpliceProof} from '../src/design/rc/classASpliceProof.js';
+import {concurrentMemberDemands} from '../src/design/evaluation/practicalEvaluation.js';
+import {compressionLap} from '../src/design/rc/kdsAnchorage.js';
+import {validateModel} from '../src/core/validation.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+import {evaluateMemberSplices,spliceGeometry} from '../src/design/rc/spliceGeometry.js';
+import {validateStoredDesignDetails} from '../src/modeling/designDetailValidation.js';
+assert.ok(Math.abs(compressionLap({db:20,fy:400,fck:24,lambda:1}).requiredMm-576)<1e-10);
+assert.equal(compressionLap({db:20,fy:400,fck:18,lambda:1}).requiredMm,768);
+assert.equal(compressionLap({db:35,fy:400,fck:24,lambda:1}).status,'NOT_CHECKED');
+assert.equal(compressionLap({db:34.9,fy:400,fck:24,lambda:1}).status,'CALCULATED');
+assert.equal(compressionLap({db:40,fy:400,fck:24,lambda:1}).status,'NOT_CHECKED');
+const ctx=designContext(),m=ctx.model;
+m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:4,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+const bars={type:'reinforcement-record',id:'R',name:'test',version:1,memberId:'AB',start:0,end:1,cover:.04,strengthStandard:'KDS-142020-2022',barMaterialId:'steel@1',sourceNote:'synthetic',bars:[{y:-.2,z:-.08,diameter:20},{y:-.2,z:.08,diameter:20}],reinforcementForm:'single-deformed',concreteWeight:'normal',barPosition:'other',barCoating:'uncoated',lapRequired:true,aggregateMaxSize:.02,stirrupDiameter:10,stirrupSpacing:150,stirrupLegs:2};
+m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'F',type:'nodal',node:'B',dir:'-z',P:1,case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',name:'E',kind:'static',status:'not-run',settings:{comboId:'U',pDeltaMethod:'off'}}];
+const splice={type:'splice-record',id:'SP',name:'test lap',version:1,sourceNote:'synthetic only',memberId:'AB',reinforcementId:'R@1',barIndices:['1'],start:.125,end:.14,offsetY:.02,offsetZ:0,spliceType:'tension-B',spliceSystem:'ordinary-no-seismic-detail'};
+const unproven={...splice,id:'SP-A',barIndices:['2'],start:.2,end:.3,spliceType:'tension-A'};
+try{
+ const debug=structuredClone(m);for(const c of [bars,splice,unproven])stagePracticalDesignInput(debug,c,[]);assert.equal(validateModel(debug).ok,true,JSON.stringify(validateModel(debug)));
+ const preview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'sp-preview',commands:[bars,splice,unproven]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:preview.handle,requestId:'sp-apply'})).ok,true);
+ const stored=(await ctx.call('get_design_records',{channel:'splices',id:'SP'})).rows[0];
+ assert.deepEqual(validateStoredDesignDetails(m),[]);
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'splice-run'});
+ const evaluated=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const snapshot=ctx.bridge.getPracticalDesignSnapshot(evaluated.evaluationId),check=snapshot.checks.find(x=>x.checkId==='rc-splices');
+ assert.equal(check.status,'NG');assert.equal(check.methodReviewRequired,true);assert.equal(check.locationCoverage.counts.NG,1);assert.equal(check.locationCoverage.counts.NOT_CHECKED,1);assert.equal(check.locationCoverage.complete,false);
+ let offset=0,text='';do{const part=await ctx.call('get_practical_design_check',{evaluationId:evaluated.evaluationId,checkId:check.id,offset,limit:193});text+=part.chunk;offset=part.nextOffset;}while(offset!==null);
+ const queried=JSON.parse(text);assert.ok(queried.checks.some(c=>c.spliceId==='SP'&&c.status==='NG'));assert.ok(queried.checks.some(c=>c.spliceId==='SP-A'&&c.reason==='CLASS_A_SPLICED_AREA_ABOVE_HALF'));assert.equal(evaluated.summary.complete,false);
+ console.log('PASS actual WebMCP mixed splice NG/NOT_CHECKED retained through worker, summary and full detail query');
+}finally{await ctx.dispose();}

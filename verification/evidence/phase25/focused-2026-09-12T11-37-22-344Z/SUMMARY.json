@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3ecf44ce3fbc531934b61395aea6709b8b6d0c117c53c4eddbbfe4f46b947257",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:37:22.654Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-secondary-compression.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 58,
+      "sha256": "d7b4d8fa08a51c01eea6e0bbf0694301d37ae8f88d8c7bfd0c1df195dd9ca7ef",
+      "error": null
+    }
+  ]
+}

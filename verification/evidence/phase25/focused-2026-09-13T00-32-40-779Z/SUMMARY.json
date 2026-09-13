@@ -1,0 +1,25 @@
+{
+  "sourceHash": "df36708e0ae60ffad567c4acae7587dd4301edd9e47837741c429596bac2f265",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:32:51.838Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-severity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "e7733d7e073cb7a2f4b02915d4241985b9ced3ef0578e895045968d933556cc4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-column-profile-closure.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 10741,
+      "sha256": "caed2551dc5917900e875c03b5cb5fe102fa982d1048dfd6f9f89117376dfa52",
+      "error": null
+    }
+  ]
+}

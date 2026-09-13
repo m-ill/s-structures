@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a357296b5bbee726c77a9b022501182ec84cef752c3dcab68d9237f868a350f2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:23:38.421Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1224,
+      "sha256": "5f92aa1c441e85f739d7637b97735b7f624738a5014b88fe52d4e5b9605fc3f6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-class-a-piece-layouts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "940f915b8a636206ee995e1c62136cd30a76a7ed6c5653d5584cbd724a4fe5ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-strength-stations.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 120,
+      "sha256": "b3b4a810ab163f493e4147d6966c66340ba3a1e144fa41bdbec2e4e31a44d7bf",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-proportional-bending.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 74,
+      "sha256": "ae0da0cb16be39c1966fa35e35c1c4df50ef7176bc28f263db0e8553af976acd",
+      "error": null
+    }
+  ]
+}

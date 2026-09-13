@@ -1,0 +1,33 @@
+{
+  "sourceHash": "9b240f40e6ffa904f9116210c9b3ba4da9238f61e2df70bd3d96fe3ea5851bef",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:45:46.465Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-bent-bar-path-3d.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "ddec1c204091ab5794f749223131384cf5bd36ed08a2e1c23f4c17cb2b879b0f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-hoop-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 233,
+      "sha256": "6739412af99a8f55e0268ced2b38a67e2ee8749c64c85b097b0ed7279c06078e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4320,
+      "sha256": "6b5d0c51cd8f5e1b9fa62cb17ce572d4990f60bdca7ffc868207bc1c2266be35",
+      "error": null
+    }
+  ]
+}

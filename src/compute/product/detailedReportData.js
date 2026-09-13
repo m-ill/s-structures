@@ -1,3 +1,4 @@
+import {hasPreparedRcResults,selectMemberDesignResult} from '../../results/designResultSelection.js';
 import { materialOf, sectionOf } from '../../core/catalogs.js';
 import { factorText } from '../../core/combinations.js';
 import { buildConnectionFoundationReport } from '../../design/connectionFoundation.js';
@@ -391,13 +392,10 @@ export function summarizeCombinationResults(model, analysis) {
 
 export function summarizeMemberChecks(model, analysis, resultSet) {
   const demands = resultSet?.memberResults || analysis?.envelope?.memberResults || {};
-  const design = {
-    ...(analysis?.design?.steel?.memberResults || {}),
-    ...(analysis?.design?.concrete?.memberResults || {}),
-  };
+  const prepared=hasPreparedRcResults(analysis);
   return (model?.members || []).map((member) => {
     const demand = demands[member.id] || {};
-    const check = design[member.id] || demand;
+    const check = selectMemberDesignResult(analysis,member.id,demand)||{};
     const material = materialOf(model, member.matId);
     const section = sectionOf(model, member.secId);
     return {
@@ -405,11 +403,13 @@ export function summarizeMemberChecks(model, analysis, resultSet) {
       role: check.role || member.type || 'member',
       material: material?.name || member.matId || '-',
       section: section?.name || member.secId || '-',
-      status: check.status || demand.check?.status || 'UNCK',
-      utilization: finite(check.utilization, demand.check?.ratio, null),
-      governingCheck: check.governingCheck || demand.check?.governing || null,
-      comboId: check.comboId || demand.check?.comboId || demand.governing?.utilization?.comboId || null,
-      station: finite(check.x, demand.governing?.utilization?.x, null),
+      status: check.status || (prepared?'NOT_CHECKED':demand.check?.status || 'UNCK'),
+      blockingCheckIds:[...(check.blockingCheckIds||[])],blockingReasons:[...(check.blockingReasons||[])],
+      incomplete:check.incomplete===true||(prepared&&!check.memberId),incompleteCheckCount:check.incompleteCheckCount??0,codeBasis:check.codeBasis??null,basis:check.basis??(prepared?'provided-practical-checks':'legacy-preliminary'),
+      utilization: prepared?(Number.isFinite(check.utilization)?check.utilization:null):finite(check.utilization, demand.check?.ratio, null),
+      governingCheck: check.governingCheck || (prepared?null:demand.check?.governing || null),
+      comboId: check.comboId || (prepared?null:demand.check?.comboId || demand.governing?.utilization?.comboId || null),
+      station: prepared?(Number.isFinite(check.x)?check.x:null):finite(check.x, demand.governing?.utilization?.x, null),
       demands: {
         N: finite(check.demands?.N, demand.Nmax, null),
         Vy: finite(check.demands?.Vy, demand.Vymax, null),
@@ -417,7 +417,7 @@ export function summarizeMemberChecks(model, analysis, resultSet) {
         My: finite(check.demands?.My, demand.Mymax, null),
         Mz: finite(check.demands?.Mz, demand.Mzmax, null),
       },
-      method: check.method || demand.check?.method || null,
+      method: check.method || (prepared?check.basis??null:demand.check?.method || null),
       messages: check.messages || [],
     };
   });

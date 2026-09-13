@@ -1,0 +1,16 @@
+{
+  "defect": "D04",
+  "test": "T09",
+  "kind": "known-defect-reproduction-not-pass",
+  "actual": {
+    "bar": "D10",
+    "legs": 2,
+    "spacing": 75,
+    "requiredAvPerLength": 4,
+    "providedAvPerLength": 1.9013333333333333,
+    "label": "2-D10@75"
+  },
+  "independentMaxProvided": 1.9013333333333333,
+  "expectedAdequate": false,
+  "missingInsufficiencyStatus": true
+}

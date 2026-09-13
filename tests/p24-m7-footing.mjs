@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import * as api from '../src/design/evaluation/practicalEvaluation.js';
+import {pressureIntegral} from '../src/design/foundation/compressionContact.js';
+assert.equal(typeof api.footingContact,'function');
+const centered=api.footingContact({B:2,L:2,N:400,Mx:0,My:0});assert.equal(centered.qmax,100);assert.equal(centered.qmin,100);
+const eccentric=api.footingContact({B:2,L:2,N:400,Mx:0,My:200});assert.equal(eccentric.contact,'partial-x');assert.ok(Math.abs(eccentric.contactWidth-1.5)<1e-12);assert.ok(Math.abs(eccentric.qmax-800/3)<1e-9);
+const biaxial=api.footingContact({B:2,L:2,N:400,Mx:200,My:-200});
+assert.equal(biaxial.ok,true);assert.ok(Math.abs(biaxial.qmax-600)<1e-6,'independent triangular q=300(x+y), N=400, centroid=(.5,.5)');
+assert.ok(biaxial.residual<1e-9);assert.ok(Math.abs(biaxial.area-2)<1e-7);
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-6,`${a} != ${b}`);
+near(pressureIntegral(centered,'B',1,0.5).force,100);
+near(pressureIntegral(centered,'B',-1,0.5).moment,25);
+// Integral x in [0,1], y in [-x,1] of 300(x+y): 350; first moment: 212.5.
+near(pressureIntegral(biaxial,'B',1,0).force,350);
+near(pressureIntegral(biaxial,'B',1,0).moment,212.5);
+near(pressureIntegral(biaxial,'L',1,0).moment,212.5);
+const mirrored=api.footingContact({B:2,L:2,N:400,Mx:-200,My:200});
+near(pressureIntegral(mirrored,'B',-1,0).moment,212.5);
+assert.equal(api.footingContact({B:2,L:2,N:-1,Mx:0,My:0}).reason,'NO_COMPRESSION_CONTACT');
+assert.throws(()=>api.footingContact({B:0,L:2,N:400,Mx:0,My:0}));
+console.log('PASS T15 independent N/A, uniaxial and biaxial partial contact, equilibrium and uplift');

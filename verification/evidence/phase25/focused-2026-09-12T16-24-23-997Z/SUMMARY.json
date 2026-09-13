@@ -1,0 +1,25 @@
+{
+  "sourceHash": "45239c2d914cdecdb2b62a4307602a645c4fb41cb9dc0c2ce7b9dd06ea7357b4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:24:37.020Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p7-m7-equilibrium-audit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 113,
+      "sha256": "c19e02a0c62e55ac7bd56de25ff1dcb738166714410a2aca12f8a64313400723",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 12597,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

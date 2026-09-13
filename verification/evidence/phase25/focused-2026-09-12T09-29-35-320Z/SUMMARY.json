@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e2d1b6336d4b243322acf9e7667474bc80d8b2d3f33787ac51eae7382c3ce3b2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:29:38.159Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2623,
+      "sha256": "7383a16853ce47129cfa48ba9ee52c449ddeee0605a9575aea3eb98558d52cb0",
+      "error": null
+    }
+  ]
+}

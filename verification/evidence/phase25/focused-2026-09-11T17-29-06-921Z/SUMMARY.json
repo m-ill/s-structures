@@ -1,0 +1,25 @@
+{
+  "sourceHash": "a62f473a662a8f4a08e2831e4baab94fd06c765e264666614a91c978e0c3ce07",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:29:11.913Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-shared-records.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 92,
+      "sha256": "e2c2c662d6143b90f0034002608132cbc4117cf2d1e2b55d30ed05e9c3794c3a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4706,
+      "sha256": "1ec862a2953b36cce8b1031223f078b8c403584488a60c4fea15af2416df5487",
+      "error": null
+    }
+  ]
+}

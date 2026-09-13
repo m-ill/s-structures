@@ -1,0 +1,17 @@
+{
+  "sourceHash": "18eb2eda628f0d5327c74441f22785efb743bb6c9a18bfe06d765cda9ce43b6b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:25:34.842Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-section-initial-strain.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 53,
+      "sha256": "67b972f37f4731fd8175d2e3820af949837b92461fc6ea3d17700a258450ca9c",
+      "error": null
+    }
+  ]
+}

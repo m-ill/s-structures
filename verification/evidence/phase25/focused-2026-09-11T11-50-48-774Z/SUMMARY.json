@@ -1,0 +1,17 @@
+{
+  "sourceHash": "af26e7d9b73799168384b6e833f3ae93ac6fec0e5d13a6f2a97832784b81175b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:50:50.734Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-compound-webmcp.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1737,
+      "sha256": "0253531188b36a001fde847c65e26b0ae9667cecdb81e83d553b52b22adbf832",
+      "error": null
+    }
+  ]
+}

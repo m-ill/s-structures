@@ -1,0 +1,25 @@
+{
+  "sourceHash": "bf6fb2a9fe0f612e43dff9db046f2ef50922cb370d8e1a46de13eccbad9e63c8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:58:00.748Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-severity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "a92d3a8951761451865547cee7e3539e3e3652cd658d2ba8e9ecbcdf9ae31fb3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 108,
+      "sha256": "9324ac36ab929d6a860dc8a2d100039ff5835c71880c7647e3ab2a1961499409",
+      "error": null
+    }
+  ]
+}

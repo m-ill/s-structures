@@ -1,0 +1,41 @@
+{
+  "sourceHash": "1200829b8e84b296bb134fdb48a322a839ffb204a069d6fcdebeec4971d54206",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:47:11.951Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 165,
+      "sha256": "5f16173b7ec881308a2576453e5e77a48f6e1fd262d52065f373ee5a46012dce",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6092,
+      "sha256": "bbcaacaba3145e6f3dba01db42d3939c2910c5a72f1254c69e7a3ed1856198e0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "710aa5f67eb969ae7acc8fe6cbb2c04a519a208fc3f2c3b3839cb6f38b4faee4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-perimeter-layout.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "e5dbf5483cff50a76e4ef48f8ec97ad1afb4ed69f9da856b6146f9b7b1a49453",
+      "error": null
+    }
+  ]
+}

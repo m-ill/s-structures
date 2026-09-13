@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a7bbd8c76714206eb73414eef369ed0715f3a600fb41f64f30451ccdd55e6863",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:19:15.514Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-longitudinal-quantity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 49,
+      "sha256": "0fc2f8342d5592c0368273d7915ef7689d4085e97623527ba06826aa7dd59e82",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2259,
+      "sha256": "9985ec12d636cab44f020c40d2e5c3487093ff57cd3869fd70751f2ba08053a6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8472,
+      "sha256": "25fefce1506a985c6b535044ab1d2cdfdddbaf0154231ee1afb8f7782d4236a1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-compound-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5260,
+      "sha256": "c63d8971117d3fbd7753d4de43b91f0869a3dd7ebec6e8393a50901a2100079c",
+      "error": null
+    }
+  ]
+}

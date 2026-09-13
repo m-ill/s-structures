@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {jointCrossTieSupport} from '../src/design/connection/jointCrossTieSupport.js';
+import {crossTieGeometry} from '../src/design/rc/crossTieGeometry.js';
+const detail={id:'R',version:1,memberId:'C',start:0,end:1,cover:.04,bars:[{y:-.2,z:0,diameter:.02},{y:.2,z:0,diameter:.02}],stirrups:{diameter:.01,spacing:.1},tieBendInsideRadius:.02,tieHookTail:.08,tieClosure:'standard-135',crossTieBarPairs:['1:2'],crossTieHookSides:['left'],crossTiePlaneOffsets:['0.01'],tieFirstStart:.02,tieFirstEnd:.02};
+const prepared={columnMemberId:'C',columnDetailId:'R',columnDetailVersion:1,hoops:{height:.6},crossTies:crossTieGeometry(detail,{B:.4,H:.6,length:.6}),stirrupDistribution:{status:'OK',explicitEnds:true,count:7,first:.02,last:.58,spacing:.1}};
+const model={designDetails:{reinforcement:[detail]}},joint={};
+const congestion={pathCoordinates:'column-local-y,z,x; metres from joint node',barPaths:detail.bars.map((b,i)=>({id:`C:B${i+1}`,diameter:b.diameter,sagitta:0,segments:[[[b.y,b.z,-.3],[b.y,b.z,.3]]]}))};
+const supported=jointCrossTieSupport(model,joint,prepared,congestion);assert.equal(supported.status,'OK');assert.equal(supported.checks.length,2);assert.equal(supported.checks[0].coverage.coveredCount,7);
+const short={...congestion,barPaths:congestion.barPaths.map(b=>({...b,segments:b.segments.map(([a,b])=>[a,[b[0],b[1],.2]])}))};
+const missing=jointCrossTieSupport(model,joint,prepared,short);assert.equal(missing.status,'NOT_CHECKED');assert.ok(missing.checks.some(c=>c.coverage.uncoveredCount>0));
+const alias={...congestion,barPaths:congestion.barPaths.map(b=>({...b,id:'opposite-'+b.id,continuationIds:[b.id,'opposite-'+b.id]}))};assert.equal(jointCrossTieSupport(model,joint,prepared,alias).status,'OK');
+const shifted={...congestion,barPaths:congestion.barPaths.map(b=>({...b,segments:b.segments.map(s=>s.map(p=>[p[0]+.01,p[1],p[2]]))}))};assert.equal(jointCrossTieSupport(model,joint,prepared,shifted).status,'NOT_CHECKED');
+assert.equal(jointCrossTieSupport(model,joint,{...prepared,columnDetailVersion:2},congestion).status,'NOT_CHECKED');
+console.log('PASS actual straight column path hook contact across every station, short path, alias and shifted/stale rejection');

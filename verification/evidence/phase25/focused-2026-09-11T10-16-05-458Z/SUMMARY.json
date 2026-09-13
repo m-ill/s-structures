@@ -1,0 +1,17 @@
+{
+  "sourceHash": "37ea826906a3b2585aa555aa52f24d9d91bf92e31fb3694fc6fb0ec6b7c7c813",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:16:06.503Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 791,
+      "sha256": "0888b1492ed1096f5ac03dd6db4f57af4d84a72c295f91ca27e9e808df215c52",
+      "error": null
+    }
+  ]
+}

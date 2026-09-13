@@ -1,0 +1,25 @@
+{
+  "sourceHash": "b40713863b8a9f676088a99ee19ef17eab7139c4ec8c2c855dd6d562cf3db3fc",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:08:16.004Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-code-basis-blockers.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 69,
+      "sha256": "6486c1b4408957819d95c6d75f2850a08f48987af5a57be5af44aa968cade53a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5419,
+      "sha256": "d4f1969ce6587e622a191f23067e744720909c5bd40cbaca1c593fe53a834fa3",
+      "error": null
+    }
+  ]
+}

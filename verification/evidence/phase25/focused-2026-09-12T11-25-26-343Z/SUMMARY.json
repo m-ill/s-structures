@@ -1,0 +1,25 @@
+{
+  "sourceHash": "e73426f20596a466796c0be9d3834544b3a08c5477d458a7e85f97e9182cb4b7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:25:30.351Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-layer-settlement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 58,
+      "sha256": "a6e40ecd17c3fec72a78fd2eb6d9f9c420b41e3ecfc2c9a9a772bb5501aeb0eb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3635,
+      "sha256": "9a0f9c6c08b215a982a8805da8201790e8a71eaa98d54912c2539e2eb9779fda",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-11T05:44:32.095Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2831,
+      "sha256": "b183b784205c1adb92b197e745b6fbd14f52006272c02c55a59fb4a978026a37",
+      "error": null
+    }
+  ]
+}

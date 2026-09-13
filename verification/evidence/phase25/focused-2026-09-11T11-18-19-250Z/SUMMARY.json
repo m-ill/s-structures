@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e218c974df2e3d7d3b9a5a36156a3c7ce57b244fa535c1b5cc7b2608451309ee",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:18:21.522Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2052,
+      "sha256": "1bc2de15e3512da8747f3805b581140f10fd1e63a8eabf38f77ade6db2030c01",
+      "error": null
+    }
+  ]
+}

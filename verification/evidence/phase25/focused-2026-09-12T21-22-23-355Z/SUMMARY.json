@@ -1,0 +1,17 @@
+{
+  "sourceHash": "bcb8945f26ab960abebcef95dcd9026c5f5c393731f4c2c1cf0472f24408829f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:22:23.681Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-native-canvas-result.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "2a15a4ce39cc648e8f805100c204abb2e18f9d68e4985b73f0d676ad0edbb364",
+      "error": null
+    }
+  ]
+}

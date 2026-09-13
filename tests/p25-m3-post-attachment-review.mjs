@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {prepareRcPostAttachmentReview} from '../src/compute/product/rcPostAttachmentReview.js';
+const state=(age,coefficient)=>({loadingAgeDays:28,evaluationAgeDays:age,materialId:'C',materialVersion:1,elasticModulusAtLoading:30000,creepCoefficient:coefficient,shrinkageInitialStrain:0});
+const sources=[{factor:1,comboId:'S',timeEffect:'sustained-effective-modulus',timeState:state(365,2),frameTimeStates:{AB:state(365,2)}},{factor:-1,comboId:'S',timeEffect:'attachment-effective-modulus',timeState:state(90,1),frameTimeStates:{AB:state(90,1)}}];
+const response={globalExtremaEvaluated:true,length:3,boundary:'cantilever-start',u:{maxAbs:.001,value:-.001,x:3},v:{maxAbs:.002,value:.002,x:3},w:{maxAbs:.003,value:-.003,x:3}};
+const input={attachmentAgeDays:90,evaluationAgeDays:365,history:'constant-sustained-coeval',limits:{u:.002,v:.004,w:.002},limitReference:'specified component movement limits'};
+const result=prepareRcPostAttachmentReview({sources,response,input});
+assert.equal(result.status,'NG');assert.equal(result.governingAxis,'w');assert.equal(result.ratio,1.5);assert.equal(result.checks[0].ratio,.5);assert.equal(result.kdsCompliance,'NOT_ESTABLISHED');
+assert.throws(()=>prepareRcPostAttachmentReview({sources,response,input:{...input,attachmentAgeDays:100}}),/AGE/);
+assert.throws(()=>prepareRcPostAttachmentReview({sources:[sources[0],{...sources[1],comboId:'OTHER'}],response,input}),/LOAD/);
+assert.throws(()=>prepareRcPostAttachmentReview({sources,response:{...response,globalExtremaEvaluated:false},input}),/EXTREMA/);
+assert.throws(()=>prepareRcPostAttachmentReview({sources,response,input:{...input,limits:{u:0}}}),/LIMIT/);
+console.log('PASS signed-field extrema acceptance, chronology/load guards and separate KDS status');

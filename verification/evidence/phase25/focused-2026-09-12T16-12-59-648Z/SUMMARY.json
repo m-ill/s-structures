@@ -1,0 +1,17 @@
+{
+  "sourceHash": "374136fff3b3023741f6457317ce0a0cdd406f1b3607de315620c4646018d216",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:13:00.018Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-external-actions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 131,
+      "sha256": "784713fa65f55be04ccf896182b14366e7aed7583e636608852b8e3afc2d712e",
+      "error": null
+    }
+  ]
+}

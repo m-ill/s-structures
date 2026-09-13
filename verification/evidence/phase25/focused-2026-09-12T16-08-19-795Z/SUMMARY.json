@@ -1,0 +1,17 @@
+{
+  "sourceHash": "74d53a8e15b3a799632f3cfe9968b4853621d7607ba7ea7be9a7981c7d91b513",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:08:20.454Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p24-m2-reuse.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 434,
+      "sha256": "eeddc50f12e73d0528ccec8d0068ca5a46a6189a4e190f87839d15c83e92db70",
+      "error": null
+    }
+  ]
+}

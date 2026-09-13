@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5df829f2a0c3b5f2dfb949dc6c5262c140a98001a7cacc8a6861c449a61ec834",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:13:36.468Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-stepped-axial-splice.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1995,
+      "sha256": "5e59d3f01ea06503156ac78d1ca3fcc3821bfd0ce5f9d331e5126daf0ae3cd99",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-proportional-bending.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 74,
+      "sha256": "ae0da0cb16be39c1966fa35e35c1c4df50ef7176bc28f263db0e8553af976acd",
+      "error": null
+    }
+  ]
+}

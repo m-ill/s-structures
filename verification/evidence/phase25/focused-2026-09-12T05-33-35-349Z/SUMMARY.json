@@ -1,0 +1,33 @@
+{
+  "sourceHash": "85028788075d78fe0c7c846a5b464ad9138dacc5aec67656712c6f07aef7edeb",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:33:35.969Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-cross-tie-credit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 103,
+      "sha256": "51a13a6489c397cea6bf87e8a5f925ec471ef18cbd8720f6dfd2a2e84fa5cfdc",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 96,
+      "sha256": "762cfa34ac37ce934dab10ced17842e2b35f78fa70952a578349eb36ff885248",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 94,
+      "sha256": "7ab874ef995c2e15064217b79fb8f5ac34e3c4705a6df6a81d181ac868996561",
+      "error": null
+    }
+  ]
+}

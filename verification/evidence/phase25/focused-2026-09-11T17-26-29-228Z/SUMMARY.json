@@ -1,0 +1,33 @@
+{
+  "sourceHash": "0ad7b2e17f8aee93c2a6d1d01a3b194d5a4c9be5227267fdcaa8236d9daf87a2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:26:31.612Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2061,
+      "sha256": "52070b2e078356638ed6ac740a5e7ee6e2fe24239a4e35db16697bce7e051730",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-shared-records.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 52,
+      "sha256": "b07f8390c348532263c331b09c9431e9f5ae53be66d2d9fbedf1ba6004bec1f4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-closure-contact-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "333228c33b9c0a9716c8a3ad2222fdf8495105f39bc55a035c93b8e0e9ca03d6",
+      "error": null
+    }
+  ]
+}

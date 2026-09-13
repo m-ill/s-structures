@@ -1,0 +1,25 @@
+{
+  "sourceHash": "a727c433570004de8acbef855ab72998a5bde03290427224c0dfa0ffe73ce713",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:48:14.208Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-integrated-coupled-load.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 86,
+      "sha256": "39593b86fa5a418c8a92f62a7eadddde2d96143d2ee291ff61691c485fec0443",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10542,
+      "sha256": "5bfb029ce579b24e1825a2472ec969a58acc235f3c3981d4832a431b16df137e",
+      "error": null
+    }
+  ]
+}

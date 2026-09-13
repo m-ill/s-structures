@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {summarizeDesignEvaluation} from '../src/design/evaluation/designEvaluation.js';
+const steel={ok:true,memberResults:{},summary:{checkedMembers:0,skippedMembers:1,ngCount:0,warnCount:0,maxUtilization:0,governing:null}};
+const concrete={ok:false,summary:{checkedMembers:1,skippedMembers:0,ngCount:5}};
+const practical={checks:[{entityId:'C',status:'NG',ratio:2,incomplete:true}],checkCount:1,counts:{NG:1,WARN:0,NOT_CHECKED:0},incompleteCheckCount:1,complete:false};
+const bad=summarizeDesignEvaluation({steel,concrete,practical});
+assert.equal(bad.ok,false);assert.equal(bad.designComplete,false);assert.equal(bad.uncheckedCount,1);assert.equal(bad.ngCount,1);assert.equal(bad.governing.status,'NG');
+const good=summarizeDesignEvaluation({steel,concrete,practical:{...practical,checks:[{entityId:'C',status:'OK',ratio:.5}],counts:{NG:0,WARN:0,NOT_CHECKED:0},incompleteCheckCount:0,complete:true}});
+assert.equal(good.ok,true,'legacy assumed reinforcement must not veto provided reinforcement summary');
+const steelMissing={...steel,memberResults:{S:{checks:[{status:'NG',incomplete:true}]}},summary:{...steel.summary,ngCount:1}};
+assert.equal(summarizeDesignEvaluation({steel:steelMissing,concrete,practical}).uncheckedCount,2);
+console.log('PASS finalizer summary uses provided RC results, counts incomplete NG and retains steel incompleteness');

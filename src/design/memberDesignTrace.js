@@ -1,8 +1,10 @@
+import {groupRcMemberReviewChecks} from './evaluation/practicalMemberSummary.js';
+import {hasPreparedRcResults,selectRcMemberResults} from '../results/designResultSelection.js';
 import { materialOf, sectionOf } from '../core/catalogs.js';
 import { buildRcDetailingReport } from './rcDetailing.js';
 import { buildSteelDetailingReport } from './steelDetailing.js';
 
-export const MEMBER_DESIGN_TRACE_VERSION = 'm45-member-design-trace';
+export const MEMBER_DESIGN_TRACE_VERSION = 'p25-member-design-trace-v3-material-evidence';
 
 export function buildMemberDesignTraceReport(model, analysis, options = {}) {
   const steelDetailing = buildSteelDetailingReport(model, analysis, options.steel || {});
@@ -10,19 +12,24 @@ export function buildMemberDesignTraceReport(model, analysis, options = {}) {
   const steelRows = new Map(steelDetailing.rows.map((row) => [row.memberId, row]));
   const rcRows = new Map(rcDetailing.rows.map((row) => [row.memberId, row]));
   const steelChecks = analysis?.design?.steel?.memberResults || {};
-  const concreteChecks = analysis?.design?.concrete?.memberResults || {};
+  const concreteChecks = selectRcMemberResults(analysis);
+  const prepared=hasPreparedRcResults(analysis);
+  const practicalChecksByMember=groupRcMemberReviewChecks(analysis?.design?.practical?.checks||[]);
 
   const rows = (model?.members || []).map((member) => {
     const steelCheck = steelChecks[member.id] || null;
     const concreteCheck = concreteChecks[member.id] || null;
     const check = steelCheck || concreteCheck || null;
-    const designType = steelCheck ? 'steel' : concreteCheck ? 'concrete' : 'unimplemented';
     const material = materialOf(model, member.matId);
     const section = sectionOf(model, member.secId);
     const schedule = steelRows.get(member.id) || rcRows.get(member.id) || null;
-    const formulaTrace = (check?.checks || []).map((item) => ({
-      id: item.id,
-      name: item.name,
+    const providedRc=prepared&&!steelCheck&&(concreteCheck||material?.kind==='concrete');
+    const designType=steelCheck?'steel':concreteCheck||providedRc?'concrete':'unimplemented';
+    const sourceChecks=providedRc?(practicalChecksByMember.get(member.id)||[]):(check?.checks||[]);
+    const formulaTrace = sourceChecks.map((item) => ({
+      ...(providedRc?item:{}),
+      id: item.checkId || item.id,
+      name: item.name || item.checkId,
       expression: item.expression || null,
       demand: finite(item.demand, null),
       capacity: finite(item.capacity, null),
@@ -31,7 +38,7 @@ export function buildMemberDesignTraceReport(model, analysis, options = {}) {
       comboId: item.comboId || check?.comboId || null,
       x: finite(item.x, check?.x, null),
     }));
-    const status = check?.status || 'UNCK';
+    const status = check?.status || (providedRc?'NOT_CHECKED':'UNCK');
     return {
       version: MEMBER_DESIGN_TRACE_VERSION,
       memberId: member.id,
@@ -40,6 +47,9 @@ export function buildMemberDesignTraceReport(model, analysis, options = {}) {
       material: material?.name || member.matId || '-',
       section: section?.name || member.secId || '-',
       status,
+      incomplete:check?.incomplete===true||(providedRc&&!check),
+      basis:providedRc?'provided-practical-checks':'legacy-preliminary',
+      codeBasis:check?.codeBasis??null,
       utilization: finite(check?.utilization, null),
       governingCheck: check?.governingCheck || null,
       comboId: check?.comboId || null,
@@ -47,13 +57,14 @@ export function buildMemberDesignTraceReport(model, analysis, options = {}) {
       demandTrace: normalizeNumericObject(check?.demands || {}),
       capacityTrace: normalizeNumericObject(check?.capacities || {}),
       formulaTrace,
-      schedule: summarizeSchedule(designType, schedule),
-      actionItems: actionItemsFor(member, check, schedule, formulaTrace),
+      schedule: providedRc?schedule:summarizeSchedule(designType, schedule),
+      preliminarySchedule:null,
+      actionItems: actionItemsFor(member, check, providedRc?null:schedule, formulaTrace),
       messages: normalizeMessages(check?.messages || schedule?.messages || []),
     };
   });
 
-  const checkedRows = rows.filter((row) => row.status !== 'UNCK');
+  const checkedRows = rows.filter((row) => ['OK','NG','WARN','N_A'].includes(row.status));
   const governing = checkedRows
     .filter((row) => Number.isFinite(row.utilization))
     .reduce((best, row) => (!best || row.utilization > best.utilization ? row : best), null);
@@ -64,11 +75,12 @@ export function buildMemberDesignTraceReport(model, analysis, options = {}) {
     summary: {
       memberCount: rows.length,
       checkedCount: checkedRows.length,
-      unimplementedCount: rows.length - checkedRows.length,
+      unimplementedCount: rows.filter(row=>row.designType==='unimplemented'&&row.status==='UNCK').length,
+      unreviewedCount:rows.filter(row=>row.incomplete||['NOT_CHECKED','UNCK','FAILED'].includes(row.status)).length,
       okCount: rows.filter((row) => row.status === 'OK').length,
       warnCount: rows.filter((row) => row.status === 'WARN').length,
       ngCount: rows.filter((row) => row.status === 'NG').length,
-      maxUtilization: governing?.utilization || 0,
+      maxUtilization: governing?.utilization ?? null,
       governing: governing ? {
         memberId: governing.memberId,
         designType: governing.designType,
@@ -80,7 +92,7 @@ export function buildMemberDesignTraceReport(model, analysis, options = {}) {
     },
     rows,
     limitations: [
-      'Trace rows expose currently implemented preliminary checks only.',
+      'RC trace rows use provided practical checks when available; preliminary reinforcement suggestions are separate.',
       'A row marked UNCK means the member has no implemented material-specific design module yet.',
       'Final detailing, connection, foundation, and drawing-level decisions require project-specific engineering review.',
     ],
@@ -116,6 +128,7 @@ function actionItemsFor(member, check, schedule, formulaTrace) {
   }
   const governing = formulaTrace.find((item) => item.id === check.governingCheck)
     || formulaTrace.reduce((best, item) => (!best || (item.ratio || 0) > (best.ratio || 0) ? item : best), null);
+  if(check.incomplete||check.status==='NOT_CHECKED')actions.push('Resolve missing inputs and incomplete checks before design acceptance.');
   if (check.status === 'NG') actions.push(`Revise member for ${governing?.name || check.governingCheck || 'governing check'}.`);
   if (check.status === 'WARN') actions.push(`Review reserve margin for ${governing?.name || check.governingCheck || 'governing check'}.`);
   for (const item of schedule?.reviewActions || []) actions.push(item);
@@ -152,6 +165,7 @@ function statusForRatio(ratio) {
 
 function finite(...values) {
   for (const value of values) {
+    if(value===null||value===undefined||value==='')continue;
     const number = Number(value);
     if (Number.isFinite(number)) return number;
   }

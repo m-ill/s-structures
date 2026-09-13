@@ -1,0 +1,25 @@
+{
+  "sourceHash": "4be2abee206bd43b4879c211d20fd553b73a71402141de385f1d76de82d0297f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:40:07.759Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8980,
+      "sha256": "71ae0934b4000947ff7a6fdc16e6286c52e8d6033afb0f6e0133d40c98e6a79d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-working-set.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 185,
+      "sha256": "78c2c9ec0d51f00f7732dd860f8a7d07fd5c90fa429226cd9bc30920c9a47594",
+      "error": null
+    }
+  ]
+}

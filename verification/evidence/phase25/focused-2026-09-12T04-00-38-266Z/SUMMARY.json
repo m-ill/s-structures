@@ -1,0 +1,25 @@
+{
+  "sourceHash": "af193f801b6ac6eaa49e0bfa06ac6815dc17f38a0c7982217ceccdc1d3752d3d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:00:48.002Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footing-flexure-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9239,
+      "sha256": "7bb99cda737ccda5c48ca239868eb03bbf9803ff5fc8fd9572ebe1eef4b235a9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "535e11d85b66826ea04f5a7f2fe5ab4e430df0dec878f805f02145a40d6f2c0d",
+      "error": null
+    }
+  ]
+}

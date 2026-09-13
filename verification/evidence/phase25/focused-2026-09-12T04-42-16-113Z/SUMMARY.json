@@ -1,0 +1,25 @@
+{
+  "sourceHash": "057d9cd35b673bfebaab6738fd144e4e3e042e4a789f1401ec734b26e7d6b928",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:42:16.779Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "5a230f8fd475d55e89e0712d0d46451ff13ad3207d6605782e7f330343349b57",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-hoop-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 363,
+      "sha256": "6553c0c2f9353526cfd5761281cf9ff4377b2f1b9c8e47149494aec17f59549a",
+      "error": null
+    }
+  ]
+}

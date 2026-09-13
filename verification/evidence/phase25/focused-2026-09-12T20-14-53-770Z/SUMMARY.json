@@ -1,0 +1,17 @@
+{
+  "sourceHash": "336c2790486e7634292680c6eec7166cecadf40be48f92c56285bc20fd6fc58a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:14:54.102Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-principal-section-root.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 90,
+      "sha256": "7559920dc134d8804697692fb51301ff3729c2efa53e11aa47090d6f7c0e2933",
+      "error": null
+    }
+  ]
+}

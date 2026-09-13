@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
+import {createModel} from '../src/core/model.js';
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+import {buildVectorDetailPdf} from '../src/report/phase24/vectorPdf.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];model.members=[{id:'AB',n1:'A',n2:'B',secId:'rc3060',matId:'concrete',type:'frame'}];
+model.designDetails={version:'p24-practical-input-v1',reinforcement:[{id:'R',version:1,memberId:'AB',start:0,end:1,cover:0.04,bars:Array.from({length:13},(_,i)=>({y:-0.2+i/30,z:0,diameter:0.01,area:Math.PI*0.01**2/4})),stirrups:null}]};
+const checks=Array.from({length:13},(_,i)=>({entityId:'AB',checkId:`check-${i+1}`,status:'NOT_CHECKED',reason:`CHECK-REASON-${i+1}-`+'한글 근거 '.repeat(20),demand:i,capacity:2*i,units:{force:'kN'}}));
+const drawing=buildDetailDrawings({id:'P25-PAGINATION',inputHash:'a'.repeat(64),model,sets:[],checks});
+const texts=drawing.pages.flatMap(p=>p.commands.filter(c=>c.kind==='text').map(c=>c.text));
+assert.ok(texts.some(s=>s.includes('B13')),'last bar must have a printed schedule row');
+assert.ok(texts.some(s=>s.includes('CHECK-REASON-13')),'last reason must be printed in full continuation pages');
+assert.ok(drawing.pages.length>2);
+for(const p of drawing.pages)for(const c of p.commands.filter(c=>c.kind==='text'))assert.ok(c.y<=820&&c.x>=0);
+const font=new Uint8Array(readFileSync('assets/fonts/phase24/SStructuresSans.ttf'));
+mkdirSync('output/pdf/phase25',{recursive:true});writeFileSync('output/pdf/phase25/pagination.pdf',buildVectorDetailPdf(drawing.pages,font));
+writeFileSync('output/pdf/phase25/pagination.json',JSON.stringify(drawing,null,2));
+console.log(`PASS all 13 bars and checks, long Korean reasons; ${drawing.pages.length} pages`);

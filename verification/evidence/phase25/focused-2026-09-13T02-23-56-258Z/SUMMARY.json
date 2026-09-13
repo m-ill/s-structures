@@ -1,0 +1,17 @@
+{
+  "sourceHash": "162de4f7390a56668732475333ca01402fb4bd633a027be333d196401f3dbbf3",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:23:57.140Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-input-history-restore.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 646,
+      "sha256": "d04a247fbebb997d0cb28d3d17dc16ac5bd120ae89463efe5d8b51aec7679648",
+      "error": null
+    }
+  ]
+}

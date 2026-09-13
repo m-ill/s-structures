@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d6327dcc44c845d6795436048593cb45fa4f5bd6ffbc90e46e00945579e6fb96",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:27:53.176Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-column-profile-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3875,
+      "sha256": "8850e1056462ca2ff43af5edecb2ec666542356426804260c507424e5d039468",
+      "error": null
+    }
+  ]
+}

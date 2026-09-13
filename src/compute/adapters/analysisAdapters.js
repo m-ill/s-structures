@@ -5,7 +5,7 @@ import { runProductionNlth } from '../../nonlinear/dynamics/productionNlth.js';
 import { packDomainBinary, unpackDomainBinary, validateDomainBinary } from '../contracts/domainBinary.js';
 import { createSparsePatternFromDomain, validateSparsePattern } from '../contracts/sparsePattern.js';
 
-export const ANALYSIS_ADAPTER_VERSION = 'p9-analysis-adapter-v1';
+export const ANALYSIS_ADAPTER_VERSION = 'p25-analysis-adapter-v3-force-recovery';
 export const ANALYSIS_OPERATION_KINDS = Object.freeze({
   elasticStatic: 'elasticStatic',
   productionPushover: 'productionPushover',

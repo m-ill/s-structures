@@ -1,0 +1,95 @@
+{
+  "date": "2026-09-11T06:58:54.314Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-station-sides.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 169,
+      "sha256": "95fef2782d79834d23e7820ce7e98fc321a5ac6a4c6ec28652cf03310b1687c2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cover.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 70,
+      "sha256": "a636752638b64d5ceee6ac964d32451dfc2b467102c00c9de3b1a22acbf17129",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 70,
+      "sha256": "2b6ac3163c11ad416406f7a10dc363e2d8b60c4f5a0ba85713fdff3752f1066a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "e8e89f4ed6763737dffc9e5bf6822ae9d9ca746d8cdca834694465632aa3f573",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1805,
+      "sha256": "6703b11620b5e981877540a86481498995274c8a1be9519b3518f96d3653a530",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 790,
+      "sha256": "71808d030711ddbf72bd0afa77d45e4ad9a895600da3018b451466e03d8dad62",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-weight-ledger.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 176,
+      "sha256": "5d929ed5a0707f7980e7f4f6f957bf616a123c2e5ade9c2b00603f114d9934ac",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-apply-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2625,
+      "sha256": "96fa286585240a49dfd0d7d3a98124e666dd2bf2cbcc2ada275f6a08295a7235",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 552,
+      "sha256": "8be10e3caa802ef228f9a9acb54637d5ec698e9959965e24ac91a4519b8f5afd",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-pagination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 168,
+      "sha256": "45797056d82feeb09999fbd1f17d9c3c907648d6f855fa477793ee9304e5f718",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m8-drawings.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 180,
+      "sha256": "9105c28fac505512b70d9270d3cd0cc62dd2c789c9b060bf5531b6c0976dca4f",
+      "error": null
+    }
+  ]
+}

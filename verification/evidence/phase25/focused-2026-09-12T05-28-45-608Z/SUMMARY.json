@@ -1,0 +1,25 @@
+{
+  "sourceHash": "fe51278087a80f85cbd52bcb2eaa60af7ade2d682b3f496c59cab55f1815bbe5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:28:46.711Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 797,
+      "sha256": "0840ce985ffb1f4741523ae247f86a91caeddee9a0c2b0e931bbdfa8126d717e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-pair-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 58,
+      "sha256": "9941894a5fa5118825250bae99f6fc2eb2a12f3557d2d5dbca96ab687bb17bfe",
+      "error": null
+    }
+  ]
+}

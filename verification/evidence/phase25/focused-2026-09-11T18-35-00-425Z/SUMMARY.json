@@ -1,0 +1,25 @@
+{
+  "sourceHash": "eae4c1df79a48572454f544bdc3c9484d6a9ee409e2af544384836616f67f4d1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:35:07.216Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-review-ui-lifecycle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 74,
+      "sha256": "19c8aef5f70be5b840ac890737ac8feac94cd962f8b301beb1d30a08dba76a85",
+      "error": null
+    },
+    {
+      "file": "tests/p19-m3-design-workflow.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 6521,
+      "sha256": "01305687c57a494c4b389884c3b8e968b9b0aa191115707db8c8458fb3f09ab3",
+      "error": null
+    }
+  ]
+}

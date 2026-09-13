@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c32fc47ed17ae6dcf62a86b1a1ccf46830b85f2b9fc4f867f9914be1b2fe738f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:49:23.041Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-differential-dependencies.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "da469123c19cb202ad9cc82bec23784a02315a47057b317fa2ebba6534938b73",
+      "error": null
+    }
+  ]
+}

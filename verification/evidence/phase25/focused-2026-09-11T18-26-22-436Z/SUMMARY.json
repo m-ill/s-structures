@@ -1,0 +1,33 @@
+{
+  "sourceHash": "7f0266a1b63589a73abfc1d4b1990a6894fb6055f9982d7cb135c3d6778ec0e3",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:26:26.412Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-drawing-retention.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 729,
+      "sha256": "f1deabfc354d2098bd64512cffabb3fc36b57fb1c3605450442aa9f43a7ba4e1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2531,
+      "sha256": "47df8e5c4a5cbc2995fb8f85576d6f954d82f5746f70106980b98dc3b428ca2e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 256,
+      "sha256": "7732c92202c04804e4a07eaa683d716ee758b40c56ccfcf522bf8079d3123ec4",
+      "error": null
+    }
+  ]
+}

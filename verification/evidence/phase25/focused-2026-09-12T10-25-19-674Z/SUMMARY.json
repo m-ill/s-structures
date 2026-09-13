@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d730f7056558058a8285d7e17f878eaf96667d4cb01d28fe41ad3488842189b7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:25:20.116Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-refined-arc-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 87,
+      "sha256": "57cf24e90851db029136522bb9f8d58f22aa213baeccfe47025b01c7db70161a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-assembly.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 73,
+      "sha256": "299d4d3ba4288bd34bf8f51cdb734eadc08274e6b862de272a2ce6f3c37f2514",
+      "error": null
+    }
+  ]
+}

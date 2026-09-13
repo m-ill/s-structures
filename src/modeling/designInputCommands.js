@@ -7,8 +7,10 @@ import { KDS_41_12_00_2022_RULE_PACK } from '../core/kdsLoadCombinations.js';
 import { createAnalysisCase } from '../core/analysisCase.js';
 import { resolveMaterialRecord, resolveSectionRecord } from '../materials/registry.js';
 import { applyModelChangeSet } from './transaction.js';
+import { PRACTICAL_DESIGN_TYPES } from './practicalInputContract.js';
+import { stagePracticalDesignInput } from './practicalDesignInputs.js';
 
-export const DESIGN_INPUT_TYPES = Object.freeze(['design-basis', 'generate-loads', 'node-mass', 'mass-source', 'load-case', 'load', 'combination', 'generate-combinations', 'member-assignment', 'member-design', 'analysis-case']);
+export const DESIGN_INPUT_TYPES = Object.freeze(['design-basis', 'generate-loads', 'node-mass', 'mass-source', 'load-case', 'load', 'combination', 'generate-combinations', 'member-assignment', 'member-design', 'analysis-case',...PRACTICAL_DESIGN_TYPES]);
 export const DESIGN_INPUT_UNITS = Object.freeze({ length:'m', force:'kN', moment:'kN.m', stress:'N/mm2', displacement:'mm' });
 export const MEMBER_DESIGN_FIELDS = Object.freeze({ Ky:'-', Kz:'-', Lb:'m', LbZ:'m', unbracedLength:'m', Cb:'-', C1:'-', ltbK:'-', deflectionLimitTotal:'L/limit', compressionSlendernessLimit:'-', cover:'m', rebarFy:'N/mm2', beamRebarRatio:'-', columnRebarRatio:'-' });
 const BASIS_FIELDS = DESIGN_BASIS_NUMERIC_FIELDS.map(x=>x.id);
@@ -59,6 +61,7 @@ function refs(model,factors) {
 // Unsupported fields never disappear into a successful response.
 export function stageDesignInputCommand(model,c,context,warnings) {
   one(c.type,DESIGN_INPUT_TYPES);
+  if(PRACTICAL_DESIGN_TYPES.includes(c.type)){stagePracticalDesignInput(model,c,warnings);return;}
   if(c.type==='design-basis') {
     object(c,['type','patch']);object(c.patch,[...BASIS_FIELDS,'occupancy','designMethod']);
     for(const [k,v] of Object.entries(c.patch)) {
@@ -97,13 +100,27 @@ export function stageDesignInputCommand(model,c,context,warnings) {
     if(previous.type && previous.type!==c.loadType) fail('LOAD_CASE_TYPE_IMMUTABLE');
     write(model,'loadCases',{...previous,id:c.id,name:c.name,type:c.loadType,origin:'manual',userModified:true},c.mode);
   } else if(c.type==='load') {
-    object(c,['type','mode','value']);const r=c.value;object(r,['id','type','node','member','P','w','M','at','dir','case','unit']);one(r.type,['nodal','udl','nmoment','mmoment']);target(model,'loadCases',r.case);one(r.dir,['+x','-x','+y','-y','+z','-z']);
-    const field=r.type==='nodal'?'P':r.type==='udl'?'w':'M';
-    const nodal=['nodal','nmoment'].includes(r.type);
-    const allowed=['id','type',nodal?'node':'member',field,'dir','case','unit',...(r.type==='mmoment'?['at']:[])];object(r,allowed);
-    target(model,nodal?'nodes':'members',nodal?r.node:r.member);num(r[field],-1e10,1e10);
-    if(r.type==='mmoment') num(r.at,0,1);
-    one(r.unit,[r.type==='nodal'?'kN':r.type==='udl'?'kN/m':'kN.m']);
+    object(c,['type','mode','value']);const r=c.value;
+    if(['temperature','tgradient'].includes(r?.type)){
+      const gradient=r.type==='tgradient';
+      object(r,['id','type','member','case','unit','alpha','alphaUnit',...(gradient?['dTtop','dTbot','h','hUnit']:['dT'])]);
+      target(model,'loadCases',r.case);target(model,'members',r.member);one(r.unit,['degC']);
+      for(const key of gradient?['dTtop','dTbot']:['dT'])num(r[key],-1e4,1e4);
+      if(gradient){positive(r.h,1e4);one(r.hUnit,['m']);}
+      if(own(r,'alpha')||own(r,'alphaUnit')){positive(r.alpha,1);one(r.alphaUnit,['1/degC']);}
+    }else{
+object(r,['id','type','node','member','P','w','w1','w2','M','at','t','from','to','shape','dir','case','unit']);one(r.type,['nodal','udl','nmoment','mmoment','point','udl-partial','trapezoid']);target(model,'loadCases',r.case);one(r.dir,['+x','-x','+y','-y','+z','-z']);
+    const nodal=['nodal','nmoment'].includes(r.type),force=['nodal','point'].includes(r.type),distributed=['udl','udl-partial','trapezoid'].includes(r.type);
+    const fields=r.type==='trapezoid'?['w1','w2']:[force?'P':distributed?'w':'M'];
+    const range=['udl-partial','trapezoid'].includes(r.type);
+    const allowed=['id','type',nodal?'node':'member',...fields,'dir','case','unit',...(r.type==='mmoment'?['at']:r.type==='point'?['t']:range?['from','to']:r.type==='udl'?['shape']:[])];object(r,allowed);
+    target(model,nodal?'nodes':'members',nodal?r.node:r.member);fields.forEach(k=>num(r[k],-1e10,1e10));
+    if(r.type==='mmoment')num(r.at,0,1);
+    if(r.type==='point')num(r.t,0,1);
+    if(range){num(r.from,0,1);num(r.to,0,1);if(r.from>=r.to)fail('LOAD_RANGE_INVALID');}
+    if(own(r,'shape'))one(r.shape,['uniform','asc','desc']);
+    one(r.unit,[force?'kN':distributed?'kN/m':'kN.m']);
+    }
     write(model,'loads',{...r,origin:'manual',userModified:true},c.mode);
   } else if(c.type==='combination') {
     object(c,['type','mode','id','name','purpose','factors']);text(c.name);one(c.purpose,['strength','service']);refs(model,c.factors);

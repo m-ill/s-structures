@@ -1,0 +1,32 @@
+PASS atomic multi-command application, replay, one undo and monotonic invalidation
+PASS tampered preview, stale model, project switch and undo after external edit
+PASS policy rechecked at apply and undo; role and readonly failures do not mutate
+PASS partial failure, duplicate IDs, unknown fields, nonfinite, unit and reference rejection
+PASS basis, generated loads and explicit mass settings survive canonical mapping
+PASS all elastic case settings reach product normalization
+PASS candidate combination approval cannot be fabricated in commands
+PASS load types and manual combination preserve values
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"ok":false,"changed":false,"status":"blocked","code":"DESIGN_INPUT_FAILED","message":"DEPENDENCY_INPUT_MISMATCH","details":null}
+
+false !== true
+
+    at must (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p19-m2-design-input.mjs:20:28)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p19-m2-design-input.mjs:107:24
+    at check (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p19-m2-design-input.mjs:22:26)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p19-m2-design-input.mjs:103:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:633:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.16.0

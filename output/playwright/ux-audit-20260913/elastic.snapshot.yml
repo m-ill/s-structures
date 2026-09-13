@@ -1,0 +1,206 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - button "메뉴" [ref=e3] [cursor=pointer]: ☰
+    - generic [ref=e4]: S-STRUCTURES
+    - tablist "작업 탭" [ref=e6]:
+      - tab "모델링" [ref=e7] [cursor=pointer]
+      - tab "탄성해석" [active] [selected] [ref=e8] [cursor=pointer]
+      - tab "비선형해석" [ref=e9] [cursor=pointer]
+      - tab "태블릿메모" [ref=e10] [cursor=pointer]
+    - button "이전 페이지" [ref=e12] [cursor=pointer]: ◀
+    - generic [ref=e13]: 1 / 1
+    - button "다음 페이지" [ref=e14] [cursor=pointer]: ▶
+    - button "새 페이지" [ref=e15] [cursor=pointer]: ＋
+    - button "Phase 13 실무 워크벤치 열기" [ref=e17] [cursor=pointer]: 실무 워크벤치
+    - link "계정" [ref=e18] [cursor=pointer]:
+      - /url: app.html#/login
+    - button "실행 취소 (Ctrl+Z)" [ref=e19] [cursor=pointer]: ↶
+    - button "다시 실행 (Ctrl+Y)" [ref=e20] [cursor=pointer]: ↷
+    - button "−" [ref=e22] [cursor=pointer]
+    - button "기본 뷰로" [ref=e23] [cursor=pointer]: ⌂
+    - button "＋" [ref=e24] [cursor=pointer]
+    - generic [ref=e26]:
+      - generic [ref=e27]: 기본
+      - generic [ref=e28]:
+        - text: "보기:"
+        - button "3D" [ref=e29] [cursor=pointer]
+        - button "평면" [ref=e30] [cursor=pointer]
+        - button "정면" [ref=e31] [cursor=pointer]
+        - button "측면" [ref=e32] [cursor=pointer]
+        - text: "결과:"
+        - generic [ref=e33]: © 단국대 허석재
+  - generic [ref=e34]:
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]: 해석 절차
+        - generic [ref=e104]:
+          - button "1단계 기본설정" [ref=e105] [cursor=pointer]:
+            - generic [ref=e106]: "1"
+            - generic [ref=e107]: 기본설정
+            - generic [ref=e108]: ✓
+          - button "2단계 하중·질량" [ref=e109] [cursor=pointer]:
+            - generic [ref=e110]: "2"
+            - generic [ref=e111]: 하중·질량
+            - generic [ref=e112]: "!"
+          - button "3단계 하중조합" [ref=e113] [cursor=pointer]:
+            - generic [ref=e114]: "3"
+            - generic [ref=e115]: 하중조합
+            - generic [ref=e116]: "!"
+          - button "4단계 모델검증" [ref=e117] [cursor=pointer]:
+            - generic [ref=e118]: "4"
+            - generic [ref=e119]: 모델검증
+            - generic [ref=e120]: ✓
+          - button "5단계 1차해석" [ref=e121] [cursor=pointer]:
+            - generic [ref=e122]: "5"
+            - generic [ref=e123]: 1차해석
+            - generic [ref=e124]: "!"
+          - button "6단계 고급해석" [ref=e125] [cursor=pointer]:
+            - generic [ref=e126]: "6"
+            - generic [ref=e127]: 고급해석
+          - button "7단계 결과검토" [ref=e128] [cursor=pointer]:
+            - generic [ref=e129]: "7"
+            - generic [ref=e130]: 결과검토
+            - generic [ref=e131]: "!"
+          - button "상세 하중 입력 표시" [ref=e132] [cursor=pointer]:
+            - generic [ref=e133]: ⋯
+      - generic [ref=e134]:
+        - generic [ref=e135]: 해석
+        - generic [ref=e136]:
+          - button "전체 탄성해석 실행" [ref=e137] [cursor=pointer]:
+            - generic [ref=e138]: ▶
+            - generic [ref=e139]: 전체 탄성해석
+          - button "해석 케이스 설정 열기" [ref=e140] [cursor=pointer]:
+            - generic [ref=e141]: ⚙
+      - generic [ref=e142]:
+        - generic [ref=e143]: 결과
+        - generic [ref=e144]:
+          - button "1차 정적해석 결과 열기" [disabled] [ref=e145]:
+            - generic [ref=e146]: K
+            - generic [ref=e147]: 1차
+          - button "Direct P-Delta 결과 열기" [disabled] [ref=e148]:
+            - generic [ref=e149]: PΔ
+            - generic [ref=e150]: P-Delta
+          - button "모달해석 결과 열기" [disabled] [ref=e151]:
+            - generic [ref=e152]: T
+            - generic [ref=e153]: 모달
+          - button "응답스펙트럼해석 결과 열기" [disabled] [ref=e154]:
+            - generic [ref=e155]: S
+            - generic [ref=e156]: RSA
+          - button "탄성 고유치 좌굴 결과 열기" [disabled] [ref=e157]:
+            - generic [ref=e158]: λ
+            - generic [ref=e159]: 좌굴
+          - button "선형 시간이력 (예비) 결과 열기" [disabled] [ref=e160]:
+            - generic [ref=e161]: t
+            - generic [ref=e162]: THA
+      - generic [ref=e163]:
+        - generic [ref=e164]: 조합
+        - combobox "하중조합" [ref=e166]:
+          - option "1.4D" [selected]
+          - option "1.2D + 1.6L"
+          - option "Service D + L"
+          - option "포락 (Envelope)"
+      - generic [ref=e167]:
+        - generic [ref=e168]: 결과
+        - generic [ref=e169]:
+          - button "변형" [ref=e170] [cursor=pointer]
+          - button "M" [ref=e171] [cursor=pointer]
+          - button "Q" [ref=e172] [cursor=pointer]
+          - button "N" [ref=e173] [cursor=pointer]
+          - button "반력" [ref=e174] [cursor=pointer]
+          - button "수치" [ref=e175] [cursor=pointer]
+          - button "T" [ref=e176] [cursor=pointer]
+          - button "검정" [ref=e177] [cursor=pointer]
+          - button "절점#" [ref=e178] [cursor=pointer]
+          - button "부재#" [ref=e179] [cursor=pointer]
+          - button "길이" [ref=e180] [cursor=pointer]
+          - button "로컬축" [ref=e181] [cursor=pointer]
+          - button "설계" [ref=e182] [cursor=pointer]
+          - button "처짐" [ref=e183] [cursor=pointer]
+      - generic [ref=e184]:
+        - generic [ref=e185]: 보고
+        - generic [ref=e186]:
+          - button "하중조합" [ref=e187] [cursor=pointer]:
+            - generic [ref=e188]: ☷
+          - button "설계요약" [ref=e190] [cursor=pointer]:
+            - generic [ref=e191]: ▤
+          - button "검증" [ref=e193] [cursor=pointer]:
+            - generic [ref=e194]: ✓
+      - generic [ref=e196]:
+        - generic [ref=e197]: 상태
+        - status [ref=e199]: 경고 1 · 해석 OK · δmax 4.73mm · 평형✓ · 검정 0.40 전체 OK
+      - generic [ref=e200]:
+        - generic [ref=e201]: 변형 배율
+        - generic [ref=e203]:
+          - generic [ref=e204]: Scale
+          - combobox "Scale" [ref=e205]:
+            - option "auto" [selected]
+            - option "10"
+            - option "50"
+            - option "100"
+            - option "500"
+      - button "설계 입력 변경" [ref=e206] [cursor=pointer]
+      - button "탄성 설계 검토" [ref=e207] [cursor=pointer]
+      - status [ref=e208]: WebMCP unsupported · 도구 0개 · 작업 없음 · 해석 결과 없음 · 탄성 예비 검토 · 비선형 candidate
+    - button "해석 케이스" [ref=e43] [cursor=pointer]
+    - button "ratio" [ref=e44] [cursor=pointer]
+  - generic [ref=e45]:
+    - button "▶ 스텝 재생" [ref=e100] [cursor=pointer]
+    - generic [ref=e209]:
+      - generic [ref=e210]:
+        - heading "탄성해석 설정 · 2/7" [level=2] [ref=e211]
+        - generic [ref=e212]: 2단계 완료
+        - button "닫기" [ref=e213] [cursor=pointer]
+      - generic [ref=e214]:
+        - button "1 기본설정" [ref=e215] [cursor=pointer]
+        - button "2 하중·질량" [ref=e216] [cursor=pointer]
+        - button "3 하중조합" [ref=e217] [cursor=pointer]
+        - button "4 모델검증" [ref=e218] [cursor=pointer]
+        - button "5 1차해석" [ref=e219] [cursor=pointer]
+        - button "6 고급해석" [ref=e220] [cursor=pointer]
+        - button "7 결과검토" [ref=e221] [cursor=pointer]
+      - generic [ref=e222]:
+        - strong [ref=e223]: 2. 하중·질량
+        - generic [ref=e224]: D/L/W/E를 물리적 하중케이스로 분리하고 질량원을 만들어야 조합과 동적해석이 같은 입력을 사용합니다.
+      - generic [ref=e225]:
+        - generic [ref=e226]:
+          - generic [ref=e227]:
+            - generic [ref=e228]: 추가고정하중 D (kN/m²)
+            - spinbutton "추가고정하중 D (kN/m²)" [ref=e229]: "5"
+          - generic [ref=e230]:
+            - generic [ref=e231]: 활하중 L (kN/m²)
+            - spinbutton "활하중 L (kN/m²)" [ref=e232]: "2.5"
+          - generic [ref=e233]:
+            - generic [ref=e234]: 지붕활하중 Lr (kN/m²)
+            - spinbutton "지붕활하중 Lr (kN/m²)" [ref=e235]: "1"
+          - generic [ref=e236]:
+            - generic [ref=e237]: 풍하중 WX (kN/m²)
+            - spinbutton "풍하중 WX (kN/m²)" [ref=e238]: "0.7"
+          - generic [ref=e239]:
+            - generic [ref=e240]: 풍하중 WY (kN/m²)
+            - spinbutton "풍하중 WY (kN/m²)" [ref=e241]: "0.7"
+          - generic [ref=e242]:
+            - generic [ref=e243]: 지진계수 EX
+            - spinbutton "지진계수 EX" [ref=e244]: "0.1"
+          - generic [ref=e245]:
+            - generic [ref=e246]: 지진계수 EY
+            - spinbutton "지진계수 EY" [ref=e247]: "0.1"
+          - generic [ref=e248]:
+            - generic [ref=e249]: 지진 질량 활하중계수
+            - spinbutton "지진 질량 활하중계수" [ref=e250]: "0.25"
+          - generic [ref=e251]:
+            - generic [ref=e252]: 층 질량 시작값
+            - spinbutton "층 질량 시작값" [ref=e253]: "10"
+        - button "하중 케이스·하중·질량 적용" [ref=e254] [cursor=pointer]
+        - generic [ref=e255]:
+          - generic [ref=e256]:
+            - generic [ref=e257]: 하중케이스
+            - strong [ref=e258]: "2"
+          - generic [ref=e259]:
+            - generic [ref=e260]: 모델하중
+            - strong [ref=e261]: "2"
+          - generic [ref=e262]:
+            - generic [ref=e263]: 질량 절점
+            - strong [ref=e264]: "0"
+      - generic [ref=e265]:
+        - button "이전" [ref=e266] [cursor=pointer]
+        - button "다음" [ref=e267] [cursor=pointer]

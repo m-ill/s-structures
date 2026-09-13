@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7e3de64df4a454a9c54be3963ef2ba43208db7ec6c60769f87daf461d0811f06",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:04:44.109Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-checkpoint-failure-history.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1169,
+      "sha256": "0ea52d3742c1cc26c0bb7fece8b46e0b3a5221c920382fc53b43b53773c819b8",
+      "error": null
+    }
+  ]
+}

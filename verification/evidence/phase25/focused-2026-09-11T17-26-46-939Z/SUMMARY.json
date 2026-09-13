@@ -1,0 +1,17 @@
+{
+  "sourceHash": "0ad7b2e17f8aee93c2a6d1d01a3b194d5a4c9be5227267fdcaa8236d9daf87a2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:26:51.818Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4683,
+      "sha256": "9a597b44003376d2cee9ff0c2d52385c105de2ebe948676fa8c37250f8cf2918",
+      "error": null
+    }
+  ]
+}

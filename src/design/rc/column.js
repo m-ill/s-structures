@@ -13,7 +13,8 @@ export function detailRcColumn(check = {}, options = {}) {
   const pmCurve = buildRcPmCurve({ ...section, AsTotal: longitudinal.providedArea }, material, options);
   const slenderness = slendernessCheck(check, options);
   const shear = { ratio: shearRatio(check), ties, formulaId: 'KDS-RC-COLUMN-SHEAR-TIE-V1' };
-  const status = worstStatus([check.status, slenderness.status, shear.ratio > 1 ? 'NG' : 'OK']);
+  const splice=lapSpliceLength(longitudinal.bar,material,options.anchorage||{});
+  const status = worstStatus([check.status||'NOT_CHECKED', slenderness.status, shear.ratio > 1 ? 'NG' : 'OK',ties.status,splice.status==='CALCULATED'?'NOT_CHECKED':splice.status]);
   return {
     version: RC_COLUMN_DETAIL_VERSION,
     contract: {
@@ -39,7 +40,7 @@ export function detailRcColumn(check = {}, options = {}) {
     ties,
     shear,
     spacing: spacingCheck(longitudinal, Math.round((section.bz || section.b || 0.4) * 1000)),
-    splice: lapSpliceLength(longitudinal.bar, material),
+    splice,
   };
 }
 
@@ -57,6 +58,7 @@ function shearRatio(check) {
 
 function worstStatus(values) {
   if (values.includes('NG')) return 'NG';
+  if (values.includes('NOT_CHECKED')) return 'NOT_CHECKED';
   if (values.includes('WARN')) return 'WARN';
   return 'OK';
 }

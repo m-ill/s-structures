@@ -1,0 +1,17 @@
+{
+  "sourceHash": "295cf4c64698fdc90ce73b4d9dfcafeb1d8bbc84d064b0232d9c5827085c63df",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:17:20.082Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-strength-stations.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 124,
+      "sha256": "2951b46c27e6cfdb46e0d3a9391fabf7c197c64c1f5295116e0141dcf0674d46",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+PASS T01/T18 material types, units, provenance, UI/WebMCP, missing properties, isotropic consistency
+{"milestone":"M1","cases":["T01","T18"],"file":"tests/p24-m1-material-input.mjs","elapsedMs":869,"exitCode":0,"error":null}
+PASS T01 explicit material routing; no section-shape fallback to steel
+{"milestone":"M1","cases":["T01"],"file":"tests/p24-m1-material-routing.mjs","elapsedMs":144,"exitCode":0,"error":null}
+PASS T02/T18 section dimensions, independent A/I, immutable versions, UI/WebMCP, override rejection
+{"milestone":"M1","cases":["T02","T18"],"file":"tests/p24-m1-section-input.mjs","elapsedMs":928,"exitCode":0,"error":null}
+PASS T03/T18 reinforcement geometry/units, connections, ground/footing references, transaction, UI/WebMCP
+{"milestone":"M1","cases":["T03","T18"],"file":"tests/p24-m1-details-input.mjs","elapsedMs":903,"exitCode":0,"error":null}

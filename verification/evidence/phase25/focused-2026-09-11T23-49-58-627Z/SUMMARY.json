@@ -1,0 +1,25 @@
+{
+  "sourceHash": "672b2133870347dfa9925c2ce67859ab41109677bb29370e1a54be9745e2f6b0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:50:00.212Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-diaphragm.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1064,
+      "sha256": "af7e9d04d59481bf187968de3f4e063b1d9592bf86b51d6771209a7f67e46dcb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-model-network.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 282,
+      "sha256": "83fdf991b166fc201469ddbece1e706a7f5d8e60ef16b2c94f767204b19bb031",
+      "error": null
+    }
+  ]
+}

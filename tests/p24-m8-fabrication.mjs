@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {buildBarFabrication} from '../src/report/phase24/barFabrication.js';
+const bar={diameter:0.016,y:0.3},section={length:3,H:0.8};
+const detail={cover:0.04,endSetbackStart:0.05,endSetbackEnd:0.05,fabricationShape:'L90',bendInsideRadius:0.048,hookTailLength:0.192};
+const result=buildBarFabrication(detail,bar,section),R=0.056;
+assert.ok(Math.abs(result.cutLength-((3-0.05-0.008-R)-0.05+Math.PI*R/2+0.192))<1e-12);
+assert.equal(result.codeReferences[0].code,'KDS 14 20 50');assert.equal(result.fabricationApproved,false);
+assert.equal(buildBarFabrication({...detail,hookTailLength:0.1},bar,section).cutLength,null);
+assert.ok(Math.abs(buildBarFabrication({...detail,fabricationShape:'straight'},bar,section).cutLength-2.9)<1e-12);
+assert.equal(buildBarFabrication({...detail,bendInsideRadius:0.001},bar,section).reason,'KDS_MINIMUM_BEND_OR_TAIL_NOT_SATISFIED');
+console.log('PASS exact bar centerline cut length, standard hook tail/radius, missing geometry and qualification');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "27cec980883317ff0b9ab8c2a3285c6c09c084229a92c44e14674e51bc6909a0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:13:29.091Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-segmented-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 949,
+      "sha256": "957bfff75985acd43d0fd5bb9d7477d8154e1d5b0209f67c4ec1a712f1ce72f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-boundary-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 88,
+      "sha256": "2c62038fa28c080a87dbaa858fed228fde6dcb6a79ebfde12413b2a23e259d74",
+      "error": null
+    }
+  ]
+}

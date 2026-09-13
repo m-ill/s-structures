@@ -1,0 +1,17 @@
+{
+  "sourceHash": "afc799969e866965be82607438a2d919ceac71acf08775c6ca57c91c083b11cd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:34:50.963Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-layered-layout.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 66,
+      "sha256": "2c0eb32d60440c27a347c11edc73b84a6448cf3e12290d9d65b4e6bcc0e3bf83",
+      "error": null
+    }
+  ]
+}

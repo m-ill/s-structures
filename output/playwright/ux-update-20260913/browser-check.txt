@@ -1,0 +1,66 @@
+### Result
+{"pass":true,"originalControls":424,"originalControlsDisconnected":0,"modelUnchanged":true,"before":{"x":130,"y":60,"width":1180,"height":780},"moved":{"x":165,"y":80,"width":1180,"height":780},"reopened":{"x":165,"y":80,"width":1180,"height":780},"menuRect":{"x":10,"y":44.5,"width":286.125,"height":778},"viewports":[[1440,900],[1024,768],[390,680]]}
+### Ran Playwright code
+```js
+await (async (page) => {
+ await page.reload(); await page.getByRole('tab',{name:'탄성해석',exact:true}).click();
+ const baseline=await page.evaluate(()=>({hash:window.SStructuresEngine.getWorkflowInputIdentity().inputHash,preservation:window.SStructuresEngine.workspaceUx.preservationAtInstall}));
+ if(baseline.preservation.disconnected.length)throw Error('Original controls disconnected: '+JSON.stringify(baseline));
+ await page.setViewportSize({width:1440,height:900});
+ await page.screenshot({path:'output/playwright/ux-update-20260913/03-ribbon-final.png'});
+ await page.locator('.ss-ux-ribbon-more > summary').click();
+ for(const name of ['변형','M','Q','N','T','반력'])if(!await page.getByRole('button',{name,exact:true}).isVisible())throw Error('Legacy result command missing: '+name);
+ await page.waitForFunction(()=>{const p=document.querySelector('.ss-elastic-workflow');if(!p||!p.getBoundingClientRect().height)return true;return p.getBoundingClientRect().top>=document.getElementById('subbar').getBoundingClientRect().bottom;});
+ await page.screenshot({path:'output/playwright/ux-update-20260913/09-result-commands.png'});
+ await page.locator('.ss-ux-ribbon-more > summary').click();
+ await page.getByRole('button',{name:'사용성·장기변형',exact:true}).click();
+ const panel=page.getByRole('dialog',{name:'탄성 설계 검토',exact:true});
+ await panel.getByRole('button',{name:'위치 초기화',exact:true}).click();
+ await page.getByRole('button',{name:'개요',exact:true}).click();
+ await page.screenshot({path:'output/playwright/ux-update-20260913/10-review-overview.png'});
+ await page.getByRole('button',{name:'부착 후 변형',exact:true}).click();
+ if(!await panel.getByRole('button',{name:'부착 후 변형 판정',exact:true}).isDisabled())throw Error('Empty attachment form must be disabled');
+ const before=await panel.boundingBox();
+ await page.screenshot({path:'output/playwright/ux-update-20260913/04-attachment-final.png'});
+ const header=await panel.locator('.ss-work-header h2').boundingBox();
+ await page.mouse.move(header.x+90,header.y+10);await page.mouse.down();await page.mouse.move(header.x+125,header.y+30,{steps:5});await page.mouse.up();
+ const moved=await panel.boundingBox();
+ await panel.getByRole('button',{name:'탄성 설계 검토 닫기',exact:true}).click();
+ await page.getByRole('button',{name:'탄성 설계 검토',exact:true}).click();
+ const reopened=await panel.boundingBox();
+ if(Math.abs(moved.x-reopened.x)>1||Math.abs(moved.y-reopened.y)>1)throw Error('Reopen position changed');
+ await panel.getByRole('button',{name:'위치 초기화',exact:true}).click();
+ await panel.getByRole('button',{name:'탄성 설계 검토 닫기',exact:true}).click();
+ await page.getByRole('combobox',{name:'설계 입력 종류 바로가기',exact:true}).selectOption('material-record');
+ await page.getByRole('button',{name:'입력 열기',exact:true}).click();
+ const input=page.getByRole('dialog',{name:'탄성설계 입력 변경',exact:true});
+ await input.getByRole('button',{name:'위치 초기화',exact:true}).click();
+ await input.locator('[data-field="kind"]').selectOption('concrete');
+ if(await input.locator('fieldset').count()!==3)throw Error('Missing concrete groups');
+ await page.screenshot({path:'output/playwright/ux-update-20260913/05-material-final.png'});
+ await page.keyboard.press('Escape');
+ if(await input.isVisible())throw Error('Escape must close input');
+ await page.getByRole('button',{name:'메뉴',exact:true}).click();
+ const menu=page.locator('#menuDrop'); const menuRect=await menu.boundingBox();
+ if(menuRect.y>100)throw Error('Menu is detached from toolbar');
+ await page.screenshot({path:'output/playwright/ux-update-20260913/06-menu-final.png'});
+ await page.keyboard.press('Escape');
+ await page.setViewportSize({width:1024,height:768});
+ await page.screenshot({path:'output/playwright/ux-update-20260913/07-1024-final.png'});
+ await page.getByRole('button',{name:'사용성·장기변형',exact:true}).click();
+ for(const [width,height] of [[1024,768],[390,680]]){
+  await page.setViewportSize({width,height});await page.waitForFunction(()=>{const r=document.getElementById('ssDesignReview').getBoundingClientRect();return r.x>=0&&r.y>=0&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;});const r=await panel.boundingBox();
+  if(r.x<0||r.y<0||r.x+r.width>width+1||r.y+r.height>height+1)throw Error('Panel outside viewport '+JSON.stringify(r));
+  if(!await panel.getByRole('button',{name:'탄성 설계 검토 닫기',exact:true}).isVisible())throw Error('Close button missing');
+ }
+ await page.screenshot({path:'output/playwright/ux-update-20260913/08-narrow-final.png'});
+ await page.setViewportSize({width:1440,height:900});
+ await panel.getByRole('button',{name:'탄성 설계 검토 닫기',exact:true}).click();
+ const hash=await page.evaluate(()=>window.SStructuresEngine.getWorkflowInputIdentity().inputHash);
+ if(hash!==baseline.hash)throw Error('UI navigation changed model');
+ return {pass:true,originalControls:baseline.preservation.originalCount,originalControlsDisconnected:0,modelUnchanged:true,before,moved,reopened,menuRect,viewports:[[1440,900],[1024,768],[390,680]]};
+}
+)(page);
+```
+### Events
+- New console entries: .playwright-cli\console-2026-09-13T06-34-49-764Z.log#L11

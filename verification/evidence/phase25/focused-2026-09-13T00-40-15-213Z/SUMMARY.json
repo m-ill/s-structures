@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e0a7561993e0dcd7ea06fd0fbc6acd03d1f10168eb7f1674c13d2a3255e77c9a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:40:16.075Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-splice-report-source.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 564,
+      "sha256": "d609dbfa25b776cec03d27e856aca15d218bed3c92c2dfca3bfea53539db3559",
+      "error": null
+    }
+  ]
+}

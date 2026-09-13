@@ -1,0 +1,17 @@
+{
+  "sourceHash": "77cfa9330d7445d2d8ff3382f7bbe5db546f165d69572788aa3dbbdebb913e17",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:06:53.774Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-base-friction.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2875,
+      "sha256": "0e6eab556947b5ab3ebda9660e216821104cafd1ee48759d7402031c6fdb36e6",
+      "error": null
+    }
+  ]
+}

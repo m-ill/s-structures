@@ -1,0 +1,25 @@
+{
+  "sourceHash": "e9b47fe447d29cc569433f2c3ae0e2e6296eaf003a379318cb207cba1c8c1e74",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:40:11.412Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-repair-outcome.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 72,
+      "sha256": "6a4f730e6e4a6b32970d17aaa9703d14f8144ef6d29a1d32b89d2bcd4affecf6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-splice-report-source.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 585,
+      "sha256": "bcdc6244a2e49ed466e22e28fd1dc01abb5634901b8c033b921f546a5bd0d926",
+      "error": null
+    }
+  ]
+}

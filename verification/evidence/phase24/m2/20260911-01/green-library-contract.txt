@@ -1,0 +1,1 @@
+PASS T05 native detail roundtrip, corrupted area, future version, references and geometry rejection

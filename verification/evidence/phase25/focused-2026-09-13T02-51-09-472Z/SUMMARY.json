@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a727c433570004de8acbef855ab72998a5bde03290427224c0dfa0ffe73ce713",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:51:09.800Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-integrated-extrema.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 69,
+      "sha256": "ada5e3b85109d88253a1fdaa63975c68979a304e4dab4797cf8b05f04a171569",
+      "error": null
+    }
+  ]
+}

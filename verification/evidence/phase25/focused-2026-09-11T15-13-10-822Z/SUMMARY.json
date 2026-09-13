@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a1959fee609008358faea58c919715e37617fb0f5a981ad4c74bd573e198dd57",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:13:13.447Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-reaction-height.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2429,
+      "sha256": "364748553a866c6fe68dabb6a5fa4381f7cd80e4e89fcc1d6e2952efdf58eefa",
+      "error": null
+    }
+  ]
+}

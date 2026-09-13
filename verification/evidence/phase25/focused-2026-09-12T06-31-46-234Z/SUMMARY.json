@@ -1,0 +1,17 @@
+{
+  "sourceHash": "8666e8294c77eb075d07b5853d5341b6194c4f9cbcf01576c780f47408ceb488",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:31:46.730Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-support-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 230,
+      "sha256": "58cb2c8906a7a3c43c667470a73f0773b466363a91c7f037c4388daaf5da128c",
+      "error": null
+    }
+  ]
+}

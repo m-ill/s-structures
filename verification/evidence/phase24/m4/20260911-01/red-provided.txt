@@ -1,0 +1,17 @@
+file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m4-provided.mjs:7
+const set={ok:true,anyOk:true,combo:{id:'C'},memberResults:{AB:{xs:[0,3],N:[0,0],My:[0,0],Mz:[30,-30],Vy:[100,100],Vz:[0,0],T:[0,0]}};
+                                                                                                                                     ^
+
+SyntaxError: Unexpected token ';'
+    at compileSourceTextModule (node:internal/modules/esm/utils:318:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:90:18)
+    at #translate (node:internal/modules/esm/loader:435:20)
+    at afterLoad (node:internal/modules/esm/loader:491:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:496:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:549:36)
+    at afterResolve (node:internal/modules/esm/loader:597:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:12)
+    at node:internal/modules/esm/loader:622:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:362:14)
+
+Node.js v24.16.0

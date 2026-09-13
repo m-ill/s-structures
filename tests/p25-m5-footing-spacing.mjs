@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {evaluateFootingSpacing} from '../src/design/foundation/footingSpacing.js';
+const f={B:2,L:2,cover:.05,aggregateMaxSize:.02,reinforcement:{bottomB:{diameter:.016,spacing:.05},bottomL:{diameter:.016,spacing:.05}}};
+assert.equal(evaluateFootingSpacing(f).status,'OK');
+const dense={...f,reinforcement:{...f.reinforcement,bottomB:{diameter:.016,spacing:.025}}};
+assert.equal(evaluateFootingSpacing(dense).status,'NG');assert.ok(evaluateFootingSpacing(dense).axisChecks.find(x=>x.axis==='B').clearSpacing<.025);
+assert.equal(evaluateFootingSpacing({...f,aggregateMaxSize:undefined}).status,'NOT_CHECKED');
+const missing=evaluateFootingSpacing({...dense,aggregateMaxSize:undefined});assert.equal(missing.status,'NG');assert.equal(missing.incomplete,true);assert.deepEqual(missing.requiredInputFields,['aggregateMaxSize']);
+assert.ok(missing.codeReferences.length>0);
+console.log('PASS footing in-layer clear spacing and missing aggregate preserves known NG');

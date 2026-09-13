@@ -1,0 +1,41 @@
+{
+  "sourceHash": "dab3a188ba34babaf4316e07d5c3a38e7f2d45a25d58d373d9538c0abe578fbd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:08:02.897Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-joint-product-catalog.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1217,
+      "sha256": "f105fefcc844d7c8bf55b437a750414c5731c348d57625a41c8aae75bfc22dbd",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-alternating-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 694,
+      "sha256": "d01e3112e84abb2a7272663a9c5c73fd45fa74d494a8e871672813374a9b6507",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 302,
+      "sha256": "7732c92202c04804e4a07eaa683d716ee758b40c56ccfcf522bf8079d3123ec4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1214,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "69781a69f53963a3a342538abad447a621b156cf1998fb74a7aec53f405be9ec",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:48:09.038Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-spatial-perimeter-order.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 62,
+      "sha256": "e4ada8ff964d1e29f4ed1297489863810074160a92c2f1515f840dffe3b90934",
+      "error": null
+    }
+  ]
+}

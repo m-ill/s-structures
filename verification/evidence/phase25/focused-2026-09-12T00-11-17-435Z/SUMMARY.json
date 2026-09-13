@@ -1,0 +1,17 @@
+{
+  "sourceHash": "84bdd79ea0ae250ba6ed7f9dbdce5a2045f4aa0a18b6444a0c31a9ecf1b947ca",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:11:18.814Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-initial-strain.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1164,
+      "sha256": "29c8d717a1360593df3db701add32b6dfae02e65c20ca9045f17da02015b409c",
+      "error": null
+    }
+  ]
+}

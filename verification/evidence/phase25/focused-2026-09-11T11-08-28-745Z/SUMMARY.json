@@ -1,0 +1,17 @@
+{
+  "sourceHash": "35caff2bc761cef6e68d28ffcd95e06c9658d7e06041c65a3fc229143a8b1d32",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:08:29.153Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-location-coverage.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 156,
+      "sha256": "a2aa66cb2fe491361c14c0a419c81dede1361cf682cc060d4ee6b81aa9b0d05d",
+      "error": null
+    }
+  ]
+}

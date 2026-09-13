@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4268bda7a6c2e4ae8e7d0e69ce46d31537045e1a0b1372d26940f47b56b84cb1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:00:13.459Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-direct-moment-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2166,
+      "sha256": "74a2218c25bf19f4ede1b8f4d4c25181633c1f1e0dbb8fdf5fd801e8fbc325e1",
+      "error": null
+    }
+  ]
+}

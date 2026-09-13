@@ -1,0 +1,25 @@
+{
+  "sourceHash": "670a5d2948144a05efb8eb7f457fcc5e5e2ad9957581a607b84b9d25ccbd7215",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:31:40.430Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-repair-outcome.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "776bdb485e80a6981501c42bc1dd2c774674b87e766cf147a2eb2a09ea56aa36",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5173,
+      "sha256": "f99a9789ebfaab587d5208104d72cf977140d2c4c43345f9c2b980df3c0c3d68",
+      "error": null
+    }
+  ]
+}

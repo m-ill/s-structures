@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {evaluateProvidedKdsShear} from '../src/design/rc/kdsShear.js';
+import {shearSpacingProposal} from '../src/compute/product/shearSpacingProposal.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+const member={id:'AB',n1:'A',n2:'B',secId:'rc3060',matId:'concrete'};
+const d={id:'R',version:1,start:0,end:.5,barMaterialId:'steel@1',concreteWeight:'normal',shearStandard:'KDS-142022-2022',shearScope:'ordinary-prismatic-no-opening',stirrupForm:'closed-rectangular-two-leg',stirrups:{legs:2,diameter:.01,spacing:.4,area:71.33e-6},bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,area:.0003})))};
+const details=[d,{...d,id:'R2',start:.5,end:1}],tuples=[{x:.3,N:0,Vy:110,Vz:0,T:0},{x:2.7,N:0,Vy:90,Vz:0,T:0}];
+const evaluate=ds=>Object.entries(evaluateProvidedKdsShear(model,member,ds,tuples)).map(([checkId,row])=>({...row,id:checkId,checkId,entityId:'AB'}));
+const rows=evaluate(details),check=rows.find(c=>c.checkId==='rc-shear-y');
+assert.equal(check.spacingRepairRegions.length,2);
+assert.ok(check.spacingRepairRegions.every(r=>r.needsRepair&&r.evaluatedLocations===1));
+const commands=details.map(r=>({id:r.id,version:1,memberId:'AB',stirrupSpacing:400}));
+const proposal=shearSpacingProposal(commands,rows);assert.equal(proposal.ok,true);
+assert.equal(proposal.regionConstraints.length,2);
+const repaired=evaluate(details.map(r=>({...r,stirrups:{...r.stirrups,spacing:proposal.regionConstraints.find(c=>c.detailId===r.id).spacings[0]/1000}})));
+assert.equal(repaired.find(c=>c.checkId==='rc-shear-y').status,'OK');
+assert.equal(shearSpacingProposal(commands,[{...rows[0],spacingRepairRegions:[{...check.spacingRepairRegions[0],blocked:true}]}]).ok,false);
+console.log('PASS all evaluated shear regions contribute bounds and repair in one candidate');
+
+const dense=evaluateProvidedKdsShear(model,member,details,Array.from({length:1000},(_,i)=>tuples[i%2]))['rc-shear-y'];
+assert.equal(dense.spacingRepairRegions.length,2);assert.equal(dense.spacingRepairRegions.reduce((n,r)=>n+r.evaluatedLocations,0),1000);
+const reversed=evaluateProvidedKdsShear(model,member,details,[...tuples].reverse())['rc-shear-y'];
+assert.deepEqual([...reversed.spacingRepairRegions].sort((a,b)=>a.detailId.localeCompare(b.detailId)),[...check.spacingRepairRegions].sort((a,b)=>a.detailId.localeCompare(b.detailId)));
+const many=Array.from({length:33},(_,i)=>({...d,id:`D${i}`,start:i/33,end:(i+1)/33}));
+const manyTuples=many.map((r,i)=>({...tuples[0],x:(i+.5)*3/33}));
+const capped=evaluateProvidedKdsShear(model,member,many,[...manyTuples,...manyTuples.slice(0,1)])['rc-shear-y'];
+assert.equal(capped.spacingRepairRegions.length,32);assert.equal(capped.spacingRepairRegionsTruncated,true);

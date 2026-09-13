@@ -1,0 +1,17 @@
+{
+  "sourceHash": "9c3492661a0431e37902cca4571606efe8cd2bd173bca4667aa823d25bb7998c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:57:27.097Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-piecewise-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 130,
+      "sha256": "37255c7cc257338812d754ab0207199d85203384c906e9078a5dd9504cad635d",
+      "error": null
+    }
+  ]
+}

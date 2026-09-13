@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f369c567cf5629616fdaf38165cf355de069d7bb3f32602f74b23d3953a3d563",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:53:37.658Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1096,
+      "sha256": "9fb66be7b1007ccbd95b1474866befcd19d861a2d5ad880543364d090e8b02eb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 150,
+      "sha256": "58c52ddb461c3ec03d389a1dca9839243692a1d6120fa9d9b8ed15854928e6e6",
+      "error": null
+    }
+  ]
+}

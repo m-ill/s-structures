@@ -1,0 +1,25 @@
+{
+  "sourceHash": "68907add154cd4c27d93a15427c0b79e7c254f9b564f01139bddaaeb16a2dd78",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:43:03.205Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "710aa5f67eb969ae7acc8fe6cbb2c04a519a208fc3f2c3b3839cb6f38b4faee4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5483,
+      "sha256": "87a18bdbc83a3befac352bf1b62e4967dbb02c3cd0585a9c2cd1942b4b76e1e7",
+      "error": null
+    }
+  ]
+}

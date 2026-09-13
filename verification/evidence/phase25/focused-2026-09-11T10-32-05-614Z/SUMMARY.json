@@ -1,0 +1,41 @@
+{
+  "sourceHash": "556b31fba2a08099ca3426d02873bfea4ab50e02d3e625c6b7b946b4bc9a2d73",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:32:15.296Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 629,
+      "sha256": "b2d54459acfb177c90b40a0cebf5fbc84ce0da68b6d45b8539d6807d148d3332",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-evaluation-cancel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1536,
+      "sha256": "5abd659818c603d8fd976cd85f1551534bf011e7718f8ffb2c0128863f8986fa",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2184,
+      "sha256": "337cb4949cc182b4cc65a9d531514811e9b623fdf7b629a3653f96058e90212a",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5103,
+      "sha256": "9c1e6cf16676f1cc1dfb8cf2f0e1aa80410bed2e6ce0292e1e4f151a52f9a1d1",
+      "error": null
+    }
+  ]
+}

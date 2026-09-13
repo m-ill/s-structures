@@ -1,0 +1,25 @@
+{
+  "sourceHash": "af48798aa341ca17330b0a42be95ba4a9b30cf59a1539ed672bd928e018285dd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:33:21.071Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-webmcp-frame-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2659,
+      "sha256": "9392616497661e0e86b144b42bb8e742c62ee8a265f9dcec682377958a8b5bd4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11911,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

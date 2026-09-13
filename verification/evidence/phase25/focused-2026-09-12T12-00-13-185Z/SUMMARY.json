@@ -1,0 +1,17 @@
+{
+  "sourceHash": "5876247fc8a5019761030643543f7bb6040b73bf5dec600074d0a88fd7427ffb",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:00:13.509Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footprint-proposal.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 56,
+      "sha256": "99051a4023c644bf0dc222a38fdb6553f061faf3591a9256f39afb76f994d0bf",
+      "error": null
+    }
+  ]
+}

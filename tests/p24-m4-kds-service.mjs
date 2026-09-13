@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {effectiveInertia,integrateCurvature,longTermMultiplier} from '../src/design/rc/kdsServiceability.js';
+import {createModel} from '../src/core/model.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {evaluatePracticalDesign} from '../src/design/evaluation/practicalEvaluation.js';
+assert.equal(effectiveInertia({Ig:8,Icr:2,Mcr:10,Ma:5}),8);
+assert.equal(effectiveInertia({Ig:8,Icr:2,Mcr:10,Ma:20}),2.75);
+assert.equal(longTermMultiplier(12,0.01),1.4/1.5);
+// Constant curvature 2 over length 3 gives chord-relative midpoint -k L²/8.
+const chord=integrateCurvature([0,1.5,3],[2,2,2],'chord');
+assert.equal(chord.displacements[1],-2.25);
+assert.equal(integrateCurvature([0,3],[2,2],'chord').maxAbs,2.25,'interior extrema cannot be missed between stations');
+assert.equal(integrateCurvature([0,3],[2,2],'cantilever-start').displacements[1],9);
+assert.throws(()=>integrateCurvature([0,0],[1,1],'chord'));
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+model.members=[{id:'AB',n1:'A',n2:'B',type:'frame',matId:'concrete',secId:'rc3060'}];
+model.loadCases=[{id:'L',type:'live'},{id:'D',type:'dead'}];model.loadCombinations=[{id:'S-L',type:'service',factors:{L:1}},{id:'S-T',type:'service',factors:{L:1,D:1}}];
+stagePracticalDesignInput(model,{type:'reinforcement-record',id:'R',name:'service',version:1,memberId:'AB',start:0,end:1,cover:0.04,barMaterialId:'steel@1',bars:[{y:-0.2,z:0,diameter:20},{y:0.2,z:0,diameter:20}],sourceNote:'synthetic',concreteWeight:'normal',serviceabilityMode:'instant-live-curvature',serviceBoundary:'chord',serviceDeflectionLimit:'live-floor',serviceCrackingComboId:'S-T',nonstructuralDamageSensitive:false},[]);
+const set=(id,m)=>({ok:true,anyOk:true,combo:{id},memberResults:{AB:{xs:[0,1.5,3],N:[0,0,0],Vy:[0,0,0],Vz:[0,0,0],T:[0,0,0],My:[0,0,0],Mz:[0,m,0]}}});
+const live=set('S-L',3),total=set('S-T',12);
+const run=sets=>evaluatePracticalDesign(model,{byCombo:sets},{resultSet:live}).checks.find(x=>x.checkId==='rc-deflection');
+assert.equal(run({'S-L':live}).reason,'TOTAL_SERVICE_CRACKING_RESULT_REQUIRED');
+assert.equal(run({'S-L':live}).codeBasis.status,'NOT_ESTABLISHED');
+const deflection=run({'S-L':live,'S-T':total});
+assert.equal(deflection.status,'OK');assert.ok(deflection.demand>0);assert.equal(deflection.codeBasis.status,'CLAUSE_APPLIED');
+const totalDirect=set('S-T',120),direct=evaluatePracticalDesign(model,{byCombo:{'S-L':live,'S-T':total},pDelta:{method:'direct',ok:true,byCombo:{'S-L':{ok:true,converged:true,result:live},'S-T':{ok:true,converged:true,result:totalDirect}}}},{resultSet:live}).checks.find(x=>x.checkId==='rc-deflection');
+assert.equal(direct.demand,run({'S-L':live,'S-T':totalDirect}).demand,'cracking stiffness must use selected Direct total-service result');
+console.log('PASS KDS effective inertia, sustained-load multiplier and independent curvature integration');

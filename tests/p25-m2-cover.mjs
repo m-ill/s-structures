@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {kdsRectangularCover} from '../src/design/rc/kdsCover.js';
+const input={B:0.3,H:0.6,fck:24,cover:0.04,stirrupDiameter:0.01,bars:[{y:0.2,z:0.09,diameter:0.02}],exposure:'earth-weather',chloride:'none',fireCover:0,abrasionCover:0};
+assert.equal(kdsRectangularCover(input).status,'OK','longitudinal clear cover is 50mm while ties have 40mm');
+assert.equal(kdsRectangularCover({...input,cover:0.039}).status,'NG');
+assert.equal(kdsRectangularCover({...input,exposure:'indoor',fck:40,cover:0.03}).status,'OK');
+assert.equal(kdsRectangularCover({...input,chloride:'ES4'}).status,'NG');
+assert.equal(kdsRectangularCover({...input,exposure:undefined}).status,'NOT_CHECKED');
+assert.equal(kdsRectangularCover({...input,fireCover:0.09}).status,'NOT_CHECKED');
+assert.equal(kdsRectangularCover({...input,fireCover:0.09,externalReference:'fire design reference'}).status,'NG');
+assert.equal(kdsRectangularCover({...input,bars:[{y:0.2,z:0.09,diameter:0.018}]}).status,'NOT_CHECKED','unknown standard diameter class is not guessed');
+console.log('PASS actual tie/main cover, indoor high strength, chloride, external conditions and unknown diameter');

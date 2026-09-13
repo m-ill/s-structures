@@ -1,0 +1,33 @@
+{
+  "sourceHash": "9b928dc7dce3907917b808e6aded792d8b555e3311e99291efc3081433e0f39c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:48:07.214Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-artifact-controls.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 77,
+      "sha256": "72c0d584952ec96f8963af2c5c627fb1fef5086fa720a5e0251e75a5c74617c9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-candidate-application-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 511,
+      "sha256": "0a03fb6597208019c73c5671b92ce9640f3203479a44270cadbfd22c821d8263",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1216,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

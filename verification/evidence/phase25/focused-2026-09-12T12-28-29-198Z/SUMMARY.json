@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3a0cde17bee8fefc810f14d58c03b8c2701f5d8efb968fc365df507e234908dd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:28:29.535Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-evaluation-memory.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "81ef94b9bce5dab0897f71b08534d3791888646adc9cb6c3f34b377d6f848411",
+      "error": null
+    }
+  ]
+}

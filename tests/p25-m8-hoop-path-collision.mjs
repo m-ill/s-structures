@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import {outerHoopPerimeter} from '../src/design/rc/outerHoopPerimeter.js';
+import {outerHoopLongitudinalPaths} from '../src/design/rc/outerHoopLongitudinalPaths.js';
+const detail={bars:[{diameter:.02,z:0}]};
+const prepared={outerHoop:outerHoopPerimeter({B:.3,H:.6,cover:.04,diameter:.01,insideRadius:.025}),stirrupDistribution:{status:'OK',explicitEnds:true,count:1,first:.5,last:.5,spacing:.2},bars:[{cutLength:.4,points:[[.5,0],[.5,.4]],segmentErrors:[0]}]};
+const collision=outerHoopLongitudinalPaths(detail,prepared);
+assert.equal(collision.status,'NG');assert.equal(collision.checks[0].witness.plane,.5);
+assert.equal(collision.checks[0].tie,'S1');assert.equal(collision.fabricationApproved,false);
+const clear=structuredClone(prepared);clear.bars[0].points=[[.5,0],[.5,.1]];
+assert.equal(outerHoopLongitudinalPaths(detail,clear).status,'OK');
+const missing=structuredClone(prepared);delete missing.bars[0].cutLength;
+assert.equal(outerHoopLongitudinalPaths(detail,missing).status,'NOT_CHECKED');
+console.log('PASS outer-hoop actual longitudinal path crossing, clearance and missing fabrication path');
+
+const {createModel}=await import('../src/core/model.js');
+const {evaluateProvidedKdsConfinement}=await import('../src/design/rc/kdsConfinement.js');
+const model=createModel(),member={id:'AB',n1:'A',n2:'B',secId:'rc3060'};
+model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:1,y:0,z:0}];
+const d={...detail,id:'R',version:1,start:0,end:1,confinementStandard:'KDS-142050-2022',memberRole:'compression-member',reinforcementForm:'single-deformed',stirrupForm:'closed-rectangular-two-leg'};
+const output=evaluateProvidedKdsConfinement(model,member,[d],[{x:.5}],{preparedDetails:{reinforcement:{'R@1':{outerHoop:{...prepared.outerHoop,actualPathAssembly:collision}}}}});
+assert.equal(output['rc-confinement'].status,'NG');assert.equal(output['rc-confinement'].reason,'OUTER_HOOP_LONGITUDINAL_COLLISION');assert.equal(output['rc-confinement'].ratio,null);
+
+const angle=.37,contactY=.225+.015*Math.cos(angle),contactZ=.075+.015*Math.sin(angle);
+const contactDetail={bars:[{diameter:.02,z:contactZ}]};
+const contact=structuredClone(prepared);contact.bars[0]={cutLength:1,points:[[0,contactY],[1,contactY]],segmentErrors:[0]};
+const exact=outerHoopLongitudinalPaths(contactDetail,contact);
+assert.equal(exact.status,'OK','exact tangent contact is not indeterminate');
+assert.ok(Math.abs(exact.checks[0].centerlineLowerBound-.015)<1e-12);
+assert.equal(exact.checks[0].centerlineLowerBound,exact.checks[0].centerlineUpperBound);
+assert.ok(exact.segmentPairs<=1);
+const overlap=structuredClone(contact);overlap.bars[0].points.forEach(p=>p[1]+=.001);
+assert.equal(outerHoopLongitudinalPaths(contactDetail,overlap).status,'NG');
+const separated=structuredClone(contact);separated.bars[0].points=[[.6,contactY],[.8,contactY]];
+const apart=outerHoopLongitudinalPaths(contactDetail,separated);
+assert.ok(Math.abs(apart.checks[0].centerlineLowerBound-Math.hypot(.1,.015))<1e-12);
+console.log('PASS exact rounded corner tangent contact, real overlap and axial separation');
+
+const dense=structuredClone(contact);dense.stirrupDistribution={status:'OK',explicitEnds:true,count:1000000,first:.5,last:.5+999999*.2,spacing:.2};
+const denseResult=outerHoopLongitudinalPaths(contactDetail,dense);
+assert.equal(denseResult.status,'OK');assert.equal(denseResult.segmentPairs,1);

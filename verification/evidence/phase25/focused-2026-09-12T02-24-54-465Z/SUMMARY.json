@@ -1,0 +1,41 @@
+{
+  "sourceHash": "35634c0a08654606997cb5cff41631dae884f767ab68507a6e13b5b03326e009",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:24:59.149Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-shear-grid-optimum.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 93,
+      "sha256": "ba82e758faa893670b488b309235cdbd49b7a7c0e6464458a1e6505148e0ec74",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-regional-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 324,
+      "sha256": "a8809a4e847c9f01e0ad37121ec412ad475a2f397ff5dc71991a2fa3a292df2b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3896,
+      "sha256": "3eab303ed96a51e78aca04c47d39ae3b3d394bfaf265f932c5042f442a43b461",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-shear-spacing-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 81,
+      "sha256": "d8baea5b85520c600a6271ea870be7f3cb3f6a64ab272096fc2db13ab2e6192c",
+      "error": null
+    }
+  ]
+}

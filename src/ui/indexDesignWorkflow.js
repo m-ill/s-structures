@@ -1,3 +1,4 @@
+import {selectRcMemberResults} from '../results/designResultSelection.js';
 export const INDEX_DESIGN_WORKFLOW_VERSION = 'm21-design-workflow';
 
 export function buildDesignWorkflow(model, analysis) {
@@ -53,8 +54,9 @@ export function renderDesignWorkflowMarkup(workflow) {
 function collectDesignRows(analysis) {
   return Object.values({
     ...(analysis?.design?.steel?.memberResults || {}),
-    ...(analysis?.design?.concrete?.memberResults || {}),
+    ...(selectRcMemberResults(analysis)),
   }).map((item) => ({
+    incomplete:item.incomplete===true,
     memberId: item.memberId || '-',
     type: item.type || inferType(item),
     status: normalizeStatus(item.status || (item.ok ? 'OK' : 'NG')),
@@ -71,6 +73,7 @@ function countStatuses(rows) {
     else if (row.status === 'WARN') counts.warn += 1;
     else if (row.status === 'NG') counts.ng += 1;
     else counts.unchecked += 1;
+    if(row.incomplete&&['OK','NG','WARN'].includes(row.status))counts.unchecked+=1;
   }
   return counts;
 }

@@ -1,0 +1,41 @@
+{
+  "sourceHash": "5e2f42c35fe634b632dd0c913283ea0790600c8cbe425bfc14c624d7d4279ee7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:30:59.457Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-finalizer-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 186,
+      "sha256": "70993114ba2ca53bdaeff100dde9747bce3672dec898c22c2933dc64be3b2f1d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 249,
+      "sha256": "13e7b49f159201007198ec8887c8e66719447fe6ef05dc6ffc42b918135777de",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2485,
+      "sha256": "0fcaf36bb6ea56ee7d66d6d348ac28a57f68b921fdbd99295c87aca6d7a6217e",
+      "error": null
+    },
+    {
+      "file": "tests/p19-m3-design-workflow.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 6043,
+      "sha256": "d9b838b2114b5e0f103a52eef717c253d1fed4dcddc521a0ba21707d2304c8eb",
+      "error": null
+    }
+  ]
+}

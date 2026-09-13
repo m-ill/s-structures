@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {kdsTorsionThreshold} from '../src/design/rc/kdsTorsion.js';
+const x={B:.3,H:.6,fck:25,lambda:1,N:0,T:5};
+assert.equal(kdsTorsionThreshold(x).threshold,5.625);
+assert.equal(kdsTorsionThreshold(x).status,'OK');
+assert.equal(kdsTorsionThreshold({...x,T:5.625}).status,'NOT_CHECKED');
+assert.ok(kdsTorsionThreshold({...x,N:-100}).threshold>5.625);
+assert.ok(kdsTorsionThreshold({...x,N:100}).threshold<5.625);
+assert.equal(kdsTorsionThreshold({...x,N:1000}).reason,'AXIAL_TENSION_OUTSIDE_TORSION_NEGLECT_SCOPE');
+console.log('PASS KDS strict torsion threshold and solver tension-positive sign');

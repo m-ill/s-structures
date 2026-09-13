@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e2ab072aaa11ba0ad527a55c397a487741c5cf717416a34456a8d4298f53d3d9",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:14:40.602Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-coupled-policy.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7823,
+      "sha256": "39297e87134449dfdaeebf6578b5ffeab4c4386beea8a8aa8526203656d9ed15",
+      "error": null
+    }
+  ]
+}

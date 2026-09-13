@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c4448adfe9235677f2a1a01113a31c3a33078fc74cbf3de678252ad68da5784f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:43:02.803Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 4430,
+      "sha256": "d0801f30af32bac059cf622091de3aa518ea9ecd3493fa6146fe41c41bf8b833",
+      "error": null
+    }
+  ]
+}

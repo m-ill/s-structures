@@ -1,0 +1,25 @@
+{
+  "sourceHash": "90ca1985d643a15226ee9e5a19a3d0b958a8e6c1db956ebc728191c3f66b8793",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:03:39.359Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-mixed-anchorage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3013,
+      "sha256": "e2d76ad0e22cd6d54e8c70c74c34fc3804e6e032fc3e7a32468ec45bb040dde5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-through-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3517,
+      "sha256": "2ddf90bcff2e8cbc7c775327c0b4370239717ef09e23db96f365a4c0a3a56e0e",
+      "error": null
+    }
+  ]
+}

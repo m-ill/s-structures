@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {runSteelDesign} from '../src/design/steel.js';
+const model=createModel();
+model.materials.push({id:'MASONRY',version:1,kind:'masonry',elastic:{E:8000,G:3200},strength:{masonry:{fm:10}}},{id:'UNKNOWN',version:1,E:8000,G:3200,source:{note:'Unclassified synthetic material'}});
+model.members=['MASONRY','UNKNOWN','steel'].map((matId,i)=>({id:`M${i}`,type:'frame',n1:'A',n2:'B',secId:'h300',matId}));
+const memberResults=Object.fromEntries(model.members.map(m=>[m.id,{memberId:m.id,L:3,ax:{x:[0,0,1]},Nmax:1,Vymax:0,Vzmax:0,Mymax:0,Mzmax:0,dmaxM:0,governing:{utilization:{comboId:'TEST',x:0}}}]));
+const result=runSteelDesign(model,{envelope:{combo:{id:'TEST'},memberResults}});
+assert.equal(result.summary.checkedMembers,1,'H geometry cannot classify masonry/unknown material as steel');
+assert.equal(result.memberResults.M0,undefined);
+assert.equal(result.memberResults.M1,undefined);
+assert.ok(result.memberResults.M2);
+console.log('PASS T01 explicit material routing; no section-shape fallback to steel');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d909f127f5f2c5aad4b6c99406ced587bf83225171e7b41d44deca17bbf1779e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:18:25.564Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-direct-refinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 983,
+      "sha256": "60da0206bb160772305d383d6da5f11680abdac0c2504ba6baf0c5835dd7a10d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5468,
+      "sha256": "d4f1969ce6587e622a191f23067e744720909c5bd40cbaca1c593fe53a834fa3",
+      "error": null
+    }
+  ]
+}

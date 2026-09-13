@@ -1,0 +1,23 @@
+{
+  "scope": "M7 output lifetime and M9 installed download UI only",
+  "numericalRulesChanged": false,
+  "wholeMilestoneComplete": false,
+  "files": {
+    "src/report/phase24/drawingExportService.js": "873ea974424efa77885572fc2eea97946ce8959a98319c4b13429a476547ed64",
+    "src/ui/drawingDownloadResources.js": "242d14fb633637eb92ad70591450d30fe5d79e103ca800ddf87f0481bf23953d",
+    "src/ui/indexPracticalDesign.js": "a33c2cd9346c7c407fb58099d7566a27e7f2f5183e91f655ee588e751c441660",
+    "tests/p25-m7-export-lifetime.mjs": "85e58d696c85e6a4d02a3458174b6cfcbd616c748f3b3ea6ce104c39340aa2cf",
+    "tests/p25-m7-drawing-download-resources.mjs": "8af16b91bf6c28026e73753a1a8409d7f2c9d1713e05c3cb3c362a41d3e72a25",
+    "tests/p25-m9-pdf-bundle-ui.mjs": "203e707435a56a854b5e868c259a662e89d6b1787467075ae7cf96faf9e759fe"
+  },
+  "evidence": [
+    "focused-2026-09-13T00-00-55-572Z",
+    "focused-2026-09-13T00-01-58-446Z",
+    "focused-2026-09-13T00-05-50-385Z"
+  ],
+  "limitations": [
+    "managed data estimate, not heap",
+    "installed fake DOM, not browser timing",
+    "full milestone audit remains"
+  ]
+}

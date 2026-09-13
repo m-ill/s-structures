@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {resolveMemberTaper} from '../src/solver/taperedMember.js';
+import {integratedStageExtrema} from '../src/compute/product/rcIntegratedExtrema.js';
+const L=4,E=2e8,G=8e7,I=.0004,q=3,base={id:'s',A:.02,Ay:.016,Az:.016,Iy:I,Iz:I,J:.00005};
+const taper=resolveMemberTaper({}, {secId:'s',taper:{profile:'segments',segments:[{start:0,end:1,sectionId:'s'}]}},base,{section:()=>base});
+// Simply supported UDL: M=q*x*(L-x)/2; independent elastic deflection oracle.
+const dl=[0,0,0,0,0,-q*L**3/(24*E*I),0,0,0,0,0,q*L**3/(24*E*I)];
+const response={memberId:'AB',length:L,field:{L,dl,endForces:[0,q*L/2,0,0,0,0,0,0,0,0,0,0],spanLoads:[{type:'distributed-linear',a:0,b:L,q1:[0,-q,0],q2:[0,-q,0]}],material:{E,G},taper,shear:false}};
+const r=integratedStageExtrema([{response,factor:1}],{boundary:'chord'});
+assert.ok(Math.abs(r.v.x-L/2)<1e-8);assert.ok(Math.abs(r.v.value+5*q*L**4/(384*E*I))<1e-11);assert.equal(r.globalExtremaEvaluated,true);assert.equal(r.designTransferAllowed,false);
+const triangular=structuredClone(response);
+triangular.field.endForces[1]=q*L/6;
+triangular.field.spanLoads[0].q1=[0,0,0];
+triangular.field.dl[5]=-7*q*L**3/(360*E*I);triangular.field.dl[11]=8*q*L**3/(360*E*I);
+const t=Math.sqrt(1-Math.sqrt(8/15)),x=L*t;
+const tri=integratedStageExtrema([{response:triangular,factor:1}],{boundary:'chord'});
+const expected=q/(E*I)*(L*x**3/36-x**5/(120*L)-7*L**3*x/360);
+assert.ok(Math.abs(tri.v.x-x)<1e-8);assert.ok(Math.abs(tri.v.value-expected)<1e-11);
+const cancelled=integratedStageExtrema([{response,factor:1},{response,factor:-1}],{boundary:'chord'});assert.equal(cancelled.v.maxAbs,0);
+const bad=structuredClone(response);bad.field.spanLoads.push({type:'foundation-distributed'});assert.throws(()=>integratedStageExtrema([{response:bad,factor:1}]),/SCOPE/);
+console.log('PASS interior UDL maximum and signed-stage cancellation');

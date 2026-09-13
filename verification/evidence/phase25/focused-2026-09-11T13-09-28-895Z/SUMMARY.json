@@ -1,0 +1,41 @@
+{
+  "sourceHash": "caabc32fa0466d875a02d721ac9d0f0e97f3ac4592cb4b751ccf1fd9664216e9",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:09:33.543Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-boundary-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 84,
+      "sha256": "2c62038fa28c080a87dbaa858fed228fde6dcb6a79ebfde12413b2a23e259d74",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-sampling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1754,
+      "sha256": "a61210fdcb4abfbd53f6a8559f4a85f7bbe6733aad3681a9c12c9c020431e4cf",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1793,
+      "sha256": "348df0a19424dd90c05ee455c8aaf859f6f8af207364274558f90fec2131b1f8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-moment-directions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 797,
+      "sha256": "fefeade8992f122efe43aca967f73a0946ad102d9f6f482d070dc60511bf7a4b",
+      "error": null
+    }
+  ]
+}

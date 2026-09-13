@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b757c891b72f6b5ac4f592c1e6310d90285a53ff6c500908336d172c9014c2e0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:49:57.077Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-steel-test-evidence.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1359,
+      "sha256": "9afc558f7ae4423f441b53e31d3ab4a8e2e1b0ba23b53a75e4c1642ac15d9292",
+      "error": null
+    }
+  ]
+}

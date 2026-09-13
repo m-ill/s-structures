@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d4ec6827c2d6ea48f91f8b1a95418130e914a35afc158d5447c12a99d3fa6049",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:06:35.869Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-plan-clearance.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "15d54eefc26a16bec9d8638270db549a4b01e8a6744af27f27513513988d9757",
+      "error": null
+    }
+  ]
+}

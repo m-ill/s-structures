@@ -1,0 +1,33 @@
+{
+  "sourceHash": "bfdf25bd1cdd0e14b4a1017a07d4e5a7af628c2eebc998680c07a845e91c1fda",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:24:51.269Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-lap-section-coupling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "acd565e270680fd86590b244821d8f99151d67ea38b7a55aa3ebed86f91255b4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-lap-element.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "6f45eed6541ea194ef6693094e664e94d79dc2f97da3c4b087d01897ad3294d9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-elastic-transfer.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1114,
+      "sha256": "9b8214f4dcc96527470a727d9bc2f107f3b1cc9cdccd8918d03d878a79812c7f",
+      "error": null
+    }
+  ]
+}

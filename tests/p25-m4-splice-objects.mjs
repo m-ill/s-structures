@@ -1,0 +1,50 @@
+import {compressionLap} from '../src/design/rc/kdsAnchorage.js';
+import {validateModel} from '../src/core/validation.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+import {evaluateMemberSplices,spliceGeometry} from '../src/design/rc/spliceGeometry.js';
+import {validateStoredDesignDetails} from '../src/modeling/designDetailValidation.js';
+assert.ok(Math.abs(compressionLap({db:20,fy:400,fck:24,lambda:1}).requiredMm-576)<1e-10);
+assert.equal(compressionLap({db:20,fy:400,fck:18,lambda:1}).requiredMm,768);
+assert.equal(compressionLap({db:35,fy:400,fck:24,lambda:1}).status,'NOT_CHECKED');
+assert.equal(compressionLap({db:34.9,fy:400,fck:24,lambda:1}).status,'CALCULATED');
+assert.equal(compressionLap({db:40,fy:400,fck:24,lambda:1}).status,'NOT_CHECKED');
+const ctx=designContext(),m=ctx.model;
+m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:4,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+const bars={type:'reinforcement-record',id:'R',name:'test',version:1,memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',sourceNote:'synthetic',bars:[{y:-.2,z:-.08,diameter:20},{y:-.2,z:.08,diameter:20}],reinforcementForm:'single-deformed',concreteWeight:'normal',barPosition:'other',barCoating:'uncoated',lapRequired:true,aggregateMaxSize:.02,stirrupDiameter:10,stirrupSpacing:150,stirrupLegs:2};
+m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'F',type:'nodal',node:'B',dir:'-z',P:1,case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',name:'E',kind:'static',status:'not-run',settings:{comboId:'U',pDeltaMethod:'off'}}];
+const splice={type:'splice-record',id:'SP',name:'test lap',version:1,sourceNote:'synthetic only',memberId:'AB',reinforcementId:'R@1',barIndices:['1','2'],start:.125,end:.875,offsetY:.02,offsetZ:0,spliceType:'tension-B',spliceSystem:'ordinary-no-seismic-detail'};
+try{
+ const debug=structuredClone(m);for(const c of [bars,splice])stagePracticalDesignInput(debug,c,[]);assert.equal(validateModel(debug).ok,true,JSON.stringify(validateModel(debug)));
+ const preview=await ctx.call('preview_design_changes',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,requestId:'sp-preview',commands:[bars,splice]});
+ assert.equal((await ctx.call('apply_design_changes',{handle:preview.handle,requestId:'sp-apply'})).ok,true);
+ const stored=(await ctx.call('get_design_records',{channel:'splices',id:'SP'})).rows[0];
+ assert.deepEqual(validateStoredDesignDetails(m),[]);
+ const geometry=spliceGeometry(m,stored);assert.equal(geometry.status,'OK');assert.equal(geometry.length,3);assert.equal(geometry.bars.length,2);
+ assert.equal(evaluateMemberSplices(m,m.members[0]).status,'OK');
+ const crossed=structuredClone(m);crossed.designDetails.splices=[{...stored,barIndices:['1'],offsetZ:.08},{...stored,id:'SP2',barIndices:['2'],offsetZ:-.08}];
+ assert.equal(spliceGeometry(crossed,crossed.designDetails.splices[0]).reason,'SPLICE_BAR_OVERLAP');
+ crossed.designDetails.splices[0].end=.4;crossed.designDetails.splices[1].start=.4;assert.equal(spliceGeometry(crossed,crossed.designDetails.splices[0]).status,'OK');
+ const compression=structuredClone(m);compression.designDetails.splices[0].spliceType='compression-with-tension-envelope';assert.equal(evaluateMemberSplices(compression,compression.members[0]).status,'OK');
+ const short=structuredClone(m);short.designDetails.splices[0].end=.14;assert.equal(evaluateMemberSplices(short,short.members[0]).status,'NG');
+ const mixed=structuredClone(m);mixed.designDetails.splices=[{...stored,id:'SHORT',barIndices:['1'],end:.14},{...stored,id:'UNPROVEN-A',barIndices:['2'],start:.5,end:.6,spliceType:'tension-A'}];
+ for(const splices of [mixed.designDetails.splices,[...mixed.designDetails.splices].reverse()]){mixed.designDetails.splices=splices;const result=evaluateMemberSplices(mixed,mixed.members[0]);assert.equal(result.status,'NG');assert.equal(result.locationCoverage.counts.NG,1);assert.equal(result.locationCoverage.counts.NOT_CHECKED,1);assert.equal(result.methodReviewRequired,true);assert.ok(result.checks.some(c=>c.spliceId==='SHORT'&&c.status==='NG'));assert.ok(result.checks.some(c=>c.spliceId==='UNPROVEN-A'&&c.status==='NOT_CHECKED'));}
+ const mixedBars=structuredClone(m);mixedBars.designDetails.reinforcement[0].bars[1].diameter=.04;mixedBars.designDetails.reinforcement[0].bars[1].area=Math.PI*.04**2/4;mixedBars.designDetails.splices[0].offsetY=.04;mixedBars.designDetails.splices[0].end=.14;
+ const perBar=evaluateMemberSplices(mixedBars,mixedBars.members[0]);assert.equal(perBar.status,'NG');assert.equal(perBar.locationCoverage.counts.NG,1);assert.equal(perBar.locationCoverage.counts.NOT_CHECKED,1);assert.equal(perBar.locationCoverage.complete,false);assert.equal(perBar.checks[1].reason,'LAP_SIZE_ABOVE_D35_UNSUPPORTED');
+ const stale=structuredClone(m);stale.designDetails.reinforcement.push({...stale.designDetails.reinforcement[0],version:2});assert.equal(evaluateMemberSplices(stale,stale.members[0]).reason,'SPLICE_REINFORCEMENT_VERSION_STALE');
+ const outside=structuredClone(m);outside.designDetails.splices[0].offsetY=-.2;assert.ok(validateStoredDesignDetails(outside).length);
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'splice-run'});
+ const evaluated=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const snapshot=ctx.bridge.getPracticalDesignSnapshot(evaluated.evaluationId),check=snapshot.checks.find(x=>x.checkId==='rc-splices');assert.equal(check.status,'OK');assert.equal(check.codeBasis.status,'CLAUSE_APPLIED');
+ const drawings=buildDetailDrawings(snapshot);assert.equal(drawings.quantities.filter(x=>x.kind==='lap-additional-bar').length,2);assert.ok(drawings.quantities.filter(x=>x.kind==='longitudinal').every(x=>x.cutLength===null));
+ const duplicate=structuredClone(m);duplicate.designDetails.splices.push({...stored,id:'SP2'});assert.ok(validateStoredDesignDetails(duplicate).some(x=>x.message.includes('OVERLAPPING_SPLICE')));
+ const plan=await ctx.call('plan_design_candidates',{evaluationId:evaluated.evaluationId,memberId:'AB',spacings:[100],sectionCandidates:[{B:400,H:600}],regionConstraints:[{detailId:'R',barsPerFace:[3],layersPerFace:[1]}],maxCandidates:1,maxMillis:10000});
+ const started=await ctx.call('start_design_candidates',{planId:plan.planId,requestId:'splice-candidate'});let job;for(let i=0;i<300;i++){job=await ctx.call('get_design_candidates',{jobId:started.jobId});if(job.status!=='running')break;await new Promise(r=>setTimeout(r,10));}
+ assert.ok(job.best,JSON.stringify(job));
+ const receipt=await ctx.call('apply_design_candidate_and_review',{jobId:started.jobId,candidateId:job.best.candidateId,requestId:'splice-candidate-apply'});assert.equal(receipt.ok,true);assert.equal(receipt.followUp.status,'completed');
+ const after=ctx.bridge.getPracticalDesignSnapshot(receipt.followUp.evaluationId).checks.find(c=>c.checkId==='rc-splices');assert.equal(after.status,'OK',JSON.stringify(after));
+ const updated=(await ctx.call('get_design_records',{channel:'splices',id:'SP'})).rows[0];assert.equal(updated.version,2);assert.equal(updated.reinforcementId,'R@2');assert.deepEqual(updated.barIndices,['1','2','3']);assert.deepEqual(validateStoredDesignDetails(m),[]);
+ console.log('PASS explicit splice WebMCP transaction, geometry, KDS B lap deficiency, reference staleness and persisted validation');
+}finally{await ctx.dispose();}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "22614a8e4bb0bd97b97dabcec1558e739ce340e6b8abe2b2c351136757f3ec69",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T08:34:38.826Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-webmcp-catalog-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 12181,
+      "sha256": "d0fed60afc77be0cac57679778013d036e176a9d8c61357c1678c2101d5bf6fd",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+PASS T09 explicit-law section integration, independent axial resultant, biaxial/sign symmetry and axial equilibrium

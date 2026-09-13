@@ -1,0 +1,33 @@
+{
+  "sourceHash": "c2408df66fcfdea9c5e4367cffcb28e311f826c87cef672ec38755e10982b814",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T22:23:13.725Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-crack-width.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "48d46f255cb8c32133a95649134d4ef13c254d8e7316a77c46a10309a16cdec2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-provided-crack-width.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2041,
+      "sha256": "74b57e3e47c30a0bb8e9d502076aeb703974a38b9baf43a8be9e594a9b63240e",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m3-code-basis.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 225,
+      "sha256": "65d7e367a1e02bbb3bb992d3b33484021de7dd5ab5bbd92c573c25476e3d9824",
+      "error": null
+    }
+  ]
+}

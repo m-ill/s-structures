@@ -1,0 +1,1 @@
+PASS T06/T07 concurrent tuples, required checks, missing geometry and unique check identities

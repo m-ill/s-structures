@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6fa3cdf73514830ec67a295062ba39d0edaf0d123e440f05f8fbc6ccc7088941",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:11:54.797Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-continuous-moment-comparison.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 79,
+      "sha256": "753539101976205daf3643fe336e20311d39e7a2de03577d8a90bac781af1118",
+      "error": null
+    }
+  ]
+}

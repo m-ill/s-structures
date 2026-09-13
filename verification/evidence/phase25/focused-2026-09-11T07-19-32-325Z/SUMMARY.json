@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-11T07:19:38.874Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-crack-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "acce85f04f819202299a4282291174c7f0b1ec7adef87ce883ded4e2215cad2d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-torsion-threshold.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 71,
+      "sha256": "60e2800351ffb97a809b5a2434117f9ce4443f95425285a9c5c4ba50040cb032",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 778,
+      "sha256": "fd97b6c13f71d3b32abc10d64de3de7e9dfead69a9eaa0434501cfe9a8c285bd",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-contracts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 194,
+      "sha256": "b2e2f5b31ff933fdee2c3892d4d50dc67b2e25e6203fe1f859f28d315ea5f4ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2180,
+      "sha256": "8d19d979644763e6b035434a3cd3754e485e0df88d43b2ab298581bd8a681427",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-apply-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3247,
+      "sha256": "96fa286585240a49dfd0d7d3a98124e666dd2bf2cbcc2ada275f6a08295a7235",
+      "error": null
+    }
+  ]
+}

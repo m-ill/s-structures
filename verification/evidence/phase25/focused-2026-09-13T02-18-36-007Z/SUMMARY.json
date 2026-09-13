@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f08991e8b0f1ddfadd67ec6c0ae7f93619ec6783df20a20749ae961e2f9f8260",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:18:41.334Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-apply-retry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5086,
+      "sha256": "8b5d998a2657a88be59b0ee3642b5bacc69ef62001c449729642440d9ba1deca",
+      "error": null
+    }
+  ]
+}

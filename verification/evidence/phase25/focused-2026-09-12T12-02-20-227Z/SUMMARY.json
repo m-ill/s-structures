@@ -1,0 +1,25 @@
+{
+  "sourceHash": "763ae0172b80c11b95ba7abaa74e63a27d8f1d3b9cce5a23d91aec397f65034c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:02:27.650Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-footprint-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "bacf84070d8fabe9fccb7753e1ce2ae952b41509f4ef85845e36339e180e7672",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-differential-settlement.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 7109,
+      "sha256": "8a7dc8e8ebcc4106613d88fe8256549a73b61b36f25caaaee64ccd497d805d2a",
+      "error": null
+    }
+  ]
+}

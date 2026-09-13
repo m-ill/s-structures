@@ -1,0 +1,50 @@
+[
+  {
+    "code": "KDS 41 10 05",
+    "url": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+    "request": {
+      "docCode": "KDS 41 10 05"
+    },
+    "sha256": "84fcd2fb4d08c08850e9a3c1331afcc111ffd97eb8f7ee85a206c3d88f39f9a9",
+    "bytes": 114713,
+    "retrievedAt": "2026-09-11T05:26:48.933306+00:00",
+    "credentialUsed": false,
+    "editionStatus": "METADATA_REVIEW_REQUIRED"
+  },
+  {
+    "code": "KDS 41 12 00",
+    "url": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+    "request": {
+      "docCode": "KDS 41 12 00"
+    },
+    "sha256": "e29c4235d98e98d665b4e329568d6abdef52027f8d4c1fdad580a1ecd2a27851",
+    "bytes": 5829810,
+    "retrievedAt": "2026-09-11T05:26:49.485599+00:00",
+    "credentialUsed": false,
+    "editionStatus": "METADATA_REVIEW_REQUIRED"
+  },
+  {
+    "code": "KDS 41 17 00",
+    "url": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+    "request": {
+      "docCode": "KDS 41 17 00"
+    },
+    "sha256": "0457502080e7e1fe1bdbb88315485f37b2f14d715dc39c3d1a6b18acfa082b76",
+    "bytes": 2422890,
+    "retrievedAt": "2026-09-11T05:26:49.870151+00:00",
+    "credentialUsed": false,
+    "editionStatus": "METADATA_REVIEW_REQUIRED"
+  },
+  {
+    "code": "KDS 11 50 05",
+    "url": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+    "request": {
+      "docCode": "KDS 11 50 05"
+    },
+    "sha256": "72629fdd50f44532c059bc233f02fb3d9e57bd0bbf3ce85094d8fb5fe66ee4aa",
+    "bytes": 73436,
+    "retrievedAt": "2026-09-11T05:26:50.029843+00:00",
+    "credentialUsed": false,
+    "editionStatus": "METADATA_REVIEW_REQUIRED"
+  }
+]

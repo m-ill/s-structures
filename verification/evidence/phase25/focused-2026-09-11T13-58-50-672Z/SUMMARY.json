@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d8a1f36867706c347f4e57b31eed379a8d32b17e3fff6cb8aac42f187c1d1df0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T13:58:50.927Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-bar-layout.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "19960f5a9646aae820d2bbd5a89aa56a49641a94d6d6df042c35c9d9225f2151",
+      "error": null
+    }
+  ]
+}

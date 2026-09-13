@@ -1,0 +1,25 @@
+{
+  "sourceHash": "16a849c9c5a7b2cc1dc3f57f1b96e631db443744b50ba35a7ec9fb767e29bbc0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:52:54.266Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2446,
+      "sha256": "97ab7ed97890e80d62becf22dd1b8bbc35855ace84cb276616a299286a518fcb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 9426,
+      "sha256": "7acd70fed7e0b86ba904efb6bc134d0eeea4eac5599f65e9344a45ddd0bfa8ac",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "sourceHash": "1932b45cc70d2d7eb31a837d210bc2ae4ff65182d1138bab61625306b841ff03",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:22:57.113Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1971,
+      "sha256": "73b977dcf1c90f11bcd189b6b6cd8e4354ae03448f81c0c2271f3a7ee3c2c956",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 196,
+      "sha256": "61e3f690a0b383dc7a21245207eb0e2f6349170bc4964382874064ef723d3cf2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 713,
+      "sha256": "0c48a69c1df9d03a5e300455b8465cd31860d2b7414575945e7a2bc0a7a7bade",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m4-kds-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 197,
+      "sha256": "a0bf45c886b51b6d0012e3a1c97dedffd68eb144e79c829cb29d9d97e5f49da9",
+      "error": null
+    }
+  ]
+}

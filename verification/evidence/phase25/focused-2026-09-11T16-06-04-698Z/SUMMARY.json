@@ -1,0 +1,33 @@
+{
+  "sourceHash": "500f6105ae142757f5a7a2753824a555d8da1890d85fccc98d46e9d752081a30",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:06:05.477Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-hoop-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 229,
+      "sha256": "4877e7b4e88dbf97a0ced164bafbfc548c1e9fc373bd556c57a8101397abe98b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-assembly.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 69,
+      "sha256": "299d4d3ba4288bd34bf8f51cdb734eadc08274e6b862de272a2ce6f3c37f2514",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 229,
+      "sha256": "7732c92202c04804e4a07eaa683d716ee758b40c56ccfcf522bf8079d3123ec4",
+      "error": null
+    }
+  ]
+}

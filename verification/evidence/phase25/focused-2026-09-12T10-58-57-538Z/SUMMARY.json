@@ -1,0 +1,17 @@
+{
+  "sourceHash": "31c66e0e0fe4d8369e8e45c07d9458ca4d8c48d7e4a5cd58cea9885210041b80",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:58:57.826Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-blockers.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 61,
+      "sha256": "31d7622b04681fa80f083d5fb90b050c9b622354465968502700815a7ae07bf1",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7be719bfb287ff196007e3e5d12ac68a685865804761b4869da37045e23aa5cd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:47:28.951Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-integrated-coupled-load.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 83,
+      "sha256": "39593b86fa5a418c8a92f62a7eadddde2d96143d2ee291ff61691c485fec0443",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "39467f13e955c23543e127d1268f1aa87cb477625abb3f7388b3237de7baee6b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:45:50.207Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 322,
+      "sha256": "b3995f750fd1e28c7133f1167f480f2fa21979ad7173a89621db96a12adabd45",
+      "error": null
+    }
+  ]
+}

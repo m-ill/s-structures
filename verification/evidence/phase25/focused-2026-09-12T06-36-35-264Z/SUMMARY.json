@@ -1,0 +1,33 @@
+{
+  "sourceHash": "4bce94173bd1f02a260a5352d297d8c485ab5fa6bcdc2b0d115e0f1bd9229b01",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:36:44.204Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-bar-anchorage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 156,
+      "sha256": "a4daee84d8dfef8684ae1901fde54b87abe0269f30e58890ea1be0393304ccb5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-footing-depth.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 88,
+      "sha256": "c622080789c402e89bcf6ce1a23cad7cd6289d36802870d332180e830c9ce2ab",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-splice-independent-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8334,
+      "sha256": "ddf85585c659de53ac8da0ba06b47421817a723066d31e6861e7c1ff2c309f62",
+      "error": null
+    }
+  ]
+}

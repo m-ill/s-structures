@@ -1,0 +1,33 @@
+{
+  "sourceHash": "9a7aa5a4197123f961225fc17de86d0d10a81d83329f0d8da394d37947a80347",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:18:22.251Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-json-window.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "7834ade3f4e727c5f01a1e7d439ddcb275a9a0f7533ed0ce2dde9437b6091cc1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-bounded-json.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "972d549f1ba88f92b4d087d190ace692b403ebd25d6de00b9e1fd98c5c1dd585",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-query.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2708,
+      "sha256": "498325b95c0f7cf786a2b2bc7418c0200e47fdd600c6b7c801b47666943f2ff6",
+      "error": null
+    }
+  ]
+}

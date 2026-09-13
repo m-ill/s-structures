@@ -1,0 +1,11 @@
+{
+  "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf",
+  "license": "OFL.txt",
+  "retrieved": "2026-09-11",
+  "sourceSha256": "194018e6b2b293a7964f037b25c0249ce1418bc9ab3c971060a03aa57861e252",
+  "artifactSha256": "b7a527725821224f70cb143697be3fd7a90a93a32b17fee0b8a0973bf9a9eff0",
+  "modifications": "Static wght=400; preserved prior Latin/Hangul/symbol coverage plus available U+2460..U+24FF enclosed alphanumerics; renamed SStructures Sans",
+  "fontTools": "4.47.2",
+  "bytes": 2782712,
+  "buildScript": "tools/build-p25-report-font.py"
+}

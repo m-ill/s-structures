@@ -1,0 +1,1 @@
+PASS T08 insufficient provided stirrups, no silent OK, unknown input and fake serviceability blocked

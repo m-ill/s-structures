@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c24fe65f88bc1e08e99d6fc604fe413f0d54c73d8cf028a4a0b45a98d52e6e5a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:52:21.047Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 248,
+      "sha256": "5af825bcea797b3639db3649dc9527d15cda1af16240fc46485f6e6e8399db24",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-elastic-transfer.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1204,
+      "sha256": "6a2aeb768fee2b60957c48d8b4624ce6c4d8a49ab5dacc43b12b04376829387a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "66db507a10608c0d34f3d9dca472bac440f1ad709950ec43655007f560b70fda",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:05:29.792Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1785,
+      "sha256": "8120eb934681d14cc337baea330d4cd5820be03689f7299aae8c6d9cd874b7f1",
+      "error": null
+    },
+    {
+      "file": "tests/m2-linear3d.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1093,
+      "sha256": "b6bed042d35d7f270df660066a066912c5db835a76c8897325a28ffc119ef708",
+      "error": null
+    },
+    {
+      "file": "tests/p7-m7-equilibrium-audit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 94,
+      "sha256": "c19e02a0c62e55ac7bd56de25ff1dcb738166714410a2aca12f8a64313400723",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {regionCandidateVariants} from '../src/design/rc/regionCandidateConstraints.js';
+const rows=[{detailId:'A',spacings:[100],barsPerFace:[3,4,6]},{detailId:'B',barsPerFace:[3,4,6]}];
+const values=[...regionCandidateVariants(rows,{order:'diagonal-first'})];
+assert.deepEqual(values.slice(0,3).map(r=>[r.A.barsPerFace,r.B.barsPerFace]),[[3,3],[4,4],[6,6]]);
+assert.equal(values.length,9);assert.equal(new Set(values.map(JSON.stringify)).size,9);
+const uneven=[{detailId:'A',barsPerFace:[3,4]},{detailId:'B',barsPerFace:[3,4,6]}];
+const all=[...regionCandidateVariants(uneven,{order:'diagonal-first'})];
+assert.deepEqual(all.slice(0,3).map(r=>[r.A.barsPerFace,r.B.barsPerFace]),[[3,3],[4,4],[4,6]]);
+assert.equal(all.length,6);assert.equal(new Set(all.map(JSON.stringify)).size,6);
+const large=Array.from({length:32},(_,i)=>({detailId:`R${i}`,barsPerFace:[3,4,6]}));
+const iterator=regionCandidateVariants(large,{order:'diagonal-first'});
+for(const n of [3,4,6])assert.ok(Object.values(iterator.next().value).every(r=>r.barsPerFace===n));iterator.return();
+assert.deepEqual([...regionCandidateVariants([],{order:'diagonal-first'})],[{}]);
+assert.throws(()=>[...regionCandidateVariants(rows,{order:'bad'})],/REGION_CANDIDATE_ORDER_INVALID/);
+console.log('PASS bounded all-region-first search, complete unique tail, uneven dimensions');

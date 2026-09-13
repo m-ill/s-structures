@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5db1aed481273c726a89949662e2cb2ef419ba7ebc90ad5151620a33020268ff",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:47:56.047Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 730,
+      "sha256": "516dcff6051c8c92ab6b3f9b48fc477b83d9fa6a21ecd7f3f19939f5488275fc",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-contracts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 252,
+      "sha256": "2ee4f9c66e25c0e8d9166d609c40cc2034985c8205bbd78849d17dd5f872b3a6",
+      "error": null
+    }
+  ]
+}

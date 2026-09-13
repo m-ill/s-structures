@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5fdd42444b1e0069966788bff1781c2d310b87af6d1eef1e95f13e61e31a6c56",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T05:03:36.334Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-depth-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2792,
+      "sha256": "1fc727a82efaec89b549e38d562e2db85699fbc513dfcf04830fc14fd8318995",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 807,
+      "sha256": "938c61fa7f866e3eeb83e77a85e80047e9935fceb1768c30396a6555d92c236c",
+      "error": null
+    }
+  ]
+}

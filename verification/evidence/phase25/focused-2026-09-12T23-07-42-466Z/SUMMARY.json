@@ -1,0 +1,17 @@
+{
+  "sourceHash": "1afae0440446a4c482319c634f7e89fa10f077a4792c300058ae5bfd1b4fb8c7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T23:07:42.789Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-code-basis-blockers.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 68,
+      "sha256": "6486c1b4408957819d95c6d75f2850a08f48987af5a57be5af44aa968cade53a",
+      "error": null
+    }
+  ]
+}

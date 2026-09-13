@@ -1,0 +1,17 @@
+{
+  "sourceHash": "9e49c966daec1766fb2a7fa986069322f43712e9bfd20fe6a00d00a7173963d6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:21:07.899Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-pages-assets.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 156,
+      "sha256": "9ddb8cc35cdf4642140b0feebf36c2724cdfdcf6e367f01782a50a99464372e7",
+      "error": null
+    }
+  ]
+}

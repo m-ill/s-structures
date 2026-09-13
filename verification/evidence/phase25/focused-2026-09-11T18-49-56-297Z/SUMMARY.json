@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f54737e6da7e89342fe4df7937ce0076f67e9a9e35422d512b4975dffbf07e4a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:49:59.624Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-json-record-reader.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 113,
+      "sha256": "ec2039ec771f255bbbe9ce1518fde8a61b181357b9a9ca8054a0c09749a2b01b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2893,
+      "sha256": "beb1d795b74b31b516a6a2e51ea70487a0daf8a8e8a9fc1b9cf34d726cce22a0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-review-ui-lifecycle.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 110,
+      "sha256": "3fd16c48808cba15df329964673c63d5f7b9aa74c3db0e09180920904c62baf7",
+      "error": null
+    }
+  ]
+}

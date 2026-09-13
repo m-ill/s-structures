@@ -1,0 +1,41 @@
+{
+  "sourceHash": "f8bf05f8ba322c64699838aa959574c5dd99e69d75416d5c4497a3a796c9e288",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:08:11.595Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-quadratic-lap-slip.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 135,
+      "sha256": "4e9223d10660eb2b0e607635748af73ea89ac0851605cee9646db2b72fc2864a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 214,
+      "sha256": "5af825bcea797b3639db3649dc9527d15cda1af16240fc46485f6e6e8399db24",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-shared-slip-network.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 118,
+      "sha256": "d5dc8f82a86372c7d91a60da2f824ccab2b0f13834ff11a1d60fea50a826edab",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2974,
+      "sha256": "f72357cbe90cc1b3f14ec0cf84272f5beeefd423716c53bd63cdd1f10f2cf62f",
+      "error": null
+    }
+  ]
+}

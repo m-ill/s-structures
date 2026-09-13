@@ -1,14 +1,24 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-08-28-phase17-strix21-case-qualification-v1
+documentationVersion: 2026-09-13-phase25-development-status
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
+
+## 현재 개발 — Phase25 (2026-09-13)
+
+[Phase25 RC KDS 검토·자동 보완 완결](phase25/README.md)은 Phase24의 미완료를 인수한 M0~M10 계획이다. [코드 재점검32건](phase25/GAP_AUDIT.md)과 [작업별 완료 조건](phase25/WORKPACKAGES.md)을 기준으로 구현한다. 현재는 **제품 구현·선택 검증 진행 중, 전체 완료 전**이다. [마감 점검표](phase25/CLOSURE_AUDIT.md)에서 증거와 미충족 조건을 확인하고 [실행 안내](phase25/USAGE.md)에서 현재 RC/WebMCP 경로를 확인한다. Phase24 전체 완료나 현재 소스의 Pages 배포를 뜻하지 않는다.
+
+## 직전 개발계획 — Phase24 (2026-09-11)
+
+[Phase24 탄성설계 통합·자동 보완·상세도](phase24/README.md)는 기존 탄성설계 흐름 안에 네 재료의 입력, RC 제공 배근·접합·독립기초, 자동 수정·재계산, 배근도·계산서를 연결하는 M0~M9 계획이다. 모든 업무 모듈의 [WebMCP 제어](phase24/WEBMCP_CONTROL_CONTRACT.md)가 필수다. [TDD 집중 검증](phase24/TDD_VALIDATION_PLAN.md)으로 개발하고 종합검증은 후속 실행으로 분리한다. 현재 **M0~M9 제품 경로 연결 및 KDS 일부 조항 구현, 전체 완료 아님**이며 남은 범위는 [구현 상태](phase24/IMPLEMENTATION_STATUS.md)를 따른다. 아래 이전 phase의 active 표기는 해당 문서 작성 당시 맥락이다.
 
 ## Folder Map
 
 | 폴더 | 용도 | 작성 규칙 |
 | --- | --- | --- |
 | `user-manual/` | 사용자와 AI agent가 현재 프로그램을 사용하는 방법 | 현재 동작 기준만 작성. 오래된 마일스톤 설명은 넣지 않음 |
+| `phase25/` | RC 잔여 재점검·KDS 적용/완료 판정·자동 보완·메모리·출력 완결 | M0~M10, 32개 이관 항목과 작은 TDD·후속 Q 인계를 연결 |
+| `phase24/` | 탄성설계 내부 통합·자동 보완·상세도·전 업무 모듈 WebMCP 제어 개발계획 | M0~M9 TDD, 작은 개발 검증과 후속 종합검증·출시 자격을 분리 |
 | `phase17/` | STRIX 공식 21개를 독립 사례 폴더에서 모델링부터 비교·캡처·보고서까지 재현하는 검증 계획 | 공식/custom 분모를 분리하고 한 사례씩 source·model·run·evidence·review gate로 닫음 |
 | `phase16/` | 제품 실행영역과 검증 워크스페이스의 단계적 물리 분리 | 수치 변경 없이 freeze → 자산 → runner → 의존성 → source/test 순으로 이동 |
 | `phase15/` | STRIX 1차 비교에서 확인된 검증결함·수치경로·증거강도를 교정하는 다음 production phase | 구현·모듈화·코드리뷰·독립자격·release를 분리하며 live 상태는 `IMPLEMENTATION_STATUS.md`만 관리 |
@@ -288,3 +298,9 @@ Phase 2(완료된 탄성 실무 검토 MVP) 근거를 볼 때는 아래 순서�
 | Phase 7 요구사항·마일스톤 변경 | `phase7/README.md`, `phase7/PRODUCT_REQUIREMENTS.md`, `phase7/MILESTONE_EXECUTION_PLAN.md`, `phase7/VERIFICATION_MATRIX.md` |
 | Phase 2 개발 범위 변경 | `phase2/README.md`, `phase2/DEVELOPMENT_FILE_MAP.md` |
 | 새 검증 기준 추가 | `verification/` 또는 해당 milestone 문서 |
+
+## UX 개선 준비 (2026-09-13)
+
+[디자인 기준 및 UX-M0~M5](../design.md) · [화면·코드 점검과 캡처](ux/UX_AUDIT_20260913.md). 현행 디자인을 유지하며 위치·진입점·문구 개선을 준비했다. 런타임 구현은 후속 작업이다.
+
+UX 업데이트: [공통 창·리본·업무별 탐색 구현 및 선택 검증](ux/IMPLEMENTATION_20260913.md). 2026-09-13 로컬 적용; 공개 배포 미실행.

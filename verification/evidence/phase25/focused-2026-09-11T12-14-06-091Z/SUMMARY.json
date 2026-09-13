@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c51b4a3d7e95518ecf2ca12ee0dd3ff064e2dcc3d4825b4263d3f7a050417cb7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:14:08.061Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-evaluation-cancel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1740,
+      "sha256": "9d56ef7f91a023ea24ed042743ddbfaba62024bfaf65f18d59c2a6537b8ad68c",
+      "error": null
+    }
+  ]
+}

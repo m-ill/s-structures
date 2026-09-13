@@ -1,0 +1,17 @@
+{
+  "sourceHash": "2928e459d8b80dccd081531ef82f342da684d1b5c6bb5b18cf5cae3515c507ba",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:36:41.836Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-longitudinal-quantity.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "ce5a9a762177712cc654f125b4fb1cf917c871d1503cebd79e5d1913cff7cbf9",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c8d1155b7f63c7cae007c4ede2bade8b46aed9c8b85c2f71a61941cd0a882279",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T16:43:36.515Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-candidate-application-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 532,
+      "sha256": "99baa5b1b8300261e038979d7b5b93da1c0129d93402d87b33965016f889d1fc",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-post-apply-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "ea4111da7d64165f008b63a1fbb083215a300d668b2c2127bb1e05510fbde1aa",
+      "error": null
+    }
+  ]
+}

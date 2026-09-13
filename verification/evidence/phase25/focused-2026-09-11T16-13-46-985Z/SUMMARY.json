@@ -1,0 +1,25 @@
+{
+  "sourceHash": "947b76f7bc1b7de6666eca607437a77a4f3ee5f8757875bbc967f8b55fc59ed4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:13:51.571Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-hoop-path-collision.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 147,
+      "sha256": "ef7a9ebb57142e9ed4c2d7a91ac191b1bb0ac7c232cad9b5dcb88ae59e4bd1ef",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4241,
+      "sha256": "6b5d0c51cd8f5e1b9fa62cb17ce572d4990f60bdca7ffc868207bc1c2266be35",
+      "error": null
+    }
+  ]
+}

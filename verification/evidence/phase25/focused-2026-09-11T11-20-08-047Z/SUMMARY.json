@@ -1,0 +1,41 @@
+{
+  "sourceHash": "574cd6453389a495b364ff6c992f87596a6dea8cc82494ad59df8c65eb5cb969",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:20:12.805Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1867,
+      "sha256": "70575718a245359fb9aaf26a0be60566c04ea6fa5cd16e4be0aff733903e143c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 194,
+      "sha256": "61e3f690a0b383dc7a21245207eb0e2f6349170bc4964382874064ef723d3cf2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 685,
+      "sha256": "0c48a69c1df9d03a5e300455b8465cd31860d2b7414575945e7a2bc0a7a7bade",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-review-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1770,
+      "sha256": "966d8961091a98fef70d48e009ea4e694c83b1cba9b2efe9e99e465121bf516f",
+      "error": null
+    }
+  ]
+}

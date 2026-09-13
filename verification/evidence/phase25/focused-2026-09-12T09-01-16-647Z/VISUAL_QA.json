@@ -1,0 +1,12 @@
+{
+  "sha256": "d708f18ade70b1e94e9006b298b80bb982614316485f6e75593939c57bf15dca",
+  "artifact": "splice-schedule.pdf",
+  "changedPages": [
+    6,
+    7,
+    8
+  ],
+  "totalPages": 54,
+  "visualResult": "legible table, preserved final NG, no clipping or overlap",
+  "scope": "changed pages only; synthetic stored check values, not engineering qualification"
+}

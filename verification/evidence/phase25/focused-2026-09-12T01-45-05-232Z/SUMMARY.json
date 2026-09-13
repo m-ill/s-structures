@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7c2b70d5f3f50542c7e9227bc2f7485511b3f77e119c6e39ac49109f9dae8564",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:45:18.060Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-blockers.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "c54d5e7e8d42751172d20460d44b8462a46d2f59ee77bd11007dba0de6b16de0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 12549,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

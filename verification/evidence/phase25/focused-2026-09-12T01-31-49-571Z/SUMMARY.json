@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7ee035f9e58a2a145f8e670be50328b06e590dfedd350a987e75e495f881b8ba",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:31:52.035Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-webmcp-frame-service.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2263,
+      "sha256": "9392616497661e0e86b144b42bb8e742c62ee8a265f9dcec682377958a8b5bd4",
+      "error": null
+    }
+  ]
+}

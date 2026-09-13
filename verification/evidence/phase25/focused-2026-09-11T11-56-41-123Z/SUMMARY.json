@@ -1,0 +1,33 @@
+{
+  "sourceHash": "2e3f4e15afe9015c0f6a6c72d738184814d022a4bb35b216624ce75d45efd50a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:56:43.551Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-report-volumes.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1033,
+      "sha256": "ee81c3a14dd08dac49f1bd1816ab9ec892f6178d847e8bd7dfb60b2aaa34e767",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 322,
+      "sha256": "c996c0b723c7577d84e8aecd8d46ecb1051874f08f21b3a53af9069e51376d01",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 870,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    }
+  ]
+}

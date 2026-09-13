@@ -1,0 +1,17 @@
+{
+  "sourceHash": "12890fcdd885362e79c1db003251a33c068187bbc0c123b3be5ed3c5558dabec",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:54:39.414Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-ground-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3602,
+      "sha256": "60004b8192006cc43cc44f7aef076b4a20a782e5ca0ce01886b9a541fbf18f12",
+      "error": null
+    }
+  ]
+}

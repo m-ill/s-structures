@@ -1,0 +1,25 @@
+{
+  "sourceHash": "a8fe700aeae936668c418cd35a08431f052a65bd4b8e62ff6bb31a32774692ed",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:28:33.802Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-unchanged-member-commands.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 83,
+      "sha256": "dd92e5f77f7a0c455755f237aed3232c1235435d4c0fc9cbd649a0a099d5c757",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 5179,
+      "sha256": "f99a9789ebfaab587d5208104d72cf977140d2c4c43345f9c2b980df3c0c3d68",
+      "error": null
+    }
+  ]
+}

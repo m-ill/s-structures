@@ -130,3 +130,30 @@ check('trusted rule-pack revocation is rechecked without changing production qua
   assert.equal(KDS_41_12_00_2022_RULE_PACK.status,'candidate');
 });
 console.log(`P19 M2 service: ${checks} scenarios PASS`);
+
+check('distributed and point commands validate dimensions and preserve atomicity',()=>{
+ const m=fixture(),service=createDesignInputService({getModel:()=>m});
+ const base={id:'PARTIAL',type:'udl-partial',member:'M2',w:3,from:.2,to:.8,dir:'-z',case:'D',unit:'kN/m'};
+ const before=stableHash(m);
+ for(const [i,patch] of [{from:.9,to:.2},{from:-.1},{to:1.1},{unit:'kN'},{w:Infinity},{P:1},{shape:'asc'}].entries()){
+  const preview=service.preview(request([{type:'load',mode:'create',value:{...base,...patch}}],'invalid-load-'+i));assert.equal(preview.ok,false);assert.equal(stableHash(m),before);
+ }
+ const values=[base,{id:'TRAP',type:'trapezoid',member:'M2',w1:-2,w2:3,from:0,to:1,unit:'kN/m'},{id:'PT0',type:'point',member:'M2',P:2,t:0,unit:'kN'},{id:'PT1',type:'point',member:'M2',P:2,t:1,unit:'kN'},{id:'TRI',type:'udl',member:'M2',w:3,shape:'desc',unit:'kN/m'}];
+ const commands=values.map(value=>({type:'load',mode:'create',value:{...value,dir:'-z',case:'D'}}));
+ must(service.apply(must(service.preview(request(commands,'load-success')))));
+ for(const value of values)for(const [key,expected] of Object.entries(value))assert.deepEqual(m.loads.find(l=>l.id===value.id)[key],expected);
+ must(service.undo());assert.equal(m.loads.some(l=>values.some(v=>v.id===l.id)),false);
+});
+
+check('thermal load commands have explicit temperature, depth and expansion units',()=>{
+ const m=fixture(),service=createDesignInputService({getModel:()=>m});
+ const temp={id:'TEMP',type:'temperature',member:'M2',case:'D',dT:-20,unit:'degC',alpha:1.2e-5,alphaUnit:'1/degC'};
+ const gradient={id:'GRAD',type:'tgradient',member:'M2',case:'D',dTtop:20,dTbot:-10,h:.6,hUnit:'m',unit:'degC'};
+ const commands=[temp,gradient].map(value=>({type:'load',mode:'create',value}));
+ must(service.apply(must(service.preview(request(commands,'thermal')))));
+ assert.equal(m.loads.find(l=>l.id==='TEMP').dT,-20);assert.equal(m.loads.find(l=>l.id==='GRAD').h,.6);
+ const before=stableHash(m);
+ for(const [i,patch] of [{h:0},{hUnit:'mm'},{unit:'kN'},{dir:'-z'},{alpha:-1,alphaUnit:'1/degC'},{alpha:1e-5},{dTtop:NaN}].entries()){
+  assert.equal(service.preview(request([{type:'load',mode:'update',value:{...gradient,...patch}}],'bad-thermal-'+i)).ok,false);assert.equal(stableHash(m),before);
+ }
+});

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "57973cc485f10a4cc8a42d0ff1190b4c96c507c840af13effdf70002467048bc",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:23:01.911Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-stored-evaluation-ui.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 212,
+      "sha256": "aaa6daca318838586159921bb5ace6a49514bc7a21ac79938a1bc99a9de1a8b1",
+      "error": null
+    }
+  ]
+}

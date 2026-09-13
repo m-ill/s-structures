@@ -1,0 +1,25 @@
+{
+  "sourceHash": "85cd9dd716b54ae259a592a42234aca8978722eb583a0fd699fa06a6be5000ae",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:45:44.567Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-end-development.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2307,
+      "sha256": "27c6ab8e519414fe9d8bb9ed3be9b9084a8ad1bdfa5266beb969d9d619011ab6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-geometry-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 559,
+      "sha256": "0b3644e0e99cc101ee0d434689b3295b700492e4004b5995f560ca7b1ec209d6",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a53c59d2fad0d29377a25dc9aa45b3c965d17a8966b52a36751d4dfb04096ee7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:34:48.915Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-class-a-length-repair.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 854,
+      "sha256": "9174475b068b0b5bbb8b6251b5a6b6fbb0824563d77db95df7876b5511a06fa9",
+      "error": null
+    }
+  ]
+}

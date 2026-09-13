@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7ed343332bcfe94fbedff87a17ebcc32b208ca68c50e6683f517f6ebcbcc091c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:51:37.608Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-webmcp-flexural-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2877,
+      "sha256": "a7a2e7905dc57b41d05b1acea7d814ecb16d0519924b850542cf25a5bd2b1914",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 140,
+      "sha256": "5ab2ff8179038e878bc0a066c96f4a125f07d8025ed575a7197c429462d7b1e5",
+      "error": null
+    }
+  ]
+}

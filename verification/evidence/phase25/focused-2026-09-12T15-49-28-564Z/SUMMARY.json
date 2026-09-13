@@ -1,0 +1,25 @@
+{
+  "sourceHash": "b757c891b72f6b5ac4f592c1e6310d90285a53ff6c500908336d172c9014c2e0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T15:49:32.716Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-steel-test-evidence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2632,
+      "sha256": "82ae6bf260f19a9c5c00869e2640f0cc3770f5ca43d9dd0f90797588650f4c81",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1219,
+      "sha256": "9202e91d71d6308fbec90036c01f98d434b2cf0623a032d31d25b132fcd514f5",
+      "error": null
+    }
+  ]
+}

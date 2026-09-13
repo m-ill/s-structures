@@ -1,3 +1,4 @@
+import {selectRcMemberResults} from '../results/designResultSelection.js';
 import { factorText } from '../core/combinations.js';
 
 export const REPORT_EXPORT_VERSION = 'm14-report-export';
@@ -122,14 +123,17 @@ export function renderHtmlReport(report) {
     formatMoment(row.mz),
   ]))}
   <h2>Design Summary</h2>
-  ${renderTable(['Member', 'Type', 'Status', 'Ratio', 'Check', 'Combo'], report.design.rows.map((row) => [
+  ${renderTable(['Member', 'Type', 'Status', 'Ratio', 'Check', 'Combo', 'Unreviewed', 'KDS basis'], report.design.rows.map((row) => [
     row.memberId,
     row.type,
     row.status,
     formatRatio(row.utilization),
     row.governingCheck || '-',
     row.comboId || '-',
+    row.incompleteCheckCount,
+    row.codeBasis?.applied?.length?row.codeBasis.applied.map(r=>`${r.code}:${r.edition} ${r.clause}`).join('; '):row.codeBasis?.status||'Not established',
   ]))}
+  ${report.design.rows.some(row=>row.blockingReasons?.length)?'<h2>Unresolved design checks</h2>'+renderTable(['Member','Checks / reasons'],report.design.rows.filter(row=>row.blockingReasons?.length).map(row=>[row.memberId,[...(row.blockingCheckIds||[]),...row.blockingReasons].join('; ')])):''}
   <h2>Messages</h2>
   ${renderMessages(report.messages)}
   <h2>Limitations</h2>
@@ -165,13 +169,15 @@ function collectMemberForceRows(result) {
 function collectDesignRows(analysis) {
   return Object.values({
     ...(analysis?.design?.steel?.memberResults || {}),
-    ...(analysis?.design?.concrete?.memberResults || {}),
+    ...(selectRcMemberResults(analysis)),
   })
     .map((item) => ({
       memberId: item.memberId,
       type: item.type,
       status: item.status,
-      utilization: number(item.utilization),
+      utilization: Number.isFinite(item.utilization)?item.utilization:null,
+      blockingCheckIds:[...(item.blockingCheckIds||[])],blockingReasons:[...(item.blockingReasons||[])],
+      incomplete:item.incomplete===true,incompleteCheckCount:item.incompleteCheckCount??0,codeBasis:item.codeBasis??null,basis:item.basis??'legacy-preliminary',
       governingCheck: item.governingCheck || null,
       comboId: item.comboId || null,
     }))
@@ -290,7 +296,7 @@ function format(value, digits = 3) {
 }
 
 function formatRatio(value) {
-  return format(value, 3);
+  return value===null||value===undefined?'-':format(value, 3);
 }
 
 function formatForce(value) {

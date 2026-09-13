@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {interfaceSteelAllocation} from '../src/design/foundation/interfaceSteelAllocation.js';
+import {columnInterfaceShear} from '../src/design/foundation/columnInterfaceShear.js';
+const make=V=>columnInterfaceShear({area:.2,steelArea:.001,fck:24,fy:400,V,surface:'roughened-6mm',clean:true,reference:'synthetic'});
+const input={steelArea:.001,fy:400,columnN:-170,horizontal:150,shear:make(150)};
+const exact=interfaceSteelAllocation(input);assert.equal(exact.status,'OK');assert.ok(Math.abs(exact.tensionRequiredArea-.0005)<1e-12);assert.ok(Math.abs(exact.shearRequiredArea-.0005)<1e-12);assert.ok(Math.abs(exact.ratio-1)<1e-12);
+const over=interfaceSteelAllocation({...input,horizontal:150.1,shear:make(150.1)});assert.equal(over.status,'NG');assert.ok(over.ratio>1);assert.ok(170/(.85*.001*400*1000)<1);assert.equal(make(150.1).status,'OK','two individually OK modes must not double-count the same steel');
+assert.equal(interfaceSteelAllocation({...input,columnN:-400,horizontal:0,shear:null}).status,'NG');
+assert.equal(interfaceSteelAllocation({...input,columnN:1000}).tensionRequiredArea,0);
+assert.equal(interfaceSteelAllocation({...input,shear:null}).status,'NOT_CHECKED');
+assert.ok(exact.codeReferences.some(r=>r.id==='142022'&&r.clause.includes('4.6.2(6)')));
+console.log('PASS additive axial-tension/shear steel demand; no double counting, boundary and missing shear basis');

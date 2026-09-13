@@ -1,0 +1,41 @@
+{
+  "sourceHash": "a884c0734b7d8eb5ae5f92c324a7e563dd93ff6af67d888cec9419a5234f9b98",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:10:02.282Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-design-source-binding.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 231,
+      "sha256": "4b0aa652b18823bcdf82c49039ff4abac390534c56edddb2d0ebd8ec4dc4019d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-source-publication.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1665,
+      "sha256": "c0ebc5e2be85ee1c5a00ac22ca529a2dd9bbf0d0832bcc1521407a902cf07554",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-review-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1816,
+      "sha256": "966d8961091a98fef70d48e009ea4e694c83b1cba9b2efe9e99e465121bf516f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3884,
+      "sha256": "5c1f8ac0e02678b32eaf93fb0f7942357ab79ea35e939d1bf1dc959ea13a10e3",
+      "error": null
+    }
+  ]
+}

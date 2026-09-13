@@ -1,0 +1,33 @@
+{
+  "sourceHash": "cec0fefbc2c137fe7fed258c9049889fcf1c14c420ec4eff20a17c0e43800c87",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:50:25.550Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 173,
+      "sha256": "a293f85c797862166932a958dfa205123a592b8dde659429c282733fc87de5ea",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8003,
+      "sha256": "e65d655a4f3fc795f7fd585d843d82a39346b81d812e1aed33291a38e1a906ac",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "710aa5f67eb969ae7acc8fe6cbb2c04a519a208fc3f2c3b3839cb6f38b4faee4",
+      "error": null
+    }
+  ]
+}

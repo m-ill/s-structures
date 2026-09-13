@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b9bef5845cb68d6b69b86efcd80287dd7fd31d3d57897300525eddd18b1a283f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T05:49:41.204Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-attachment-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3731,
+      "sha256": "9d4b28522263c82fd007e10ba9ac15e1f56e4e8d9e8a17c0ce1cb2bedc865bdb",
+      "error": null
+    }
+  ]
+}

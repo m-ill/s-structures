@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a80518d18a6f9136fe80847b2fadb912384b3ddbe1e8bfa1d653d665be6ec58f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:33:28.242Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4407,
+      "sha256": "6b397e39788360ec801ada96f2be42308a5b1e3a5086b28b4e115abc12928e3f",
+      "error": null
+    }
+  ]
+}

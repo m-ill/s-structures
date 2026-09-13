@@ -1,0 +1,1 @@
+PASS T16 bundled font and license served through explicit public allowlist

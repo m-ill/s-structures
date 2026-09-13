@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {installDrawingArtifactControls} from '../src/ui/drawingArtifactControls.js';
+const document=createFakeIndexDocument(),container=document.createElement('div');document.body.appendChild(container);
+let busy=false;const rows=[{artifactId:'A',format:'csv',evaluationId:'E',byteLength:1024,stale:false},{artifactId:'B',format:'json',evaluationId:'OLD',byteLength:2048,stale:true}],released=[];
+const bridge={listDesignDrawingArtifacts:()=>({ok:true,rows:[...rows]}),releaseDesignDrawingArtifact:({artifactId})=>{released.push(artifactId);rows.splice(rows.findIndex(r=>r.artifactId===artifactId),1);return {ok:true,released:true};}};
+const controls=installDrawingArtifactControls({document,container,bridge,isBusy:()=>busy});
+await controls.refresh();
+const select=container.querySelector('select'),click=label=>container.querySelectorAll('button').find(b=>b.textContent===label).click(),tick=()=>new Promise(r=>setTimeout(r,0));
+assert.equal(select.children.length,2);assert.ok(select.children[1].textContent.includes('이전 결과'));
+select.value='B';busy=true;click('선택 파일 메모리 해제');await tick();assert.equal(released.length,0);
+busy=false;click('선택 파일 메모리 해제');await tick();assert.deepEqual(released,['B']);assert.equal(select.children.length,1);assert.equal(select.value,'A');
+assert.ok(container.querySelectorAll('p').some(p=>p.textContent.includes('1개')));
+console.log('PASS artifact list, stale label, active-reader guard and selected release without affecting other files');
+
+const pending=[];bridge.listDesignDrawingArtifacts=()=>new Promise(resolve=>pending.push(resolve));
+const older=controls.refresh(),newer=controls.refresh();
+pending[1]({ok:true,rows:[{...rows[0],artifactId:'NEW'}]});await newer;
+pending[0]({ok:true,rows:[{...rows[0],artifactId:'OLD'}]});await older;
+assert.equal(select.value,'NEW','late earlier list must not restore an old selection');
+const abandoned=controls.refresh();controls.invalidate();pending[2]({ok:true,rows:[]});await abandoned;
+assert.equal(select.value,'NEW','invalidated page response must not change displayed files');
+console.log('PASS out-of-order and invalidated artifact list response isolation');

@@ -4,6 +4,8 @@ export function createBrowserMemoryDiagnostics(target,getManaged) {
   return async function read({includeAggregate=false}={}) {
     const memory=target.performance?.memory;
     const result={managed:getManaged(),rendererHeap:memory?{usedBytes:memory.usedJSHeapSize,totalBytes:memory.totalJSHeapSize,limitBytes:memory.jsHeapSizeLimit}:null,aggregate:{status:'not-requested',bytes:null},scope:'managed estimates versus optional browser measurements; not an OS RSS cap or leak qualification'};
+    const quarantined=Object.entries(result.managed.quarantinedOwners||{});
+    result.workerLifecycle={status:quarantined.length?'termination-unconfirmed':'clear',ownerCount:quarantined.length,reservedBytes:quarantined.reduce((sum,[owner])=>sum+(result.managed.owners?.[owner]||0),0),newAllocationsBlocked:quarantined.length>0,recovery:quarantined.length?'wait-for-confirmed-termination':null,owners:quarantined.slice(0,16).map(([owner,reason])=>({owner,reason})),truncated:quarantined.length>16};
     if(!includeAggregate)return result;
     const measure=target.performance?.measureUserAgentSpecificMemory;
     if(!target.crossOriginIsolated||typeof measure!=='function'){result.aggregate.status='unavailable';result.aggregate.reason='Requires cross-origin isolation and measureUserAgentSpecificMemory support';return result;}

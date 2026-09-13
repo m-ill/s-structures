@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-11T05:40:46.396Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p24-m3-evaluation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 167,
+      "sha256": "a056f5248a7cec2f3f16baaf4542e978af9ed5a572609bca7c6f5e053895bec4",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m4-provided.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 221,
+      "sha256": "6c7bd0f405178d3c37d6ed9fc702d6d9c1347176df3d92ed8a017cf3fcbe5f2c",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1347,
+      "sha256": "aa2bb1f2be20a69d57d38a7c95dfd13afff1b665d293b80fc0156295f199c0c0",
+      "error": null
+    },
+    {
+      "file": "tests/p19-m3-design-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5547,
+      "sha256": "d9b838b2114b5e0f103a52eef717c253d1fed4dcddc521a0ba21707d2304c8eb",
+      "error": null
+    }
+  ]
+}

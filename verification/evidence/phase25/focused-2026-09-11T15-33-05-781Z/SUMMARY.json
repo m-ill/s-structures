@@ -1,0 +1,25 @@
+{
+  "sourceHash": "575a4bb29b767e4d70f21cde32cda4f106f87909a4f3fa2b5d0002229371671e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:33:06.225Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-interface-steel-allocation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "67d644f6a026ea843ef07e830fb0eb6e7e19fdb030baa2ac34939069d514a6f5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-weight-ledger.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 184,
+      "sha256": "5d929ed5a0707f7980e7f4f6f957bf616a123c2e5ade9c2b00603f114d9934ac",
+      "error": null
+    }
+  ]
+}

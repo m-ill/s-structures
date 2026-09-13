@@ -1,0 +1,25 @@
+{
+  "sourceHash": "44c9ea3a998a698393ae89964c3fdbf6386c080136775c4204feecd512634a24",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:44:41.383Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-splice-report-source.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 460,
+      "sha256": "a89ecf4f06a75a6a73fd6e5cc46b9e192659b094ae631118caf21c54769ed335",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10069,
+      "sha256": "fa3ce8ec356c3cd0dcb0f34a9395e000f4a4d4c5b790a140ea3b23de187913d5",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d8ae50d04969945d3d231f969ad165af19b7c9c9155d95acfdb52d130497cd55",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:43:52.494Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-strength-region-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 213,
+      "sha256": "92b98d8a2d7f2389026bdc16301cf4bdcbc95e97cfb101ea7d7454b34897338f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5325,
+      "sha256": "87a18bdbc83a3befac352bf1b62e4967dbb02c3cd0585a9c2cd1942b4b76e1e7",
+      "error": null
+    }
+  ]
+}

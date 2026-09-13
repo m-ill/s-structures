@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {kdsPunchingCapacity,evaluateFootingPunching} from '../src/design/foundation/kdsPunching.js';
+import {createModel} from '../src/core/model.js';
+// Independent substitution: d=300 -> ks1, b0/d16 -> kbo1, rho/fc=.0002.
+const x={fck:25,d:300,b0:4800,rho:0.005,lambda:1,columnPosition:'interior'};
+const r=kdsPunchingCapacity(x);
+const cu=300*(25*Math.sqrt(0.0002)-300*0.0002);
+const expected=0.75*Math.sqrt(1+50/3)*(cu/300)*4800*300/1000;
+assert.ok(Math.abs(r.capacity-expected)<1e-8);assert.equal(r.factors.ks,1);assert.equal(r.factors.kbo,1);
+assert.equal(kdsPunchingCapacity({...x,rho:0.001}).capacity,r.capacity);
+assert.equal(kdsPunchingCapacity({...x,rho:0.04}).status,'NOT_CHECKED');
+assert.equal(kdsPunchingCapacity({...x,d:2000}).factors.ks,0.75);
+assert.ok(r.codeReferences.some(x=>x.code==='KDS 14 20 22'));
+const model=createModel();model.loadCombinations=[{id:'U',type:'strength',factors:{}}];
+const footing={punchingStandard:'KDS-142022-2022',nodeId:'A',B:5,L:5,thickness:0.5,cover:0.05,columnWidth:0.4,columnDepth:0.4,materialId:'concrete@1',concreteWeight:'normal',barCoating:'uncoated',reinforcement:{materialId:'steel@1',bottomB:{diameter:0.016,spacing:0.15},bottomL:{diameter:0.016,spacing:0.15}}};
+const set={combo:{id:'U'},reactions:{A:{rz:100,rmx:0,rmy:0}}};
+assert.equal(evaluateFootingPunching(model,footing,set).status,'OK');
+assert.equal(evaluateFootingPunching(model,{...footing,B:2,L:2},set).reason,'PUNCHING_REINFORCEMENT_EXTENSION_INSUFFICIENT');
+assert.equal(evaluateFootingPunching(model,footing,{...set,reactions:{A:{rz:100,rmx:1,rmy:0}}}).reason,'COMBINED_PUNCHING_MOMENT_TRANSFER_4_11_7_REQUIRED');
+console.log('PASS KDS compression-zone punching formula, independent substitution, size/rho bounds and references');

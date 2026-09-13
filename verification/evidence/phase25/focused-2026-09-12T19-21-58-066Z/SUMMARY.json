@@ -1,0 +1,17 @@
+{
+  "sourceHash": "5d90fd466ca9472bdd364f6b5da4e2b39bd5f62f9a6d507173f46e334a98728e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:21:58.506Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-offset-stations.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 174,
+      "sha256": "427058527ea91cda9f49b4ea77ceaa9a7d8a3d6526d12351ef3eed0c362f9460",
+      "error": null
+    }
+  ]
+}

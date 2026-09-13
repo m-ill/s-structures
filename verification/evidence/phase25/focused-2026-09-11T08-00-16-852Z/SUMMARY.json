@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T08:00:18.737Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 768,
+      "sha256": "d5faa580819068abf380265060d192c402853f20aec3e49c75246843db91caec",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-pagination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 200,
+      "sha256": "45797056d82feeb09999fbd1f17d9c3c907648d6f855fa477793ee9304e5f718",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 908,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    }
+  ]
+}

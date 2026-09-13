@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c4a448e7ebbc150aab1e68d471623ea8f0c2364e69bfd9ae5dc169b01d3c82b9",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:56:32.068Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7460,
+      "sha256": "249f2e64bc22f157f93bda2e276c371ddcd75934d4ef144a3ed005406e4ea85b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 66,
+      "sha256": "30868c58fa0e1e6d8d1a30767b7d643b9e9a0021c988ce83c582d7a374d33140",
+      "error": null
+    }
+  ]
+}

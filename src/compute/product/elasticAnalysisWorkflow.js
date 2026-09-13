@@ -1,5 +1,5 @@
 import { analyzeDynamics } from '../../dynamics/modal.js';
-import { runDesignChecks } from '../../design/steel.js';
+import { evaluateDesign as runDesignChecks } from '../../design/evaluation/designEvaluation.js';
 import { makeEnvelope } from '../../solver/linear3dPost.js';
 import { summarizeShellNumericalQualification } from '../../solver/linear3dFirstOrder.js';
 import { prepareElasticAnalysis, solveElasticCombination } from '../../solver/elastic/stages.js';
@@ -82,6 +82,8 @@ export function finalizeElasticAnalysis(prepared, byCombo = {}, options = {}) {
       : blockedDesignResultSet();
   output.design = runDesignChecks(model, output, {
     resultSet: designResultSet,
+    practicalResultSet: designEligible?null:blockedDesignResultSet(),
+    analysisMethod:pDeltaMethod,
   });
   output.design.analysisSource = directAnalysisQualified
     ? directDesignEligible

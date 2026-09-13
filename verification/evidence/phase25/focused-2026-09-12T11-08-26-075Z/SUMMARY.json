@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f1e2a67abd269d22de57e082cafbcac162c66b890d4fdc1c2ea52b13e7b604c8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:08:29.918Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-base-friction.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2795,
+      "sha256": "0e6eab556947b5ab3ebda9660e216821104cafd1ee48759d7402031c6fdb36e6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 790,
+      "sha256": "0840ce985ffb1f4741523ae247f86a91caeddee9a0c2b0e931bbdfa8126d717e",
+      "error": null
+    }
+  ]
+}

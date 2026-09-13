@@ -1,0 +1,25 @@
+{
+  "sourceHash": "6ac28718aca4cb1e6ac49d2d8327b78bdb7bdd240b24df2b9b7998fb109e7b0a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:21:31.045Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-foundation-steel-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 114,
+      "sha256": "b5ec73b5842d3ac2909e0ada6252a1d4bf2671060588bd83408399ae3510d30b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-footprint-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 122,
+      "sha256": "a16c4a659ce4608ad38f5d478418807c615bbe32e41b9c7c8123c6331ffabe48",
+      "error": null
+    }
+  ]
+}

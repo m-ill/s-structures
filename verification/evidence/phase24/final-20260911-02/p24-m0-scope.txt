@@ -1,0 +1,1 @@
+PASS T00/T18 module scope, unavailable rules, actual WebMCP, input/response isolation

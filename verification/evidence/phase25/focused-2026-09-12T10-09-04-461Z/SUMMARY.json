@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4dab3c2e998a7e81782c5891a3464db5fe0034baff42841b227060952851a999",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:09:05.523Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-quarantine-status.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 832,
+      "sha256": "4fe43bb2229e26741df1cad9cc26c92f3dcda80c7dd1ac1f6eb904d1135289be",
+      "error": null
+    }
+  ]
+}

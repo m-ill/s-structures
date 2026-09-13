@@ -1,0 +1,49 @@
+{
+  "sourceHash": "32ece9c4ca8421b8737f51732ae8020ad45efa9d86c7794ed2a0d46d2d8c3f71",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:57:53.544Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-splice-detail-stations.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 190,
+      "sha256": "227cc8a177221791165e2d71595b2705260a415decb4cedae314d8f3dc9a8f1b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-splice-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1689,
+      "sha256": "8490ae141c37e90bf40ec435f4aa5710070f9e995ded9ea8bd3a67e71f06cdec",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1913,
+      "sha256": "df16af0a5391cea7a7c44b94e4cb849eaead2af57afac048b2968d10be8e7f68",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cover.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "a636752638b64d5ceee6ac964d32451dfc2b467102c00c9de3b1a22acbf17129",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-spacing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 69,
+      "sha256": "2b6ac3163c11ad416406f7a10dc363e2d8b60c4f5a0ba85713fdff3752f1066a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d071164916fc69ef27ca1ec52e84e2f4fbea05f533a42fe8d8cabced4f4e7798",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:36:41.600Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-foundation-development-proposal.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 54,
+      "sha256": "085f565f9755b5e9e682863e8639389fea3b983de81cc1bac1baaf956d6e632c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6310,
+      "sha256": "2baba92b61a05f953959d10edff1a11b8ccc4d9e6e95a621ebf97c003c64b882",
+      "error": null
+    }
+  ]
+}

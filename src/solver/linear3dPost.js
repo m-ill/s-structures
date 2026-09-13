@@ -478,7 +478,7 @@ function resultIntegrityIssue(result) {
       }
     }
   }
-  for (const field of ['totalLoadResultant', 'totalReactionResultant', 'residualResultant']) {
+  for (const field of ['totalLoadResultant', 'totalReactionResultant', 'totalConstraintResultant', 'residualResultant']) {
     const resultant = result.summary?.[field];
     if (resultant == null) continue;
     if (!Array.isArray(resultant) || resultant.length !== 6) {
@@ -737,6 +737,21 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
     reactionMomentScale += maxAbs3(moment);
   }
 
+  const totalConstraint=[0,0,0],totalConstraintMoment=[0,0,0];
+  let constraintForceScale=0,constraintMomentScale=0;
+  const constraintSource=out.constraintActions,seenConstraintDofs=new Set();
+  if(constraintSource){
+    if(constraintSource.version!=='p25-constraint-actions-v1'||constraintSource.signConvention!=='force applied by constraint to structural DOF'||constraintSource.units?.force!=='kN'||constraintSource.units?.moment!=='kN.m'||!Array.isArray(constraintSource.rows))equilibriumIssues.push(equilibriumIssue('CONSTRAINT_ACTIONS_INVALID',null,null,null,'constraint'));
+    else for(const row of constraintSource.rows){
+      const d=['ux','uy','uz','rx','ry','rz'].indexOf(row.dof),point=pointOf(nodeMap[row.nodeId]),key=JSON.stringify([row.nodeId,row.dof]);
+      if(d<0||!point||!Number.isFinite(row.force)||typeof row.supportCoupled!=='boolean'||seenConstraintDofs.has(key)){equilibriumIssues.push(equilibriumIssue('CONSTRAINT_ACTION_ROW_INVALID',row.nodeId,row.dof,row.force,'constraint'));continue;}
+      seenConstraintDofs.add(key);if(row.supportCoupled)continue;
+      const force=[0,0,0],couple=[0,0,0];if(d<3)force[d]=row.force;else couple[d-3]=row.force;
+      const moment=add(cross(subtract(point,referencePoint),force),couple);
+      addInto(totalConstraint,force);addInto(totalConstraintMoment,moment);constraintForceScale+=maxAbs3(force);constraintMomentScale+=maxAbs3(moment);
+    }
+  }else if(out.solver?.diaphragmCount||out.solver?.generalConstraintCount)equilibriumIssues.push(equilibriumIssue('CONSTRAINT_ACTIONS_REQUIRED',null,null,null,'constraint'));
+
   const totalFoundationReaction = [0, 0, 0];
   const totalFoundationReactionMoment = [0, 0, 0];
   for (const [memberId, result] of Object.entries(memberResultMap)) {
@@ -773,10 +788,10 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const available = !!out.anyOk
     && !(out.unstableMembers?.size > 0)
     && equilibriumIssues.length === 0;
-  const forceResidual = available ? add(totalLoad, totalReaction) : null;
-  const momentResidual = available ? add(totalLoadMoment, totalReactionMoment) : null;
-  const forceScale = Math.max(1, loadForceScale, reactionForceScale);
-  const momentScale = Math.max(1, loadMomentScale, reactionMomentScale);
+  const forceResidual = available ? add(add(totalLoad, totalReaction),totalConstraint) : null;
+  const momentResidual = available ? add(add(totalLoadMoment, totalReactionMoment),totalConstraintMoment) : null;
+  const forceScale = Math.max(1, loadForceScale, reactionForceScale,constraintForceScale);
+  const momentScale = Math.max(1, loadMomentScale, reactionMomentScale,constraintMomentScale);
   const forceResidualNorm = forceResidual ? maxAbs3(forceResidual) / forceScale : null;
   const momentResidualNorm = momentResidual ? maxAbs3(momentResidual) / momentScale : null;
   const equilibriumResidual = available ? Math.max(forceResidualNorm, momentResidualNorm) : null;
@@ -794,7 +809,9 @@ export function buildEquilibriumSummary(nodes, members, loads, out, options = {}
   const reactionResultantsAvailable = !equilibriumIssues.some((issue) => issue.source === 'reaction');
 
   return {
-    equilibriumVersion: 'p14-m1-six-resultant-equilibrium-v3-winkler-foundation',
+    equilibriumVersion: 'p25-six-resultant-equilibrium-v4-constraint-actions',
+    totalConstraintResultant:equilibriumIssues.some(issue=>issue.source==='constraint')?null:[...totalConstraint,...totalConstraintMoment],
+    constraintActionBasis:'constraint-on-structure forces; support-coupled DOFs excluded to avoid double counting',
     referencePoint,
     totalLoad: loadResultantsAvailable ? totalLoad : null,
     totalReaction: reactionResultantsAvailable ? totalReaction : null,
@@ -852,9 +869,9 @@ function loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap
   if (load.type === 'nmoment') {
     if (!nodeMap[load.node]) return loadResultantFailure(load, 'LOAD_NODE_NOT_AVAILABLE', 'node', load.node);
     const magnitude = Number(load.M);
-    const axis = globalAxis(load.axis || 'z');
+    const direction=resolveMomentDirection(load),axis=direction.global;
     if (!Number.isFinite(magnitude)) return loadResultantFailure(load, 'NONFINITE_LOAD_COMPONENT', 'M', load.M);
-    if (!axis) return loadResultantFailure(load, 'UNSUPPORTED_NODAL_MOMENT_AXIS', 'axis', load.axis);
+    if (!direction.ok) return loadResultantFailure(load, direction.reason, 'axis', load.axis??load.dir);
     return { force: [0, 0, 0], moment: scale(axis, magnitude) };
   }
   if (['temperature', 'tgradient'].includes(load.type)) return null;
@@ -893,10 +910,10 @@ function loadResultant(load, nodeMap, memberMap, referencePoint, memberResultMap
 
   if (load.type === 'mmoment') {
     const magnitude = Number(load.M);
-    const axis = localAxis(geometry.ax, load.axis || 'z');
+    const direction=resolveMomentDirection(load,geometry.ax),axis=direction.global;
     const position = finiteNumber(load.at ?? load.t ?? 0.5);
     if (!Number.isFinite(magnitude)) return loadResultantFailure(load, 'NONFINITE_LOAD_COMPONENT', 'M', load.M);
-    if (!axis) return loadResultantFailure(load, 'UNSUPPORTED_MEMBER_MOMENT_AXIS', 'axis', load.axis);
+    if (!direction.ok) return loadResultantFailure(load, direction.reason, 'axis', load.axis??load.dir);
     if (position == null || position < 0 || position > 1) return loadResultantFailure(load, 'INVALID_MEMBER_LOAD_POSITION', 'at', load.at ?? load.t);
     return { force: [0, 0, 0], moment: scale(axis, magnitude) };
   }
@@ -1064,3 +1081,4 @@ function equilibriumIssue(code, entityId, component, value, source = null) {
     value,
   };
 }
+import {resolveMomentDirection} from '../loads/momentDirection.js';

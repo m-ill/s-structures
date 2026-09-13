@@ -1,0 +1,17 @@
+{
+  "sourceHash": "39467f13e955c23543e127d1268f1aa87cb477625abb3f7388b3237de7baee6b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T17:47:10.698Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-artifact-controls.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 51,
+      "sha256": "72c0d584952ec96f8963af2c5c627fb1fef5086fa720a5e0251e75a5c74617c9",
+      "error": null
+    }
+  ]
+}

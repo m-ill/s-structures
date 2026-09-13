@@ -1,0 +1,13 @@
+file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/modeling/practicalInputContract.js:73
+  if(errors.length)throw Object.assign(new Error('Invalid practical design input'),{code:'PRACTICAL_INPUT_INVALID',details:errors});
+                                       ^
+
+Error: Invalid practical design input
+    at validatePracticalCommand (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/modeling/practicalInputContract.js:73:40)
+    at practicalCommandFromRecord (file:///C:/Users/mill/Downloads/dcr/S-Structures-main/src/modeling/practicalInputContract.js:109:3)
+    at file:///C:/Users/mill/Downloads/dcr/S-Structures-main/tests/p24-m1-section-input.mjs:29:22 {
+  code: 'PRACTICAL_INPUT_INVALID',
+  details: [ 'tw:required', 'tf:required' ]
+}
+
+Node.js v24.16.0

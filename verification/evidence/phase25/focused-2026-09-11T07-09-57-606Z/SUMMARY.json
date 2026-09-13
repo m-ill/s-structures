@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-11T07:10:16.794Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-nominal-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10620,
+      "sha256": "6703b11620b5e981877540a86481498995274c8a1be9519b3518f96d3653a530",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-apply-review.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3362,
+      "sha256": "96fa286585240a49dfd0d7d3a98124e666dd2bf2cbcc2ada275f6a08295a7235",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5197,
+      "sha256": "51a05694aa30ff5d9b8d95c710a7df99ce5ce010742bc03e397da3c6b68fc697",
+      "error": null
+    }
+  ]
+}

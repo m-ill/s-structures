@@ -1,0 +1,57 @@
+{
+  "sourceHash": "87165a9c0de399e0b810577e83d7cdb803f7d7d64a746fe119742f3ceecf6791",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:16:51.769Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-project-profile.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 887,
+      "sha256": "d8474a0d11a9d987007cab638367c8984ffe4f3834e90ec49d591fbe0bedfb74",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-stiffness-dependency.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 497,
+      "sha256": "218b16386f2141592afa299f26b4dd8012e27d21df670bac05e45911642bcbd3",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m2-history.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 959,
+      "sha256": "d9afc7cd8095e003ec8c055112d97a200f6b5a46d54583eec6151510f2c49f9a",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m2-reuse.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 340,
+      "sha256": "e3c19b8009491197589e63cb912a6e0a92620f22fb9c9d01bd8a9e4b78ce9c52",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 321,
+      "sha256": "c996c0b723c7577d84e8aecd8d46ecb1051874f08f21b3a53af9069e51376d01",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5081,
+      "sha256": "821d5208d43356b188ddd03edc36317d9e6da7df3e18f28abe66eca10656ef30",
+      "error": null
+    }
+  ]
+}

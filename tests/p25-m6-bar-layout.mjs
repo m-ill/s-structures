@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {rectangularBarLayout} from '../src/design/rc/barLayout.js';
+const template=[{y:0,z:0,diameter:20,nominalAreaMm2:314,designation:'synthetic'}];
+const r=rectangularBarLayout(template,{B:.3,H:.6,cover:.04,tieDiameter:.01,barsPerFace:3});
+assert.equal(r.length,6);assert.equal(r[0].y,-.24);assert.ok(Math.abs(r[0].z+.09)<1e-12);assert.equal(r[1].z,0);assert.equal(r[5].nominalAreaMm2,314);
+assert.throws(()=>rectangularBarLayout([...template,{...template[0],diameter:25}],{B:.3,H:.6,cover:.04,tieDiameter:.01,barsPerFace:3}),/HOMOGENEOUS/);
+assert.throws(()=>rectangularBarLayout(template,{B:.12,H:.6,cover:.04,tieDiameter:.01,barsPerFace:3}),/GEOMETRY/);
+const rounded=rectangularBarLayout(template,{B:.24,H:.24,cover:.04,tieDiameter:.01,barsPerFace:2,tieInsideRadius:.02});assert.ok(Math.abs(Math.abs(rounded[0].y)-(.05+.01/Math.sqrt(2)))<1e-12);
+console.log('PASS homogeneous product-preserving bar-count layout and impossible geometry');
+
+const {resizePerimeterBars}=await import('../src/design/rc/resizePerimeterBars.js');
+const prior={B:.4,H:.4,cover:.04,tieDiameter:.01,insideRadius:.02},next={...prior,B:.42,H:.42},c=.13+.01/Math.sqrt(2);
+const source=[{y:0,z:.14,diameter:20,mark:'east'},{y:-c,z:c,diameter:20,mark:'corner'},{y:-.14,z:0,diameter:20,mark:'south'}];
+const resized=resizePerimeterBars(source,source.map(b=>({...b,diameter:25})),{prior,next});
+assert.deepEqual(resized.map(b=>b.mark),['east','corner','south']);
+assert.ok(Math.abs(resized[0].z-.1475)<1e-12);assert.equal(resized[0].y,0);
+assert.ok(Math.abs(resized[1].y+(.14+.0075/Math.sqrt(2)))<1e-12);
+assert.ok(Math.abs(resized[2].y+.1475)<1e-12);
+assert.equal(source[0].diameter,20);
+assert.throws(()=>resizePerimeterBars([{y:0,z:0,diameter:20}],[{diameter:20}],{prior,next}),/ORIGINAL_CONTACT/);
+assert.throws(()=>resizePerimeterBars(source,source.slice(1),{prior,next}),/BAR_MAPPING/);
+console.log('PASS perimeter identity-preserving resize and diameter-change contact geometry');

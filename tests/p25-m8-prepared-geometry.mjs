@@ -1,0 +1,33 @@
+import {buildDetailDrawings} from '../src/report/phase24/detailDrawings.js';
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {prepareDetailGeometry,requirePreparedDetailGeometry} from '../src/design/rc/preparedDetailGeometry.js';
+const m=createModel();m.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];m.members=[{id:'AB',n1:'A',n2:'B',secId:'rc3060'}];
+m.designDetails={reinforcement:[{id:'R',version:1,memberId:'AB',start:0,end:1,cover:.04,fabricationShape:'straight',endSetbackStart:.04,endSetbackEnd:.04,bars:[{y:0,z:0,diameter:.016,area:.0002}],stirrups:{diameter:.01,spacing:.2,legs:2},tieFirstStart:.075,tieFirstEnd:.075}]};
+const p=prepareDetailGeometry(m),r=p.reinforcement['R@1'];
+assert.equal(r.bars[0].cutLength,2.92);
+assert.equal(r.stirrupPositions[0],.075);assert.equal(r.stirrupPositions.at(-1),2.925);
+assert.equal(r.stirrupCount,16);
+assert.ok(r.stirrupPositions.every((x,i,a)=>!i||x-a[i-1]<=.2+1e-10));
+assert.equal(requirePreparedDetailGeometry(m,p),p);
+const dense=structuredClone(m);dense.designDetails.reinforcement[0].end=.5;dense.designDetails.reinforcement[0].stirrups.spacing=.001;dense.designDetails.reinforcement[0].tieFirstStart=0;dense.designDetails.reinforcement[0].tieFirstEnd=0;
+const bounded=prepareDetailGeometry(dense).reinforcement['R@1'];assert.equal(bounded.stirrupCount,1500);assert.equal(bounded.stirrupPositions,null);assert.equal(bounded.stirrupReason,'STIRRUP_POSITION_ARRAY_LIMIT');
+const incomplete=structuredClone(m);delete incomplete.designDetails.reinforcement[0].tieFirstEnd;
+const missing=prepareDetailGeometry(incomplete).reinforcement['R@1'];assert.equal(missing.stirrupCount,null);assert.equal(missing.stirrupPositions,null);assert.equal(missing.stirrupReason,'BOTH_TIE_END_OFFSETS_REQUIRED');
+assert.equal(r.stirrupDistribution.first,r.stirrupPositions[0]);assert.equal(r.stirrupDistribution.last,r.stirrupPositions.at(-1));
+m.nodes[1].x=4;assert.throws(()=>requirePreparedDetailGeometry(m,p),/STALE/);
+console.log('PASS prepared geometry, exact body length, end-offset tie positions and changed-model rejection');
+
+const drawing=buildDetailDrawings({id:'synthetic-dense',inputHash:'a'.repeat(64),model:dense,sets:[],checks:[],preparedDetails:prepareDetailGeometry(dense)});
+const ties=drawing.quantities.find(q=>q.kind==='stirrup');
+assert.equal(ties.count,1500);assert.equal(ties.positions,null);
+assert.equal(ties.distribution.first,0);assert.ok(Math.abs(ties.distribution.last-1.499)<1e-10);
+assert.ok(drawing.pages[0].commands.some(c=>c.text?.includes('반복 중간 생략')));
+assert.ok(drawing.pages[0].commands.length<200);
+
+const extensionModel=structuredClone(m);extensionModel.designDetails.reinforcement[0].bars[0].unitMassKgPerM=1.56;
+extensionModel.designDetails.foundations=[{id:'F',version:1,nodeId:'A',B:2,L:2,thickness:.6,cover:.05,barShape:'straight',reinforcement:{bottomB:{diameter:.016,spacing:.2},bottomL:{diameter:.016,spacing:.2}},columnTransferType:'cast-in-place-continuous-straight-bars',columnMemberId:'AB',columnEmbedmentLength:.4,columnDevelopmentAbove:.3}];
+const extensionPrepared=prepareDetailGeometry(extensionModel),mass=extensionPrepared.foundations['F@1'].columnBars[0].massQuantity;
+assert.equal(mass.totalLength,.4);assert.equal(mass.totalMassKg,.4*1.56);assert.equal(mass.includesCompleteBar,false);
+const extensionDrawing=buildDetailDrawings({id:'extension-mass',inputHash:'b'.repeat(64),model:extensionModel,sets:[],checks:[],preparedDetails:extensionPrepared});
+assert.deepEqual(extensionDrawing.quantities.find(q=>q.kind==='column-bar-extension').massQuantity,mass);

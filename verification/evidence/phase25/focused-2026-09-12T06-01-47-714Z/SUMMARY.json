@@ -1,0 +1,25 @@
+{
+  "sourceHash": "34ad9c8e07fea7ba3fc546731c2d22287530eb1f1e7a432617c673ae2985e47e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:01:48.085Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-connection-quantity-basis.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "60760e5109bbe0cf27db63ff258debfe902fcd0949026fe19cbaa1705e5e1766",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-candidate-severity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "dc19bb78f8f760a63d9691abc3ffcc6310994d53f8ba9da25e629e168e501331",
+      "error": null
+    }
+  ]
+}

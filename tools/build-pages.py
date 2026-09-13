@@ -10,6 +10,7 @@ from pathlib import Path, PurePosixPath
 import subprocess
 import sys
 import tarfile
+from pages_asset_validation import validate_pages_assets
 
 root = Path.cwd()
 
@@ -30,15 +31,16 @@ identity = {
 }
 roots = {'index.html', 'app.html', 'm3.html', 'help.html', 'manual.html', 'guide.html', 'LICENSE.txt'}
 extensions = {'.js', '.mjs', '.json', '.html', '.css', '.wasm', '.svg', '.md', '.txt', '.csv'}
+font_assets = {'assets/fonts/phase24/SStructuresSans.ttf', 'assets/fonts/phase24/OFL.txt', 'assets/fonts/phase24/provenance.json'}
 files = {}
 with tarfile.open(fileobj=io.BytesIO(git(
         '-c', 'core.autocrlf=false', '-c', 'core.eol=lf',
         'archive', '--format=tar', 'HEAD'))) as archive:
     for item in archive.getmembers():
         path = PurePosixPath(item.name)
-        allowed = item.name in roots or item.name.startswith(('src/', 'docs/user-manual/'))
+        allowed = item.name in roots or item.name in font_assets or item.name.startswith(('src/', 'docs/user-manual/'))
         private = any(p in {'data', 'secrets', 'tmp', 'node_modules', '__pycache__'} for p in path.parts)
-        if item.isfile() and allowed and not private and path.suffix.lower() in extensions:
+        if item.isfile() and allowed and not private and (path.suffix.lower() in extensions or item.name in font_assets):
             files[item.name] = archive.extractfile(item).read()
 required = {
     'index.html', 'src/ui/indexBridge.js', 'src/ui/webmcp/register.js',
@@ -46,8 +48,10 @@ required = {
     'src/solver/elastic/stages.js', 'src/nonlinear/runtime/analysisWorker.js',
     'src/nonlinear/equilibrium/backends/phase8_solver.wasm',
 }
+required |= font_assets
 if not required <= files.keys():
     raise SystemExit(f'Missing required browser assets: {sorted(required - files.keys())}')
+validate_pages_assets(files)
 files['SOURCE-IDENTITY.json'] = (json.dumps(identity, indent=2) + '\n').encode()
 files['.nojekyll'] = b''
 manifest = {

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "42c142d1e16af61baa8fcb08fe5535d4ebf350a5d5d2b02c45a54f1b6107e6b6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:16:28.774Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-segmented-strength.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 168,
+      "sha256": "ba33c13ad3ce58b2733406996e2104adacbd34f6487e2e7b63baa27da56977d4",
+      "error": null
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import { stableHash } from './stableHash.js';
 
-export const WORKFLOW_INPUT_IDENTITY_VERSION = 'p19-input-v1';
+export const WORKFLOW_INPUT_IDENTITY_VERSION = 'p25-input-v2-moment-directions';
 
 // Do not rewrite older hashes: their projections are part of their contracts.
 export function workflowModelInput(model) {

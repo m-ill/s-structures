@@ -1,0 +1,25 @@
+{
+  "sourceHash": "44e2f4b2d9b6dfcc58e7ba9630bc5c23d16fbeaab91df4671a950cb25747c280",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:41:47.645Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-service-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 9486,
+      "sha256": "5ad4d25086df3b324805c251de96189197ddc003027225aa0244d6645a088bad",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5357,
+      "sha256": "5c1f8ac0e02678b32eaf93fb0f7942357ab79ea35e939d1bf1dc959ea13a10e3",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "5a7183b28d71a326ac4fff926f2f4bd3a7ad0d08e7581a1d6dd1c20292510651",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:33:07.003Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoop-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 252,
+      "sha256": "2e05aa8f5343b7fe18bc715f80a81e0179062f4ef8c0b93add464f589aa9cc38",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 115,
+      "sha256": "91e59038a7aedb45e19249f292da9f295e237634ef267c69d108ffef2417cd94",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 113,
+      "sha256": "1c726f943551d4a76e23b56d7b22bdc9831c7d2401f28bc3396a5f39002d6723",
+      "error": null
+    }
+  ]
+}

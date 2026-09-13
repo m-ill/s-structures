@@ -1,0 +1,33 @@
+{
+  "sourceHash": "9d8b8c6ec2d52a82120653896b3f9b6325980af970fe101cec6e38612f706914",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T22:45:21.509Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-lap-frame-ports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 61,
+      "sha256": "d298313bcd5514787670f7f21542804c9c85f4e4f5b738616cea6235d04df0da",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-lap-frame-coupling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 117,
+      "sha256": "bcbadda91056ab63087cb8d8d441054aa0eb42582f787526885a52efad18746b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 264,
+      "sha256": "5af825bcea797b3639db3649dc9527d15cda1af16240fc46485f6e6e8399db24",
+      "error": null
+    }
+  ]
+}

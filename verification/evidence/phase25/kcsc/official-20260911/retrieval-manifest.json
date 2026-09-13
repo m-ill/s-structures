@@ -1,0 +1,53 @@
+{
+  "credentialStored": false,
+  "records": [
+    {
+      "code": "142001",
+      "source": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+      "file": "KDS-142001-official.json",
+      "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+      "bytes": 371687,
+      "retrievedAt": "2026-09-11T08:27:10.001635+00:00"
+    },
+    {
+      "code": "142040",
+      "source": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142040",
+      "file": "KDS-142040-official.json",
+      "sha256": "715c859bdd642183922d1d0d257a883851fb33373a55032e868d267886135aab",
+      "bytes": 212948,
+      "retrievedAt": "2026-09-11T08:27:10.112753+00:00"
+    },
+    {
+      "code": "411005",
+      "source": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/411005",
+      "file": "KDS-411005-official.json",
+      "sha256": "c9e6d33d6eae8b687730eb92c242f22f62ea2b8bc9c24a4b8de1c6b2560aa804",
+      "bytes": 53083,
+      "retrievedAt": "2026-09-11T08:27:10.212021+00:00"
+    },
+    {
+      "code": "411200",
+      "source": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/411200",
+      "file": "KDS-411200-official.json",
+      "sha256": "0ebb69fd3436d4793557a0b49c7d48deaa0c257b7ee59d89345c5dd2f64d3aed",
+      "bytes": 3635315,
+      "retrievedAt": "2026-09-11T08:27:10.585979+00:00"
+    },
+    {
+      "code": "411700",
+      "source": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/411700",
+      "file": "KDS-411700-official.json",
+      "sha256": "3f7aa2ae7ad259e6ade85ed9752d3fec0732655478eb9326c58c0801da92f682",
+      "bytes": 1369635,
+      "retrievedAt": "2026-09-11T08:27:10.830405+00:00"
+    },
+    {
+      "code": "115005",
+      "source": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/115005",
+      "file": "KDS-115005-official.json",
+      "sha256": "fbadf14f98c82adf4ccbb35353ae53ec5378caf129b6be996d0f115ddfb16172",
+      "bytes": 34084,
+      "retrievedAt": "2026-09-11T08:27:10.940245+00:00"
+    }
+  ]
+}

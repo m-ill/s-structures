@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {runCandidateAnalysis} from '../src/compute/product/candidateAnalysisClient.js';
+import {createModel} from '../src/core/model.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:0,y:0,z:3}];model.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];model.loadCases=[{id:'D',name:'D',type:'dead'}];model.loads=[{id:'F',type:'nodal',node:'B',dir:'-x',case:'D',P:10}];model.loadCombinations=[{id:'U',name:'U',type:'strength',factors:{D:1.4}}];
+const result=await runCandidateAnalysis({model,settings:{comboId:'U',pDeltaMethod:'off'},timeoutMs:5000});
+assert.equal(result.ok,true);assert.equal(result.combo.id,'U');assert.ok(result.memberResults.AB.xs.length);
+const controller=new AbortController();controller.abort();
+await assert.rejects(runCandidateAnalysis({model,settings:{},timeoutMs:5000,signal:controller.signal}),/CANCELLED/);
+let terminated=0;const fake=()=>({on(){},off(){},postMessage(){},terminate(){terminated++;}});
+await assert.rejects(runCandidateAnalysis({model,settings:{},timeoutMs:10,workerFactory:fake}),/CANDIDATE_TIMEOUT/);
+assert.equal(terminated,1);
+const mid=new AbortController(),pending=runCandidateAnalysis({model,settings:{},timeoutMs:1000,signal:mid.signal,workerFactory:fake});
+setTimeout(()=>mid.abort(),5);await assert.rejects(pending,/CANCELLED/);assert.equal(terminated,2);
+let release;
+const delayed=new Promise(resolve=>{release=resolve;});
+await assert.rejects(runCandidateAnalysis({model,timeoutMs:10,workerFactory:()=>delayed}),/CANDIDATE_TIMEOUT/);
+release(fake());await new Promise(resolve=>setTimeout(resolve,5));assert.equal(terminated,3,'late-created worker is terminated');
+console.log('PASS actual candidate Worker solve, pre/mid cancellation, timeout and termination');

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "a4f37351bed3a244c30ecb62a2aa89c18d8f8fb6af222d5e09ee71b4a1a3a2ef",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T08:52:40.212Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-center-band.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "8ac2ef96ab3e522f99600d2765a4fd588469ca130738459f14974abaf1006f03",
+      "error": null
+    }
+  ]
+}

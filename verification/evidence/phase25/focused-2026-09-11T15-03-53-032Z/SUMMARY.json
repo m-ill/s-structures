@@ -1,0 +1,49 @@
+{
+  "sourceHash": "2df2f0834f4cbed2b7866d8bb19d5141aced975a5fbda115f645e389761c27b7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:04:02.629Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-open-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 70,
+      "sha256": "b7fe27f3aa35e4d52360f550879e1b7bdd1d398a7d4f87dab6e8e3db57b44e74",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 276,
+      "sha256": "4670c0dd278ad3c24de4c63050cd450a4dbae6c457b3409dbcef63305e8626b5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-weight-ledger.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 173,
+      "sha256": "5d929ed5a0707f7980e7f4f6f957bf616a123c2e5ade9c2b00603f114d9934ac",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-webmcp-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4076,
+      "sha256": "9956116f5122086641f95f6c63b5335e8e5bb19b1dbbd3632494621de37313e1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-webmcp-footing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4750,
+      "sha256": "f87a53da2f2da9b966c6a8af3c4194dbb523a488665740e4f2de8dda0b1bf82e",
+      "error": null
+    }
+  ]
+}

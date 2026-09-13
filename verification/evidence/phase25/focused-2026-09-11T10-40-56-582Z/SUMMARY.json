@@ -1,0 +1,57 @@
+{
+  "sourceHash": "35caff2bc761cef6e68d28ffcd95e06c9658d7e06041c65a3fc229143a8b1d32",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T10:41:11.854Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-review-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1982,
+      "sha256": "966d8961091a98fef70d48e009ea4e694c83b1cba9b2efe9e99e465121bf516f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-product-catalog.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2345,
+      "sha256": "08a24f5a7e96a53a9034153255ea6911302c4b97a3760e8bc79f479ac586ed82",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2319,
+      "sha256": "7b7cfc514937fc0f1d50699fbb19c03cce73b2a41f0cc1efb983690ec1f1b82a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2269,
+      "sha256": "337cb4949cc182b4cc65a9d531514811e9b623fdf7b629a3653f96058e90212a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 974,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5105,
+      "sha256": "07f1570e470c6fc8114d1981b2d8830981221ad869137fad01502fff58c57d0e",
+      "error": null
+    }
+  ]
+}

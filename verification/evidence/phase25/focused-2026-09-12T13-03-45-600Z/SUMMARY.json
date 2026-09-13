@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f70a28d117b63dd28adc95ef78c230409851539351e0fc9aa13f47e6001d8110",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:03:46.318Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-open-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 162,
+      "sha256": "e732af96ddf1c9457c866c905f6e4bba773139c30e1918155bec882bae90f450",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-eccentric-punching.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 171,
+      "sha256": "579aac4817caf66c3a5ae9fc5fb3ce6ce8221c7c9a3e42a1c1174eae01cf9e20",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-footprint-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 100,
+      "sha256": "a16c4a659ce4608ad38f5d478418807c615bbe32e41b9c7c8123c6331ffabe48",
+      "error": null
+    }
+  ]
+}

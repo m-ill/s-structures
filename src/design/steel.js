@@ -5,46 +5,7 @@ import { attachMemberDemandTrace } from './designDemandTraceAttach.js';
 import { resolveCriterion } from '../core/analysisCriteria.js';
 import { checkSteelFlexureLtb } from './steel/flexureLTB.js';
 
-export function runDesignChecks(model, analysis, options = {}) {
-  const resultSet = options.resultSet;
-  const demandPackage = options.demandPackage || buildDesignDemandPackage(model, analysis, { resultSet });
-  const materialCache = new Map();
-  const sectionCache = new Map();
-  const getMaterial = (id) => cachedCatalogValue(materialCache, id, () => materialOf(model, id));
-  const getSection = (id) => cachedCatalogValue(sectionCache, id, () => sectionOf(model, id));
-  const steel = runSteelDesign(model, analysis, {
-    ...(options.steel || {}),
-    resultSet,
-    demandPackage,
-    materialOf: getMaterial,
-    sectionOf: getSection,
-  });
-  const concrete = runConcreteDesign(model, analysis, {
-    ...(options.concrete || {}),
-    resultSet,
-    demandPackage,
-    materialOf: getMaterial,
-    sectionOf: getSection,
-  });
-  const governing = [steel.summary.governing, concrete.summary.governing]
-    .filter(Boolean)
-    .reduce((best, item) => (!best || item.ratio > best.ratio ? item : best), null);
-  return {
-    ok: steel.ok && concrete.ok,
-    steel,
-    concrete,
-    demandPackage,
-    summary: {
-      ok: steel.ok && concrete.ok,
-      maxUtilization: Math.max(steel.summary.maxUtilization, concrete.summary.maxUtilization),
-      governing,
-      checkedMembers: steel.summary.checkedMembers + concrete.summary.checkedMembers,
-      skippedMembers: steel.summary.skippedMembers + concrete.summary.skippedMembers,
-      ngCount: steel.summary.ngCount + concrete.summary.ngCount,
-      warnCount: steel.summary.warnCount + concrete.summary.warnCount,
-    },
-  };
-}
+export {evaluateDesign as runDesignChecks} from './evaluation/designEvaluation.js';
 
 export function runSteelDesign(model, analysis, options = {}) {
   const resultSet = options.resultSet || analysis?.envelope || firstSolvedResult(analysis);
@@ -295,11 +256,10 @@ function ratioCheck(id, name, demand, capacity, expression) {
 
 function isSteelMember(member, material, section) {
   const kind = String(material?.kind || material?.category || '').toLowerCase();
-  if (kind === 'steel' || material?.strength?.steel) return true;
-  if (kind === 'concrete' || kind === 'timber' || material?.strength?.concrete) return false;
-  const materialText = `${material?.id || member.matId || ''} ${material?.name || ''}`.toLowerCase();
-  const sectionType = String(section?.type || '').toUpperCase();
-  return materialText.includes('steel') || ['H', 'BOX', 'PIPE', 'TUBE'].includes(sectionType);
+  // Geometry cannot establish a material: masonry/custom H sections are not steel.
+  // Legacy catalogs are normalized to an explicit kind by the material resolver.
+  if (kind) return kind === 'steel';
+  return Boolean(material?.strength?.steel) && !material?.strength?.concrete && !material?.strength?.masonry && !material?.strength?.timber;
 }
 
 function memberRole(demand) {

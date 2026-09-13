@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c082f52861eaad59bdcaea0a8ac436a46701832abf7c0150bcbc91d209191385",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T22:47:25.022Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-lap-ports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 108,
+      "sha256": "a58ef882b21a31de5a757f797d63a559de2e669af8000fd0c47761549057c827",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 195,
+      "sha256": "5af825bcea797b3639db3649dc9527d15cda1af16240fc46485f6e6e8399db24",
+      "error": null
+    }
+  ]
+}

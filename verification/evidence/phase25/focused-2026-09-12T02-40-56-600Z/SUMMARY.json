@@ -1,0 +1,33 @@
+{
+  "sourceHash": "78f7ee82bae853121fa0e07ca1301f8fa79d9cee523642248ac131a5be81ddf2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:41:02.115Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-balanced-region-search.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "41e7464e3c2e0ea2baf05916a03dff319df027c81bb68ebe724c7f945d73dbb8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "64d29d2733f4467b78be853feb184918d381ee62439fd05d7af0965ec93f848a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5167,
+      "sha256": "4e8fa5ea9f8cc096ddc24ae36ed7915fc551d156847f153f9897f448bacd547d",
+      "error": null
+    }
+  ]
+}

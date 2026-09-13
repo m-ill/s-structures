@@ -1,0 +1,90 @@
+{
+  "version": "p24-defects-v1",
+  "sourceCommit": "ed24e04809957754cdde38e7b949d7c184a0fd2b",
+  "items": [
+    {
+      "id": "D01",
+      "description": "timber 강도 검증 부족·masonry 종류 없음·불명확한 kind의 강재 추정",
+      "milestones": "M1",
+      "tests": "T01",
+      "status": "open"
+    },
+    {
+      "id": "D02",
+      "description": "공개 명령에 실제 배근·접합·기초 상세 입력 부족",
+      "milestones": "M1",
+      "tests": "T03, T18",
+      "status": "open"
+    },
+    {
+      "id": "D03",
+      "description": "콘크리트 전단 검토에 제공 스터럽 기여 미연결",
+      "milestones": "M4",
+      "tests": "T08",
+      "status": "open"
+    },
+    {
+      "id": "D04",
+      "description": "스터럽 간격 하한에서 부족 후보가 OK로 표시될 수 있음",
+      "milestones": "M4",
+      "tests": "T09",
+      "status": "open"
+    },
+    {
+      "id": "D05",
+      "description": "해석 완료와 상세 검토의 계산 소유권 중복·요약/상세 계약 분산",
+      "milestones": "M3",
+      "tests": "T06",
+      "status": "open"
+    },
+    {
+      "id": "D06",
+      "description": "전체 모델 hash 때문에 상세만 바뀌어도 해석 stale; 새 재사용 계약 필요",
+      "milestones": "M2",
+      "tests": "T04~T05",
+      "status": "open"
+    },
+    {
+      "id": "D07",
+      "description": "모든 재료에 250kN 예비 접합 지표·비동시 최대값, 주각/지반 개념 혼용",
+      "milestones": "M3, M6",
+      "tests": "T07, T14",
+      "status": "open"
+    },
+    {
+      "id": "D08",
+      "description": "실제 기초 면적 비교 없이 required-bearing-area가 항상 NOT_CHECKED",
+      "milestones": "M7",
+      "tests": "T15",
+      "status": "open"
+    },
+    {
+      "id": "D09",
+      "description": "기초 추천 두께와 배근 계산의 고정 유효깊이 불일치",
+      "milestones": "M7",
+      "tests": "T15",
+      "status": "open"
+    },
+    {
+      "id": "D10",
+      "description": "일부 필수검토가 검사 행이 아닌 제한 문구에만 있어 coverage 누락",
+      "milestones": "M3",
+      "tests": "T07",
+      "status": "open"
+    },
+    {
+      "id": "D11",
+      "description": "배근 추천→실제 적용→재계산→다른 검사 확인의 연결 결손",
+      "milestones": "M5",
+      "tests": "T12~T13",
+      "status": "open"
+    },
+    {
+      "id": "D12",
+      "description": "배근 일람표에서 실제 상세 기하·도면·수량으로의 연결 결손",
+      "milestones": "M8",
+      "tests": "T16",
+      "status": "open"
+    }
+  ]
+}

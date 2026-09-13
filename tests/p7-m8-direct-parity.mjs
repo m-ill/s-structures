@@ -13,6 +13,8 @@ assert.equal(direct.method, 'geometric-stiffness-second-order-direct');
 assert.equal(direct.provenance.routedMethod, 'direct');
 assert.equal(direct.convergence.converged, true);
 assert.equal(direct.result.recovery.qualified, true);
+assert.equal(direct.result.firstOrderMomentComparison.members.M1.status,'WITHIN_RECOVERY_INTERVALS');
+assert.equal(direct.result.firstOrderMomentComparison.fullMemberQualified,false);
 
 const expectedUx = (10 * 3 ** 3) / (3 * 200_000_000 * 8e-5);
 close(linear.disp.N2[0], expectedUx, 1e-8, 'independent cantilever displacement');

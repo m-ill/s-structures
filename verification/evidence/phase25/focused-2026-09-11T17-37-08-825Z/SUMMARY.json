@@ -1,0 +1,17 @@
+{
+  "sourceHash": "eaa4b50fcad529f090e5e16dabdaf89eae2340bed5449ed145705ee1708c4b94",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:37:09.069Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-hoop-layout-owner.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 51,
+      "sha256": "584f55e074e99ae0207eb3c21025a9cf58e298b5c930010fbbd2e97a978818a8",
+      "error": null
+    }
+  ]
+}

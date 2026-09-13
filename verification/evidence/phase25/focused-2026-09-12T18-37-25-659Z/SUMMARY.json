@@ -1,0 +1,25 @@
+{
+  "sourceHash": "cedb0889b26d9e312ade1a20e57b931a7ff9595655834f03d594222209977414",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:37:37.703Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-dependent-quantity-scope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11555,
+      "sha256": "9747d64246b6651e54004e16f23f66ab97ad28a7a70de7bd6591d47553b796c8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-application-comparison.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 260,
+      "sha256": "8aea8afb2f44055fb602bee52fe6f64e099e9951ae8a63fd7c477072ce7e967d",
+      "error": null
+    }
+  ]
+}

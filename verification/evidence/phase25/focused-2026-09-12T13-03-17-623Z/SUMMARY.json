@@ -1,0 +1,17 @@
+{
+  "sourceHash": "488f427ba39921a37d62d2a30ffc5abbb59461cd996855378c6ed103a15182ce",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:03:18.030Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-open-perimeter.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 158,
+      "sha256": "e732af96ddf1c9457c866c905f6e4bba773139c30e1918155bec882bae90f450",
+      "error": null
+    }
+  ]
+}

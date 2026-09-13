@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f98a922da8ce5fd046d47c30b77fd74331f1a639406795c57c05cb7655503bea",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:26:52.031Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 507,
+      "sha256": "c1e522604283170463b478e7226007b3d25b9ad182a38dfbc855452b4dc2329b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-footing-distribution-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10467,
+      "sha256": "4ec04adbdbeb602fe411431058dec39c3edaf5d525ba802e7f5468d3b51048b8",
+      "error": null
+    }
+  ]
+}

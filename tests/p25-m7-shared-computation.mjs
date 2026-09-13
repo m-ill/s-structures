@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {createSharedComputation} from '../src/core/sharedComputation.js';
+const pool=createSharedComputation();let runs=0,finish;
+const producer=signal=>{runs++;return new Promise(resolve=>{finish=resolve;});};
+const a=new AbortController(),b=new AbortController();
+const first=pool.run('same',producer,a.signal),second=pool.run('same',producer,b.signal);
+const cancelled=assert.rejects(first,/CANCELLED/);await Promise.resolve();a.abort();finish({value:5});await cancelled;assert.deepEqual(await second,{value:5});assert.equal(runs,1);assert.equal(pool.snapshot().active,0);
+let aborted=false;const all=new AbortController(),third=pool.run('last',signal=>new Promise((resolve,reject)=>signal.addEventListener('abort',()=>{aborted=true;reject(Error('stopped'));})),all.signal);await Promise.resolve();const lastCancel=assert.rejects(third,/CANCELLED/);all.abort();await lastCancel;assert.equal(aborted,true);
+const cleared=pool.run('clear',()=>new Promise(()=>{}));const clearRejection=assert.rejects(cleared,/CANCELLED/);pool.clear();await clearRejection;assert.equal(pool.snapshot().active,0);
+const result=await pool.run('clear',async()=>9);assert.equal(result,9);
+console.log('PASS one producer, independent cancellation, last-subscriber abort, clear and immediate key reuse');

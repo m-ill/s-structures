@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {reinforcementRegionsAt} from '../src/design/rc/reinforcementRegions.js';
+const a={id:'a',start:0,end:0.5},b={id:'b',start:0.5,end:1};
+assert.deepEqual(reinforcementRegionsAt([a,b],0),[a]);
+assert.deepEqual(reinforcementRegionsAt([a,b],0.5),[b]);
+assert.deepEqual(reinforcementRegionsAt([a,b],1),[b]);
+assert.deepEqual(reinforcementRegionsAt([a,b],0.5-1e-12),[a]);
+assert.deepEqual(reinforcementRegionsAt([a,b],0.5+1e-12),[b]);
+assert.deepEqual(reinforcementRegionsAt([a],0.5),[]);
+assert.deepEqual(reinforcementRegionsAt([a,{...b,start:0.4}],0.45).map(x=>x.id),['a','b']);
+for(const x of [-1,1.01,NaN,Infinity])assert.deepEqual(reinforcementRegionsAt([a,b],x),[]);
+assert.deepEqual(reinforcementRegionsAt([{...a,start:NaN},b],0.2),[]);
+console.log('PASS P25 region boundary ownership, gap/overlap preservation and invalid stations');

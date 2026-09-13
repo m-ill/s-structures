@@ -1,0 +1,17 @@
+{
+  "sourceHash": "43a4e60a3a404737a2cbea2074c5362462b9b82b15de55670b85ac38a7b135a2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:02:01.917Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-splice-objects.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 942,
+      "sha256": "5e496d555615d0520562ed915df3cc6a9403e69b6a2ae1489d77360efe95df8f",
+      "error": null
+    }
+  ]
+}

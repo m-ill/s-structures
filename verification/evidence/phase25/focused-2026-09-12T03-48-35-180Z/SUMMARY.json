@@ -1,0 +1,33 @@
+{
+  "sourceHash": "aa3bf47f296b5fe2efde42721a8751c9b9761db487117dfea0a7201a94644083",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:48:35.736Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-candidate-lifecycle.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 94,
+      "sha256": "592f007908b0e0194313e451cf83ef6c571843bf54cc60eaedf674b660bcd259",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-auto-proposal-ui.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 105,
+      "sha256": "17a203b5d8b51e7291456af326185f6f7b37e1bb74dbb8f50bb501baf1a15ff9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-practical-reuse-ui.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 88,
+      "sha256": "f13573d99ba089dfbfc91f253b05acbcd14b8706c1528312b6a010ed482a7f6e",
+      "error": null
+    }
+  ]
+}

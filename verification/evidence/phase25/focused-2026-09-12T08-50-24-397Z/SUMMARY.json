@@ -1,0 +1,25 @@
+{
+  "sourceHash": "4105a3e9da5bbc32ff201ae752333cd3f52d3d9dcaed88bc9cad97369158be7a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T08:50:24.934Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-splice-bar-mapping.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "910f651e32986558f74a2119f30ce2b5af0cfb2278c57debca1890b90c1ef2d8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-section-size-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 209,
+      "sha256": "1d97dc6ce6f9bd946d672f59e0c6d3380d8785332687f94cc29712219652ca96",
+      "error": null
+    }
+  ]
+}

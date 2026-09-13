@@ -1,0 +1,25 @@
+{
+  "sourceHash": "86aff0633d0677629d5d2bab8cc47ba82b07fcd60165ebebd30a6d12c9b288ef",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T11:44:03.907Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-differential-settlement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "5ee5d04f9e8dd51b36c9f73eaa6d2983578756e7d549b9d71732c2aa6478980e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-ground-sliding.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7714,
+      "sha256": "a3eaf6df9c484d72917f5031329ca335251d696809c31384928e5d2c1aac3b7d",
+      "error": null
+    }
+  ]
+}

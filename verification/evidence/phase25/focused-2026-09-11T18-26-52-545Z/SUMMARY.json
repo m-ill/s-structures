@@ -1,0 +1,17 @@
+{
+  "sourceHash": "7f0266a1b63589a73abfc1d4b1990a6894fb6055f9982d7cb135c3d6778ec0e3",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:26:53.507Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-drawing-retention.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 749,
+      "sha256": "de4661950d98100d0b0c01ed418180d8e57c5ef3abb0c890a036c647b5ba6121",
+      "error": null
+    }
+  ]
+}

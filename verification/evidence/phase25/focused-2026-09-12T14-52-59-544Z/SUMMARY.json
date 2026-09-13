@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c1d242f0ebdbf601aedc48dad9e1cb6d1914a4aa3bc0e102a8ac3076d6ffa88a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:52:59.881Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-class-a-piece-layouts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "2e173817140163dd43660024cffa3e53cd3fda87b4c8d2273891dda275f9df10",
+      "error": null
+    }
+  ]
+}

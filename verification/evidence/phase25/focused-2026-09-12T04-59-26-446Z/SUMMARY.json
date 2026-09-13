@@ -1,0 +1,41 @@
+{
+  "sourceHash": "cb425e394b18456e0546589e9fec9827819d8c7472b8dd7840c48b9ec3ec9e94",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:59:27.471Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-independent-repeat-pairs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 69,
+      "sha256": "5c41cd63a1ef741860d8f7820be0e7d123c9cdaa9c7439cc5384f618bd523b49",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 86,
+      "sha256": "e8579dde0a9e36966bad0ce617a7b11bc94a522b18d7cf5591d19cc8abb6202b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-hoop-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 456,
+      "sha256": "6553c0c2f9353526cfd5761281cf9ff4377b2f1b9c8e47149494aec17f59549a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "982ce05a2f8eabff4b8e8a889f2f7a805273f812e80002bfc5b4d5348864b301",
+      "error": null
+    }
+  ]
+}

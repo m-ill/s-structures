@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f5573ab91a820de274defc27a28282547966fc9f7d3c74f3e4964c26a0a33294",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:15:12.478Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-hoops.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 104,
+      "sha256": "ee9113a5010bb985491d38a70f9a78abb92602c2996ff6f853c70e034632acba",
+      "error": null
+    }
+  ]
+}

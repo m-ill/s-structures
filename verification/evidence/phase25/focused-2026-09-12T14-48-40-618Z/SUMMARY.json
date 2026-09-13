@@ -1,0 +1,17 @@
+{
+  "sourceHash": "81d4efea71fe48d00a0bde137d3ed38f1e101784e7840455991e43adb6c78863",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T14:48:43.700Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-query.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2834,
+      "sha256": "68ab5764ab4729990d7931a4312a077baf2b3d023a8bdec11b783110d9a1ac64",
+      "error": null
+    }
+  ]
+}

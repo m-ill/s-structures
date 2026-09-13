@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {connectionCandidateQuantity} from '../src/compute/product/connectionCandidateQuantity.js';
+const source={status:'OK',steelVolume:.012,basis:'prepared-nominal-centerline',quantityComplete:false,reason:'FABRICATION_PENDING'};
+const p={reinforcementQuantity:source},before=structuredClone(p),r=connectionCandidateQuantity(p);
+assert.equal(r.quantityBasis,'prepared-nominal-centerline');assert.equal(r.nominalGeometryAvailable,true);
+assert.equal(r.steelVolume,.012);assert.equal(r.quantityComplete,false);assert.equal(r.quantityReason,'FABRICATION_PENDING');assert.equal(r.fabricationQuantity,false);
+assert.deepEqual(p,before);
+assert.equal(connectionCandidateQuantity({reinforcementQuantity:{...source,basis:'panel-perimeter-proxy'}}).nominalGeometryAvailable,false);
+assert.throws(()=>connectionCandidateQuantity({}),/CONNECTION_CANDIDATE_QUANTITY_GEOMETRY_REQUIRED/);
+assert.throws(()=>connectionCandidateQuantity({reinforcementQuantity:{...source,steelVolume:NaN}}),/CANDIDATE_QUANTITY_REQUIRED/);
+console.log('PASS prepared connection quantity basis, incomplete fabrication, immutable source and invalid rejection');

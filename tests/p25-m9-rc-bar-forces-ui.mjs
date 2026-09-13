@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {installRcServiceControls} from '../src/ui/rcServiceControls.js';
+const document=createFakeIndexDocument(),panel=document.createElement('div');document.body.appendChild(panel);
+Object.getPrototypeOf(panel).replaceChildren=function(...nodes){for(const n of [...this.children])this.removeChild(n);for(const n of nodes)this.appendChild(n);};
+let request,resolve;const stored={ok:true,iterationId:'I',converged:true,comboIds:['S'],trace:[],stale:false};
+const bridge={runRcServiceIteration:async()=>stored,getCurrentModel:()=>({loadCombinations:[{id:'S',type:'service',factors:{L:1}}],loadCases:[{id:'L',type:'live'}]}),getWorkflowInputIdentity:()=>({inputHash:'h'}),getPracticalDesignContext:()=>({rcServiceIterations:{iterations:[]}}),getRcServiceIteration:()=>stored,cancelRcServiceIteration(){},releaseRcServiceIteration(){},getRcServiceBarForces:args=>{request=args;return {ok:true,rows:[{barIndex:args.offset+1,force:5}],nextOffset:args.offset===0?25:null};}};
+installRcServiceControls({target:{document},bridge,panel,onEvaluate(){}});
+const button=label=>document.querySelectorAll('button').find(b=>b.textContent===label),tick=()=>new Promise(resolve=>setTimeout(resolve,0));
+assert.equal(button('반복 결과 철근력 조회').disabled,true);button('RC 강성 반복해석').click();await tick();button('반복 결과 철근력 조회').click();await tick();
+assert.deepEqual(request,{iterationId:'I',comboId:'S',stationIndex:0,offset:0,limit:25});assert.equal(button('다음 철근력').disabled,false);
+button('다음 철근력').click();await tick();assert.equal(request.offset,25);assert.equal(button('다음 철근력').disabled,true);
+bridge.getRcServiceBarForces=()=>new Promise(r=>{resolve=r;});button('반복 결과 철근력 조회').click();
+const station=document.querySelectorAll('input').find(x=>x.getAttribute('aria-label')==='철근력 조회 단면 번호');station.value='2';station.dispatchEvent({type:'change'});resolve({ok:true,rows:[{force:999}],nextOffset:null});await tick();assert.equal(document.querySelectorAll('pre')[0].textContent,'');
+console.log('PASS native RC bar-force source, station/page selection and changed-query late-result rejection');

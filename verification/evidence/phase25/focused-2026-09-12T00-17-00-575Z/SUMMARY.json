@@ -1,0 +1,17 @@
+{
+  "sourceHash": "1340ac8e63f4d334be7c92a0ab1ff85d6bcb96987a887ac1d812190b658f8d1e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:17:00.886Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-spring-support.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 95,
+      "sha256": "e1cb7995498009b15b542de3a802950532e4b715f78a986b281d22ca2c7ce9c1",
+      "error": null
+    }
+  ]
+}

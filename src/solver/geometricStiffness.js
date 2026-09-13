@@ -1,6 +1,6 @@
 import { matMul, matTrans } from './linear3dElement.js';
 
-export const GEOMETRIC_STIFFNESS_VERSION = 'p7-m8-geometric-stiffness-fixed-end-axial-v2';
+export const GEOMETRIC_STIFFNESS_VERSION = 'p25-geometric-stiffness-coupled-axial-v3';
 
 export function localTangentGeometricStiffness12(axialForceTensionPositive = 0, L = 0) {
   return localGeometricBlock(Number(axialForceTensionPositive) || 0, L);
@@ -120,8 +120,13 @@ export function axialForcesFromDisplacements(assembly = {}, displacement = [], o
     const local = matMul(md.T, global.map((value) => [value])).map((row) => row[0]);
     const axialStiffness = Number(md.kl?.[0]?.[0])
       || ((Number(md.material?.E) || 0) * (Number(md.section?.A) || 0)) / Number(md.ax.L || 1);
+    // Average work-conjugate end axial forces from the complete local matrix.
+    // EA/L times extension omits axial-bending coupling and offset terms.
+    const completeRows=md.kl?.[0]?.length===12&&md.kl?.[6]?.length===12;
     const displacementForce = md.ax.L > 0
-      ? axialStiffness * ((local[6] || 0) - (local[0] || 0))
+      ? completeRows
+        ? local.reduce((sum,value,j)=>sum+(md.kl[6][j]-md.kl[0][j])*value/2,0)
+        : axialStiffness * ((local[6] || 0) - (local[0] || 0))
       : 0;
     const fixedEndForce = options.includeFixedEnd === false
       ? 0

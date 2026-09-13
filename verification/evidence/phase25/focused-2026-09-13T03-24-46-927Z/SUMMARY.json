@@ -1,0 +1,17 @@
+{
+  "sourceHash": "6ba4d2b3b2fa099cf3f4930d524df87feb1b68ff98dd9f680f45cf3c2b82c3b5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:24:50.514Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-long-term-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3353,
+      "sha256": "8bb372200b0f852cf8b269ac8c625da6075afb01ac92a79c8b22e5ae6a062286",
+      "error": null
+    }
+  ]
+}

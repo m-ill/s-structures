@@ -1,0 +1,17 @@
+{
+  "sourceHash": "2afb22df7ca3a8af9f391eab7b8a89bf95ae44cf84d37bcc851f666e411de5c1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T03:06:50.142Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8518,
+      "sha256": "a2d37ac2a93161599c1af859d7307962b0de79c9fecf711544113449d74017cb",
+      "error": null
+    }
+  ]
+}

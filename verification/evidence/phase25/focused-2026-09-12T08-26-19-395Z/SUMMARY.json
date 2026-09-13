@@ -1,0 +1,25 @@
+{
+  "sourceHash": "839ae9c857d7263aa60ad8e847d968e57ae9b381f71a2b7bd5c7d30075996f92",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T08:26:24.416Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-class-a-envelope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 80,
+      "sha256": "5b43e47ef738a9786b6a39896657785eea6d2f34d90a286a7224695e6a9a4c28",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-splice-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4700,
+      "sha256": "9b454314e59d63c0cc44862e2241cef3bdcdaba2415f0ed4d43e8ad10f997fd9",
+      "error": null
+    }
+  ]
+}

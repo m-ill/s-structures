@@ -127,6 +127,12 @@ function run() {
   assert.equal(directState.singleResultControlSystem, true);
   assert.equal(agent.getScreenState().nativeResultControls.resultScale.value, '50');
 
+  const savedGetLastResult=bridge.getLastResult,originalResult=bridge.getLastResult();
+  bridge.getLastResult=()=>({...originalResult,design:{...originalResult.design,steel:{memberResults:{}},practicalMemberResults:{}}});
+  agent.execute('showNativeMemberResult',{memberId:'M1'});
+  assert.match(propResult.innerHTML,/status NOT_CHECKED/,'missing prepared design must not show default OK');
+  assert.match(propResult.innerHTML,/check -/,'missing prepared design must not borrow a member-force ratio');
+  bridge.getLastResult=savedGetLastResult;
   console.log(JSON.stringify({
     ok: true,
     version: INDEX_NATIVE_RESULT_CONTROLS_VERSION,
@@ -428,6 +434,12 @@ class FakeElement {
   set innerHTML(value) {
     this._innerHTML = String(value ?? '');
     this._textContent = this._innerHTML.replace(/<[^>]*>/g, ' ');
+  }
+
+  replaceChildren(...children) {
+    for(const child of [...this.children])this.removeChild(child);
+    this._textContent='';this._innerHTML='';
+    for(const child of children)this.appendChild(child);
   }
 
   appendChild(child) {

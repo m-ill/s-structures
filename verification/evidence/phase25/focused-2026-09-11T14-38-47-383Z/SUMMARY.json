@@ -1,0 +1,17 @@
+{
+  "sourceHash": "988c21399ed63e00a32e9891ae4c74b405930d9bb5f4fa925f6d52d5999af34c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:38:50.609Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-webmcp-anchor-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3024,
+      "sha256": "a75d890f8b22577afc11949a7e142175f4bec76ccf6b07cca201fb17d1f1029c",
+      "error": null
+    }
+  ]
+}

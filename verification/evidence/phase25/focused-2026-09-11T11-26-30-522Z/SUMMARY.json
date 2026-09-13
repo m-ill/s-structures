@@ -1,0 +1,17 @@
+{
+  "sourceHash": "0c8abbadbe893042005e54af5fed676716e4a6d183e98e84515c88e32293c5ff",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:26:32.145Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-regional-candidates.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1395,
+      "sha256": "00ad9b660eaea44b4e0d8ff582816e9260a25482b7c20a602b7a7fc927361727",
+      "error": null
+    }
+  ]
+}

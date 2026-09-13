@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {formatPracticalCounts} from '../src/report/practicalSummaryFormat.js';
+import {appendRecordedCalculationPages} from '../src/report/phase24/recordedCalculationPages.js';
+const summary={counts:{NG:2,NOT_CHECKED:1,FAILED:0},incompleteCheckCount:3};
+assert.ok(formatPracticalCounts(summary).includes('미완료 검사 3'));
+assert.ok(formatPracticalCounts(summary).includes('중복 가능'));
+assert.ok(formatPracticalCounts(summary,'en-US').includes('Incomplete checks 3'));
+assert.ok(formatPracticalCounts({counts:summary.counts}).includes('미집계'));
+const output=[];
+appendRecordedCalculationPages({snapshot:{summary,checks:[]},pages:[],quantities:[],createPage:()=>({}),writeText:(_p,_x,_y,text)=>output.push(text)});
+assert.ok(output.join(' ').includes('미완료 검사 3'));
+console.log('PASS shared UI/report counts preserve overlapping incompleteness and unknown historic totals');

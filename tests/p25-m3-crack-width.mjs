@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {kdsCrackWidth} from '../src/design/rc/kdsCrackWidth.js';
+import {referenceClauseExists} from '../src/metadata/designRuleCatalog.js';
+// Independent worksheet in mm/MPa: rho=.02, ls=180, strain=max(.000652,.0006).
+const x={cover:40,diameter:20,spacing:150,H:600,neutralAxis:200,effectiveDepth:540,steelArea:800,width:300,steelStress:200,Es:200000,Ec:25000,effectiveTensileStrength:3,environment:'dry',loadCoefficient:.5,evaluationFactor:1.7};
+const r=kdsCrackWidth(x);
+assert.equal(r.status,'OK');
+assert.ok(Math.abs(r.effectiveConcreteDepth-400/3)<1e-10);
+assert.ok(Math.abs(r.effectiveRatio-.02)<1e-12);
+assert.ok(Math.abs(r.meanSpacing-180)<1e-10);
+assert.ok(Math.abs(r.meanStrainDifference-.000652)<1e-12);
+assert.ok(Math.abs(r.demand-.199512)<1e-10);
+assert.equal(r.capacity,.4);
+assert.equal(referenceClauseExists(r.codeReferences[0]),true);
+assert.equal(referenceClauseExists({...r.codeReferences[0],documentPart:'main'}),false);
+assert.equal(referenceClauseExists({...r.codeReferences[0],documentPart:'invented'}),false);
+assert.equal(kdsCrackWidth({...x,spacing:250}).spacingEquation,'4.1-3');
+assert.equal(kdsCrackWidth({...x,spacing:250.001}).meanSpacing,300);
+assert.equal(kdsCrackWidth({...x,steelStress:600}).status,'NG');
+for(const environment of ['dry','wet','corrosive','highly-corrosive'])assert.ok(kdsCrackWidth({...x,environment}).capacity>0);
+assert.equal(kdsCrackWidth({...x,effectiveTensileStrength:NaN}).status,'NOT_CHECKED');
+assert.equal(kdsCrackWidth({...x,loadCoefficient:1.01}).status,'NOT_CHECKED');
+assert.equal(kdsCrackWidth({...x,evaluationFactor:0}).status,'NOT_CHECKED');
+console.log('PASS KDS appendix width worksheet, spacing boundary, environment and invalid inputs');

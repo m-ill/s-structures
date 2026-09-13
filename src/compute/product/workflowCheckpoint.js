@@ -34,11 +34,16 @@ export function checkpointJsonLength(value,stack=new Set(),arrayItem=false) {
 }
 function segmentsFor(bundle) {
   const rows=[{path:['modelBook'],value:bundle.modelBook},{path:['inputIdentity'],value:bundle.inputIdentity},{path:['interruptedJobs'],value:bundle.interruptedJobs||[]}];
+  if(bundle.inputModel)rows.push({path:['inputModel'],value:bundle.inputModel});
   for(const kind of ['analyses','designs'])bundle.catalog[kind].forEach((value,i)=>rows.push({path:['catalog',kind,i],value}));
   bundle.reports.forEach(([id,report],i)=>{
     rows.push({path:['reports',i,0],value:id});
     for(const [key,value] of Object.entries(report))if(value!==undefined)rows.push({path:['reports',i,1,key],value});
   });
+  for(const scope of ['practical','inputHistory','rcService','rcSplice'])if(bundle[scope])for(const [key,value] of Object.entries(bundle[scope])) {
+    if(Array.isArray(value)&&value.length)value.forEach((entry,i)=>rows.push({path:[scope,key,i],value:entry}));
+    else rows.push({path:[scope,key],value});
+  }
   return rows;
 }
 export function createWorkflowCheckpointRepository({indexedDB=globalThis.indexedDB,storage,budget}={}) {
@@ -153,8 +158,8 @@ export function createWorkflowCheckpointRepository({indexedDB=globalThis.indexed
   async function matches(projectId,bundle){
     const {saved,manifest}=await header(projectId);
     if(saved.version===LEGACY)return {matches:sha256(JSON.stringify(manifest.catalog))===sha256(JSON.stringify(bundle.catalog))&&sha256(JSON.stringify(manifest.reports))===sha256(JSON.stringify(bundle.reports)),sha256:saved.sha256};
-    const rows=segmentsFor({...bundle,modelBook:null,inputIdentity:null}).filter(r=>['catalog','reports'].includes(r.path[0]));
-    const expected=manifest.segments.filter(s=>['catalog','reports'].includes(s.path[0]));
+    const rows=segmentsFor({...bundle,modelBook:null,inputIdentity:null}).filter(r=>['catalog','reports','practical','inputHistory','rcService','rcSplice'].includes(r.path[0]));
+    const expected=manifest.segments.filter(s=>['catalog','reports','practical','inputHistory','rcService','rcSplice'].includes(s.path[0]));
     if(rows.length!==expected.length)return {matches:false};
     for(let i=0;i<rows.length;i++){
       const row=rows[i],s=expected[i];if(JSON.stringify(row.path)!==JSON.stringify(s.path))return {matches:false};

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "970a435a2b6b843ba34848d708c8c7af8814b4b9a2c6c19fe9b5e7b0a783637a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:27:08.465Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-blockers.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 66,
+      "sha256": "b7bc378134a417f1adde84936e3dfed96f87422fe444e242d9af3643c84364dc",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-candidate-severity.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "5e164960029c59950be7b8e62518ab8c65187b63403cfdc26f9eb6fa1cf5c4d8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-candidate-application-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 251,
+      "sha256": "9d24fefe16aec3dae1e1b09445b8442b7efe0357d95de846654dec3d8d6dca1a",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3b61606c8d6d47a589fe4cffad39dee54bd6817fa5fc35a6565efec398fc2225",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:47:38.729Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-candidate-lifecycle.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 94,
+      "sha256": "592f007908b0e0194313e451cf83ef6c571843bf54cc60eaedf674b660bcd259",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f5573ab91a820de274defc27a28282547966fc9f7d3c74f3e4964c26a0a33294",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:08:56.468Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-cross-tie-assembly.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 77,
+      "sha256": "299d4d3ba4288bd34bf8f51cdb734eadc08274e6b862de272a2ce6f3c37f2514",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "f5a494d04871a3c53fa23ab40e3ae9f383f7999ade617e2d08b3d257d1bb5960",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-cross-tie-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 62,
+      "sha256": "6907054b0f91fcfb842eaca4a953c49068d16bd95be20bcfcfa8dcfc05fee532",
+      "error": null
+    }
+  ]
+}

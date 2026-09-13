@@ -1,0 +1,33 @@
+{
+  "sourceHash": "4d24a370b2ffb8fc07339a216fd4783bba21c8e07d9f84919a2f7c8df139cfd4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:37:15.803Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-rc-splice-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 157,
+      "sha256": "99ce5986a75b953487864c191083724223a7eef62b6253bc2ba6f2c55781b0d7",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-splice-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 179,
+      "sha256": "225b23a4dd095eedb3c1e0ae06e7e49faae178a4f0fdec556003a173583f5a23",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4979,
+      "sha256": "69209e4beb58d98157f584727fc87b9a7b273ed04341cdb510ae3b2f156d9f7c",
+      "error": null
+    }
+  ]
+}

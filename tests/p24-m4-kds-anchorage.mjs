@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {developmentLength,lapSpliceLength} from '../src/design/rc/rebar.js';
+
+assert.equal(developmentLength('D19',{fc:27,fy:400}).length,null,'legacy path must not publish a fictitious KDS length without conditions');
+assert.equal(developmentLength('UNKNOWN',{fc:27,fy:400}).status,'NOT_CHECKED');
+const legacyConditions={lambda:1,c:50,Ktr:0,topBar:false,coating:'uncoated'};
+assert.equal(developmentLength('D19',{fc:25,fy:400},legacyConditions).length,441);
+assert.equal(lapSpliceLength('D19',{fc:25,fy:400},{...legacyConditions,spliceClass:'B'}).length,573);
+import {tensionDevelopment,compressionDevelopment,hookDevelopment,tensionLap} from '../src/design/rc/kdsAnchorage.js';
+const input={db:25,fy:400,fck:25,lambda:1,c:62.5,Ktr:0,topBar:false,coating:'uncoated',sizeFactor:1};
+assert.equal(tensionDevelopment(input).requiredMm,720);
+assert.equal(tensionDevelopment({...input,topBar:true}).requiredMm,936);
+assert.equal(tensionDevelopment({...input,topBar:true,coating:'epoxy',clearCover:30,clearSpacing:50}).requiredMm,1224);
+assert.equal(tensionDevelopment({...input,c:1000}).requiredMm,720,'confinement denominator capped at 2.5');
+assert.equal(compressionDevelopment(input).requiredMm,500);
+assert.equal(hookDevelopment({...input,hookAngle:90}).requiredMm,480);
+assert.equal(tensionLap({...input,spliceClass:'B'}).requiredMm,936);
+assert.equal(tensionLap({...input,spliceClass:'A'}).status,'NOT_CHECKED','A class needs area/splice evidence');
+assert.equal(tensionDevelopment({...input,fy:600,c:20}).status,'NG','high-strength restrictions cannot be ignored');
+assert.equal(tensionLap({...input,db:10,c:25,fy:200,spliceClass:'B'}).requiredMm,300,'lap excludes development 300mm floor before class multiplier');
+assert.equal(tensionDevelopment({...input,lambda:0}).status,'NOT_CHECKED');
+console.log('PASS KDS 14 20 52:2024 clause-scoped length units, factors, bounds and missing-condition gates');

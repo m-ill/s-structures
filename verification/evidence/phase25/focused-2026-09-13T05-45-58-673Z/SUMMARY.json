@@ -1,0 +1,17 @@
+{
+  "sourceHash": "977eb285bd518931bfdb9ac358c83027a4157459ded25451d1affaf8ad289d81",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T05:45:59.028Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-post-attachment-review.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 50,
+      "sha256": "db9c1503389b18f649f91ba756ba6c0719c622669c1d1456c9eea268e39c285d",
+      "error": null
+    }
+  ]
+}

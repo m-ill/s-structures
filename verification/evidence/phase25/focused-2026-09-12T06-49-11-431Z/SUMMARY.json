@@ -1,0 +1,33 @@
+{
+  "sourceHash": "36101efe31fe717216eded82308e79d8bd1dfc28ffce632b11679330532d2bc7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:49:12.087Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 76,
+      "sha256": "6fb1fc496315a1de76fb7e3881cae6501245cc5c38f37237d6a714db60b90cb5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 201,
+      "sha256": "a293f85c797862166932a958dfa205123a592b8dde659429c282733fc87de5ea",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-appended-splice-mapping.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 77,
+      "sha256": "921dc8ab949d6b862b99aad42b27febc0327540d582cbde78295d7ecb8411a36",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f3db46e93303dcea3decf5429386390e74b3fa5c9fa82b18b6e87e33b5845caf",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:44:42.515Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-end-development.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4282,
+      "sha256": "35083a07c8ccf3fba5777ec2b920a0e07f8545ca6b380e349a72f21fe2d37af5",
+      "error": null
+    }
+  ]
+}

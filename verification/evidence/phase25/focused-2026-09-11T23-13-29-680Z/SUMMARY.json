@@ -1,0 +1,17 @@
+{
+  "sourceHash": "23dfa995dda30d52dba577e588062e2be59f963056b56d5843f3289389792ffa",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:13:30.065Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-splice-transfer-ui.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 157,
+      "sha256": "a409c012d6a92222adebb67074fde16e36b569878a5a845276e7a1f47d998d04",
+      "error": null
+    }
+  ]
+}

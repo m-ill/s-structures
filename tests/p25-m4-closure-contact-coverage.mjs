@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {closureHookContactCoverage} from '../src/design/rc/closureHookContactCoverage.js';
+import {outerHoopClosure} from '../src/design/rc/outerHoopClosure.js';
+const d={cover:.04,stirrups:{diameter:.01},tieBendInsideRadius:.025,tieHookTail:.06,tieClosure:'standard-135',tieClosureCorner:'+y+z',tieClosureSeparation:0};
+const p=.125+.015/Math.sqrt(2);d.bars=[{y:p,z:p,diameter:.02}];
+const closure=outerHoopClosure(d,{B:.4,H:.4}),distribution={status:'OK',explicitEnds:true,count:4,first:.2,last:.8,spacing:.2};
+const prepared={length:1,stirrupDistribution:distribution,outerHoop:{closureGeometry:closure},bars:[{cutLength:.9,points:[[.05,p],[.95,p]],segmentErrors:[0]}]};
+const r=closureHookContactCoverage(d,prepared);
+assert.equal(r.status,'OK',JSON.stringify(r));assert.deepEqual(r.commonBarIndices,[1]);assert.equal(r.fabricationApproved,false);
+assert.ok(r.checks.every(c=>c.candidates[0].coverage.coveredCount===4));
+const short=structuredClone(prepared);short.bars[0].points[1][0]=.5;
+const missing=closureHookContactCoverage(d,short);assert.equal(missing.status,'NOT_CHECKED');assert.equal(missing.checks[0].candidates[0].coverage.firstUncoveredIndex,2);
+const shifted=structuredClone(prepared);shifted.bars[0].points=shifted.bars[0].points.map(([x,y])=>[x,y-.002]);assert.equal(closureHookContactCoverage(d,shifted).status,'NOT_CHECKED');
+const spliced=structuredClone(prepared);spliced.bars=[{cutLength:null,splicePath:{status:'OK',pieces:[{points:[[.05,p],[.4,p]],segmentErrors:[0],z:p},{points:[[.6,p],[.95,p]],segmentErrors:[0],z:p}]}}];
+const gap=closureHookContactCoverage(d,{...spliced,stirrupDistribution:{...distribution,count:9,last:.9,first:.1,spacing:.1}});assert.equal(gap.status,'NOT_CHECKED');assert.equal(gap.checks[0].candidates[0].coverage.firstUncoveredIndex,4);assert.equal(gap.checks[0].candidates[0].coverage.uncoveredCount,1);
+const huge=structuredClone(prepared);huge.stirrupDistribution={status:'OK',explicitEnds:true,count:1000000,first:.2,last:999999.2,spacing:1};huge.bars[0].points[1][0]=1000000;
+assert.equal(closureHookContactCoverage(d,huge).checks[0].candidates[0].coverage.coveredCount,1000000);
+console.log('PASS both closure hooks contacting a common actual bar, missing end stations, shifted paths and bounded million-station coverage');
+
+const different=structuredClone(prepared);different.outerHoop.closureGeometry.hooks[1].primitives.find(p=>p.kind==='arc').center[1]-=.15;
+different.bars.push({cutLength:.9,points:[[.05,p-.15],[.95,p-.15]],segmentErrors:[0]});
+const differentBars=closureHookContactCoverage({...d,bars:[...d.bars,{y:p-.15,z:p,diameter:.02}]},different);
+assert.ok(differentBars.checks.every(c=>c.status==='OK'));assert.equal(differentBars.status,'NOT_CHECKED');assert.deepEqual(differentBars.commonBarIndices,[]);
+
+const {spatialHoopSupportCoverage,assignDistinctSupportBars}=await import('../src/design/rc/spatialHoopSupportCoverage.js');
+const four={...d,bars:[[p,p],[-p,p],[-p,-p],[p,-p]].map(([y,z])=>({y,z,diameter:.02}))};
+const full={...prepared,bars:four.bars.map(b=>({cutLength:.9,points:[[.05,b.y],[.95,b.y]],segmentErrors:[0]}))};
+const support=spatialHoopSupportCoverage(four,full);assert.equal(support.status,'OK',JSON.stringify(support));assert.equal(new Set(support.supportedBarIndices).size,4);
+const lost=structuredClone(full);lost.bars[2].points[1][0]=.5;assert.equal(spatialHoopSupportCoverage(four,lost).status,'NOT_CHECKED');
+assert.equal(assignDistinctSupportBars([[1],[1],[2],[3]]),null);
+const matching=assignDistinctSupportBars([[1,2],[1],[3],[4]]);assert.equal(new Set(matching).size,4);assert.equal(matching[1],1);
+console.log('PASS all three body bends plus common closure corner, distinct support assignment and missing body support');

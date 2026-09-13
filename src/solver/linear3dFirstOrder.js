@@ -260,6 +260,7 @@ function analyzeAllOnce(model, factors = null, options = {}) {
     }
     const componentShellBlockers = out.solver.components.flatMap((component) => component?.shellFem?.blockers || []);
     out.solver = summarizeSolverDiagnostics(out.solver.components);
+    out.constraintActions={version:'p25-constraint-actions-v1',signConvention:'force applied by constraint to structural DOF',units:{force:'kN',moment:'kN.m'},rows:out.solver.constraintForces.flatMap(group=>group.rows||[])};
     out.shellFem = summarizeShellResultQualification(out.shellResults, {
       expectedElementCount: domain.shellAssembly?.femElementCount || 0,
       inheritedBlockers: componentShellBlockers,

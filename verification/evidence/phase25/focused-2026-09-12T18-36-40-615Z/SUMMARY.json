@@ -1,0 +1,17 @@
+{
+  "sourceHash": "cedb0889b26d9e312ade1a20e57b931a7ff9595655834f03d594222209977414",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:36:52.203Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-dependent-quantity-scope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11359,
+      "sha256": "b1ab37088809c6a5228f4da10dba0b2f281610f861e6f87abec1beebe4350b9a",
+      "error": null
+    }
+  ]
+}

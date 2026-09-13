@@ -1,0 +1,41 @@
+{
+  "sourceHash": "8a6cef4719f70dc26f7205a160e6abd93aab94575ac2aa2472e16f1c24c84c41",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:30:04.613Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-finalizer-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 186,
+      "sha256": "70993114ba2ca53bdaeff100dde9747bce3672dec898c22c2933dc64be3b2f1d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 258,
+      "sha256": "13e7b49f159201007198ec8887c8e66719447fe6ef05dc6ffc42b918135777de",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-incomplete-aggregation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 171,
+      "sha256": "f3fecd19868394dfa196efd8de5c15792b9b9fc14a387c7dedd2bb149f1c511b",
+      "error": null
+    },
+    {
+      "file": "tests/m2-linear3d.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1039,
+      "sha256": "b6bed042d35d7f270df660066a066912c5db835a76c8897325a28ffc119ef708",
+      "error": null
+    }
+  ]
+}

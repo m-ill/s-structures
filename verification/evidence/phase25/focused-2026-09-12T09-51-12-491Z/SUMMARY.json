@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3f085f4b137a7c2b78003036bb314c5181f5c526614f15328c51aec7c1cad1ca",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:51:12.763Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-rebar-change-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "be89880d358ffa23e4899786722a96cbb4dcac2506204ea689974009c4daa505",
+      "error": null
+    }
+  ]
+}

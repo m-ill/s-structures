@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {evaluateGroundSettlement} from '../src/design/foundation/groundSettlement.js';
+const ground={id:'G',version:1,settlementMethod:'layered-constrained-modulus',settlementLayers:['2:10000:1'],settlementReference:'fixture',settlementLimit:.025,secondaryCompressionModel:'log-time-reference-strain',secondaryCompressionLayers:['0.005:10'],secondaryCompressionReference:'synthetic normalized strain slope and primary-end reference',consolidationElapsedDays:100};
+const input={ground,combo:{type:'service'},contact:{ok:true,qmax:100}};
+const r=evaluateGroundSettlement(input);
+assert.equal(r.status,'NG',JSON.stringify(r));assert.equal(r.primaryUltimateDisplacement,.02);assert.ok(Math.abs(r.secondaryCompression.displacementAtTime-.01)<1e-14);assert.ok(Math.abs(r.demand-.03)<1e-14);
+const before=evaluateGroundSettlement({...input,ground:{...ground,consolidationElapsedDays:5}});assert.equal(before.secondaryCompression.displacementAtTime,0);assert.equal(before.demand,.02);
+const later=evaluateGroundSettlement({...input,ground:{...ground,consolidationElapsedDays:1000}});assert.ok(Math.abs(later.secondaryCompression.displacementAtTime-.02)<1e-14);
+const shifted=evaluateGroundSettlement({...input,ground:{...ground,consolidationStages:['50:1'],consolidationElapsedDays:150}});assert.equal(shifted.demand,r.demand);
+const missing=evaluateGroundSettlement({...input,ground:{...ground,settlementLimit:.01,secondaryCompressionReference:undefined}});assert.equal(missing.status,'NG');assert.equal(missing.secondaryCompression.status,'NOT_CHECKED');
+console.log('PASS secondary decade/time-origin relation, primary preservation and newly exceeded limit');
+
+const {validatePracticalCommand}=await import('../src/modeling/practicalInputContract.js');
+const command={type:'ground-record',...ground,name:'fixture',sourceNote:'fixture',sourceReference:'fixture',basisStatus:'specified',allowableBearing:200,bearingBasis:'gross'};
+assert.doesNotThrow(()=>validatePracticalCommand(command));
+assert.throws(()=>validatePracticalCommand({...command,secondaryCompressionLayers:['-.005:10']}));
+assert.throws(()=>validatePracticalCommand({...command,secondaryCompressionLayers:['.005:0']}));
+assert.throws(()=>validatePracticalCommand({...command,secondaryCompressionLayers:['.005:10','.005:10']}));
+assert.throws(()=>validatePracticalCommand({...command,secondaryCompressionModel:undefined}));
+const invalidStage=evaluateGroundSettlement({...input,ground:{...ground,consolidationStages:['0:.5']}});assert.ok(invalidStage.requiredInputFields.includes('consolidationStages'));
+assert.equal(evaluateGroundSettlement({...input,ground:{...ground,secondaryCompressionLayers:['0:10']}}).secondaryCompression.displacementAtTime,0);
+console.log('PASS secondary schema, invalid parameters/targets and explicit zero coefficient');

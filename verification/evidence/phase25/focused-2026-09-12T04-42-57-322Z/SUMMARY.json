@@ -1,0 +1,25 @@
+{
+  "sourceHash": "42b2b7e3e7cc31a693b6a420cb6eead4f21d91f6d64b3ce9d9b89111d449b47e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:43:08.936Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "982ce05a2f8eabff4b8e8a889f2f7a805273f812e80002bfc5b4d5348864b301",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11320,
+      "sha256": "eb4f09a43ff428a4e8e4806cdc6c3cc109f7ab9e8ef509a0e784947ab0d3b40b",
+      "error": null
+    }
+  ]
+}

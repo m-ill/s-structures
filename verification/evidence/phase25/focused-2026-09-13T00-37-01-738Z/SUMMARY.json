@@ -1,0 +1,17 @@
+{
+  "sourceHash": "bce3b7292b78d5927a5573bafcc1008a855c477e13df95a9ab105b5b0fc1833f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:37:02.096Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-splice-service-response.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 76,
+      "sha256": "34732edc835538515c1e0597615eea417e826c37b4f1639ba2d7908afc880c13",
+      "error": null
+    }
+  ]
+}

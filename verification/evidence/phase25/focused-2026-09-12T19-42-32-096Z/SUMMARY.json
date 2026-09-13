@@ -1,0 +1,33 @@
+{
+  "sourceHash": "a913005e49f9f1794e685a3f111cca89cee7d4da24a6e78cbff0ad327a02ee98",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:42:35.926Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-remaining-repairs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "db36de4a21965796962e946c7baa8169aed2720b9474f1a00d0d63041a32bb33",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-memory-scaling.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2726,
+      "sha256": "d1a90ff7fdae76a2c31353c374ed69498f77d0f29fc2de5b951123877d8d74a8",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 768,
+      "sha256": "3e5f29dedbf07f015995b776141a282cf1c51ff716ba0a1fa7f45bb57212e863",
+      "error": null
+    }
+  ]
+}

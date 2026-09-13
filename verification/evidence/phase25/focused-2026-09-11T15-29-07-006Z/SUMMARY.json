@@ -1,0 +1,25 @@
+{
+  "sourceHash": "d991f41ea8f4712bc00a1177ed2f6fe27a33b84f1bfddedfcee7334b51f8a173",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:29:11.116Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-interface-steel-allocation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "67d644f6a026ea843ef07e830fb0eb6e7e19fdb030baa2ac34939069d514a6f5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-webmcp-interface-shear.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3821,
+      "sha256": "bfca9f7bd561085fb1ad4e3fc7d13f94e40ab17c951051d4880810cae9728444",
+      "error": null
+    }
+  ]
+}

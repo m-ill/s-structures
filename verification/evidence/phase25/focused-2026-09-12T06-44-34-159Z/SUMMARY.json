@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5db736dae5217f229af8b2758eb30f1b0a6222946f8a2db4d0cca30247eb30ba",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:44:34.711Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-appended-splice-mapping.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "a7a0d9daac3e70db9890e206119875f84e05a2401ede5b3a0ff817fdbe7b7e6b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-support-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 234,
+      "sha256": "58d8216bbbd52ad1285fba8b7b6229d69e23f1e07bdde0181925d85be16b551a",
+      "error": null
+    }
+  ]
+}

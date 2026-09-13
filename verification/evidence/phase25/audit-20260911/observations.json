@@ -1,0 +1,69 @@
+{
+  "scope": "read-only synthetic audit; supplied force arrays; no analysis solver",
+  "elapsedMs": 34,
+  "observations": [
+    {
+      "id": "A01",
+      "finding": "mandatory-code-check-remains-unfilled",
+      "observed": {
+        "complete": false,
+        "codeCheck": "NOT_CHECKED",
+        "reason": "RULE_UNAVAILABLE"
+      },
+      "source": "src/design/evaluation/practicalEvaluation.js"
+    },
+    {
+      "id": "A02",
+      "finding": "total-service-combination-can-omit-present-dead-load",
+      "observed": {
+        "deadLoadPresent": true,
+        "totalFactors": {
+          "L": 1
+        },
+        "deflectionStatus": "OK",
+        "basis": "CLAUSE_APPLIED"
+      },
+      "source": "src/design/rc/kdsServiceability.js"
+    },
+    {
+      "id": "A03",
+      "finding": "service-combination-also-evaluates-strength",
+      "observed": {
+        "combinationType": "service",
+        "strengthStatus": "OK"
+      },
+      "source": "src/design/evaluation/practicalEvaluation.js"
+    },
+    {
+      "id": "A04",
+      "finding": "adjacent-valid-regions-share-inclusive-boundary",
+      "observed": {
+        "inputAccepted": true,
+        "strengthStatus": "NOT_CHECKED",
+        "reason": "AMBIGUOUS_REINFORCEMENT_REGION"
+      },
+      "source": "src/design/rc/providedMember.js"
+    },
+    {
+      "id": "A05",
+      "finding": "source-integrity-does-not-validate-clause-existence",
+      "observed": {
+        "status": "CLAUSE_APPLIED"
+      },
+      "source": "src/metadata/designCodeBasis.js"
+    },
+    {
+      "id": "A06",
+      "finding": "generic-demand-adapter-accepts-unsorted-stations",
+      "observed": {
+        "stationOrder": [
+          0,
+          3,
+          1.5
+        ],
+        "acceptedCount": 3
+      },
+      "source": "src/design/evaluation/practicalEvaluation.js"
+    }
+  ]
+}

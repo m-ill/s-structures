@@ -1,0 +1,17 @@
+{
+  "sourceHash": "9bfab978e132ca34c188f4aa02c4457b70174a72f547d6fb2a9cd92d89ddc67c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:33:48.193Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-reuse-scope-lineage.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 4232,
+      "sha256": "819d1b48abc480e95c01bff58162597c176cf2788f646d725fc9ad62101c0ac4",
+      "error": null
+    }
+  ]
+}

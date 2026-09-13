@@ -1,0 +1,17 @@
+{
+  "sourceHash": "d896ba0fb9130836bca32f8187c1235adb75a4f4c9c4ba1d4ea27ed14e2de4b1",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:46:54.504Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-artifact-reader.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 73,
+      "sha256": "052422d4baf2c4e4b02fe5e52370779e2e329849ed03290372468e110521602e",
+      "error": null
+    }
+  ]
+}

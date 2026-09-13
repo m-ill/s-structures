@@ -1,0 +1,33 @@
+{
+  "sourceHash": "3c76e9e0cdb3cf27a1c8e12ed68243fa6c741b1c6dbc01ac7c1a189ad3b5ffe5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:05:01.778Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-column-position.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4111,
+      "sha256": "77c11e6f084257e324a1829102c3146142128e07b178ed052fb76fd36e4586e5",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-open-perimeter.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 65,
+      "sha256": "b7fe27f3aa35e4d52360f550879e1b7bdd1d398a7d4f87dab6e8e3db57b44e74",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-eccentric-punching.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 49,
+      "sha256": "4035ad426ec92cb3a1fe6c0eef45b5e8ba43f014e279fc552db784c993265b09",
+      "error": null
+    }
+  ]
+}

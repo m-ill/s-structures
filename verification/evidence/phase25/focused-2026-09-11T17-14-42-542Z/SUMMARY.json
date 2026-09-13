@@ -1,0 +1,33 @@
+{
+  "sourceHash": "c2ac16f86abfc8eb263140a75d638a7985b337c12bd48e281819dcbf4a308461",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:14:47.741Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-refined-arc-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 82,
+      "sha256": "300999f405f1ca9988c21bde0f6a8146e1fb0c7309634e6605de8d0aa477bd42",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-spatial-hoop-longitudinal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 111,
+      "sha256": "27455c9acd8f82f1bfe63d592f9da1f757aeb04f4433b8e4033433f7025739ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4758,
+      "sha256": "7ec4fe75b5335fb7deb4627227f7da4d8c7b37217f87d8ebe92accb9227876ab",
+      "error": null
+    }
+  ]
+}

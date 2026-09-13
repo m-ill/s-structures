@@ -1,0 +1,25 @@
+{
+  "sourceHash": "edb018d7616d1981e34e4800b3d5d007509ba2f822ff236b3db297a182509d30",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T20:16:31.856Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-coupled-geometric-axial.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 90,
+      "sha256": "0252a3b5953a7e14dd5504fa833bfa135ddf041121b01d524945f77d54bd0a0d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-coupled-candidate-checkpoint.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7488,
+      "sha256": "30a381cb8d6d137a00990a68bf4c011717196fcb07a349439a11007b70527c7a",
+      "error": null
+    }
+  ]
+}

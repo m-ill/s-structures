@@ -1,0 +1,33 @@
+{
+  "sourceHash": "254b6540434a199e5749d7c0de15344defd56f6e9c6692a3cee4ef83248f86bf",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:26:22.848Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-pair-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 59,
+      "sha256": "9941894a5fa5118825250bae99f6fc2eb2a12f3557d2d5dbca96ab687bb17bfe",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 91,
+      "sha256": "7ab874ef995c2e15064217b79fb8f5ac34e3c4705a6df6a81d181ac868996561",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 6900,
+      "sha256": "6ec2fd4a5daefe853ac5539aee2e6a902a79a48fa2901453436b96bd82194846",
+      "error": null
+    }
+  ]
+}

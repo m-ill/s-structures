@@ -1,0 +1,25 @@
+{
+  "sourceHash": "82644c964d31e2f1dc7ac6ccc73afc40f2c3b1156e89bda5eaf4ef6a8a089b37",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:00:03.372Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 14781,
+      "sha256": "3fb0f96f9913d72fe97478f81b3875f74a0b040e6dd93d94c9c7cc02c59f59d1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-quarantine-status.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 804,
+      "sha256": "1ad7e5dec2e68c711e81cb9edf57f399359ae602621812a319652cd009f089b9",
+      "error": null
+    }
+  ]
+}

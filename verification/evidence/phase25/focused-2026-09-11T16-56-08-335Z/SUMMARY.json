@@ -1,0 +1,33 @@
+{
+  "sourceHash": "f55993d668ff322245c7bda593be67196fdb82d2a25302ebfc8e0a122ee7c0bd",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:56:10.572Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1869,
+      "sha256": "5bef93bef5184b2f370ad75f2607a6a4d08320648e817ac4664e9e7cdd5ffb56",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-spatial-hoop-longitudinal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "c25219892df8a7363782eba5fccdea58e43d4b99cb27fb0b352d0417a3bd1701",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "081824610ed5db6ddff3972b222ce10c5d78546e12d9c52698b48d3569fd201b",
+      "error": null
+    }
+  ]
+}

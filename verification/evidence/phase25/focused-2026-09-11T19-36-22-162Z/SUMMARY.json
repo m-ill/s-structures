@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b51dcfc6a7a4bfe81b42300232e2b6185d3333f57e08a011eace29b538cf1dc4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:36:26.825Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-service-iteration.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 4425,
+      "sha256": "f8a2153020da894b3fc58742c23789fc021e4433e8eb2cd819abb9c486f0a10b",
+      "error": null
+    }
+  ]
+}

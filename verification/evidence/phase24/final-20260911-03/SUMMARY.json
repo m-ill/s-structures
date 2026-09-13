@@ -1,0 +1,49 @@
+{
+  "scope": "focused-change-regression-only",
+  "realBuildingTest": false,
+  "fullRegression": false,
+  "rows": [
+    {
+      "file": "tests/p24-m0-scope.mjs",
+      "exitCode": 0,
+      "elapsedMs": 714
+    },
+    {
+      "file": "tests/p24-m0-kcsc-sources.mjs",
+      "exitCode": 0,
+      "elapsedMs": 65
+    },
+    {
+      "file": "tests/p24-m1-details-input.mjs",
+      "exitCode": 0,
+      "elapsedMs": 985
+    },
+    {
+      "file": "tests/p24-m4-kds-anchorage.mjs",
+      "exitCode": 0,
+      "elapsedMs": 51
+    },
+    {
+      "file": "tests/p24-m4-provided.mjs",
+      "exitCode": 0,
+      "elapsedMs": 154
+    },
+    {
+      "file": "tests/p24-m7-footing.mjs",
+      "exitCode": 0,
+      "elapsedMs": 65
+    },
+    {
+      "file": "tests/p3-design-rc.mjs",
+      "exitCode": 0,
+      "elapsedMs": 747
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "elapsedMs": 2373
+    }
+  ],
+  "passed": true,
+  "totalMs": 5154
+}

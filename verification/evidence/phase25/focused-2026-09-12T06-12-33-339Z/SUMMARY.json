@@ -1,0 +1,25 @@
+{
+  "sourceHash": "68bb88ec592fc5c478da11dbc18be427b07a1660f2bc622253bccb8f1fb44559",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T06:12:33.934Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-support-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 218,
+      "sha256": "8688b081c60ba7dad3d00e0be774b3f30ce0653d1e30f6baa7b5fa82335c69b6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 98,
+      "sha256": "7ab874ef995c2e15064217b79fb8f5ac34e3c4705a6df6a81d181ac868996561",
+      "error": null
+    }
+  ]
+}

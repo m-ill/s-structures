@@ -1,0 +1,25 @@
+{
+  "sourceHash": "247bbacc0830bbf5b2bb3003975fd5ea86d35944bab93a891ec27dbccd32a690",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:10:32.183Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3165,
+      "sha256": "706b7bb49785deb9b368f937a867b822c170167e2ab95233d182723fb2805d00",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-quadratic-lap-slip.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 143,
+      "sha256": "4e9223d10660eb2b0e607635748af73ea89ac0851605cee9646db2b72fc2864a",
+      "error": null
+    }
+  ]
+}

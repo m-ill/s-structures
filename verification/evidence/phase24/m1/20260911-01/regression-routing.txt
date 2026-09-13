@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "currentMaterial": "SS275",
+  "steelChecked": 2,
+  "concreteChecked": 0,
+  "sectionTypes": [
+    "SQUARE",
+    "RECT"
+  ]
+}

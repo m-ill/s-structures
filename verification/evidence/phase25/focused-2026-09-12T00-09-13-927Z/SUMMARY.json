@@ -1,0 +1,33 @@
+{
+  "sourceHash": "3f86abe0a737b65e697ba2812a784d46374c625299cdb615f6229c7071c7c9ee",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:09:14.632Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-initial-strain.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 64,
+      "sha256": "3046cc166b5e4ded8ddaf98745ea39ed2cd3f3ad7eb966a4d2c637fb5368c10c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-replacement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 264,
+      "sha256": "5af825bcea797b3639db3649dc9527d15cda1af16240fc46485f6e6e8399db24",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-lap-ports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 137,
+      "sha256": "8026c1b76d4b095859f716d5fd59ad4f6affc5cf296a069f562928918ff1ab8d",
+      "error": null
+    }
+  ]
+}

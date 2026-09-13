@@ -1,0 +1,25 @@
+{
+  "sourceHash": "a13ea1f7bc658ac21ecf7e3eb12f994c8f09e07368cdb371804ea7ad0530e3a4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T22:39:25.126Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-displacement-recovery.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 52,
+      "sha256": "226c4d4ada973f3a9b89c5c8cfd77b4e537afa12e3e36d266dd1e1b70ad67492",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-force-extrema.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 75,
+      "sha256": "147d31806a1d1122f0fab046edfe2d0dbb830eb403f95d007459dfa6c8669f10",
+      "error": null
+    }
+  ]
+}

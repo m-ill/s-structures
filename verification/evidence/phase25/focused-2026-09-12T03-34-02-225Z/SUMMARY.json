@@ -1,0 +1,33 @@
+{
+  "sourceHash": "d99905a529c40cc4e1a0630ad7ed1d36343d10be80c6968caf39f6a144549781",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T03:34:06.361Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 75,
+      "sha256": "1c726f943551d4a76e23b56d7b22bdc9831c7d2401f28bc3396a5f39002d6723",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3739,
+      "sha256": "cbd6c6d9707ba821add443c253043ee9a05b3e347f9bb2a3466299cd1611f99e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-dependent-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "be8fab05a70ad13462507ca720ddcaaef4b8432e205fb365265aab9760e64787",
+      "error": null
+    }
+  ]
+}

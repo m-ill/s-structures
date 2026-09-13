@@ -1,0 +1,25 @@
+{
+  "sourceHash": "47886ca94779bbd8bc04321254e1bec5a3cb75724a962eef52605400a26d32a5",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:13:42.122Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-reaction-height.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4572,
+      "sha256": "364748553a866c6fe68dabb6a5fa4381f7cd80e4e89fcc1d6e2952efdf58eefa",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-reaction-height.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 128,
+      "sha256": "00f203cec82915f34d20a8b3461e8574816f6c01caa7817d8f3e72dccef22850",
+      "error": null
+    }
+  ]
+}

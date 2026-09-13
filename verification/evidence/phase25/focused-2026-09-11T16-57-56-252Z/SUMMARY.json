@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e36a17c32e1189634c1819cacd3278ed73476288df401a8a58484a6e598f14d6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:57:56.507Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-spatial-hoop-longitudinal.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 52,
+      "sha256": "513ac0867cf953b9ff9589c4001dbe1d938505f876b32ef460899726b262817a",
+      "error": null
+    }
+  ]
+}

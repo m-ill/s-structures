@@ -1,0 +1,17 @@
+{
+  "sourceHash": "e8c1f40f0ee828940086db4e8e8192d967de06906f273a270bf834947e1b85ec",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:54:12.297Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 71,
+      "sha256": "081824610ed5db6ddff3972b222ce10c5d78546e12d9c52698b48d3569fd201b",
+      "error": null
+    }
+  ]
+}

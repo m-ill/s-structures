@@ -1,3 +1,4 @@
+import {hasPreparedRcResults,selectRcMemberResults} from '../results/designResultSelection.js';
 export const RC_DETAILING_VERSION = 'm39-rc-detailing';
 
 export const STANDARD_REBARS = [
@@ -11,6 +12,14 @@ export const STANDARD_REBARS = [
 ];
 
 export function buildRcDetailingReport(model, analysis, options = {}) {
+  if(hasPreparedRcResults(analysis)){
+    const prepared=analysis.design.practicalRcSchedules||{};
+    const rows=Object.values(selectRcMemberResults(analysis)).map(row=>prepared[row.memberId]||{...row,requiredRebar:null,longitudinal:null,transverse:null,regions:[],scheduleInputStatus:'PREPARED_REINFORCEMENT_INPUT_UNAVAILABLE'});
+    const summary=analysis.design.practicalRcSummary||{};
+    return {version:'p25-rc-provided-schedule-v1',modelName:model?.meta?.name||null,basis:'provided-practical-checks',designTransferAllowed:false,
+      rows,summary:{...summary,memberCount:rows.length,okCount:rows.filter(r=>r.ok&&!r.incomplete).length,warnCount:summary.warnCount??0,ngCount:summary.ngCount??0,maxUtilization:summary.maxUtilization??null},
+      limitations:['Regions record the reinforcement inputs used by the evaluation. Missing regions are not inferred from preliminary bar recommendations.','Check status and KDS evidence remain authoritative; this schedule alone does not establish design qualification.']};
+  }
   const concrete = analysis?.design?.concrete;
   const rows = Object.values(concrete?.memberResults || {})
     .map((check) => detailRcMember(check, options))
@@ -52,7 +61,7 @@ export function detailRcMember(check, options = {}) {
     version: RC_DETAILING_VERSION,
     memberId: check.memberId,
     role,
-    status: check.status || 'UNCK',
+    status: [check.status,shearZ.status,shearY.status].includes('NG')?'NG':[check.status,shearZ.status,shearY.status].some(s=>!s||['NOT_CHECKED','UNCK'].includes(s))?'NOT_CHECKED':check.status,
     utilization: Number(check.utilization) || 0,
     governingCheck: check.governingCheck || null,
     comboId: check.comboId || null,
@@ -114,10 +123,12 @@ export function selectLongitudinalBars(requiredArea, options = {}) {
 }
 
 export function selectStirrups(requiredAvPerLength, options = {}) {
+  if(typeof requiredAvPerLength!=='number'||!Number.isFinite(requiredAvPerLength)||requiredAvPerLength<0)return {status:'NOT_CHECKED',reason:'SHEAR_REINFORCEMENT_DEMAND_REQUIRED',requiredAvPerLength:null,providedAvPerLength:null,spacing:null};
   const bar = STANDARD_REBARS.find((item) => item.id === (options.stirrupBar || 'D10')) || STANDARD_REBARS[0];
   const legs = Math.max(2, Number(options.stirrupLegs) || 2);
   const maxSpacing = Math.max(75, Number(options.maxStirrupSpacing) || 250);
   const minSpacing = Math.max(50, Number(options.minStirrupSpacing) || 75);
+  if(minSpacing>maxSpacing)return {status:'NOT_CHECKED',reason:'SPACING_CONSTRAINT_CONFLICT',requiredAvPerLength,providedAvPerLength:null,spacing:null};
   const required = Math.max(0, Number(requiredAvPerLength) || 0);
   const providedPerSet = legs * bar.area;
   const spacing = required > 0
@@ -125,6 +136,8 @@ export function selectStirrups(requiredAvPerLength, options = {}) {
     : maxSpacing;
   return {
     bar: bar.id,
+    status:providedPerSet/spacing+1e-12>=required?'OK':'NG',
+    reason:providedPerSet/spacing+1e-12>=required?null:'INSUFFICIENT_REINFORCEMENT',
     legs,
     spacing,
     requiredAvPerLength: required,

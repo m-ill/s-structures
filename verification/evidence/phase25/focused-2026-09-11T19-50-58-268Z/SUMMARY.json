@@ -1,0 +1,33 @@
+{
+  "sourceHash": "66fe43da8c5e5909a48e422526e5895056196f968f44d4e07937d1bb96ecca55",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:50:58.733Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-cracked-biaxial.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 95,
+      "sha256": "b4a44b36b1e8428aae1e5ba5be8d025cc69de2db81c2eeaa51cef10aced35684",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-cracked-section-owner.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "cd826823a7b01548ab37aec0607977d35368a43cc2ed0231525d9d6d97ab5d14",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-interface-traction.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 57,
+      "sha256": "d97ac61534c2d722b9a5edad90b974245458b1fa6da59e4322cb5a1278c1c5ad",
+      "error": null
+    }
+  ]
+}

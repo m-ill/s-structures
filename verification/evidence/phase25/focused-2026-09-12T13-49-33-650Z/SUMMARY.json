@@ -1,0 +1,25 @@
+{
+  "sourceHash": "5ee4888c4409ed2904ac7997495a94a601df6f2c6dba3ca7589ac4a452e98d98",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T13:49:34.272Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-rebar-change-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "572199aa589c19b75f11924905767811afce9114c7ec10874158fde76f3e9a9d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m9-candidate-application-view.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 317,
+      "sha256": "9d24fefe16aec3dae1e1b09445b8442b7efe0357d95de846654dec3d8d6dca1a",
+      "error": null
+    }
+  ]
+}

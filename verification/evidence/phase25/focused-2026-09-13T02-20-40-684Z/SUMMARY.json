@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f08991e8b0f1ddfadd67ec6c0ae7f93619ec6783df20a20749ae961e2f9f8260",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:20:42.247Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-targeted-undo.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 1304,
+      "sha256": "1ff292a5e752aa859b4546c22accf28119f035f4782465dedf7f52d09d1e0e1d",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "sourceHash": "0a13ae0f6013010fabd75631faad0ef911a25e4765f2f117aec0f3b3e4ad799e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:21:44.545Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-regional-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 180,
+      "sha256": "0a2d2bd648f38bd33af078507aa1ca6ed3c242990a6cc902452b264b3bf1afbd",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4426,
+      "sha256": "3eab303ed96a51e78aca04c47d39ae3b3d394bfaf265f932c5042f442a43b461",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-shear-spacing-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 95,
+      "sha256": "d8baea5b85520c600a6271ea870be7f3cb3f6a64ab272096fc2db13ab2e6192c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 180,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    }
+  ]
+}

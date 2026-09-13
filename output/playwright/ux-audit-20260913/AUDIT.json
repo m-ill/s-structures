@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-13",
+  "url": "http://127.0.0.1:5185/",
+  "scope": "read-only UI navigation and source inspection",
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      1024,
+      768
+    ]
+  ],
+  "reviewPanel": {
+    "x": 86.390625,
+    "y": 54,
+    "width": 1267.21875,
+    "height": 792,
+    "clientHeight": 790,
+    "scrollHeight": 2393,
+    "buttonsIncludingCollapsed": 55,
+    "inputsIncludingCollapsed": 52
+  },
+  "runtimeChanged": false,
+  "analysisRun": false,
+  "validScreenshots": [
+    "01-modeling.png",
+    "02-elastic.png",
+    "03-input.png",
+    "04-review.png",
+    "06-menu.png",
+    "07-elastic-1024.png",
+    "08-attachment-panel.png"
+  ],
+  "excludedScreenshots": {
+    "05-attachment.png": "clipped capture; superseded by 08"
+  },
+  "consoleErrors": [
+    "favicon.ico 404"
+  ],
+  "completeUXQualification": false
+}

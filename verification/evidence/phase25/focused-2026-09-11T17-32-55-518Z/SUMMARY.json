@@ -1,0 +1,17 @@
+{
+  "sourceHash": "c118c894318b69a7ca63e47685da1461f72cf2709838180b2d2d95959a77afe8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:32:55.796Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-confinement.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 69,
+      "sha256": "2e59a376649a3c9e3d108257616f46ac5cba3512840245596e1368568227948c",
+      "error": null
+    }
+  ]
+}

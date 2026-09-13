@@ -1,0 +1,17 @@
+{
+  "sourceHash": "23be90e45b54044f0c03dba40f406d0a0cb9a0cf0fa1d1a0d20adf30532ebb3f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T22:50:18.314Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-direct-refinement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 960,
+      "sha256": "f4c6da6ac43e40254a32b66279b425cb39536b98f5ea2b1ae14384a7cdf494e6",
+      "error": null
+    }
+  ]
+}

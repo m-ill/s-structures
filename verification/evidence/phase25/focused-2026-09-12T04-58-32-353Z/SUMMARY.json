@@ -1,0 +1,17 @@
+{
+  "sourceHash": "04083ccb29ea55fe87dbb9359d2d3312ca6826bc3272b630132c7108ccadabc6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T04:58:32.801Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-independent-repeat-pairs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 81,
+      "sha256": "5c41cd63a1ef741860d8f7820be0e7d123c9cdaa9c7439cc5384f618bd523b49",
+      "error": null
+    }
+  ]
+}

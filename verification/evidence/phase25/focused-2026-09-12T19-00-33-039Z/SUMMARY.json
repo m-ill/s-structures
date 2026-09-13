@@ -1,0 +1,25 @@
+{
+  "sourceHash": "ca87efa599d3138fe9818cbb5d4e1cf0a7b1ea01575dbd1379af5fe16b0cbcbf",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:00:41.438Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 297,
+      "sha256": "43458f15efe42c4c80661b03cf9231b58c87849b1f89a8559fdd6a1cae5d8ef1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-stability.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7840,
+      "sha256": "5f93f70ac36efedd9e13636dc4e209cefa25b0676d3d500234aa19281efa96cf",
+      "error": null
+    }
+  ]
+}

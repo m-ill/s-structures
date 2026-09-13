@@ -1,0 +1,41 @@
+{
+  "sourceHash": "6c4ccb437281bb96da2ee6f4c60c6b9476b9eefc3d254a1618432df82ba41333",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:21:27.159Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-regional-service.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1888,
+      "sha256": "70575718a245359fb9aaf26a0be60566c04ea6fa5cd16e4be0aff733903e143c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 199,
+      "sha256": "61e3f690a0b383dc7a21245207eb0e2f6349170bc4964382874064ef723d3cf2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-webmcp-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1358,
+      "sha256": "1686c6cdcac4e7a8d1412500191bd077222ecfe5a0262a672c1d28125c1f51b3",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m9-smoke.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4732,
+      "sha256": "5a8364af7a5205c67b58450d00944059bc64d289b76d3cab872c7f42a73ed646",
+      "error": null
+    }
+  ]
+}

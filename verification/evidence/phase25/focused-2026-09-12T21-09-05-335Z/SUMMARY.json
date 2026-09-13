@@ -1,0 +1,17 @@
+{
+  "sourceHash": "4711f9d57431e0e1eaaf7cefae2acca77f42cf9b3e09cf150ef174b5a6c40eab",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:09:05.851Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-candidate-scope.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 243,
+      "sha256": "d8b4715c4d8c28ead81969c6c3c5251c96487a40044d61ab422759b70846f243",
+      "error": null
+    }
+  ]
+}

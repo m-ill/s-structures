@@ -1,0 +1,33 @@
+{
+  "sourceHash": "b89f41640bd30cfeab8446d671b00308f70665cfa8966724b54d8acbf95b985c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:07:41.855Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-spatial-bar-fit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 186,
+      "sha256": "3fa4db3dab1409c9f603a8f52f4956d6e346bc2c82b1f71a97f9ab9c7f7031a9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-cross-tie-cage-fit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 197,
+      "sha256": "d43201a20dc58b2af2bdb9466ee725d9c02ba36cf2a6209286bfe7cbc86adbd9",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 8357,
+      "sha256": "fe618acd2dc3a9aadb50d74bd745295abbc74f0b1573a4b4435ce1ac103ee649",
+      "error": null
+    }
+  ]
+}

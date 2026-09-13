@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3f085f4b137a7c2b78003036bb314c5181f5c526614f15328c51aec7c1cad1ca",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:53:08.708Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m9-candidate-application-view.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 229,
+      "sha256": "1f2f12158d85c820f1015f10d2ed33de79d644f096e2c6028e9ed96420367c1f",
+      "error": null
+    }
+  ]
+}

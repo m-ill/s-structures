@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {perimeterBarLayout} from '../src/design/rc/perimeterBarLayout.js';
+import {kdsRectangularTies} from '../src/design/rc/kdsConfinement.js';
+const x={B:.42,H:.42,cover:.04,tieDiameter:.01,insideRadius:.02,yCount:4,zCount:4};
+const r=perimeterBarLayout([{y:0,z:0,diameter:20}],x);
+assert.equal(r.bars.length,12);assert.equal(r.pairs.length,4);
+const check=kdsRectangularTies({B:x.B,H:x.H,cover:x.cover,bars:r.bars.map(b=>({...b,diameter:b.diameter/1000})),diameter:.01,spacing:.15,firstStart:.075,firstEnd:.075,anchorBolts:false,closure:'standard-135',tail:.06,insideRadius:.02,system:'ordinary-tied-column',crossTieBarPairs:r.pairs});
+assert.equal(check.status,'OK',JSON.stringify(check));assert.equal(check.supports.supportedBarIndices.length,12);
+assert.equal(perimeterBarLayout([{diameter:20}],{...x,yCount:3,zCount:4}).bars.length,10);
+assert.equal(perimeterBarLayout([{diameter:20}],{...x,yCount:2,zCount:2}).pairs.length,0);
+assert.throws(()=>perimeterBarLayout([{diameter:20},{diameter:25}],x),/HOMOGENEOUS/);
+assert.throws(()=>perimeterBarLayout([{diameter:20}],{...x,B:.12,H:.12}),/GEOMETRY/);
+console.log('PASS perimeter bar count change, regenerated full lateral support and impossible/product-mixed layout');

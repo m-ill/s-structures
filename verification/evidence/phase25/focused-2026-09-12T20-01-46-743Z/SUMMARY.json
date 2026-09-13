@@ -1,0 +1,25 @@
+{
+  "sourceHash": "055de322e2edfa1eff545eb8640f2eeee48ef7795a98dee0f2afb6eccc19ae6f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:01:54.926Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-shear-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 166,
+      "sha256": "d8c4ec474b315fe01bdf2c8e1a3a51b9ee43804b60e94bf1f7ab32875cdcae33",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7764,
+      "sha256": "cf08f611e18a4b922984b3b660945b3217a87d6588c5254085b26ebdb386c723",
+      "error": null
+    }
+  ]
+}

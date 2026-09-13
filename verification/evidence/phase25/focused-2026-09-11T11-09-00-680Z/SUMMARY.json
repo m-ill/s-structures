@@ -1,0 +1,25 @@
+{
+  "sourceHash": "bac7f0776d7a5d86432af4a0061398802e7f4ef5ac019563bb155d7ca3e6e10e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T11:09:01.162Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-location-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 133,
+      "sha256": "a2aa66cb2fe491361c14c0a419c81dede1361cf682cc060d4ee6b81aa9b0d05d",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-shear-torsion-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 137,
+      "sha256": "a6aa1aa51ac87e1dbb0fbd060865279a2a629f6afc6916da410c38d2e0a8e6f1",
+      "error": null
+    }
+  ]
+}

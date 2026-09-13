@@ -1,0 +1,25 @@
+{
+  "sourceHash": "3e76b2d400a9a9fac2c70f9930ae2e464f7737cadd7b6da16600796fe65f6518",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:21:54.667Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-profile-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7757,
+      "sha256": "7251c5566523e7e520af7898890b1dab3574be015492f354fd98e521a464a805",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-shared-records.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 98,
+      "sha256": "e84e861a0e9134f313d5eb84831456d19e86f38567dc56d0bd234f6ce37dcd8f",
+      "error": null
+    }
+  ]
+}

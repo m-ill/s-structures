@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {installRcAttachmentReviewControls} from '../src/ui/rcAttachmentReviewControls.js';
+const document=createFakeIndexDocument(),panel=document.createElement('div');document.body.appendChild(panel);
+Object.getPrototypeOf(panel).replaceChildren=function(...nodes){for(const n of [...this.children])this.removeChild(n);for(const n of nodes)this.appendChild(n);};
+const events={};let hash='h',request,resolve;
+const bridge={getWorkflowInputIdentity:()=>({inputHash:hash}),getPracticalDesignContext:()=>({rcServiceIterations:{iterations:[{iterationId:'A',timeEffect:'attachment-effective-modulus',converged:true},{iterationId:'B',timeEffect:'sustained-effective-modulus',converged:true}]}}),composeRcServiceStages:input=>{request=input;return new Promise(r=>{resolve=r;});}};
+installRcAttachmentReviewControls({target:{document,addEventListener:(k,fn)=>{events[k]=fn;}},bridge,panel});
+const field=label=>document.querySelectorAll('input').concat(document.querySelectorAll('select')).find(n=>n.getAttribute('aria-label')===label);
+for(const [label,value] of [['부착 재령 해석 결과','A'],['최종 재령 해석 결과','B'],['검토 부재 ID','AB'],['동일 지속하중 조합 ID','S'],['부착 재령 (일)','90'],['최종 재령 (일)','365'],['상대변형 기준','cantilever-start'],['u축 허용변위 (m, 미검토 축은 비움)','0.001'],['v축 허용변위 (m, 미검토 축은 비움)',''],['w축 허용변위 (m, 미검토 축은 비움)',''],['허용변위 산정·검토 근거','component criterion']])field(label).value=value;
+const button=document.querySelectorAll('button').find(b=>b.textContent==='부착 후 변형 판정'),tick=()=>new Promise(r=>setTimeout(r,0)),out=document.querySelectorAll('pre')[0];
+field('허용변위 산정·검토 근거').dispatchEvent({type:'change'});
+button.click();assert.deepEqual(request.postAttachment.limits,{u:.001});assert.deepEqual(request.stages.map(s=>s.factor),[1,-1]);resolve({report:{content:'stored verdict'}});await tick();assert.equal(out.textContent,'stored verdict');
+button.click();hash='changed';resolve({report:{content:'wrong stale result'}});await tick();assert.match(out.textContent,/STALE_INPUT/);
+hash='h';button.click();events.pagehide();resolve({report:{content:'late result'}});await tick();assert.equal(out.textContent,'');
+events.pageshow();button.click();const oldResolve=resolve;events.pagehide();events.pageshow();button.click();oldResolve({report:{content:'obsolete'}});await tick();assert.equal(button.disabled,true);resolve({report:{content:'current'}});await tick();assert.equal(out.textContent,'current');assert.equal(button.disabled,false);
+console.log('PASS attachment UI common request, explicit limits, stale result and pagehide guards');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "20e60afef3a8aaf155a149a1d9072a9e1b6f914f8c6c8b926046f89640050292",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:45:16.496Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-rc-closure-inputs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 12361,
+      "sha256": "43dc510566180b203cab02bc7da004efdae756874b5b6007760f30ee875a4645",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-longitudinal-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 94,
+      "sha256": "70a64c3900bd2362b6754bc9ad2551830041bd3eb4d79576512d95e506177df7",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "95afdbd8a407d11009486e6e4728d8473c54baf76a07f72f0b1674675654252d",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T18:00:49.920Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-spatial-bar-fit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 123,
+      "sha256": "189cd47659396f200e4c06fe6526ad468212299ad08452704df5c0f655be9bce",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "e057544c78921830119e2b373467855c58cf110369076d39a7c7dba1a733e537",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6618,
+      "sha256": "551b48fe600a74536361a5dd4da0d9050af94ce093311afc541962121bc287f6",
+      "error": null
+    }
+  ]
+}

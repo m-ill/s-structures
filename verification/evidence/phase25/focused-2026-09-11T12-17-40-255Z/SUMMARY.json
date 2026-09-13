@@ -1,0 +1,17 @@
+{
+  "sourceHash": "8c133e038490426f567df3ddc32174e082150e4e416170c81d5e703c85fab5bc",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:17:42.008Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-shared-webmcp.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1556,
+      "sha256": "ac0febc8abd022544b07ea76506de5adce1e461c957b489157f174cb7fd879dc",
+      "error": null
+    }
+  ]
+}

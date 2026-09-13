@@ -1,0 +1,25 @@
+{
+  "sourceHash": "1fea7e7d2e1137b45ac2e0e589547e1204c0f22ed39a47d03be3b30087600a32",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:24:10.221Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2867,
+      "sha256": "f62a397a59faf14e60dc764524d6dec818a7b9c79092a35e7fa55584c9a7a92a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-end-anchorage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 143,
+      "sha256": "9320178d2df439cafe3ad94e69aa4b075ec96b82971dff32e53744dd7b572ef2",
+      "error": null
+    }
+  ]
+}

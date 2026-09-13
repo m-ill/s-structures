@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c13df08f9bc143cc27b182b39941ae30b5245c8b7b82a5fbadd35ba26fd8d763",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T01:16:50.605Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "72f76302ec9f14c02e440a64e88fef3f769810dc064494b09345059275bcac4e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-candidate.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 12871,
+      "sha256": "ddd2685f7056e9526be80a587401fcb10b9d9ea28aeb07626348cd8c03a49469",
+      "error": null
+    }
+  ]
+}

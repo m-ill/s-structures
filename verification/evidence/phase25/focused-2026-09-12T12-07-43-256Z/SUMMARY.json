@@ -1,0 +1,25 @@
+{
+  "sourceHash": "26dec7aeea74a1f1986e91c602ba280bd2f6bc4781f379c79ba510d7c212ea04",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:07:47.738Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-plan-clearance.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "15d54eefc26a16bec9d8638270db549a4b01e8a6744af27f27513513988d9757",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-differential-settlement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4105,
+      "sha256": "ee8b0054abdf5816367e90665ab3f22834ff77921ef400028e3116e6c48724fe",
+      "error": null
+    }
+  ]
+}

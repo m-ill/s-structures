@@ -2,6 +2,7 @@ import { migrateModel } from './migration.js';
 import { validateModel } from './validation.js';
 
 export function exportModel(model, options = {}) {
+  if(model?.designDetails||['materials','sections'].some(key=>model?.[key]?.some(row=>String(row.inputContract||'').startsWith('p24-'))))throw Object.assign(new Error('Use Product Book v2 to preserve practical design input compatibility.'),{code:'PRODUCT_BOOK_REQUIRED'});
   const migrated = migrateModel(model);
   const payload = {
     ...migrated.model,
@@ -44,4 +45,3 @@ export function parseModelJson(text) {
     };
   }
 }
-

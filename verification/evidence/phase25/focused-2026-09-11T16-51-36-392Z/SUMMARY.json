@@ -1,0 +1,41 @@
+{
+  "sourceHash": "78b71c59c66bf4762f001afeabcd35f38b668c07fe661c44a237bc3ca7029e6c",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:51:42.963Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-bent-bar-path-3d.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 63,
+      "sha256": "bc9f02625338239c6b908fb38fe8bc876d87f78b5dbc0b11646fbe5357af0200",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1927,
+      "sha256": "00c46d4eb71bc72318f17a73f82d50435a2bf544eee8d4d4505e066980e766aa",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-cross-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4317,
+      "sha256": "6b5d0c51cd8f5e1b9fa62cb17ce572d4990f60bdca7ffc868207bc1c2266be35",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-shared-records.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "b07f8390c348532263c331b09c9431e9f5ae53be66d2d9fbedf1ba6004bec1f4",
+      "error": null
+    }
+  ]
+}

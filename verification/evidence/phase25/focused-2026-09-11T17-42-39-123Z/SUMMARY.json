@@ -1,0 +1,17 @@
+{
+  "sourceHash": "1187bee7e4682d21926657fb160e5ff1412320a4f0307bd991512340adce7c4b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:42:39.378Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-spatial-face-contact.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 48,
+      "sha256": "548c8d08fd76eab985229148b8d3c85c331f6f2c34c08132d973f21791940be6",
+      "error": null
+    }
+  ]
+}

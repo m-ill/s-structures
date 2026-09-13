@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {renderReinforcementChanges} from '../src/ui/reinforcementChangeView.js';
+const doc=createFakeIndexDocument(),box=doc.createElement('div');doc.body.appendChild(box);
+const bars=Array.from({length:60},(_,i)=>({y:i*.001,z:-.02,diameter:20}));
+const changes=[{before:{id:'R',version:1,bars:bars.slice(0,4),stirrupSpacing:150},after:{id:'R',version:2,bars,crossTieBarPairs:['1:2'],stirrupSpacing:100}},{before:null,after:{id:'<script>bad</script>',version:1,bars:[{y:0,z:0,diameter:25}]}}];
+assert.equal(renderReinforcementChanges(doc,box,changes),true);
+assert.equal(box.querySelector('tbody').children.length,25);
+assert.ok(box.querySelectorAll('td').some(c=>c.textContent.includes('-20.000')));
+box.querySelectorAll('button').find(b=>b.textContent==='다음 철근').click();assert.equal(box.querySelector('tbody').children.length,25);
+box.querySelectorAll('button').find(b=>b.textContent==='다음 철근').click();assert.equal(box.querySelector('tbody').children.length,10);
+const select=box.querySelector('select');select.value='1';select.dispatchEvent({type:'change'});
+assert.equal(box.querySelector('tbody').children.length,1);assert.equal(box.querySelectorAll('script').length,0);
+assert.ok(box.querySelectorAll('p').some(p=>p.textContent.includes('기준 배근 자료 없음')));
+assert.equal(renderReinforcementChanges(doc,doc.createElement('div'),[]),false);
+console.log('PASS bounded 25-row reinforcement before/after display, units, region switching and text-only rendering');
+
+const ends=doc.createElement('div');renderReinforcementChanges(doc,ends,[{before:{id:'E',version:1,bars:[],startExtension:0,endExtension:.113,startFabricationShape:'straight'},after:{id:'E',version:2,bars:[],startExtension:.55,endExtension:.113,startFabricationShape:'straight',anchorageStartCriticalX:0}}]);
+assert.ok(ends.querySelectorAll('tr').some(r=>r.children[0]?.textContent==='시작 정착 연장 (mm)'&&r.children[1]?.textContent==='0'&&r.children[2]?.textContent==='550'));
+assert.ok(ends.querySelectorAll('tr').some(r=>r.children[0]?.textContent==='끝 정착 연장 (mm)'&&r.children[1]?.textContent==='113'&&r.children[2]?.textContent==='113'));
+assert.ok(ends.querySelectorAll('tr').some(r=>r.children[0]?.textContent==='시작 위험단면 위치 (mm)'&&r.children[1]?.textContent==='미기록'&&r.children[2]?.textContent==='0'));
+console.log('PASS extension and critical-section comparison converts metres to millimetres without conflating missing and zero');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "114e426f5367b39e135280d0de984f99ed69e097bed1d9159570866a86f5a34e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:09:28.761Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-quarantine-status.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 870,
+      "sha256": "4fe43bb2229e26741df1cad9cc26c92f3dcda80c7dd1ac1f6eb904d1135289be",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-geometry-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 564,
+      "sha256": "f8486b9439e222d7edf2b92adaecf90374f87050140cbffe8ca6bb790cd09165",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "code": "KDS 14 20 01",
+    "url": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+    "request": {
+      "docCode": "KDS 14 20 01"
+    },
+    "sha256": "f69cbd6a48675c0865ce9fc18ea25ca90ca55d4a4c943128460eebd0a540fffd",
+    "bytes": 772555,
+    "retrievedAt": "2026-09-11T06:45:34.969234+00:00",
+    "credentialUsed": false,
+    "editionStatus": "METADATA_REVIEW_REQUIRED"
+  },
+  {
+    "code": "KDS 14 20 40",
+    "url": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+    "request": {
+      "docCode": "KDS 14 20 40"
+    },
+    "sha256": "94f0cc688fd5dd07951e2f7bf81ac81c5dfc0d6f7b34ccde0698845a2525c248",
+    "bytes": 402493,
+    "retrievedAt": "2026-09-11T06:45:35.172236+00:00",
+    "credentialUsed": false,
+    "editionStatus": "METADATA_REVIEW_REQUIRED"
+  }
+]

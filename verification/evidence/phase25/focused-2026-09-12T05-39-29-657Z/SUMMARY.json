@@ -1,0 +1,33 @@
+{
+  "sourceHash": "0ff50628615eba3c8792d8578a9bcaf747f5b1dea0262caf7295cbc9b57166ce",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:39:30.493Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-credit-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 315,
+      "sha256": "4165b5dabba69a858f45d8fccbc769779c5c87c841680772254ff4b74a84e6ee",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-transverse-paths.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 77,
+      "sha256": "982ce05a2f8eabff4b8e8a889f2f7a805273f812e80002bfc5b4d5348864b301",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-joint-cross-tie-credit.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 108,
+      "sha256": "51a13a6489c397cea6bf87e8a5f925ec471ef18cbd8720f6dfd2a2e84fa5cfdc",
+      "error": null
+    }
+  ]
+}

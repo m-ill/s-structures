@@ -1,0 +1,25 @@
+{
+  "sourceHash": "af40ad80c87b4b326f9079f1f31b6e49f2cbf8d608efda453994f869aa22f03f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:22:37.045Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-cross-tie-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "f5a494d04871a3c53fa23ab40e3ae9f383f7999ade617e2d08b3d257d1bb5960",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-cross-tie-supports.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 70,
+      "sha256": "728dff204ebe1b7480ab84cc4e075862ae70f0c6f689eed6c6c81f81a4095da4",
+      "error": null
+    }
+  ]
+}

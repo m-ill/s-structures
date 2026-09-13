@@ -1,0 +1,17 @@
+{
+  "sourceHash": "162de4f7390a56668732475333ca01402fb4bd633a027be333d196401f3dbbf3",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:21:58.098Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-apply-rollback.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4327,
+      "sha256": "4ec431a49c8b1f7340479d4eab3410d40300fe084c6e7ed7f3069dc463eaa5e8",
+      "error": null
+    }
+  ]
+}

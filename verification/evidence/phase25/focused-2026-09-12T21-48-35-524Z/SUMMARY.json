@@ -1,0 +1,25 @@
+{
+  "sourceHash": "6c93214a215240e3fe265b077e6bd42c47ad1d5077c569455111752a270df540",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:48:38.695Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-shear-roundoff.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 102,
+      "sha256": "1764d07213c779af8a5854d270dd5bba46d802e2047ac18f5927ccaeb1e56978",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-webmcp-shear-repair.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 2818,
+      "sha256": "6b397e39788360ec801ada96f2be42308a5b1e3a5086b28b4e115abc12928e3f",
+      "error": null
+    }
+  ]
+}

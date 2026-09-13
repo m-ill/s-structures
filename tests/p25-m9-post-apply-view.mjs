@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createFakeIndexDocument} from './helpers/fakeIndexDom.mjs';
+import {renderPostApplyBlockers} from '../src/ui/postApplyBlockerView.js';
+const document=createFakeIndexDocument(),container=document.createElement('div');
+let reads=0;
+const followUp={evaluationId:'E',comparison:{detailsTruncated:true,comparisonDetailQuery:{evaluationId:'E',checkId:'a'.repeat(64)},completionBlockers:{total:100,counts:{input:2,designNg:3,method:0,review:95},rows:[],truncated:true,inputActions:{rows:[],unmappedCheckCount:2,truncated:true}}}};
+renderPostApplyBlockers({document,container,followUp,onReadComparison:async()=>{reads++;}});
+assert.ok(container.querySelectorAll('p').some(n=>n.textContent.includes('표시 0 / 잔여 100건')));
+const button=container.querySelectorAll('button').find(n=>n.textContent==='적용 기록 상세 불러오기');assert.ok(button);
+button.dispatchEvent({type:'click'});await new Promise(resolve=>setTimeout(resolve,0));assert.equal(reads,1);
+assert.equal(button.disabled,false);
+renderPostApplyBlockers({document,container,followUp:{...followUp,comparison:{...followUp.comparison,detailsTruncated:false}}});
+assert.equal(container.querySelectorAll('button').length,0);
+console.log('PASS truncated receipt display count and explicit detail read action');

@@ -1,0 +1,33 @@
+{
+  "sourceHash": "cd4956c8c84d3c97d13e9f2319ff80204ae889ad6044b9a92a00d44f54c729a8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:09:47.440Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4779,
+      "sha256": "c15a66a6995c631c942ae4ec3699a1bc129fb54f17703dea34b0990d327b2e0e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "4d8e5e783c4b52c076b3dcf765e722e519f566bcf706eba4fd0ddc3b769934bc",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-source-invalidation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2316,
+      "sha256": "341512dec789e8f6a4f11cc363842df02b2ac224134cb6dc2970d5ffd79ef573",
+      "error": null
+    }
+  ]
+}

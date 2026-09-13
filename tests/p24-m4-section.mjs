@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+const api=await import('../src/design/evaluation/practicalEvaluation.js');
+assert.equal(typeof api.sectionStressBlockResponse,'function');
+const section={B:0.3,H:0.5},bars=[[-0.2,-0.1],[-0.2,0.1],[0.2,-0.1],[0.2,0.1]].map(([y,z])=>({y,z,diameter:0.02,area:Math.PI*0.02**2/4}));
+const material={fc:30,fy:400,Es:200000},law={alpha:0.85,beta:0.8,epscu:0.003};
+const compression=api.sectionStressBlockResponse(section,bars,material,law,0,1e9);
+const As=bars.reduce((s,b)=>s+b.area,0);
+assert.ok(Math.abs(compression.N-(-0.85*30*(0.15-As)-400*As)*1000)<1e-6);
+assert.ok(Math.abs(compression.My)<1e-9&&Math.abs(compression.Mz)<1e-9);
+const a=api.sectionStressBlockResponse(section,bars,material,law,0.6,0.2),b=api.sectionStressBlockResponse(section,bars,material,law,0.6+Math.PI,0.2);
+assert.ok(Math.abs(a.N-b.N)<1e-8);assert.ok(Math.abs(a.My+b.My)<1e-8);assert.ok(Math.abs(a.Mz+b.Mz)<1e-8);
+const capacity=api.sectionCapacityAtAxial(section,bars,material,law,0,{My:10,Mz:30});
+assert.equal(capacity.ok,true);assert.ok(Math.abs(capacity.N)<1e-5);assert.ok(Math.abs(capacity.My/capacity.Mz-1/3)<1e-5);
+assert.throws(()=>api.sectionStressBlockResponse(section,bars,material,{},0,0.2));
+console.log('PASS T09 explicit-law section integration, independent axial resultant, biaxial/sign symmetry and axial equilibrium');

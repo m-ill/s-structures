@@ -1,10 +1,10 @@
+import {activeLibraryReferences} from './activeLibraryReferences.js';
 import { buildLibraryAudit, resolveMaterialRecord, resolveSectionRecord } from './registry.js';
 
-export const MATERIAL_LIBRARY_REPORT_VERSION = 'p3-m10-material-library-report-v1';
+export const MATERIAL_LIBRARY_REPORT_VERSION = 'p25-material-library-report-v5-referenced-validation';
 
 export function buildMaterialLibraryReport(model = {}) {
-  const materialRefs = new Set((model.members || []).map((m) => m.matId).filter(Boolean));
-  const sectionRefs = new Set((model.members || []).map((m) => m.secId).filter(Boolean));
+  const active=activeLibraryReferences(model),materialRefs=new Set(active.materialRefs),sectionRefs=new Set(active.sectionRefs);
   const audit = buildLibraryAudit(model);
   const materials = [...materialRefs].sort().map((ref) => summarizeMaterial(ref, resolveMaterialRecord(model, ref)));
   const sections = [...sectionRefs].sort().map((ref) => summarizeSection(ref, resolveSectionRecord(model, ref)));
@@ -33,6 +33,12 @@ function buildReportContract() {
 
 function buildSummary(audit, materialRefs, sectionRefs) {
   return {
+    referencedMaterialErrorCount: audit.referencedValidation.materials.reduce((n,row)=>n+row.errors.length,0),
+    referencedSectionErrorCount: audit.referencedValidation.sections.reduce((n,row)=>n+row.errors.length,0),
+    referencedMaterialWarningCount: audit.referencedValidation.materials.reduce((n,row)=>n+row.warnings.length,0),
+    referencedSectionWarningCount: audit.referencedValidation.sections.reduce((n,row)=>n+row.warnings.length,0),
+    referenceScope: audit.referenceScope,
+    unresolvedReferenceCount: audit.unresolvedReferences.length,
     materialReferenceCount: materialRefs.size,
     sectionReferenceCount: sectionRefs.size,
     unversionedReferenceCount: audit.unversionedReferences.length,
@@ -49,6 +55,7 @@ function buildSummary(audit, materialRefs, sectionRefs) {
 
 function buildAuditSummary(audit) {
   return {
+    referencedValidation: audit.referencedValidation,
     registryPolicy: audit.registryPolicy,
     scopeSummary: audit.scopeSummary,
     softDeletedItems: audit.softDeletedItems,
@@ -80,6 +87,8 @@ function summarizeMaterial(ref, record) {
     kind: record?.kind || null,
     elastic: record?.elastic || null,
     strength: record?.strength || null,
+    testEvidence: record?.testEvidence ? structuredClone(record.testEvidence) : null,
+    testEvidenceAssessment: record?.testEvidenceAssessment ? structuredClone(record.testEvidenceAssessment) : null,
     nonlinear: nonlinear ? {
       model: nonlinear.model || null,
       backbonePoints: Array.isArray(nonlinear.backbone) ? nonlinear.backbone.length : 0,
@@ -164,11 +173,16 @@ function sourceTrace(ref, label, record = null) {
 
 function buildReview(summary, materials, sections) {
   const blockers = [];
+  if (summary.referencedMaterialErrorCount > 0) blockers.push('referenced-material-schema-errors');
+  if (summary.referencedSectionErrorCount > 0) blockers.push('referenced-section-schema-errors');
+  if (summary.unresolvedReferenceCount > 0) blockers.push('unresolved-library-references');
   if (summary.materialErrorCount > 0) blockers.push('material-schema-errors');
   if (summary.sectionErrorCount > 0) blockers.push('section-schema-errors');
   if (summary.unversionedReferenceCount > 0) blockers.push('legacy-unversioned-references');
   if (summary.appendOnlyWarningCount > 0) blockers.push('append-only-policy-conflicts');
   if (summary.softDeletedReferenceCount > 0) blockers.push('soft-deleted-references-require-review');
+  if (materials.some((row) => row.testEvidenceAssessment?.designValueConsistency === 'NG')) blockers.push('reported-steel-strength-below-design-or-inconsistent');
+  if (materials.some((row) => row.testEvidenceAssessment?.identityConsistency === 'MISMATCH')) blockers.push('reported-certificate-identity-mismatch');
   const nonlinearBackboneReady = materials.every((row) => !row.nonlinear || row.nonlinear.backbonePoints >= 2);
   const sectionProvenanceReady = sections.every((row) => row.properties?.A && row.properties?.Iy && row.properties?.Iz);
   if (!nonlinearBackboneReady) blockers.push('nonlinear-backbone-incomplete');
@@ -177,9 +191,10 @@ function buildReview(summary, materials, sections) {
     calculationTraceReady: summary.unversionedReferenceCount === 0,
     nonlinearBackboneReady,
     sectionProvenanceReady,
-    customMaterialSourceReviewRequired: summary.materialWarningCount > 0,
-    sectionPropertyReviewRequired: summary.sectionWarningCount > 0,
+    customMaterialSourceReviewRequired: summary.materialWarningCount > 0 || summary.referencedMaterialWarningCount > 0,
+    sectionPropertyReviewRequired: summary.sectionWarningCount > 0 || summary.referencedSectionWarningCount > 0,
     ownerPolicyReviewRequired: true,
+    steelTestEvidenceReviewRequired: materials.some((row) => row.testEvidence != null),
     productionReady: false,
     blockers,
     agentDecision: blockers.length

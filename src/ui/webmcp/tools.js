@@ -1,10 +1,14 @@
 import { BudgetMap, createResourceBudget } from '../../core/resourceBudget.js';
 import { createWorkflowTools } from './workflowTools.js';
 import { createNonlinearTools } from './nonlinearTools.js';
-import { finiteJson } from '../../modeling/designInputCommands.js';
+import { createPracticalTools } from './practicalTools.js';
+import { command } from './schemas.js';
+import { finiteJson, DESIGN_INPUT_TYPES, DESIGN_INPUT_UNITS } from '../../modeling/designInputCommands.js';
 import { stableHash } from '../../core/stableHash.js';
 import { SOLVER_UNIT_POLICY } from '../../core/units.js';
 import { resultSliceUnits } from './resultUnits.js';
+import { DESIGN_MODULE_IDS } from '../../metadata/designModuleCapabilities.js';
+import { PRACTICAL_DESIGN_TYPES, DESIGN_RECORD_CHANNELS } from '../../modeling/practicalInputContract.js';
 
 export const WEBMCP_VERSION = 'sstructures-webmcp-v2';
 const KINDS = ['static', 'modal', 'responseSpectrum', 'buckling', 'linearTha'];
@@ -93,6 +97,21 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
   const workflow=createWorkflowTools({agent,bridge,tool,object,context,setView});
   const nonlinear=createNonlinearTools({agent,budget,tool,context});
   const definitions = [
+    ...createPracticalTools({bridge,tool,object}),
+    tool('get_design_input_schema','Read the shared typed input contract and field units for UI and WebMCP.',object({type:{type:'string',enum:DESIGN_INPUT_TYPES}},['type']),true,args=>{
+      if(PRACTICAL_DESIGN_TYPES.includes(args.type))return bridge.getDesignInputSchema(args);
+      const variants=command.oneOf.filter(schema=>schema.properties.type.enum.includes(args.type));
+      return {ok:true,version:WEBMCP_VERSION,units:DESIGN_INPUT_UNITS,schema:structuredClone(variants.length===1?variants[0]:{oneOf:variants})};
+    }),
+    tool('get_design_records','Read paginated material, section, reinforcement, connection, ground or foundation records. Does not solve or modify input.',object({channel:{type:'string',enum:DESIGN_RECORD_CHANNELS},id,version:{type:'integer',minimum:1,maximum:1000000},offset:{type:'integer',minimum:0,maximum:1000000},limit:{type:'integer',minimum:1,maximum:20}},['channel']),true,args=>({...bridge.getDesignRecords(args),inputIdentity:bridge.getWorkflowInputIdentity()})),
+    tool('get_design_modules', 'Read module scope, required checks, available controls and unresolved rule qualifications. Does not solve or modify inputs.', object({moduleId:{type:'string',enum:DESIGN_MODULE_IDS}}), true, args=>bridge.getDesignModules(args)),
+    tool('get_design_rule_catalog', 'Read RC system profiles, captured KDS clause headings, missing sources and Phase25 gap owners. Does not calculate or grant qualification.', object(), true, ()=>bridge.getDesignRuleCatalog()),
+    tool('get_design_dependencies','Read separate analysis, design and detail identities without solving.',object(),true,()=>bridge.getDesignDependencies()),
+    ...['undo','redo'].map(action=>tool(`${action}_design_input`,`${action} the latest typed input transaction if the revision is current. Supply expectedRequestId to reject undo/redo of a different transaction, including later user edits.`,object({inputHash:hash,expectedRequestId:id},['inputHash']),false,args=>{
+      if(args.inputHash!==bridge.getWorkflowInputIdentity().inputHash)fail('STALE_INPUT','Input changed.');
+      return bridge[action==='undo'?'undoDesignInputChanges':'redoDesignInputChanges']({expectedRequestId:args.expectedRequestId});
+    })),
+    tool('reuse_design_analysis','Explicitly derive a current analysis record when captured gross-elastic dependencies match; leaves historical records unchanged.',object({analysisRunId:id,inputHash:hash},['analysisRunId','inputHash']),false,args=>bridge.reuseDesignAnalysis(args)),
     tool('get_project_context', 'Read model units, input hash, case IDs and supported analysis capabilities. Does not run analysis.', object(), true, () => {
       const value = model();
       return {
@@ -171,7 +190,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       const jobId=`result-${globalThis.crypto?.randomUUID?.()||`${Date.now()}-${requests.size}-${jobs.size}`}`;
       jobs.set(jobId,{...context(),analysisRunId,caseId:row.caseId});return jobInfo(jobId);
     }),
-    tool('get_runtime_resources','Read managed estimates and optional browser aggregate memory. Unsupported measurements return unavailable, never zero. Does not run analysis.',object({includeAggregate:{type:'boolean'}}),true,args=>bridge.getRuntimeResources(args)),
+    tool('get_runtime_resources','Read managed estimates, termination-unconfirmed Worker reservations and allocation blocking/recovery state, plus optional browser aggregate memory. Unsupported measurements return unavailable, never zero. Does not run analysis.',object({includeAggregate:{type:'boolean'}}),true,args=>bridge.getRuntimeResources(args)),
     ...workflow.tools,
     ...nonlinear.tools,
   ];

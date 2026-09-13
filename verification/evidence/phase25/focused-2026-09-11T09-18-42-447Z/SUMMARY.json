@@ -1,0 +1,25 @@
+{
+  "sourceHash": "05da5b0c0f4a19408ee65297efe2917c29f771faed751fb14b3aafe0a40241ef",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T09:18:42.920Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-two-end-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 60,
+      "sha256": "7879f1f3ef3832463b6d0c77e9f33fe180215b172c2d3d5fa286b07db649a130",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 158,
+      "sha256": "435c5effbac773359fb6460afc3d4c65931e8a701b307af480c68befb3a7947a",
+      "error": null
+    }
+  ]
+}

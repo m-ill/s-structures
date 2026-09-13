@@ -1,0 +1,17 @@
+{
+  "sourceHash": "b7b72722000a05cfa210ac4a9a66613fcd0b5163e09cab3d7804aee9b56ee40e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T22:45:50.997Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-kds-second-order-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3128,
+      "sha256": "2ae345fc76545897104e129d4f0e718c8c522b1f2b22ee59e8c33929ce58d609",
+      "error": null
+    }
+  ]
+}

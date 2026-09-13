@@ -1,0 +1,25 @@
+{
+  "sourceHash": "c152d4099f5228fc64ff89bd21c5065d298b0e62f04dc25d6f420d1e8453a806",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T02:53:23.659Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-integrated-extrema.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 85,
+      "sha256": "7a4d0eebd5c18250685ac49013d4c15eda8e6e077478eac6dbffc95a03a1deb1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-creep-iteration.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 10630,
+      "sha256": "264a471b5bb6388937c155155976bc05197374cea05ac863217e17f26cc1e91e",
+      "error": null
+    }
+  ]
+}

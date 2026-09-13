@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {prepareRemainingDesignRepairs} from '../src/compute/product/remainingDesignRepairs.js';
+const model={members:[{id:'M'}],designDetails:{reinforcement:[{id:'R',memberId:'M',version:1}],connections:[{id:'J',nodeId:'B',version:1}],foundations:[{id:'F',nodeId:'A',version:1},{id:'F',nodeId:'A',version:2}]}};
+const row=(id,entityId,checkId,status='NG')=>({id,entityId,checkId,status,comboId:'U'});
+const checks=[row('m1','M','rc-shear-y'),row('m2','M','rc-section-strength'),row('j','joint:B','joint-confinement'),row('f','foundation:A','foundation-flexure'),row('nc','M','rc-stability','NOT_CHECKED'),row('ok','M','rc-cover','OK')];
+const plan=prepareRemainingDesignRepairs({model,checks,evaluationId:'EV',inputHash:'a'.repeat(64)});
+assert.equal(plan.targets.length,3);assert.equal(plan.ngCheckCount,4);assert.equal(plan.incompleteCheckCount,1);
+assert.deepEqual(plan.targets[0].planQuery,{tool:'plan_design_candidates',arguments:{evaluationId:'EV',memberId:'M'}});
+assert.deepEqual(plan.targets[0].basisCheckIds,['m1','m2']);assert.equal(plan.targets[2].records[0].version,2);
+assert.equal(plan.automaticApplicationAllowed,false);
+const ambiguous=structuredClone(model);ambiguous.designDetails.foundations.push({id:'G',nodeId:'A',version:1});
+const a=prepareRemainingDesignRepairs({model:ambiguous,checks:[checks[3]],evaluationId:'EV',inputHash:'b'.repeat(64)});
+assert.equal(a.targets[0].planQuery,undefined);assert.equal(a.targets[0].reason,'AMBIGUOUS_DETAIL_TARGET');
+const locked=structuredClone(model);locked.designDetails.reinforcement[0].locked=true;
+assert.equal(prepareRemainingDesignRepairs({model:locked,checks:[checks[0]],evaluationId:'EV',inputHash:'c'.repeat(64)}).targets[0].reason,'DETAIL_LOCKED');
+const many=prepareRemainingDesignRepairs({model,checks:Array.from({length:1000},(_,i)=>row('c'+i,'M'+i,'rc-shear-y')),evaluationId:'EV',inputHash:'a'.repeat(64)});
+assert.equal(many.targets.length,32);assert.equal(many.omittedCheckCount,968);assert.equal(many.truncated,true);
+console.log('PASS grouped current repair targets, exact tool arguments, latest details, ambiguity/locks and bounded output');

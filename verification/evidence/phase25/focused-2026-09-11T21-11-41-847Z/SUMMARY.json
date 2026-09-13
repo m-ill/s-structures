@@ -1,0 +1,41 @@
+{
+  "sourceHash": "c172916ef05a3fc6d63efe498680fccb70ba6096a134d4c72cb683a804b6069e",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T21:11:50.081Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-rc-bar-forces.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 54,
+      "sha256": "4b4aaf62763a82f64ecbb677e672c3d21df3c6f7279547b3cea8888aa2561c76",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-rc-coupled-policy.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7625,
+      "sha256": "39297e87134449dfdaeebf6578b5ffeab4c4386beea8a8aa8526203656d9ed15",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-rc-working-set.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 166,
+      "sha256": "dcf54e55f455c8190221acd7c4b485d492de362a0a1c5551fd8e9966e7682b87",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-cracked-biaxial.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 89,
+      "sha256": "b4a44b36b1e8428aae1e5ba5be8d025cc69de2db81c2eeaa51cef10aced35684",
+      "error": null
+    }
+  ]
+}

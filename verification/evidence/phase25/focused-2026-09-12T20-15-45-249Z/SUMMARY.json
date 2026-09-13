@@ -1,0 +1,41 @@
+{
+  "sourceHash": "f6e0f8c241757836617497b1ac3863647adaa3296217880811fc24722605546f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T20:15:54.185Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-principal-section-root.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 97,
+      "sha256": "f89f10d484535a31086b42a0a10d564dd48240edecc5a0a4055fe3deea4b47fb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-profile-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 7606,
+      "sha256": "b789d1b6450ab2f7c585c12a15e1ca438d92c5d3b91d4a7a4f91658c5bb756a3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-moment-directions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 890,
+      "sha256": "fefeade8992f122efe43aca967f73a0946ad102d9f6f482d070dc60511bf7a4b",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-high-strength.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 80,
+      "sha256": "51fac9f0bced51490810809c7b924a9c28d36075babe5bfa6cb572524400bc34",
+      "error": null
+    }
+  ]
+}

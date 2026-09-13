@@ -1,0 +1,17 @@
+{
+  "sourceHash": "96640c4f28aa4b1500d8524014b3db4212c094a1df1b3b7907d48374796d2335",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T02:37:56.016Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-webmcp-longitudinal-repair.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 5136,
+      "sha256": "284f3f6958f7ee2210a382c494ea74ff785052899330e4e337bd6e2f52f6e8e0",
+      "error": null
+    }
+  ]
+}

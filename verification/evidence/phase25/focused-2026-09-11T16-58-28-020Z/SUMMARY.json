@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f9bde2e386ebf034a69aa2fc3b6df093f5e2176fa46bf5561dd50e4cd2cfefc8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:58:28.362Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-spatial-hoop-longitudinal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 55,
+      "sha256": "513ac0867cf953b9ff9589c4001dbe1d938505f876b32ef460899726b262817a",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-repeated-spatial-path.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 67,
+      "sha256": "ea76b605985c3f23e61e02e47020410326cccf8eba7584d11448a4abbba1215a",
+      "error": null
+    }
+  ]
+}

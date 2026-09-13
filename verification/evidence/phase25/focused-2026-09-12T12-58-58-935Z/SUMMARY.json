@@ -1,0 +1,17 @@
+{
+  "sourceHash": "bf6fb2a9fe0f612e43dff9db046f2ef50922cb370d8e1a46de13eccbad9e63c8",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T12:58:59.338Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-eccentric-punching.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 154,
+      "sha256": "579aac4817caf66c3a5ae9fc5fb3ce6ce8221c7c9a3e42a1c1174eae01cf9e20",
+      "error": null
+    }
+  ]
+}

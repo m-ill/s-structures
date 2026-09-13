@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {kdsMemberShear} from '../src/design/rc/kdsShear.js';
+const input={fck:25,fy:400,bw:300,h:600,d:500,Ag:180000,Av:160,s:150,N:0,V:100};
+const r=kdsMemberShear(input);
+assert.equal(r.Vc,125);assert.ok(Math.abs(r.capacity-253.75)<1e-10);
+assert.ok(Math.abs(r.VsUpperBound-675)<1e-10,'KDS 2022 limit uses 0.2(1-fck/250)fck bw d');
+assert.equal(r.minAv,39.375);assert.equal(r.maxSpacing,250);
+assert.equal(kdsMemberShear({...input,N:100}).Vc,0,'tension ignores concrete contribution conservatively');
+assert.equal(kdsMemberShear({...input,s:400}).status,'NG');
+assert.equal(kdsMemberShear({...input,fy:600}).status,'NOT_CHECKED');
+assert.ok(r.codeReferences.every(x=>x.clause&&x.sha256));
+console.log('PASS official KDS shear concrete/stirrup contributions, 2022 upper bound, spacing/minimum and references');

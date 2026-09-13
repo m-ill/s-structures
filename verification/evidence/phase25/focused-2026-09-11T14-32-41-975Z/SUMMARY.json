@@ -1,0 +1,33 @@
+{
+  "sourceHash": "c0312b541255d9c64a1a80f40fe165e9d4be23ab4d35c673dcaa193b07216b44",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:32:45.010Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-webmcp-anchor-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2676,
+      "sha256": "65373d2d9c4e3c1fe0b1457b5882e728c90b485787b9ccfc1578701e30bf0cce",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-region-constraints.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "f47efde1b3add94d9649409e9b9c8cf88b47d7d79b1843b6c538b375e2f57c6c",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-anchor-bolt-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "27ae129fa9ae336a74a5bf61541a9e0564e5b52d761573ac8ee3e84e957a4b58",
+      "error": null
+    }
+  ]
+}

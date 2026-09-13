@@ -1,0 +1,17 @@
+{
+  "sourceHash": "2f17b54b9093c1390b01dabe59e8d63bb0cf8e85b07bd73a7577b40251995043",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T00:44:52.839Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 852,
+      "sha256": "f6de1d276dce69e841adf56b84f30f704030ad9b0530d32371b30609b592ce23",
+      "error": null
+    }
+  ]
+}

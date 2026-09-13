@@ -1,3 +1,4 @@
+import {formatDesignCodeBasis} from '../designCodeBasisFormat.js';
 import { stableHash } from '../../core/stableHash.js';
 import { escapeHtml } from '../reportFormat.js';
 import { P11_KOREAN_FONT_STACK, P11_REPORT_LOCALES, createReportTranslator, formatReportNumber } from './i18n.js';
@@ -82,9 +83,11 @@ export function renderProductionReport(snapshot, locale, options = {}) {
       const heading = locale === 'ko-KR' ? '탄성 설계 검토 · 예비' : 'Elastic design review · preliminary';
       const content = `<p>${e(review.designRunId)} · ${e(review.summary.status)} · max ${e(review.summary.maxUtilization)}</p>
         <p>${e(review.units.force)} / ${e(review.units.moment)} · ${e(review.axes)} · ${e(review.signConvention)}</p>
-        <table><thead><tr><th>Member / Check</th><th>Combination / Run</th><th>Status / Ratio</th><th>Demand / Capacity / Expression</th></tr></thead><tbody>${rows.map(row => `<tr><td>${e(row.memberId)}<br>${e(row.category)} / ${e(row.checkId)}</td><td>${e(row.comboId)}<br>${e(row.analysisRunId)}</td><td>${e(row.status)}<br>${e(row.ratio)}</td><td>${e(row.demand)} / ${e(row.capacity)} ${e(row.unit)}<br>${e(row.expression)}</td></tr>`).join('')}</tbody></table>`;
+        <table><thead><tr><th>Member / Check</th><th>Combination / Run</th><th>Status / Ratio</th><th>Demand / Capacity / Expression</th></tr></thead><tbody>${rows.map(row => `<tr><td>${e(row.memberId)}<br>${e(row.category)} / ${e(row.checkId)}</td><td>${e(row.comboId)}<br>${e(row.analysisRunId)}</td><td>${e(row.status)}<br>${e(row.ratio)}</td><td>${e(row.demand)} / ${e(row.capacity)} ${e(row.unit)}<br>${e(row.expression)}<br>${e(row.codeBasis?.status||'NOT_ESTABLISHED')}<br>${e((row.codeBasis?.applied||[]).map(ref=>`${ref.code}:${ref.edition} ${ref.clause}`).join('; '))}</td></tr>`).join('')}</tbody></table>`;
       pages.push(pageSpec(`design-review-${index + 1}`, heading, content));
     }
+    const basisRecords=[...new Set(review.checks.map(row=>formatDesignCodeBasis(row.codeBasis,locale)))];
+    for(const [index,records] of chunks(basisRecords,2).entries())pages.push(pageSpec(`design-kds-basis-${index+1}`,locale==='ko-KR'?'KDS 적용 근거 / 미확정 근거':'KDS applied / unestablished basis',records.map(text=>`<p style="overflow-wrap:anywhere">${escapeHtml(text).replaceAll('\n','<br>')}</p>`).join('')));
     pages.push(pageSpec('design-review-scope', locale === 'ko-KR' ? '설계 검토 범위' : 'Design review scope',
       `<ul>${review.limitations.map(value=>`<li>${escapeHtml(value)}</li>`).join('')}</ul><ul>${review.ruleSources.map(row=>`<li>${escapeHtml(row.module)} · ${escapeHtml(row.method)} · ${escapeHtml(row.status)}</li>`).join('')}</ul>`));
   }

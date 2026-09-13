@@ -1,0 +1,25 @@
+{
+  "sourceHash": "311fba87bda5360452566530d8f7a6bbf95b2512028b67a11e68ddb18749366b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T21:10:14.010Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-reuse-scope-lineage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4226,
+      "sha256": "f4587927bc8e35813951cf2890a5915abf9eee5dd9d3ac68c1f3f676c77abc31",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-candidate-scope.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 252,
+      "sha256": "d8b4715c4d8c28ead81969c6c3c5251c96487a40044d61ab422759b70846f243",
+      "error": null
+    }
+  ]
+}

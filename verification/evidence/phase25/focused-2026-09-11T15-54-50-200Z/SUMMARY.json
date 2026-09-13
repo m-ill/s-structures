@@ -1,0 +1,33 @@
+{
+  "sourceHash": "d38725def9ebb38453e3953842e09aa8c418433aa43fd3bba2c2bec6dcb9c4c0",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T15:54:51.575Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-hash-memory.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 779,
+      "sha256": "ad3ebfc9a4b48c950f2b773156bc511374d1ca853455d241a4087e73a4aecfcb",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-export-lifetime.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 316,
+      "sha256": "c996c0b723c7577d84e8aecd8d46ecb1051874f08f21b3a53af9069e51376d01",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-bounded-json.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 61,
+      "sha256": "972d549f1ba88f92b4d087d190ace692b403ebd25d6de00b9e1fd98c5c1dd585",
+      "error": null
+    }
+  ]
+}

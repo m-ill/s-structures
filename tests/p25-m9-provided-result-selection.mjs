@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {selectMemberDesignResult,selectRcMemberResults} from '../src/results/designResultSelection.js';
+import {buildIndexResultVisuals} from '../src/ui/indexResultVisuals.js';
+import {buildDesignWorkflow} from '../src/ui/indexDesignWorkflow.js';
+import {createModel} from '../src/core/model.js';
+const row={memberId:'AB',status:'NOT_CHECKED',incomplete:true,utilization:.5,governingCheck:'rc-strength'};
+const analysis={design:{summary:{},practicalMemberResults:{AB:row},concrete:{memberResults:{AB:{memberId:'AB',status:'NG',utilization:2}}}},envelope:{memberResults:{AB:{check:{ratio:.2}}}}};
+assert.equal(selectMemberDesignResult(analysis,'AB'),row);assert.equal(selectRcMemberResults(analysis).AB,row);
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];model.members=[{id:'AB',n1:'A',n2:'B'}];
+let visual=buildIndexResultVisuals(model,analysis).members[0];assert.equal(visual.ratio,.5);assert.equal(visual.status,'none');assert.equal(visual.incomplete,true);
+assert.equal(buildDesignWorkflow(model,analysis).rows[0].status,'UNCHECKED');
+row.status='NG';assert.equal(buildDesignWorkflow(model,analysis).counts.unchecked,1);assert.equal(buildDesignWorkflow(model,analysis).counts.ng,1);visual=buildIndexResultVisuals(model,analysis).members[0];assert.equal(visual.status,'ng');assert.equal(visual.incomplete,true);
+analysis.design.practicalMemberResults={};assert.equal(selectMemberDesignResult(analysis,'AB',{status:'OK'}),null);assert.equal(buildIndexResultVisuals(model,analysis).members[0].status,'none');
+delete analysis.design.practicalMemberResults;assert.equal(selectMemberDesignResult(analysis,'AB').utilization,2);
+console.log('PASS shared result selection and visuals never replace incomplete provided design with legacy utilization');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7574c9eb414a2abe921193518995d8457b5c09d315deeab3be7ec908bc69a11f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:01:20.740Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-longitudinal-cage-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 196,
+      "sha256": "85f4ef0533bc834fcc4398ff4e180ac539ff7d2db200eb3816cb8b699ee96146",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-section-size-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 204,
+      "sha256": "38d3e1c1c94ac50f7bef63b7a18034cccfd3b2344c22ab8c522d86021816913d",
+      "error": null
+    }
+  ]
+}

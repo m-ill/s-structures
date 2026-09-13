@@ -1,20 +1,18 @@
 # S-Structures
 
-> Phase21 개발 후보: 강체 다이어프램 CPU Direct, RC 예비 검토 수치·결과 선택 및 저장 메모리 경로를 개선했습니다. 후보 `78e8e5a` 전체 회귀 124/124, 실제 내부 브라우저 보고서 3포맷·저장/복원 확인. M6 중간 규모·일반 Chrome 비교와 M7 배포는 아직 완료하지 않았습니다. [실제 진행 상태](docs/phase21/IMPLEMENTATION_STATUS.md) · [캡처 검증 보고서](docs/phase21/PILOT_RETEST_REPORT.md).
+**브라우저에서 구조 모델링·해석·결과 검토를 수행하고, WebMCP로 에이전트가 같은 모델의 입력·검토·보완·출력을 제어하는 구조해석 웹앱입니다.**
 
-**브라우저에서 구조 모델링·해석·결과 검토를 수행하고, WebMCP로 AI 에이전트와 같은 모델을 함께 다루는 구조해석 웹앱입니다.**
+[웹에서 실행](https://m-ill.github.io/s-structures/) · [로컬 실행](#로컬-실행) · [현재 개발 상태](docs/phase25/CLOSURE_AUDIT.md) · [RC 검토·WebMCP 실행 안내](docs/phase25/USAGE.md) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md)
 
-[웹에서 실행](https://m-ill.github.io/s-structures/) · [다운로드·검증자료](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md) · [WebMCP 안내](docs/WEBMCP.md) · [CI 결과](https://github.com/m-ill/s-structures/actions/workflows/verify.yml)
+문서 갱신: **2026-09-13** · 소스 상태: **Phase25 개발 진행 중·전체 완료 전**.
 
-문서 갱신: **2026-09-10** · 공개 상태: **WebMCP 개발 프리뷰**
+현재 작업 소스에는 제공 RC 배근·접합·독립기초 검토, KDS 출처와 판정 사유 조회, 보완 후보 생성·적용·재해석, 검토용 상세도·수량표·PDF 출력이 연결되어 있습니다. 입력 누락·미지원·NG·계산 실패를 구분하며, 개별 검사 통과만으로 프로젝트 적합성이나 제작 승인을 부여하지 않습니다. 철골·목재·조적의 전용 상세 설계 완결은 Phase25 RC 범위와 구분합니다.
 
-**WebMCP 36개 도구**로 탄성설계 입력→해석→강재·RC 검토→보고서 및 production Pushover/NLTH를 연결했습니다. 비선형 결과는 **candidate·최종설계 전달 차단** 상태입니다. SH1 sparse 연결, 힌지 평형 수정, Worker 취소·시간 제한을 포함합니다. 실제 브라우저 소형 모델 실행을 확인했으며 독립 비교·pilot·M-tier 성능·최종 생산 자격은 미완료입니다. [M5~M10 구현·잔여 조건](docs/phase19/M5_M10_CANDIDATE.md) · [검토 자료](docs/phase19/REVIEW_INTAKE.md)
+**이 문서의 소스 기능이 GitHub Pages에 모두 배포됐다는 뜻은 아닙니다.** 실행 사이트의 [SOURCE-IDENTITY.json](https://m-ill.github.io/s-structures/SOURCE-IDENTITY.json)에서 배포 커밋을 확인하세요. 이 문서 갱신에서는 배포를 실행하거나 원격 배포 상태를 재확인하지 않았습니다. [Phase20 공개 릴리스](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)는 당시 소스와 증거를 보존한 이전 버전입니다.
 
-2026-09-08 코드 리뷰: 비선형 미분 검사 할당, WebMCP 종료 처리, 긴 Pushover 결과 페이지 조회를 개선했다. 고정 소스 회귀 95/95 PASS이며, 소형 8부재·32힌지 해석 중앙값은 21.65초 → 5.97초다. [측정 조건·수정 내용·당시 경계 위반](docs/phase19/CODE_REVIEW_OPTIMIZATION_20260908.md)을 참고한다.
+Phase25는 변경 기능의 작은 TDD와 선택 검증을 진행 중입니다. 원래 M0~M10 전체 완료 감사, 남은 지원 상세의 통합 증거 및 독립 방법 검토가 남아 있습니다. 종합 회귀·장시간 전체 메모리·외부 비교/pilot은 [후속 검증 계약](docs/phase25/VERIFICATION_HANDOFF.md)에 따릅니다. 과거 21개 비교나 이전 phase의 PASS를 새 RC 규칙의 적합성 증거로 사용하지 않습니다.
 
-[Phase20 M0~M5](docs/phase20/IMPLEMENTATION_REVIEW.md)를 완료했다. 최종 후보 `810abc0`은 로컬·Windows CI·Ubuntu CI 각각 **112/112 PASS**, 직접 경계 위반 **41→0**이며 공개 동기 API와7개 기준 탄성 결과를 유지한다. 결과 준비/조회와 trace/production 경계를 정리하고 기본 예제·JSON 가져오기·화면 전환의 입력 식별 문제도 수정했다. [Phase20 개발 프리뷰](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)에서 소스·실행·검증 ZIP을 받는다. Pages는 `main`의 Windows·Ubuntu 112개 검증을 통과한 실행 파일을 배포한다. [병합·배포 기록](docs/phase20/PAGES_DEPLOYMENT.md)과 [현재 배포 커밋](https://m-ill.github.io/s-structures/SOURCE-IDENTITY.json)을 함께 확인한다.
-
-후속 [Phase21 개발계획](docs/phase21/README.md)을 작성했다. **M0 강체 다이어프램 Direct P-Delta → RC 수치 → 입력·저장 → 실행·결과 선택 → 검토·보고서 → 메모리·복구 → 실무 재검증 → 공개 배포** 순서다. 상가주택 시험에서 RC 정사각형 치수·선택 조합 표시·설정 덮어쓰기·집계/출처 불일치를 확인했다. [관측과 수정 대상](docs/NUMERICAL-CONSISTENCY-REPAIR-PLAN-20260910.md)을 보존했으며 Phase21 제품 구현은 미착수다. 기존 배포본의 강체 다이어프램 Direct 제한과 생산 자격 상태는 그대로다.
+접합 보완은 후크 정착, 상·하부 기둥 깊이, 공간 후프 접촉, 관통 보 철근층 및 대향 후크 위치를 단계별 후보로 다룹니다. 후보마다 재해석하며, 제한된 배치 탐색에서 적합한 해를 찾지 못하면 시도별 사유를 반환합니다. 최근 합성 접합 예제의 9개 검사 중 7개는 OK이고 후프–보 주근 간섭에 관련된 2개는 NG입니다. [변경 및 검증 기록](docs/phase25/IMPLEMENTATION_STATUS.md)을 확인하세요.
 
 ## 주요 기능
 
@@ -25,7 +23,7 @@
 | 확장 엔진 | 막·판·셸, 탄성지반, 강체격막, 탄성링크, 비선형 힌지·pushover 등. 기능별 입력·실행·검증 상태를 별도로 표시 |
 | 결과 검토 | 변형도, 부재력·반력, 하중조합 포락, 모드·시간 스텝, 평형·오차, 결과별 설계 전달 가능 상태 |
 | 검토·보고서 | 강재·RC 검토, 지배조합·계산 근거 추적, 보고서·PDF, JSON 모델 저장, 도면·메모 작업 |
-| 에이전트 연동 | 탄성설계·보고서·비선형을 포함한 WebMCP 36개 도구 |
+| 에이전트 연동 | 공통 입력·해석·제공 상세 검토·보완·출력 및 작업 상태를 제어하는 WebMCP 도구 |
 
 엔진 구현 여부와 특정 모델의 검증 완료 여부는 구분합니다. 실행 가능 경로와 차단 이유는 케이스별 capability·validation 결과에서 확인합니다. CPU가 기본이며 GPU의 미구현·미검증 조건을 자동으로 우회하지 않습니다.
 
@@ -98,7 +96,7 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 예시 요청: “현재 모델의 단위와 해석 케이스를 확인하고, 정적 케이스를 검증한 뒤 CPU로 해석해 결과와 경고를 설명해 줘.”
 
-위 표는 기존 기본 도구 9개입니다. 현재는 탄성 입력 검토·typed 변경·설계 검토·보고서 및 production Pushover/NLTH를 포함한 **36개 도구**를 제공합니다. 입력 복제본과 해시로 실행을 묶고, 같은 요청 ID의 재시도는 기존 작업을 반환합니다. 모델이 바뀌면 결과에 `stale`을 표시합니다. typed 입력 변경은 검토·적용 계약을 따르며 임의 코드 실행은 노출하지 않습니다.
+위 표는 기존 기본 도구 9개입니다. 도구 목록과 인수는 현재 런타임에 등록된 schema를 기준으로 확인합니다. RC 제공 상세·후보·출력 경로는 [Phase25 실행 안내](docs/phase25/USAGE.md)를 따릅니다. 입력 복제본과 해시로 실행을 묶고, 같은 요청 ID의 재시도는 기존 작업을 반환합니다. 모델이 바뀌면 결과에 `stale`을 표시합니다. typed 입력 변경은 검토·적용 계약을 따르며 임의 코드 실행은 노출하지 않습니다.
 
 탄성설계 추가 도구와 app 호스트 사용법은 [M4 계약](docs/phase19/M4_CONTRACT.md), 비선형 도구는 [M5~M10 계약](docs/phase19/M5_M10_CANDIDATE.md)에 있습니다. 일반 브라우저 UI와 WebMCP 지원 여부는 별개입니다. API가 없는 브라우저에서는 일반 UI를 사용하며 iframe 안에서는 도구를 등록하지 않습니다. 브라우저·제품별 지원 조건과 호출 계약은 [WebMCP 안내](docs/WEBMCP.md)를 참고하세요.
 
@@ -120,9 +118,18 @@ cd s-structures
 node server/main.mjs 5173
 ```
 
-`http://127.0.0.1:5173/index.html`을 엽니다. [Release의 실행 ZIP](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)을 풀어 같은 명령으로 실행할 수도 있습니다. 모델 JSON은 현재 **스키마 v6**를 사용합니다.
+`http://127.0.0.1:5173/index.html`을 엽니다. [Release의 실행 ZIP](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908)을 풀어 같은 명령으로 실행할 수도 있습니다. 모델 저장·복원은 실행 버전의 스키마와 migration 경로를 따릅니다. 이전 ZIP으로 최신 상세 입력을 지원한다고 가정하지 마세요.
 
-### 검증 실행
+### Phase25 선택 검증
+
+```sh
+node tools/run-phase25-tests.mjs --list
+node tools/run-phase25-tests.mjs p25-m6-mixed-hook-webmcp
+```
+
+목록 조회는 해석을 실행하지 않습니다. 두 번째 명령은 작은 합성 접합의 WebMCP 보완·재해석 경로만 검사하며 실행별 로그와 소스 해시를 `verification/evidence/phase25/focused-*`에 저장합니다. 전체 수치 자격을 증명하는 명령은 아닙니다.
+
+### 이전 공개 기준선 검증
 
 ```sh
 node tools/run-public-validation.mjs validation-local-001
@@ -135,6 +142,8 @@ npm run test:p18
 
 | 자료 | 내용 |
 |---|---|
+| [Phase25 마감 점검표](docs/phase25/CLOSURE_AUDIT.md) | 구현 증거·미충족 조건·후속 검증 구분 |
+| [RC 검토 실행 안내](docs/phase25/USAGE.md) | 현재 소스의 입력→해석→보완→출력 및 배포 구분 |
 | [사용자 매뉴얼](docs/user-manual/README.md) | 모델링·해석·결과·보고서 사용법 |
 | [21개 비교표](docs/verification/STRIX21_COMPARISON.md) | Reference와의 수치 비교 및 사례별 판정 |
 | [P18 엔진 상태](docs/phase18/IMPLEMENTATION_STATUS.md) | 엔진 실행 경로와 동일모델 입력 보류 항목 |
@@ -142,15 +151,15 @@ npm run test:p18
 | [WebMCP 안내](docs/WEBMCP.md) | 지원 환경·도구 계약·실행 제한 |
 | [Release](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908) | 공개 소스, 실행 ZIP, 로컬·GitHub CI 증거, SHA-256 |
 
-Phase20 Release의 `s-structures-source.zip`, `s-structures-runtime.zip`, `s-structures-evidence.zip`은 검증 소스 `810abc0`에 결속됩니다. Pages는 배포 시 생성한 `SOURCE-IDENTITY.json`으로 실제 실행 커밋을 표시합니다. 최신 완료·배포 기록은 이 저장소의 main 문서를 기준으로 읽어 주세요. 이전 릴리스는 당시 소스와 증거를 그대로 보존합니다.
+Phase20 Release의 `s-structures-source.zip`, `s-structures-runtime.zip`, `s-structures-evidence.zip`은 검증 소스 `810abc0`에 결속됩니다. Pages는 배포 시 생성한 `SOURCE-IDENTITY.json`으로 실제 실행 커밋을 표시합니다. 소스의 개발 상태는 Phase25 마감 점검표, 실제 실행 버전은 사이트의 배포 식별자로 구분하세요. 이전 릴리스는 당시 소스와 증거를 그대로 보존합니다.
 
 ## 사용 범위와 라이선스
 
-현재 배포는 개발 프리뷰입니다. 수치 시험 통과와 특정 구조물의 설계 적합성은 별도 판단이며 모델 가정·단위·경계조건·수렴·검토 기준과 결과의 차단 상태를 확인해야 합니다. 독립 검증과 실무 승인 절차를 대체하지 않습니다.
+개발 프리뷰의 사용 범위입니다. 수치 시험 통과와 특정 구조물의 설계 적합성은 별도 판단이며 모델 가정·단위·경계조건·수렴·검토 기준과 결과의 차단 상태를 확인해야 합니다. 독립 검증과 실무 승인 절차를 대체하지 않습니다.
 
 **© 2026 단국대학교 허석재 박사 · All rights reserved.**  
 문의: mill@dankook.ac.kr · [LICENSE.txt](LICENSE.txt)
 
 기존 독점적 라이선스를 유지합니다. 저장소 공개가 사용·복제·수정·재배포 권한을 부여하는 것은 아닙니다.
 
-Phase 19 검증: 수치 엔진 기준선 8147974의 확장 회귀는 로컬·Windows·Ubuntu 각각 92/92 PASS입니다. 최종 단위 metadata 수정(467dd70)은 별도 WebMCP/host 4개와 패키지 설치·복원을 통과했고 전체 CI는 진행 중입니다. [후보별 증거와 제한](verification/evidence/phase19/m5-m10/README.md).
+과거 Phase19 검증 기록: 수치 엔진 기준선 8147974의 확장 회귀는 로컬·Windows·Ubuntu 각각 92/92 PASS입니다. 최종 단위 metadata 수정(467dd70)은 별도 WebMCP/host 4개와 패키지 설치·복원을 통과한 기록입니다. 당시 CI 진행 상황은 현재 배포 상태를 나타내지 않습니다. [후보별 증거와 제한](verification/evidence/phase19/m5-m10/README.md).

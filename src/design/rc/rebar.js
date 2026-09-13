@@ -1,37 +1,32 @@
 import { STANDARD_REBARS } from '../rcDetailing.js';
+import {tensionDevelopment,tensionLap} from './kdsAnchorage.js';
 
-export const RC_REBAR_DETAIL_VERSION = 'p3-m17-rc-rebar-detail';
+export const RC_REBAR_DETAIL_VERSION = 'p24-kds-anchorage-compat-v2';
 
 export function rebarById(id = 'D19') {
   return STANDARD_REBARS.find((bar) => bar.id === id) || STANDARD_REBARS[3];
 }
 
-export function developmentLength(barId, material = {}, options = {}) {
-  const bar = rebarById(barId);
-  const fy = finite(options.fy, material.fy, material.Fy, 400);
-  const fc = Math.max(18, finite(options.fc, material.fc, material.fck, 24));
-  const factor = finite(options.locationFactor, 1);
-  const ld = Math.max(300, factor * 0.043 * fy * bar.diameter / Math.sqrt(fc) * 1000);
-  return {
-    version: RC_REBAR_DETAIL_VERSION,
-    bar: bar.id,
-    length: Math.round(ld),
-    unit: 'mm',
-    formulaId: 'KDS-RC-DEVELOPMENT-V1',
-  };
+// Compatibility API: dimensions remain mm, but unknown conditions no longer
+// produce a fabricated length. Both routes use the same source-bound formula.
+function anchorageInput(barId,material,options) {
+  const bar=STANDARD_REBARS.find(x=>x.id===barId);
+  if(!bar||options.locationFactor!==undefined)return null;
+  return {...options,db:bar.diameter,fy:options.fy??material.fy??material.Fy,
+    fck:options.fc??material.fc??material.fck,sizeFactor:bar.diameter<=19.1?0.8:1};
 }
-
+function legacyResult(barId,calculation) {
+  return {...calculation,version:RC_REBAR_DETAIL_VERSION,bar:barId,
+    length:calculation.status==='CALCULATED'?Math.ceil(calculation.requiredMm):null,
+    unit:'mm',formulaId:'KDS-142052-2024-CLAUSE-SCOPED',designTransferAllowed:false};
+}
+export function developmentLength(barId, material = {}, options = {}) {
+  const input=anchorageInput(barId,material,options);
+  return legacyResult(barId,input?tensionDevelopment(input):{status:'NOT_CHECKED',reason:'BAR_AND_EXPLICIT_ANCHORAGE_CONDITIONS_REQUIRED'});
+}
 export function lapSpliceLength(barId, material = {}, options = {}) {
-  const ld = developmentLength(barId, material, options);
-  const classFactor = options.spliceClass === 'A' ? 1 : 1.3;
-  return {
-    version: RC_REBAR_DETAIL_VERSION,
-    bar: ld.bar,
-    length: Math.round(ld.length * classFactor),
-    unit: 'mm',
-    spliceClass: options.spliceClass || 'B',
-    formulaId: 'KDS-RC-SPLICE-V1',
-  };
+  const input=anchorageInput(barId,material,options);
+  return legacyResult(barId,input?tensionLap(input):{status:'NOT_CHECKED',reason:'BAR_AND_EXPLICIT_SPLICE_CONDITIONS_REQUIRED'});
 }
 
 export function spacingCheck(schedule = {}, widthMm = 300, options = {}) {

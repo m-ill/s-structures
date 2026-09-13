@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {concreteEffectiveModulus,validateConcreteCreep} from '../src/materials/concreteCreep.js';
+const m={kind:'concrete',creep:{method:'effective-modulus-constant-sustained-load',coefficient:2,loadingAgeDays:28,evaluationAgeDays:365,elasticModulusAtLoading:30000,reference:'final test',shrinkageMicrostrain:300,shrinkageReference:'final shrinkage',attachment:{coefficient:1,evaluationAgeDays:90,reference:'attachment test',shrinkageMicrostrain:100,shrinkageReference:'attachment shrinkage'}}};
+assert.deepEqual(validateConcreteCreep(m),[]);
+const a=concreteEffectiveModulus(m,{state:'attachment'}),b=concreteEffectiveModulus(m);
+assert.equal(a.effectiveE,15000);assert.equal(a.evaluationAgeDays,90);assert.equal(a.shrinkageInitialStrain,-.0001);
+assert.equal(b.effectiveE,10000);assert.equal(b.evaluationAgeDays,365);
+for(const patch of [{shrinkageReference:undefined},{evaluationAgeDays:400},{coefficient:3},{shrinkageMicrostrain:400},{shrinkageMicrostrain:undefined}])assert.ok(validateConcreteCreep({...m,creep:{...m.creep,attachment:{...m.creep.attachment,...patch}}}).length);
+assert.throws(()=>concreteEffectiveModulus({kind:'concrete',creep:{...m.creep,attachment:undefined}},{state:'attachment'}),/ATTACHMENT/);
+console.log('PASS explicit attachment/final modulus, ages and shrinkage history');

@@ -1,3 +1,4 @@
+import {selectRcDesign} from '../results/designResultSelection.js';
 import {
   activeCombo,
   activeResult,
@@ -233,7 +234,7 @@ function renderSummary() {
   const metrics = [
     ['Status', state.analysis?.ok ? 'OK' : 'Check'],
     ['Max Disp', summary ? `${format(summary.maxDisplacement * 1000, 2)} mm` : '-'],
-    ['Max Util.', summary ? format(summary.maxUtilization, 3) : '-'],
+    ['Max Util.', Number.isFinite(summary?.maxUtilization) ? format(summary.maxUtilization, 3) : '-'],
     ['Governing', governing ? `${governing.memberId} / ${governing.comboId}` : result?.combo?.id || '-'],
     ['Residual', summary?.equilibriumResidual != null ? summary.equilibriumResidual.toExponential(2) : '-'],
     ['Load Z', summary?.totalLoad ? `${format(summary.totalLoad[2], 2)} kN` : '-'],
@@ -383,9 +384,11 @@ function renderDesign() {
   const summary = design?.summary;
   const metrics = [
     ['Status', design ? (design.ok ? 'OK' : 'Check') : '-'],
-    ['Max Util.', summary ? format(summary.maxUtilization, 3) : '-'],
+    ['Max Util.', Number.isFinite(summary?.maxUtilization) ? format(summary.maxUtilization, 3) : '-'],
     ['Governing', summary?.governing ? `${summary.governing.memberId} / ${summary.governing.checkId}` : '-'],
     ['Checked', summary ? summary.checkedMembers : '-'],
+    ['Unreviewed', summary?.unreviewedMembers ?? '-'],
+    ['Failed', summary?.failedCount ?? '-'],
     ['Warn', summary ? summary.warnCount : '-'],
     ['NG', summary ? summary.ngCount : '-'],
   ];
@@ -406,10 +409,10 @@ function renderDesign() {
     }
     return `<tr data-member="${escapeHtml(member.id)}">
       <td>${escapeHtml(member.id)}</td>
-      <td>${escapeHtml(check.role)}</td>
+      <td>${escapeHtml(check.role ?? '-')}</td>
       <td>${format(check.utilization, 3)}</td>
       <td>${escapeHtml(check.governingCheck)}</td>
-      <td><span class="status-pill ${escapeHtml(check.status.toLowerCase())}">${escapeHtml(check.status)}</span></td>
+      <td><span class="status-pill ${escapeHtml(check.status.toLowerCase())}">${escapeHtml(check.status)}${check.incomplete ? ' / Unreviewed '+escapeHtml(check.incompleteCheckCount ?? '-') : ''}</span></td>
     </tr>`;
   }).join('');
 
@@ -422,13 +425,15 @@ function renderDesign() {
 }
 
 function renderRcDesign() {
-  const design = state.analysis?.design?.concrete;
+  const design = selectRcDesign(state.analysis);
   const summary = design?.summary;
   const metrics = [
     ['Status', design ? (design.ok ? 'OK' : 'Check') : '-'],
-    ['Max Util.', summary ? format(summary.maxUtilization, 3) : '-'],
+    ['Max Util.', Number.isFinite(summary?.maxUtilization) ? format(summary.maxUtilization, 3) : '-'],
     ['Governing', summary?.governing ? `${summary.governing.memberId} / ${summary.governing.checkId}` : '-'],
     ['Checked', summary ? summary.checkedMembers : '-'],
+    ['Unreviewed', summary?.unreviewedMembers ?? '-'],
+    ['Failed', summary?.failedCount ?? '-'],
     ['Warn', summary ? summary.warnCount : '-'],
     ['NG', summary ? summary.ngCount : '-'],
   ];
@@ -451,10 +456,10 @@ function renderRcDesign() {
     const requiredAs = areas.length ? format(Math.max(...areas), 0) : '-';
     return `<tr data-member="${escapeHtml(member.id)}">
       <td>${escapeHtml(member.id)}</td>
-      <td>${escapeHtml(check.role)}</td>
+      <td>${escapeHtml(check.role ?? '-')}</td>
       <td>${Number.isFinite(check.utilization) ? format(check.utilization, 3) : '-'}</td>
       <td>${requiredAs}</td>
-      <td><span class="status-pill ${escapeHtml(check.status.toLowerCase())}">${escapeHtml(check.status)}</span></td>
+      <td><span class="status-pill ${escapeHtml(check.status.toLowerCase())}">${escapeHtml(check.status)}${check.incomplete ? ' / Unreviewed '+escapeHtml(check.incompleteCheckCount ?? '-') : ''}</span></td>
     </tr>`;
   }).join('');
 

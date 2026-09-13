@@ -1,0 +1,25 @@
+{
+  "sourceHash": "fc8fc77f1c3297ac6ce56e88c8574eac948ab33387188c7596775f23ccf56c4f",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T18:43:38.604Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-section-foundation.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 185,
+      "sha256": "00c482b6b5542680dabff676c1094bc15830fd9089fb62f648942632ee32da5e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-beam-joint-panel.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 6823,
+      "sha256": "0e9a2cb0685f94495dfac48b4a862d2a5b0412b9d033e3ed5001b71e4744b2aa",
+      "error": null
+    }
+  ]
+}

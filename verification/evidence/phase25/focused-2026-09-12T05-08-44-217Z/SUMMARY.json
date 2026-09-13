@@ -1,0 +1,25 @@
+{
+  "sourceHash": "f5573ab91a820de274defc27a28282547966fc9f7d3c74f3e4964c26a0a33294",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:08:45.192Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-joint-alternating-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 616,
+      "sha256": "3fb8a4094d53176dac7b6b1a1870e7a32170751275cfb93fa92c4e985770e7ff",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-independent-repeat-pairs.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 78,
+      "sha256": "be531ffee13d9dd3056581e1b5d7cb0b314e8e3aceeb2742c9fbce2608fbd7c8",
+      "error": null
+    }
+  ]
+}

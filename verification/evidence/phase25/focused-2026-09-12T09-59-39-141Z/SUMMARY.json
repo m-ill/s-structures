@@ -1,0 +1,17 @@
+{
+  "sourceHash": "82644c964d31e2f1dc7ac6ccc73afc40f2c3b1156e89bda5eaf4ef6a8a089b37",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T09:59:40.009Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m7-candidate-geometry-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 588,
+      "sha256": "f8486b9439e222d7edf2b92adaecf90374f87050140cbffe8ca6bb790cd09165",
+      "error": null
+    }
+  ]
+}

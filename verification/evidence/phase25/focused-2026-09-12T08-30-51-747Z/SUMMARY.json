@@ -1,0 +1,17 @@
+{
+  "sourceHash": "41fb311d9748a7c343480fbabaad5e2d20dcd201058a0714cce67534f7a011e4",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T08:30:55.238Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p19-m2-design-input.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 3253,
+      "sha256": "6d8f07cf43378e59537fbb36307e0e67415c8d32c85654abac60444fd14d12d6",
+      "error": null
+    }
+  ]
+}

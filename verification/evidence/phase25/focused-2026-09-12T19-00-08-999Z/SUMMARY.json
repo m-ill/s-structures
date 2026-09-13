@@ -1,0 +1,17 @@
+{
+  "sourceHash": "0d67f9028d875ac616e3a89f76aac83d69985857711d8425d836901a1f8aa3d9",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T19:00:09.537Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 301,
+      "sha256": "43458f15efe42c4c80661b03cf9231b58c87849b1f89a8559fdd6a1cae5d8ef1",
+      "error": null
+    }
+  ]
+}

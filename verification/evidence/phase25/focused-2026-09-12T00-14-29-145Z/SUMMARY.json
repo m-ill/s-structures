@@ -1,0 +1,33 @@
+{
+  "sourceHash": "bc7f5fe748b670d27d83aac3f7ba102efb75326b49294f6e6db9439fa4ec0e55",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:14:41.868Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-temperature-gradient.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 934,
+      "sha256": "02ca3de3e4d46c58d2c2c4816892af6a3da9a78381cc370bc60a7aa0a2a8302e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-frame-convergence.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 242,
+      "sha256": "2dd1f37716f2954c7860ad6194b859701057f8da57a7296d3572f662e4b04533",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-splice-direct-workflow.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 11260,
+      "sha256": "efcd4a3537e2aabd35b6f9eab91ac78b4ca9aa3e12480c94813ebeb0982521d8",
+      "error": null
+    }
+  ]
+}

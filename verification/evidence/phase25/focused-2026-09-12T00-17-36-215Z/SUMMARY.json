@@ -1,0 +1,33 @@
+{
+  "sourceHash": "3cbaeb875b5dc6c26e4590483d4b2c7bc980a5becb76b3c2352252f76bf887a2",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T00:17:38.636Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-spring-support.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 110,
+      "sha256": "e1cb7995498009b15b542de3a802950532e4b715f78a986b281d22ca2c7ce9c1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-prescribed.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 113,
+      "sha256": "80692b11672c291aedd90072977aeb164e9580213ead8cabdcb6d2db67b33519",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-rc-diaphragm.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1942,
+      "sha256": "2c2f496d4840d8762b5f596ff1d2cc50bf45f2f8751a2f4536eaffba8ca63b8b",
+      "error": null
+    }
+  ]
+}

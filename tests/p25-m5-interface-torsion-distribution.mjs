@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {interfaceShearTorsionDistribution} from '../src/design/foundation/interfaceShearTorsionDistribution.js';
+const bars=[-1,1].flatMap(x=>[-1,1].map(y=>({x,y,area:1})));
+const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-10,`${a} != ${b}`);
+let r=interfaceShearTorsionDistribution({bars,Vx:0,Vy:0,T:8});assert.equal(r.status,'CALCULATED');close(r.resultant.T,8);close(r.resultant.Vx,0);close(r.resultant.Vy,0);r.barForces.forEach(b=>close(b.resultant,Math.sqrt(2)));
+r=interfaceShearTorsionDistribution({bars:bars.map(b=>({...b,x:b.x+2,y:b.y+2})),Vx:4,Vy:0,T:0});close(r.torsionAtCentroid,8);close(r.resultant.T,0);close(r.resultant.Vx,4);
+assert.equal(r.designTransferAllowed,false);assert.equal(r.capacityCalculated,false);
+assert.equal(interfaceShearTorsionDistribution({bars:[{x:0,y:0,area:1},{x:0,y:0,area:1}],Vx:0,Vy:0,T:1}).status,'NOT_CHECKED');
+assert.equal(interfaceShearTorsionDistribution({bars,Vx:NaN,Vy:0,T:0}).status,'NOT_CHECKED');
+console.log('PASS area-weighted interface shear/torsion equilibrium and eccentric reference transformation');

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "890dde1f408ce2c6e18e1328f8c33817eaec4f4d492e13d76dc105cc1aed4f36",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T08:47:23.697Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-project-profile.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 868,
+      "sha256": "0532aab038d88c0bca2c654911399c8a0a9443fe250f50fafaee8abe5ac75ee3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-webmcp-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1483,
+      "sha256": "1686c6cdcac4e7a8d1412500191bd077222ecfe5a0262a672c1d28125c1f51b3",
+      "error": null
+    }
+  ]
+}

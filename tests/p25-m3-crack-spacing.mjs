@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {kdsCrackSpacing} from '../src/design/rc/kdsCrackControl.js';
+const x={spacing:200,cover:40,fy:400,environment:'dry'};
+const r=kdsCrackSpacing(x);assert.equal(r.status,'OK');assert.ok(Math.abs(r.capacity-293.75)<1e-10);
+assert.equal(kdsCrackSpacing({...x,environment:'other'}).status,'NG');
+assert.equal(kdsCrackSpacing({...x,spacing:293.75}).status,'OK');
+assert.equal(kdsCrackSpacing({...x,spacing:293.751}).status,'NG');
+assert.equal(kdsCrackSpacing({...x,fy:NaN}).status,'NOT_CHECKED');
+assert.equal(r.fs,400*2/3);assert.equal(r.codeReferences[0].clause,'4.2.3(4); Eq.4.2-3; Eq.4.2-4');
+console.log('PASS official crack-control spacing equations, environment and boundary');

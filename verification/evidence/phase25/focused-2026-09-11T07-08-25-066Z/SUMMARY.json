@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-11T07:08:26.677Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m4-end-anchorage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 139,
+      "sha256": "0db9ba43832a4aabe7a8bec741d6cdf4c8a44176187024a70a8101b3c005aa4e",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-top-reinforcement.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 216,
+      "sha256": "76c4d8a4a8f8716246bfae31353c87c5c289ab7e1f85d7be2bb1a049ef6b90df",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-weight-ledger.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 207,
+      "sha256": "5d929ed5a0707f7980e7f4f6f957bf616a123c2e5ade9c2b00603f114d9934ac",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-two-end-bars.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 74,
+      "sha256": "bfb48960cbb9c52025702a8a2c172a076a89a63a8e95b995d67930bbc3c377e4",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-pagination.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 189,
+      "sha256": "45797056d82feeb09999fbd1f17d9c3c907648d6f855fa477793ee9304e5f718",
+      "error": null
+    },
+    {
+      "file": "tests/p24-m8-drawings.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 185,
+      "sha256": "9105c28fac505512b70d9270d3cd0cc62dd2c789c9b060bf5531b6c0976dca4f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m7-candidate-worker.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 591,
+      "sha256": "b2d54459acfb177c90b40a0cebf5fbc84ce0da68b6d45b8539d6807d148d3332",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "475dfc526bf3db0665015fb48083c19544032091438baa68dd3164a56a75a5f6",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T16:03:09.343Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m5-webmcp-interface-bending.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4696,
+      "sha256": "6a52710448c4081ef166086a7684d65cd49b7915700b1c2f1128eb76a5d96bbf",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m5-interface-traction.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "d97ac61534c2d722b9a5edad90b974245458b1fa6da59e4322cb5a1278c1c5ad",
+      "error": null
+    }
+  ]
+}

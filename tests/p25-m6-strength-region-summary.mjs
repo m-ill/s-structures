@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {createModel} from '../src/core/model.js';
+import {evaluateProvidedMember} from '../src/design/rc/providedMember.js';
+const model=createModel();model.nodes=[{id:'A',x:0,y:0,z:0},{id:'B',x:3,y:0,z:0}];
+const member={id:'AB',n1:'A',n2:'B',secId:'rc3060',matId:'concrete'};
+const detail={id:'R',version:1,start:0,end:.5,barMaterialId:'steel@1',strengthStandard:'KDS-142020-2022',reinforcementForm:'single-deformed',stirrups:{diameter:.01,spacing:.1,legs:2},bars:[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*.2,z:z*.08,diameter:.02,area:Math.PI*.02**2/4})))};
+const details=[detail,{...detail,id:'R2',start:.5,end:1}];
+const tuple=x=>({x,N:-10000,My:0,Mz:0,T:0,Vy:0,Vz:0,signConvention:'rc-section'});
+const evaluate=(ds,ts)=>evaluateProvidedMember(model,member,ds,ts,null)['rc-section-strength'];
+const check=evaluate(details,Array.from({length:1000},(_,i)=>tuple(i%2?.3:2.7)));
+assert.equal(check.strengthRepairRegions.length,2);assert.equal(check.strengthRepairRegions.reduce((s,r)=>s+r.evaluatedLocations,0),1000);
+assert.ok(check.strengthRepairRegions.every(r=>r.needsRepair&&!r.blocked));
+const bad=evaluate([detail,{...details[1],reinforcementForm:'unknown'}],[tuple(.3),tuple(2.7)]);
+assert.equal(bad.incomplete,true);assert.equal(bad.strengthRepairRegions.find(r=>r.detailId==='R2').blocked,true);
+const many=Array.from({length:33},(_,i)=>({...detail,id:`D${i}`,start:i/33,end:(i+1)/33}));
+const capped=evaluate(many,many.map((_,i)=>tuple((i+.5)*3/33)));
+assert.equal(capped.strengthRepairRegions.length,32);assert.equal(capped.strengthRepairRegionsTruncated,true);
+console.log('PASS bounded all-location strength repair summary and unsupported-region preservation');

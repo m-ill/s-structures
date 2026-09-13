@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {createCandidateStageTiming,candidateStageSnapshot} from '../src/compute/product/candidateStageTiming.js';
+let now=0;const job={status:'running'},timing=createCandidateStageTiming(job,()=>now);
+timing.enter('geometry');now=12;assert.deepEqual(candidateStageSnapshot(job,now),{activeStage:'geometry',activeElapsedMs:12,durationsMs:{},basis:'wall-clock stage duration; not CPU time or completion percentage'});
+timing.enter('evaluation');now=32;timing.enter('geometry');now=40;timing.finish();
+assert.deepEqual(candidateStageSnapshot(job,now).durationsMs,{geometry:20,evaluation:20});assert.equal(candidateStageSnapshot(job,now).activeStage,null);
+assert.throws(()=>timing.enter('unbounded-stage-name'));
+const running={status:'running'};createCandidateStageTiming(running,()=>0).enter('analysis');running.status='interrupted';assert.equal(candidateStageSnapshot(running,100000).activeElapsedMs,0);assert.equal(candidateStageSnapshot(running,100000).activeStage,null);
+assert.deepEqual(candidateStageSnapshot({status:'completed'},0).durationsMs,{});
+console.log('PASS bounded stage aggregation, repeated stages, terminal finalization and interrupted checkpoint visibility');

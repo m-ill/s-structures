@@ -1,0 +1,33 @@
+{
+  "sourceHash": "4137f35bf8b5f8db98d8f1b83754a336843502de7cf9d6dcc609b01f16d2802a",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T17:45:00.630Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-spatial-face-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 52,
+      "sha256": "ce666195fe145dceb074dfa3c311037c146be356be381f253ecf8c5de121f596",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m4-closure-contact-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 68,
+      "sha256": "333228c33b9c0a9716c8a3ad2222fdf8495105f39bc55a035c93b8e0e9ca03d6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 4711,
+      "sha256": "b5d0526daca28cfccd46937aebb545ecbfa0f0123dd7d175ec9e5b910a18ba50",
+      "error": null
+    }
+  ]
+}

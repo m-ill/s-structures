@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import {designContext} from './fixtures/p24/context.js';
+import {stagePracticalDesignInput} from '../src/modeling/practicalDesignInputs.js';
+import {evaluateMemberSplices} from '../src/design/rc/spliceGeometry.js';
+import {memberSpliceLengthProposal} from '../src/compute/product/memberSpliceLengthProposal.js';
+const ctx=designContext(),m=ctx.model;
+try{
+ m.nodes=[{id:'A',x:0,y:0,z:0,support:'fixed'},{id:'B',x:3,y:0,z:0}];m.members=[{id:'AB',type:'frame',n1:'A',n2:'B',matId:'concrete',secId:'rc3060'}];
+ const bars={type:'reinforcement-record',id:'R',name:'test',version:1,memberId:'AB',start:0,end:1,cover:.04,barMaterialId:'steel@1',sourceNote:'synthetic',bars:[{y:-.2,z:-.08,diameter:20},{y:-.2,z:.08,diameter:20}],reinforcementForm:'single-deformed',concreteWeight:'normal',barPosition:'other',barCoating:'uncoated',lapRequired:true,aggregateMaxSize:.02,stirrupDiameter:10,stirrupSpacing:150,stirrupLegs:2};
+ const splice={type:'splice-record',name:'test',version:1,sourceNote:'synthetic',memberId:'AB',reinforcementId:'R@1',barIndices:['1'],offsetZ:0,spliceType:'tension-B',spliceSystem:'ordinary-no-seismic-detail'};
+ for(const c of [bars,{...splice,id:'LEFT',start:.18,end:.2,offsetY:.08},{...splice,id:'RIGHT',start:.54,end:.56,offsetY:.02}])stagePracticalDesignInput(m,c,[]);
+ const check={...evaluateMemberSplices(m,m.members[0]),id:'CHECK',entityId:'AB',checkId:'rc-splices'};assert.equal(check.status,'NG');
+ const result=memberSpliceLengthProposal(m,[bars],[check]);assert.equal(result.spliceRepairs.length,2,JSON.stringify(result));assert.equal(result.jointPlacement.ok,true);
+ const trial={...m,designDetails:{...m.designDetails,splices:m.designDetails.splices.map(s=>{const r=result.spliceRepairs.find(r=>r.id===s.id);return {...s,start:r.start,end:r.end};})}};
+ assert.equal(evaluateMemberSplices(trial,m.members[0]).status,'OK');assert.equal(m.designDetails.splices[0].start,.18);
+ const reversed={...m,designDetails:{...m.designDetails,splices:[...m.designDetails.splices].reverse()}};assert.deepEqual(memberSpliceLengthProposal(reversed,[bars],[check]).spliceRepairs,result.spliceRepairs);
+ const short={...m,nodes:[m.nodes[0],{...m.nodes[1],x:2.5}]},shortCheck={...evaluateMemberSplices(short,m.members[0]),id:'SHORT',entityId:'AB',checkId:'rc-splices'};assert.equal(memberSpliceLengthProposal(short,[bars],[shortCheck]).jointPlacement.ok,false);
+ const fixed={...m.designDetails.splices[0],id:'FIXED',start:0,end:.1,locked:true};
+ const obstructed={...m,designDetails:{...m.designDetails,splices:[...m.designDetails.splices,fixed]}};
+ const blocked=memberSpliceLengthProposal(obstructed,[bars],[check]);assert.equal(blocked.jointPlacement.ok,false);assert.ok(!blocked.spliceRepairs.some(r=>r.id==='FIXED'));assert.equal(fixed.end,.1);
+ const {jointSplicePlacement}=await import('../src/compute/product/jointSplicePlacement.js');assert.equal(jointSplicePlacement(m,Array.from({length:17},()=>({})),{remaining:64,used:0}).reason,'JOINT_SPLICE_TARGET_LIMIT');
+ m.loadCases=[{id:'D',type:'dead',name:'D'}];m.loads=[{id:'F',type:'nodal',node:'B',dir:'-z',P:1,case:'D'}];m.loadCombinations=[{id:'U',type:'strength',name:'U',factors:{D:1.4}}];m.analysisCases=[{id:'E',name:'E',kind:'static',status:'not-run',settings:{comboId:'U',pDeltaMethod:'off'}}];
+ const run=await ctx.bridge.runElasticWorkflow({plan:ctx.bridge.planElasticWorkflow({caseIds:['E']}),requestId:'source'});assert.equal(run.ok,true);
+ const evaluation=await ctx.call('evaluate_practical_design',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash,sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]});
+ const plan=await ctx.call('plan_design_candidates',{evaluationId:evaluation.evaluationId,memberId:'AB',maxCandidates:1,maxMillis:10000});assert.equal(plan.generation.jointPlacement.ok,true);assert.equal(plan.generation.spliceRepairs.length,2);
+ const start=await ctx.call('start_design_candidates',{planId:plan.planId,requestId:'joint-search'});let job;for(let i=0;i<500;i++){job=await ctx.call('get_design_candidates',{jobId:start.jobId});if(job.status!=='running')break;await new Promise(r=>setTimeout(r,10));}assert.ok(job.best,JSON.stringify(job));assert.equal(job.best.spliceChangeCount,2);
+ const applied=await ctx.call('apply_design_candidate_and_review',{jobId:job.jobId,candidateId:job.best.candidateId,requestId:'joint-apply'});assert.equal(applied.ok,true,JSON.stringify(applied));
+ const after=ctx.bridge.getPracticalDesignSnapshot(applied.followUp.evaluationId),laps=after.checks.find(c=>c.checkId==='rc-splices');assert.equal(laps.status,'OK',JSON.stringify(laps));assert.ok(laps.checks.every(c=>c.requiredLength<=c.providedLength+1e-10));assert.ok(laps.codeReferences.length>0);assert.equal(after.summary.complete,false);
+ assert.equal(m.designDetails.reinforcement.length,1);assert.equal((await ctx.call('undo_design_input',{inputHash:ctx.bridge.getWorkflowInputIdentity().inputHash})).ok,true);
+ console.log('PASS actual WebMCP coordinated two-splice repair -> both lengths OK/KDS -> atomic undo');
+ console.log('PASS joint placement fits unequal calculated lap lengths where sequential repair leaves a blocked neighbor');
+}finally{await ctx.dispose();}

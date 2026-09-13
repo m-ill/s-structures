@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {solveRcLapNetwork} from '../src/solver/rcLapNetwork.js';
+const area=.0003,bars=[[-.2,-.08],[-.2,.08],[.2,-.08],[.2,.08]].map(([y,z])=>({y,z,area}));
+const common={B:.3,H:.6,Ec:25000,Es:200000,bars,GJ:1000,subdivisions:8};
+const lap={barIndex:0,offset:{y:-.18,z:-.08,area},transferStiffness:80000,continuationSide:'offset-toward-end'};
+const nodes=[{x:0,y:0,z:0},{x:1,y:0,z:0},{x:2,y:0,z:0}],loads=Array(18).fill(0);loads[12]=100;
+const fixedDofs=Array.from({length:18},(_,i)=>i).filter(i=>i===6||i===12?false:true);
+const elements=[{...common,nodes:[0,1],laps:[{...lap,slipIds:['a0','b0','am','bm']}]},{...common,nodes:[1,2],laps:[{...lap,slipIds:['am','bm','a1','b1']}]}];
+const r=solveRcLapNetwork({nodes,elements,loads,fixedDofs,fixedSlipIds:['a0','b1']});
+assert.equal(r.ok,true,JSON.stringify(r));assert.equal(r.sharedSlipAssemblyIncluded,true);
+assert.equal(r.slipResults.length,6);assert.ok(Math.abs(r.reactions[0]+100)<1e-6);
+for(const s of r.slipResults.filter(s=>!s.fixed))assert.ok(Math.abs(s.reaction)<1e-6);
+const mid=r.slipResults.find(s=>s.id==='am');
+assert.ok(Math.abs(mid.value-r.elementResults[0].lapResponses[0].slips.at(-1).bar1)<1e-12);
+assert.ok(Math.abs(mid.value-r.elementResults[1].lapResponses[0].slips[0].bar1)<1e-12);
+const floating=solveRcLapNetwork({nodes,elements,loads,fixedDofs});assert.equal(floating.ok,false);
+const bad=structuredClone(elements);bad[1].laps[0].slipIds[2]='a0';assert.equal(solveRcLapNetwork({nodes,elements:bad,loads,fixedDofs}).reason,'RC_LAP_NETWORK_SLIP_NODE_MISMATCH');
+assert.equal(solveRcLapNetwork({nodes,elements,loads,fixedDofs,fixedSlipIds:['missing']}).reason,'RC_LAP_NETWORK_SLIP_INPUT_INVALID');
+console.log('PASS shared steel slip network: actual continuity, interface equilibrium, attachment and invalid mapping');
+
+const singleLoads=Array(12).fill(0);singleLoads[6]=100;
+const single=solveRcLapNetwork({nodes:[nodes[0],nodes[2]],elements:[{...common,subdivisions:16,nodes:[0,1],laps:[lap]}],loads:singleLoads,fixedDofs:Array.from({length:12},(_,i)=>i).filter(i=>i!==6)});
+assert.equal(single.ok,true,JSON.stringify(single));assert.ok(Math.abs(single.displacements[6]-r.displacements[12])<1e-10);
+const rotatedLoads=Array(18).fill(0);rotatedLoads[13]=100;
+const rotated=solveRcLapNetwork({nodes:nodes.map(n=>({x:0,y:n.x,z:0})),elements,loads:rotatedLoads,fixedDofs:Array.from({length:18},(_,i)=>i).filter(i=>i!==7&&i!==13),fixedSlipIds:['a0','b1']});
+assert.equal(rotated.ok,true,JSON.stringify(rotated));assert.ok(Math.abs(rotated.displacements[13]-r.displacements[12])<1e-10);
+for(const s of r.slipResults)assert.ok(Math.abs(s.value-rotated.slipResults.find(v=>v.id===s.id).value)<1e-12);
+assert.ok(r.elementResults.every(e=>!('slipAssembly' in e)&&!('tangent' in e)));
+console.log('PASS shared-slip split vs whole lap displacement, rotated global axes, bounded result payload');
+
+const mismatched=structuredClone(elements);mismatched[1].laps[0].offset={...mismatched[1].laps[0].offset,y:lap.offset.y+.001};
+assert.equal(solveRcLapNetwork({nodes,elements:mismatched,loads,fixedDofs,fixedSlipIds:['a0','b1']}).reason,'RC_LAP_NETWORK_SLIP_PHYSICAL_MISMATCH');
+console.log('PASS same slip ID cannot silently join different physical steel coordinates');

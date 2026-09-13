@@ -1,0 +1,25 @@
+{
+  "sourceHash": "6ad047618021accab053b507dc6a32151fd74431fff2cda7cb4558361cd6cd3b",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T14:33:50.396Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m2-anchor-bolt-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "94ebdfc939493eecab77c8e3d3245982c8d07140d5deebca5638d97a7f22dba6",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-anchor-ties.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2632,
+      "sha256": "65373d2d9c4e3c1fe0b1457b5882e728c90b485787b9ccfc1578701e30bf0cce",
+      "error": null
+    }
+  ]
+}

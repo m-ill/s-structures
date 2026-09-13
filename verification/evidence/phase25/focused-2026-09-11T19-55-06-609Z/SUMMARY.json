@@ -1,0 +1,33 @@
+{
+  "sourceHash": "1b00c1595b2032db3dccf9107ed6c602ca43a6cf5704b269db7d6b0f2f8bb820",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T19:55:08.673Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-coupled-frame.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 850,
+      "sha256": "45f749e636308c9d4ed58bb1c9c471ea658be5ac046771b69b79f2b61fe4b858",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-segmented-stiffness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 924,
+      "sha256": "957bfff75985acd43d0fd5bb9d7477d8154e1d5b0209f67c4ec1a712f1ce72f1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-cracked-biaxial.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 91,
+      "sha256": "b4a44b36b1e8428aae1e5ba5be8d025cc69de2db81c2eeaa51cef10aced35684",
+      "error": null
+    }
+  ]
+}

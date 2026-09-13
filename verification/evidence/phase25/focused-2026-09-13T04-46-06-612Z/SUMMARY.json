@@ -1,0 +1,17 @@
+{
+  "sourceHash": "f68deba4787f0c2d9ced6f56511653cd1cc681f862cbec69e241728cf24b5531",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-13T04:46:07.857Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-depth-contact.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 999,
+      "sha256": "b42f39eb933d7e2fe62b92b171f339146b18a93d0a62c083e6a1951a04348e49",
+      "error": null
+    }
+  ]
+}

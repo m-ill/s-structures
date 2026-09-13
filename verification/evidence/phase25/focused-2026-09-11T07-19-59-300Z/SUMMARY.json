@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-11T07:20:00.280Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m3-long-term.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 974,
+      "sha256": "884f058c79ca20f05acde64d68819db2efbe1d1166107c18e7865ffaf9ec979e",
+      "error": null
+    }
+  ]
+}

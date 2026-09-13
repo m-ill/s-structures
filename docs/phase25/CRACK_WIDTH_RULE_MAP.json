@@ -1,0 +1,51 @@
+{
+  "ruleId": "p25-crack-control-tensile-steel-area",
+  "implementationVersion": "p25-practical-evaluation-v195-crack-tension-area",
+  "source": {
+    "path": "verification/evidence/phase24/kcsc/KDS-142030-official.json",
+    "fileSha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+    "document": "KDS 14 20 30",
+    "edition": "2021",
+    "documentPart": "appendix",
+    "officialUrl": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+    "rowSort": [
+      139,
+      140,
+      200,
+      201,
+      202
+    ],
+    "selectedRowsSha256": "510166188f7c58816ea4021f5b778fe08fa1a0cc2bff7715cd48f35e0a3fc54e"
+  },
+  "mapping": [
+    {
+      "symbol": "As",
+      "meaning": "flexural tension reinforcement area",
+      "sourceSort": 140,
+      "implementation": "tensileSteelArea=sum(tension bar area)"
+    },
+    {
+      "equation": "4.1-5",
+      "sourceSort": 201,
+      "implementation": "effectiveRatio=steelArea/effectiveConcreteArea"
+    },
+    {
+      "equation": "4.1-6",
+      "sourceSort": 202,
+      "implementation": "effectiveConcreteArea=width*effectiveConcreteDepth"
+    }
+  ],
+  "implementationFiles": [
+    "src/design/rc/providedCrackWidth.js",
+    "src/design/rc/kdsCrackWidth.js"
+  ],
+  "regression": {
+    "test": "tests/p25-m3-rc-creep-iteration.mjs",
+    "case": "actual sustained cantilever at x=1.8m; tension bars outside dcte retain their area in As",
+    "evidence": "verification/evidence/phase25/focused-2026-09-12T23-57-05-390Z",
+    "coverage": "actual WebMCP Worker source to common evaluation, independent base moment and As/Acte arithmetic"
+  },
+  "independentMethodReviewComplete": false,
+  "latestEditionRevalidated": false,
+  "wholeDesignQualified": false
+}

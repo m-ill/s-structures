@@ -1,0 +1,41 @@
+{
+  "sourceHash": "939084fd156569bcd9777244b32a9899e9516dd7ea71bb6f1f4a83f0b4a2cef7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T12:45:54.243Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-stirrup-distribution.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 50,
+      "sha256": "68efa0d43135dd8cdcdbfde712327e468c827bf9ba7ee63c1a894cdefaef76ab",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-torsion-extension.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 52,
+      "sha256": "10509046fe34e50be00b5f4d46c6c70494c8873cd4176161faf1ca85679b3ed2",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m3-webmcp-torsion-extension.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1992,
+      "sha256": "b28b6feb9c7ce1903142a461a981218ea377ddd2bcca19ab07a481eca76e6840",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-prepared-geometry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 135,
+      "sha256": "13b9d0933409d733d01961a5d68fe7a1b123c228f7da68d8c0c22c65c123d993",
+      "error": null
+    }
+  ]
+}

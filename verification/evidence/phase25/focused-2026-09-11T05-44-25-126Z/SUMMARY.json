@@ -1,0 +1,63 @@
+{
+  "date": "2026-09-11T05:44:29.200Z",
+  "scope": "phase25-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m0-registry.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 691,
+      "sha256": "5a14b95dc950022996b671cb3fdb822ee704ac3829754979138c8dc8f1376c98",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-contracts.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 153,
+      "sha256": "919c0eb6c28b5339110f6e0cf45bb08f7e8186ff7543a71b0254ffa88db854c1",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-routing.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 162,
+      "sha256": "5268cde3c6122d00b4220f2186d7f8443339deeee72a0adbf1a8dd057ec061f0",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m1-webmcp-coverage.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1016,
+      "sha256": "1686c6cdcac4e7a8d1412500191bd077222ecfe5a0262a672c1d28125c1f51b3",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-regions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 56,
+      "sha256": "6a43a1c9739e3ee014df8219f2cdbfcd296a263851a503daf08690eeda9a5f9f",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-webmcp-regions.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 1097,
+      "sha256": "5ebc2153c855f0841d8424a61ff52b3ac21aa9cf35891d61edd59583f8e33119",
+      "error": null
+    },
+    {
+      "file": "tests/p25-webmcp-modules.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 889,
+      "sha256": "f8bf25d7000e0ccd315338d5404badcfcb97636b54f06d34abf68bf0c0d926fb",
+      "error": null
+    }
+  ]
+}

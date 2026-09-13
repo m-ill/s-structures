@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {kdsStressBlock,kdsStrengthPhi,evaluateKdsSection} from '../src/design/rc/kdsStrength.js';
+assert.deepEqual(kdsStressBlock(30),{alpha:0.85,beta:0.8,epscu:0.0033});
+assert.equal(kdsStressBlock(90).alpha,0.85*0.84);
+assert.equal(kdsStrengthPhi(0.002,400,200000),0.65);
+assert.equal(kdsStrengthPhi(0.005,400,200000),0.85);
+assert.ok(Math.abs(kdsStrengthPhi(0.0035,400,200000)-0.75)<1e-12);
+assert.equal(kdsStrengthPhi(0.005,600,200000)<0.85,true);
+const s={B:0.3,H:0.5},bars=[-1,1].flatMap(y=>[-1,1].map(z=>({y:y*0.2,z:z*0.1,area:0.0004}))),m={fc:30,fy:400,Es:200000};
+const axial=evaluateKdsSection(s,bars,m,{N:-100,My:0,Mz:0});
+const expected=0.8*0.65*(0.85*30*(0.15-0.0016)+400*0.0016)*1000;
+assert.ok(Math.abs(axial.capacity-expected)<1e-8);
+const beam=evaluateKdsSection(s,bars,m,{N:0,My:0,Mz:10});
+assert.equal(beam.status,'OK');assert.ok(beam.phi>=0.65&&beam.phi<=0.85);
+assert.ok(Math.abs(beam.equilibrium.N)<1e-5);
+assert.ok(beam.codeReferences.every(x=>x.sha256&&x.clause));
+assert.equal(evaluateKdsSection(s,bars,{...m,fc:100},{N:0,My:0,Mz:10}).status,'NOT_CHECKED');
+console.log('PASS KDS stress block, strain-dependent phi, tied axial cap and force equilibrium');

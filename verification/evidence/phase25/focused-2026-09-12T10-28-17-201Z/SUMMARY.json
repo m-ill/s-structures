@@ -1,0 +1,25 @@
+{
+  "sourceHash": "6cf6c2b6f18e07dab0a1632c1264d16eb656ed0cb6696830fd2552770ec353ab",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T10:28:17.619Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m8-refined-arc-contact.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 87,
+      "sha256": "f19abd7cf1c0b2b790f3fa21880ed7445b9cf7ca93a4baae6b3c203e0dfd7641",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m2-member-hoop-readiness.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 53,
+      "sha256": "0ab2fd6feb694ba32b0c4d0c3a545fce7e86f596a3a9d1948b1b9de25f78dd1a",
+      "error": null
+    }
+  ]
+}

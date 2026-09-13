@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {foundationDistributionProposal} from '../src/compute/product/foundationDistributionProposal.js';
+import {footingDistribution,footingBarLayout} from '../src/design/foundation/footingBarLayout.js';
+const f={id:'F',version:1,nodeId:'A',B:2,L:4,cover:.05,aggregateMaxSize:.02,barDistribution:'uniform',reinforcement:{bottomB:{diameter:.016,spacing:.2},bottomL:{diameter:.016,spacing:.2}}};
+const command={id:'F',version:1,nodeId:'A',barDistribution:'uniform'};
+const before=footingDistribution(f);assert.equal(before.status,'NG');
+const checks=[{...before,id:'D',entityId:'foundation:A',checkId:'foundation-distribution'}],model={designDetails:{foundations:[f]}};
+const p=foundationDistributionProposal(command,checks,model);assert.equal(p.ok,true);assert.deepEqual(p.edits,[{barDistribution:'kds-centered-band'}]);
+const changed={...f,...p.edits[0]};assert.equal(footingDistribution(changed).status,'OK');assert.ok(footingBarLayout(changed,'bottom','B').count>footingBarLayout(f,'bottom','B').count);
+assert.equal(f.barDistribution,'uniform');assert.deepEqual(p.basisCheckIds,['D']);
+assert.equal(foundationDistributionProposal({...command,version:2},checks,model).ok,false);
+assert.equal(foundationDistributionProposal(command,checks,{designDetails:{foundations:[{...f,aggregateMaxSize:.15}]}}).ok,false,'no congestion-producing distribution proposal');
+console.log('PASS bounded centered-band proposal through existing layout and clearance owners');
+
+const square={...f,L:2},squareModel={designDetails:{foundations:[square]}},squareChecks=[{...footingDistribution(square),id:'SQ',entityId:'foundation:A',checkId:'foundation-distribution'}];
+assert.equal(squareChecks[0].status,'OK');
+const resized=foundationDistributionProposal(command,squareChecks,squareModel,{L:4});
+assert.equal(resized.ok,true);assert.equal(resized.geometryReevaluated,true);
+assert.equal(footingDistribution({...square,L:4,...resized.edits[0]}).status,'OK');
+assert.equal(square.L,2);assert.equal(square.barDistribution,'uniform');
+assert.equal(foundationDistributionProposal(command,squareChecks,squareModel,{L:NaN}).ok,false);
+console.log('PASS resizing a previously passing square footing triggers coupled centered-band distribution');

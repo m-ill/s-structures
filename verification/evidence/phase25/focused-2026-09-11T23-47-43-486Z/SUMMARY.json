@@ -1,0 +1,17 @@
+{
+  "sourceHash": "3ac83694faf72bbcb962370bcd135e38fd7477e2155a45f59acd62a317cb51bb",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-11T23:47:43.793Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-rc-diaphragm.mjs",
+      "exitCode": 1,
+      "passed": false,
+      "elapsedMs": 72,
+      "sha256": "2d9deb3d19b91c19944980b7290ef55f2d212fea3921baf1f9161be0fda31507",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "sourceHash": "7471a49d4262807acb77c3caabf43449d09143903f8b58bb49a4114168277347",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T01:40:44.786Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m1-provided-member-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 2842,
+      "sha256": "968aef7bc4f24b4c0e95f24858272bcab8f5ae0a467f90c655d2bfb27f961714",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m8-provided-report-summary.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 275,
+      "sha256": "8e54207e768918a3224ec9e09ee69ddbdce0a1bb48fb9ae7384f8b6f6ffb4ff8",
+      "error": null
+    }
+  ]
+}

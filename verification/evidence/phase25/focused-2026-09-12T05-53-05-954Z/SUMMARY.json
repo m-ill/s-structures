@@ -1,0 +1,33 @@
+{
+  "sourceHash": "7847c0a26a51a6a140f7030d85aa0f62c752821ab191e3c884353f500aa00cb7",
+  "sourceChangedDuringRun": false,
+  "date": "2026-09-12T05:53:06.604Z",
+  "scope": "selected-focused",
+  "comprehensive": false,
+  "results": [
+    {
+      "file": "tests/p25-m6-joint-plane-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 163,
+      "sha256": "4da2cfa2566ff805751d45942845fd5998e71125e15c20863beefb77cefe2357",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-joint-auto-proposal.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 107,
+      "sha256": "7ab874ef995c2e15064217b79fb8f5ac34e3c4705a6df6a81d181ac868996561",
+      "error": null
+    },
+    {
+      "file": "tests/p25-m6-dependent-candidates.mjs",
+      "exitCode": 0,
+      "passed": true,
+      "elapsedMs": 51,
+      "sha256": "be8fab05a70ad13462507ca720ddcaaef4b8432e205fb365265aab9760e64787",
+      "error": null
+    }
+  ]
+}
