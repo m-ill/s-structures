@@ -8,6 +8,7 @@ const checks = [
   'tests/webmcp-integration.mjs',
   'tests/p19-m3-design-workflow.mjs',
   'tests/p25-m9-attachment-ui.mjs',
+  'tests/p25-expanded-capacity.mjs',
 ];
 for (const check of checks) {
   console.log(`\nPreview check: ${check}`);

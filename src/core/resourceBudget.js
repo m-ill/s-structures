@@ -1,6 +1,7 @@
-export const RESOURCE_BUDGET_VERSION = 'p21-managed-memory-v1';
+export const RESOURCE_BUDGET_VERSION = 'p25-managed-memory-v2-1gib';
 const MiB=1024*1024;
-export const DEFAULT_RESOURCE_BUDGETS=Object.freeze({managedBytes:256*MiB,workerAdmissionBytes:512*MiB,analysisQueue:8,reportReaders:2,reportQueue:8});
+// These are admission ceilings, not eager allocations or an aggregate browser RSS cap.
+export const DEFAULT_RESOURCE_BUDGETS=Object.freeze({managedBytes:1024*MiB,workerAdmissionBytes:1024*MiB,analysisQueue:8,reportReaders:2,reportQueue:8});
 // Conservative retained-data accounting; this is not a measurement of the JS heap.
 export function retainedBytes(value,seen=new Set()) {
   if(value==null)return 8;
