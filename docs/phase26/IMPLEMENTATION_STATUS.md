@@ -1,6 +1,6 @@
 # Phase26 구현 진행 기록
 
-기준일 2026-09-13 · 기준 커밋 `a2675a62` · 상태: **IN_PROGRESS — M0·M1·M2 완료**
+기준일 2026-09-13 · 기준 커밋 `a2675a62` · 상태: **IN_PROGRESS — M0~M3 완료**
 
 단계가 끝날 때마다 아래 진행표와 [대장](DEBT_REGISTER.json)의 상태를 함께 갱신한다.
 
@@ -34,7 +34,7 @@
 | M0 기준선 고정 | **DONE** | 27건 직렬 재현, 대장과 정확히 일치. [기준선](../../verification/evidence/phase26/baseline-20260913/baseline.json) · [재현](../../verification/evidence/phase26/baseline-20260913/probes.mjs) |
 | M1 페이지 예산 | **DONE** | A01~A05 통과. [ADR-001](adr/ADR-001-PAGE-BUDGET.md) · [측정](../../verification/evidence/phase26/baseline-20260913/page-budget-cost.json) |
 | M2 낡은 기준선 | **DONE** | B01~B08 통과. 8건 중 2건은 낡은 기록이 아니라 실제 결함·의미 변경이었다 |
-| M3 계약·거버넌스 | NOT_STARTED | |
+| M3 계약·거버넌스 | **DONE** | C01·E02 통과. E01은 r2 재발행 [제안서](P17-M2-SB1-LOCK-REISSUE-PROPOSAL.md) 제출 후 `DEFERRED` |
 | M4 구조 부채 | NOT_STARTED | |
 | M5 게이트 확장 | NOT_STARTED | |
 | M6 문서 갱신 | NOT_STARTED | |
@@ -92,3 +92,9 @@ Phase26 완료는 **정식 게이트가 현재 코드 전체를 실행한다**�
 - P26-B03: 공개 표면은 안정화 커밋이 추가한 상수 2개만 늘었고 삭제는 0이다. manifest 차이 5건은 문서 이동 1건과 Phase25 버전 상승 4건으로 전부 추적된다.
 - P26-B05: 호환성 래퍼 검토 기록을 갱신했다. Phase24-25 통합이 래퍼 2개를 작게 수정하면서 검토 기록을 갱신하지 않았던 것이며, 역할·소유자·제거 관문은 그대로다. `revalidatedAt: P26-M2`로 남겼다.
 - P26-B02·B06·B08: WebMCP 도구 40→90(전부 고유, 중복 0), 모듈·평가기 버전 상승. 정당성 확인 후 갱신.
+
+### M3 — 계약 불일치와 거버넌스 판정 (2026-09-14)
+
+- **P26-C01**: 코드가 옳았다. 이미 취소된 내보내기는 폰트 로딩을 **시작하지 않는다**. 시험이 `cancel()`을 동기로 먼저 호출해 `loadFont`가 아예 불리지 않았고, 그래서 resolver가 undefined였다. 시험이 폰트 로딩이 실제로 진행 중일 때 취소하도록 고쳐 원래 시나리오(취소-중-폰트-대기)를 그대로 검증한다.
+- **P26-E02**: `m6-rc-design`과 같은 Phase24/25 의미 변경이다. 배근이 제공되지 않은 RC 부재는 NG가 아니라 사유(`MISSING_REINFORCEMENT`)를 붙인 `NOT_CHECKED`로 보고된다(23건 NOT_CHECKED, 7건 N_A). 기대치를 바꾸되 **차단된 검사가 드러나고, 각각 사유를 말하며, `scopeComplete`가 false여야 한다**로 강화했다.
+- **P26-E01**: **해결하지 않았다.** 봉인된 r1은 Phase20 이전 제품 빌드를 가리킨다(`linear3d.js` 67,784 → 900 B). r1을 덮어쓰지 않고 r2 재발행 제안서를 제출했으며 오너 승인 대기다. M5 제외 목록에 사유와 함께 들어간다.

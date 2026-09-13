@@ -18,8 +18,9 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DONE": 13,
-      "OPEN": 20
+      "DEFERRED": 1,
+      "DONE": 15,
+      "OPEN": 17
     }
   },
   "statusDefinitions": {
@@ -206,8 +207,9 @@
       "cause": "the cancel path no longer calls loadFont, so the test never receives its resolver",
       "milestone": "M3",
       "phase": 26,
-      "status": "OPEN",
-      "note": "decide whether the cancel contract or the test is wrong before changing either"
+      "status": "DONE",
+      "note": "decide whether the cancel contract or the test is wrong before changing either",
+      "resolution": "the export drops an already-cancelled request before loading a font, which is correct; the test now lets the font load start before cancelling so it still exercises cancel-while-outstanding"
     },
     {
       "id": "P26-E01",
@@ -218,8 +220,9 @@
       "cause": "sealed SB1 build lock pins product source hashes from an earlier revision",
       "milestone": "M3",
       "phase": 26,
-      "status": "OPEN",
-      "note": "verification/** is -text sealed evidence; reissue as r2 rather than rewriting r1"
+      "status": "DEFERRED",
+      "note": "verification/** is -text sealed evidence; reissue as r2 rather than rewriting r1",
+      "resolution": "sealed r1 pins a pre-Phase20 product build (linear3d.js 67784 -> 900 B after the module boundary refactor). Reissue proposed as r2 in docs/phase26/P17-M2-SB1-LOCK-REISSUE-PROPOSAL.md; awaiting owner approval, r1 not overwritten"
     },
     {
       "id": "P26-E02",
@@ -230,8 +233,9 @@
       "cause": "design review produces no NG check after the Phase24/25 RC semantics change",
       "milestone": "M3",
       "phase": 26,
-      "status": "OPEN",
-      "note": "same class as m6-rc-design: decide the intended meaning before editing"
+      "status": "DONE",
+      "note": "same class as m6-rc-design: decide the intended meaning before editing",
+      "resolution": "same Phase24/25 semantics as m6: an RC member without provided reinforcement reports NOT_CHECKED with a reason instead of NG. The test now requires blocked checks to be surfaced with reasons and scopeComplete false"
     },
     {
       "id": "P26-D01",

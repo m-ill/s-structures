@@ -14,10 +14,15 @@ const good=r=>{assert.equal(r.ok,true,JSON.stringify(r));return r;};
 const run=good(await bridge.runElasticWorkflow({plan:good(bridge.planElasticWorkflow({caseIds:['STATIC']})),requestId:'run'}));
 const review=good(bridge.startDesignReview({plan:good(bridge.planDesignReview({sources:[{analysisRunId:run.steps[0].analysisRunId,comboId:'U'}]})),requestId:'review'}));
 const {checks,messages,summary}=review.result;
-assert.ok(checks.some(x=>x.status==='NG'));assert.ok(messages.length>0);
+// Since Phase24/25 an RC member without provided reinforcement reports
+// NOT_CHECKED with a reason instead of NG, so the review must surface the
+// blocked checks, say why each is blocked, and refuse to call the scope done.
+const blocked=checks.filter(x=>x.status==='NOT_CHECKED');
+assert.ok(blocked.length>0);assert.ok(blocked.every(x=>typeof x.reason==='string'&&x.reason.length>0));
+assert.equal(summary.practical.scopeComplete,false);assert.ok(messages.length>0);
 assert.equal(new Set(checks.map(x=>x.checkKey)).size,checks.length);
 assert.equal(summary.counts.NG,checks.filter(x=>x.status==='NG').length);
-assert.equal(summary.counts.N_A,2);
+assert.equal(summary.counts.N_A,7);
 assert.ok(checks.filter(x=>x.status==='N_A').every(x=>x.ratio===null&&x.reason));
 assert.ok(!checks.some(x=>messages.some(m=>m.code===x.checkId)),'explanatory messages must not become duplicate checks');
 assert.equal(summary.checkCount,Object.values(summary.counts).reduce((a,b)=>a+b,0));

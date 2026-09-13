@@ -25,6 +25,9 @@ const budget=createResourceBudget(),workflow={getEvaluation:()=>({stale:false}),
 let releaseFont;
 const service=createDrawingExportService({bridge:{getWorkflowInputIdentity:()=>({inputHash:snapshot.inputHash})},workflow,budget,loadFont:()=>new Promise(resolve=>{releaseFont=resolve;})});
 const pending=service.exportDrawing({evaluationId:snapshot.id,format:'pdf'});
+// The export drops an already-cancelled request before it starts loading a
+// font, so the cancel has to land while that load is genuinely outstanding.
+while(!releaseFont)await Promise.resolve();
 service.cancel();releaseFont(font);await assert.rejects(pending,{code:'EXPORT_CANCELLED'});
 assert.equal(budget.snapshot().totalBytes,0,'cancel releases staging ownership');
 const svg=await service.exportDrawing({evaluationId:snapshot.id,format:'svg'});assert.ok(svg.ok);
