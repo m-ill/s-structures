@@ -1,5 +1,6 @@
 import {installWorkShell,anchorMenuRect} from './workspaceUxShell.js';
 import {workspaceUxStyles} from './workspaceUxStyles.js';
+import {installAgentConnection} from './agentConnection.js';
 const INPUTS=[['material-record','재료'],['section-record','단면'],['reinforcement-record','배근'],['connection-record','접합'],['foundation-record','기초'],['ground-record','지반']];
 export function installWorkspaceUx(target,bridge){
  const doc=target.document;
@@ -9,6 +10,7 @@ export function installWorkspaceUx(target,bridge){
  const el=(tag,text)=>{const n=doc.createElement(tag);if(text)n.textContent=text;return n;};
  const button=(text,fn)=>{const b=el('button',text);b.type='button';b.addEventListener('click',fn);return b;};
  const style=el('style',workspaceUxStyles);style.id='ssWorkspaceUxStyles';doc.head.appendChild(style);
+ installAgentConnection(target);
  const input=doc.getElementById('ssDesignInputs'),review=doc.getElementById('ssDesignReview');
  const inputShell=input&&installWorkShell(target,input),reviewShell=review&&installWorkShell(target,review);
  const existingButton=(root,label)=>[...root.querySelectorAll('button')].find(b=>b.textContent===label);

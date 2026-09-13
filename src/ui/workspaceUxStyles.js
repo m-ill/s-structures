@@ -1,5 +1,6 @@
 export const workspaceUxStyles=`
 :root{--ss-ux-panel-z:19010;--ss-ux-menu-z:19100}
+#ssAgentConnection .ss-work-body p{margin:10px 0;line-height:1.55}#ssAgentConnection ol{padding-left:24px;line-height:1.7}#ssAgentConnection summary{cursor:pointer}
 .ss-work-window{position:fixed;z-index:var(--ss-ux-panel-z);display:flex;flex-direction:column;overflow:hidden;background:var(--paper,#fbfcfe);color:#172338;border:1px solid #b6c3d6;border-radius:10px;box-shadow:0 12px 40px #00274433;font:14px system-ui;box-sizing:border-box}
 .ss-work-window[hidden]{display:none!important}.ss-work-header{display:flex;align-items:center;gap:8px;background:#eef4fa;padding:10px 16px;border-bottom:1px solid #c9d8e6;flex-shrink:0}.ss-work-header h2{font-size:17px!important;margin:0!important;flex:1;white-space:nowrap}.ss-work-hint{font-size:11px;color:#536a80}.ss-work-body{overflow:auto;padding:16px;min-height:0;flex:1;overscroll-behavior:contain}.ss-work-footer{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:6px 16px;background:#eef4fa;flex-shrink:0}.ss-work-footer:empty{display:none}
 .ss-work-window button,.ss-ux-shortcuts button,#ssNativeRibbon>div>button{font:inherit;min-height:32px;padding:6px 10px;border:1px solid #bacfe0;border-radius:6px;background:#edf3fa;color:#00467f;cursor:pointer}
