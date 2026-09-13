@@ -48,9 +48,32 @@ export function remapSplicePartition(original,target,splices){
  }
  if(owner.size!==original.length)return null;
  const before=rows(original),after=rows(target);
- if(before.size!==after.size)fail();
- for(const [key,row] of before){
-  const next=after.get(key);if(!next||next.length<row.length)fail();
+ // Layer-for-layer mapping needs the same row structure on both sides. A
+ // candidate may change the number of layers, or add bars to a face that had
+ // none, and then no row matches. Each face is then read as one ordered run
+ // (outer layer first, then across the face) and each new bar takes the splice
+ // group of the old bar at the same normalized position, because position order
+ // along the face is what staggering depends on.
+ //
+ // Bars on a face the original did not reinforce are left in no group at all.
+ // They are new reinforcement with no lap to inherit, and a splice is declared
+ // input rather than something to invent. Splice lengths and strength are
+ // reevaluated after mapping, never inferred from group membership.
+ const sameRows=before.size===after.size&&[...before.keys()].every(key=>after.has(key));
+ const grouped=(map)=>{
+  const out=new Map();
+  for(const [key,row] of map){
+   const [sign,layer]=key.split(':');
+   if(!out.has(sign))out.set(sign,[]);
+   for(const bar of row)out.get(sign).push({...bar,layer:Number(layer)});
+  }
+  for(const [,row] of out)row.sort((a,b)=>a.layer-b.layer||a.z-b.z);
+  return out;
+ };
+ const from=sameRows?before:grouped(before),to=sameRows?after:grouped(after);
+ for(const [key,row] of from){
+  // An old face that lost every bar cannot be remapped by position.
+  const next=to.get(key);if(!next||(sameRows&&next.length<row.length))fail();
   for(let i=0;i<next.length;i++){
    const rank=next.length===1?0:i*(row.length-1)/(next.length-1),source=row[Math.round(rank)];
    mapped.get(owner.get(source.index)).push(String(next[i].index));

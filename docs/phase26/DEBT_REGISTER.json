@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 15,
-      "DONE": 19,
+      "DEFERRED": 14,
+      "DONE": 20,
       "OPEN": 1
     }
   },
@@ -272,9 +272,9 @@
       "cause": "candidates are rejected with SPLICE_BAR_MAPPING_STRATEGY_REQUIRED, so the solver returns no best candidate",
       "milestone": "P27-M2",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "remapSplicePartition generalised: a face whose layer count changed is mapped as one ordered run, and bars on a face the original never reinforced are left in no splice group rather than inheriting an invented lap"
     },
     {
       "id": "P26-D04",
