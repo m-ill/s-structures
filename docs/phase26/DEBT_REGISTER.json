@@ -18,8 +18,8 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 10,
-      "DONE": 25
+      "DEFERRED": 8,
+      "DONE": 27
     }
   },
   "statusDefinitions": {
@@ -284,9 +284,9 @@
       "cause": "same splice bar mapping gap",
       "milestone": "P27-M2",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "the two comparison shapes are intentional: the receipt keeps a bounded summary that survives evaluation release, and Phase25 chose the full designComparisonDetails for report output because the summary dropped candidate basis and changed dimensions. The test compared the export against the receipt; it now compares it against the full record the receipt points at."
     },
     {
       "id": "P26-D05",
@@ -297,9 +297,9 @@
       "cause": "same splice bar mapping gap, reached through the direct workflow",
       "milestone": "P27-M2",
       "phase": 27,
-      "status": "DEFERRED",
+      "status": "DONE",
       "note": "",
-      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
+      "resolution": "the two comparison shapes are intentional: the receipt keeps a bounded summary that survives evaluation release, and Phase25 chose the full designComparisonDetails for report output because the summary dropped candidate basis and changed dimensions. The test compared the export against the receipt; it now compares it against the full record the receipt points at."
     },
     {
       "id": "P26-D06",

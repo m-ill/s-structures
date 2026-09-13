@@ -57,7 +57,7 @@ try{
   const applied=await applicationContext.call('apply_design_candidate_and_review',{jobId:job.jobId,candidateId:job.best.candidateId,requestId:'splice-apply'});
   assert.equal(applied.ok,true,JSON.stringify(applied));assert.equal(applied.followUp.status,'completed');assert.equal(applied.followUp.sources.length,2);assert.equal(applied.followUp.summary.complete,false);
   const comparison=applied.followUp.comparison;assert.equal(comparison.beforeEvaluationId,fromSplice.evaluationId);assert.equal(comparison.afterEvaluationId,applied.followUp.evaluationId);assert.equal(comparison.affectedScope.complete,false);assert.equal(comparison.affectedScope.projectComplete,false);assert.ok(comparison.beforeCheckCount>20);assert.equal(comparison.counts.matched+comparison.counts.removed,comparison.beforeCheckCount);assert.equal(comparison.counts.matched+comparison.counts.added,comparison.afterCheckCount);
-  const replay=await applicationContext.call('apply_design_candidate_and_review',{jobId:job.jobId,candidateId:job.best.candidateId,requestId:'splice-apply'});assert.equal(replay.replayed,true);assert.deepEqual(replay.followUp.comparison,comparison);const comparisonReport=await applicationContext.call('export_design_drawings',{evaluationId:applied.followUp.evaluationId,format:'json'});assert.equal(comparisonReport.ok,true,JSON.stringify(comparisonReport));assert.deepEqual(comparisonReport.designComparison,comparison);
+  const replay=await applicationContext.call('apply_design_candidate_and_review',{jobId:job.jobId,candidateId:job.best.candidateId,requestId:'splice-apply'});assert.equal(replay.replayed,true);assert.deepEqual(replay.followUp.comparison,comparison);const comparisonReport=await applicationContext.call('export_design_drawings',{evaluationId:applied.followUp.evaluationId,format:'json'});assert.equal(comparisonReport.ok,true,JSON.stringify(comparisonReport));assert.ok(comparison.comparisonDetailQuery);
   assert.ok(retainedBytes(applied)<16000,'public receipt fits the retained receipt budget');
   let fullComparisonText='',comparisonOffset=0;
   do{
@@ -68,6 +68,12 @@ try{
   const reopened=await applicationContext.call('get_practical_design_result',{evaluationId:applied.followUp.evaluationId});
   assert.deepEqual(reopened.postApplication.comparison,comparison);
   assert.equal(stableHash(fullComparison),comparison.detailHash);
+  // The receipt keeps a bounded summary that outlives the evaluation, while the
+  // report needs the whole record: Phase25 chose designComparisonDetails for
+  // output because the summary dropped candidate basis and changed dimensions.
+  // The two shapes are deliberately different, so the export is compared with
+  // the full record the receipt points at rather than with the receipt.
+  assert.deepEqual(comparisonReport.designComparison,fullComparison);
   assert.deepEqual(fullComparison.counts,comparison.counts);
   assert.ok(fullComparison.completionBlockers.rows.length>=comparison.completionBlockers.rows.length);
   assert.deepEqual(applicationContext.bridge.getPracticalDesignSnapshot(applied.followUp.evaluationId).designComparisonDetails,fullComparison);
