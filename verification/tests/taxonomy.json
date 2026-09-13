@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 867,
+  "plannedCount": 869,
   "categoryCounts": {
     "e2e": 14,
     "integration": 51,
     "qualification": 225,
-    "unit": 577
+    "unit": 579
   },
   "executionCounts": {
     "default": 314,
-    "release-long": 553
+    "release-long": 555
   },
   "records": [
     {
@@ -3869,6 +3869,18 @@
       "taxonomy": "unit",
       "execution": "release-long",
       "owner": "phase25"
+    },
+    {
+      "file": "tests/p28-code-reference-consistency.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase28"
+    },
+    {
+      "file": "tests/p28-test-gate-coverage.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase28"
     },
     {
       "file": "tests/p3-app-shell.mjs",

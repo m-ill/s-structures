@@ -10,8 +10,8 @@
 ## Analysis
 
 - Status: OK
-- Max displacement: 0.012765
-- Max utilization: 0.539032
+- Max displacement: 0.012959
+- Max utilization: 0.538796
 - Design status: OK
 - Package audit: OK
 
@@ -19,33 +19,33 @@
 
 | Combo | Status | Max displacement | Max utilization | Residual |
 | --- | --- | ---: | ---: | ---: |
-| KDS-ST-01 | OK | 0.009591 | 0.455281 | 6.608e-18 |
-| KDS-ST-02 | OK | 0.011144 | 0.528993 | 4.853e-16 |
-| KDS-ST-04-WX-P | OK | 0.011586 | 0.476961 | 2.742e-15 |
-| KDS-ST-04-WX-N | OK | 0.011586 | 0.476961 | 2.717e-15 |
-| KDS-ST-04-WY-P | OK | 0.012765 | 0.538789 | 5.383e-16 |
-| KDS-ST-04-WY-N | OK | 0.012765 | 0.538789 | 5.383e-16 |
-| KDS-ST-05-EX-P | OK | 0.011013 | 0.476961 | 2.136e-15 |
-| KDS-ST-05-EX-N | OK | 0.011013 | 0.476961 | 2.136e-15 |
-| KDS-ST-05-EY-P | OK | 0.011777 | 0.523512 | 4.037e-16 |
-| KDS-ST-05-EY-N | OK | 0.011777 | 0.523512 | 6.729e-16 |
-| KDS-ST-06-WX-P | OK | 0.008439 | 0.311265 | 4.413e-15 |
-| KDS-ST-06-WX-N | OK | 0.008439 | 0.311265 | 4.413e-15 |
+| KDS-ST-01 | OK | 0.009764 | 0.455169 | 5.639e-16 |
+| KDS-ST-02 | OK | 0.011344 | 0.528863 | 7.784e-16 |
+| KDS-ST-04-WX-P | OK | 0.011779 | 0.476843 | 2.834e-15 |
+| KDS-ST-04-WX-N | OK | 0.011779 | 0.476843 | 2.821e-15 |
+| KDS-ST-04-WY-P | OK | 0.012959 | 0.538554 | 9.293e-16 |
+| KDS-ST-04-WY-N | OK | 0.012959 | 0.538554 | 9.611e-16 |
+| KDS-ST-05-EX-P | OK | 0.011201 | 0.476843 | 2.203e-15 |
+| KDS-ST-05-EX-N | OK | 0.011201 | 0.476843 | 2.243e-15 |
+| KDS-ST-05-EY-P | OK | 0.011965 | 0.523306 | 7.409e-16 |
+| KDS-ST-05-EY-N | OK | 0.011965 | 0.523306 | 7.490e-16 |
+| KDS-ST-06-WX-P | OK | 0.00857 | 0.310861 | 4.472e-15 |
+| KDS-ST-06-WX-N | OK | 0.00857 | 0.310861 | 4.462e-15 |
 
 ## Governing Members
 
 | Rank | Member | Status | Utilization | Check | Combo |
 | ---: | --- | --- | ---: | --- | --- |
-| 1 | M30 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-N |
-| 2 | M28 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-N |
-| 3 | M32 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-N |
-| 4 | M26 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-N |
-| 5 | M33 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-N |
-| 6 | M17 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-P |
-| 7 | M19 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-P |
-| 8 | M23 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-P |
-| 9 | M21 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-P |
-| 10 | M24 | OK | 0.539032 | steel-interaction | KDS-ST-04-WY-P |
+| 1 | M21 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-P |
+| 2 | M19 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-P |
+| 3 | M23 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-P |
+| 4 | M24 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-P |
+| 5 | M30 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-N |
+| 6 | M17 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-P |
+| 7 | M28 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-N |
+| 8 | M32 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-N |
+| 9 | M33 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-N |
+| 10 | M26 | OK | 0.538796 | steel-interaction | KDS-ST-04-WY-N |
 
 ## Notes
 

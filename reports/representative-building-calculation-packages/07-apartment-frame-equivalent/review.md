@@ -10,8 +10,8 @@
 ## Analysis
 
 - Status: OK
-- Max displacement: 0.004173
-- Max utilization: 0.358187
+- Max displacement: 0.004441
+- Max utilization: 0.381166
 - Design status: OK
 - Package audit: OK
 
@@ -19,33 +19,33 @@
 
 | Combo | Status | Max displacement | Max utilization | Residual |
 | --- | --- | ---: | ---: | ---: |
-| KDS-ST-01 | OK | 7.626e-4 | 0.087771 | 3.229e-15 |
-| KDS-ST-02 | OK | 9.953e-4 | 0.118743 | 5.478e-15 |
-| KDS-ST-04-WX-P | OK | 0.001017 | 0.115802 | 5.210e-15 |
-| KDS-ST-04-WX-N | OK | 0.001017 | 0.115802 | 5.699e-15 |
-| KDS-ST-04-WY-P | OK | 0.002025 | 0.149315 | 5.612e-15 |
-| KDS-ST-04-WY-N | OK | 0.002025 | 0.149315 | 5.612e-15 |
-| KDS-ST-05-EX-P | OK | 0.003928 | 0.181636 | 5.373e-15 |
-| KDS-ST-05-EX-N | OK | 0.003928 | 0.181636 | 5.210e-15 |
-| KDS-ST-05-EY-P | OK | 0.004173 | 0.187038 | 1.210e-14 |
-| KDS-ST-05-EY-N | OK | 0.004173 | 0.187038 | 1.214e-14 |
-| KDS-ST-06-WX-P | OK | 7.206e-4 | 0.069808 | 4.432e-15 |
-| KDS-ST-06-WX-N | OK | 7.206e-4 | 0.069808 | 3.989e-15 |
+| KDS-ST-01 | OK | 7.763e-4 | 0.088002 | 2.107e-11 |
+| KDS-ST-02 | OK | 0.001012 | 0.119052 | 2.089e-11 |
+| KDS-ST-04-WX-P | OK | 0.001046 | 0.116109 | 2.091e-11 |
+| KDS-ST-04-WX-N | OK | 0.001046 | 0.116109 | 2.014e-11 |
+| KDS-ST-04-WY-P | OK | 0.002143 | 0.14964 | 1.922e-11 |
+| KDS-ST-04-WY-N | OK | 0.002143 | 0.14964 | 1.957e-11 |
+| KDS-ST-05-EX-P | OK | 0.004145 | 0.182165 | 2.100e-11 |
+| KDS-ST-05-EX-N | OK | 0.004145 | 0.182165 | 1.175e-11 |
+| KDS-ST-05-EY-P | OK | 0.004441 | 0.187459 | 1.783e-11 |
+| KDS-ST-05-EY-N | OK | 0.004441 | 0.187459 | 4.496e-12 |
+| KDS-ST-06-WX-P | OK | 7.491e-4 | 0.069996 | 2.075e-11 |
+| KDS-ST-06-WX-N | OK | 7.491e-4 | 0.069996 | 1.974e-11 |
 
 ## Governing Members
 
 | Rank | Member | Status | Utilization | Check | Combo |
 | ---: | --- | --- | ---: | --- | --- |
-| 1 | M100 | OK | 0.358187 | steel-deflection | KDS-ST-05-EY-N |
-| 2 | M99 | OK | 0.358187 | steel-deflection | KDS-ST-05-EY-P |
-| 3 | M94 | OK | 0.35803 | steel-deflection | KDS-ST-05-EX-N |
-| 4 | M106 | OK | 0.35803 | steel-deflection | KDS-ST-05-EX-N |
-| 5 | M93 | OK | 0.35803 | steel-deflection | KDS-ST-05-EX-P |
-| 6 | M105 | OK | 0.35803 | steel-deflection | KDS-ST-05-EX-P |
-| 7 | M101 | OK | 0.358027 | steel-deflection | KDS-ST-05-EY-P |
-| 8 | M98 | OK | 0.358027 | steel-deflection | KDS-ST-05-EY-N |
-| 9 | M95 | OK | 0.357869 | steel-deflection | KDS-ST-05-EX-P |
-| 10 | M107 | OK | 0.357869 | steel-deflection | KDS-ST-05-EX-P |
+| 1 | M99 | OK | 0.381166 | steel-deflection | KDS-ST-05-EY-N |
+| 2 | M100 | OK | 0.381166 | steel-deflection | KDS-ST-05-EY-P |
+| 3 | M98 | OK | 0.38103 | steel-deflection | KDS-ST-05-EY-P |
+| 4 | M101 | OK | 0.38103 | steel-deflection | KDS-ST-05-EY-N |
+| 5 | M105 | OK | 0.380958 | steel-deflection | KDS-ST-05-EX-P |
+| 6 | M94 | OK | 0.380958 | steel-deflection | KDS-ST-05-EX-N |
+| 7 | M106 | OK | 0.380958 | steel-deflection | KDS-ST-05-EX-N |
+| 8 | M93 | OK | 0.380958 | steel-deflection | KDS-ST-05-EX-P |
+| 9 | M104 | OK | 0.380821 | steel-deflection | KDS-ST-05-EX-N |
+| 10 | M95 | OK | 0.380821 | steel-deflection | KDS-ST-05-EX-P |
 
 ## Notes
 

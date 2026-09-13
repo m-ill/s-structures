@@ -34,8 +34,14 @@
   },
   "designBasis": {
     "version": "m37-load-estimation",
+    "inputVersion": "m47-design-basis-input",
+    "status": "draft",
+    "codeSourceId": null,
+    "unitSystem": null,
     "occupancy": "office",
     "occupancyLabel": "Office",
+    "designMethod": null,
+    "standard": null,
     "floorArea": 432,
     "roofArea": 432,
     "deadLoad": 3.5,
@@ -46,6 +52,230 @@
     "seismicCoefficientX": 0.091,
     "seismicCoefficientY": 0.091,
     "seismicLiveLoadFactor": 0.25,
+    "accidentalEccentricityRatio": 0.05,
+    "familyInputs": {},
+    "inputStates": {
+      "floorArea": "confirmed",
+      "roofArea": "confirmed",
+      "deadLoad": "confirmed",
+      "liveLoad": "confirmed",
+      "roofLiveLoad": "confirmed",
+      "windPressureX": "confirmed",
+      "windPressureY": "confirmed",
+      "seismicCoefficientX": "confirmed",
+      "seismicCoefficientY": "confirmed",
+      "seismicLiveLoadFactor": "confirmed",
+      "accidentalEccentricityRatio": "candidate"
+    },
+    "familyStates": {
+      "D": "confirmed",
+      "L": "confirmed",
+      "Lr": "confirmed",
+      "S": "unconfigured",
+      "R": "unconfigured",
+      "W": "confirmed",
+      "E": "confirmed",
+      "H": "unconfigured",
+      "T": "unconfigured",
+      "F": "unconfigured",
+      "EQUIPMENT": "unconfigured",
+      "CONSTRUCTION": "unconfigured",
+      "OTHER": "unconfigured"
+    },
+    "valueMetadata": {
+      "floorArea": {
+        "value": 432,
+        "unit": "m2",
+        "source": "project-input",
+        "condition": "floorArea",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "roofArea": {
+        "value": 432,
+        "unit": "m2",
+        "source": "project-input",
+        "condition": "roofArea",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "deadLoad": {
+        "value": 3.5,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "deadLoad",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "liveLoad": {
+        "value": 1.8,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "liveLoad",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "roofLiveLoad": {
+        "value": 0.9,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "roofLiveLoad",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "windPressureX": {
+        "value": 0.45,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "windPressureX",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "windPressureY": {
+        "value": 0.45,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "windPressureY",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "seismicCoefficientX": {
+        "value": 0.091,
+        "unit": "g",
+        "source": "project-input",
+        "condition": "seismicCoefficientX",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "seismicCoefficientY": {
+        "value": 0.091,
+        "unit": "g",
+        "source": "project-input",
+        "condition": "seismicCoefficientY",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "seismicLiveLoadFactor": {
+        "value": 0.25,
+        "unit": "-",
+        "source": "project-input",
+        "condition": "seismicLiveLoadFactor",
+        "inputState": "confirmed",
+        "userConfirmed": true
+      },
+      "accidentalEccentricityRatio": {
+        "value": 0.05,
+        "unit": "B",
+        "source": "legacy-load-estimation-default",
+        "condition": "accidentalEccentricityRatio",
+        "inputState": "candidate",
+        "userConfirmed": false
+      }
+    },
+    "fields": {
+      "floorArea": {
+        "value": 432,
+        "unit": "m2",
+        "source": "project-input",
+        "condition": "floorArea",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "roofArea": {
+        "value": 432,
+        "unit": "m2",
+        "source": "project-input",
+        "condition": "roofArea",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "deadLoad": {
+        "value": 3.5,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "deadLoad",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "liveLoad": {
+        "value": 1.8,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "liveLoad",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "roofLiveLoad": {
+        "value": 0.9,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "roofLiveLoad",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "windPressureX": {
+        "value": 0.45,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "windPressureX",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "windPressureY": {
+        "value": 0.45,
+        "unit": "kN/m2",
+        "source": "project-input",
+        "condition": "windPressureY",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "seismicCoefficientX": {
+        "value": 0.091,
+        "unit": "g",
+        "source": "project-input",
+        "condition": "seismicCoefficientX",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "seismicCoefficientY": {
+        "value": 0.091,
+        "unit": "g",
+        "source": "project-input",
+        "condition": "seismicCoefficientY",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "seismicLiveLoadFactor": {
+        "value": 0.25,
+        "unit": "-",
+        "source": "project-input",
+        "condition": "seismicLiveLoadFactor",
+        "status": "confirmed",
+        "confirmed": true
+      },
+      "accidentalEccentricityRatio": {
+        "value": 0.05,
+        "unit": "B",
+        "source": "legacy-load-estimation-default",
+        "condition": "accidentalEccentricityRatio",
+        "status": "candidate",
+        "confirmed": false
+      }
+    },
+    "storyOccupancies": [],
+    "floorUsages": [],
+    "confirmedFields": [
+      "floorArea",
+      "roofArea",
+      "deadLoad",
+      "liveLoad",
+      "roofLiveLoad",
+      "windPressureX",
+      "windPressureY",
+      "seismicCoefficientX",
+      "seismicCoefficientY",
+      "seismicLiveLoadFactor"
+    ],
     "notes": [
       "Representative design basis generated for workflow verification.",
       "Loads are equivalent preliminary loads and require project-specific review."
@@ -63,20 +293,24 @@
     "totalWindY": 220.32,
     "totalSeismicX": 922.8492,
     "totalSeismicY": 922.8492,
-    "generatedLoadCount": 436
+    "generatedLoadCount": 436,
+    "storyMassVersion": "p2-t18-story-mass-center",
+    "eccentricDistribution": true,
+    "accidentalEccentricityRatio": 0.05,
+    "signedAccidentalCases": false
   },
   "analysis": {
     "status": "OK",
     "comboCount": 28,
-    "maxDisplacement": 0.04864944829475139,
-    "maxUtilization": 3.553148684987094,
+    "maxDisplacement": 0.05028641676078048,
+    "maxUtilization": 3.671727322201145,
     "warnings": 0,
     "errors": 0,
     "governing": {
-      "memberId": "M63",
+      "memberId": "M60",
       "checkId": "steel-deflection",
       "status": "NG",
-      "ratio": 3.553148684987094,
+      "ratio": 3.671727322201145,
       "comboId": "KDS-ST-05-EX-P",
       "x": 0
     }
@@ -106,6 +340,26 @@
       {
         "name": "Foundation review available",
         "status": "OK"
+      },
+      {
+        "name": "Phase 3 integrated results available",
+        "status": "OK"
+      },
+      {
+        "name": "Phase 5 analysis cases listed",
+        "status": "OK"
+      },
+      {
+        "name": "Analysis run provenance records",
+        "status": "Not applicable"
+      },
+      {
+        "name": "Verified-only design transfer guard",
+        "status": "OK"
+      },
+      {
+        "name": "Phase 3 default not-checked cleanup",
+        "status": "OK"
       }
     ],
     "ok": true,
@@ -123,25 +377,26 @@
   },
   "loadDerivationTrace": {
     "version": "m48-load-derivation-trace",
-    "rowCount": 41,
+    "rowCount": 77,
     "groups": [
       "basis",
       "gravity",
       "wind",
-      "seismic"
+      "seismic",
+      "distribution"
     ]
   },
   "serviceability": {
     "version": "m49-serviceability-drift",
     "status": "OK",
-    "maxDriftRatio": 0.003716408531134693,
+    "maxDriftRatio": 0.0038352870547438945,
     "governingComboId": "KDS-ST-05-EY-P"
   },
   "memberDesignTrace": {
-    "version": "m45-member-design-trace",
+    "version": "p25-member-design-trace-v3-material-evidence",
     "checkedCount": 154,
-    "ngCount": 56,
-    "maxUtilization": 3.553148684987094
+    "ngCount": 60,
+    "maxUtilization": 3.671727322201145
   },
   "actionItems": [
     "Review members with NG status and revise size, material, or load path."
