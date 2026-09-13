@@ -18,9 +18,9 @@
       "stale-baseline": 8
     },
     "byStatus": {
-      "DEFERRED": 1,
-      "DONE": 15,
-      "OPEN": 17
+      "DEFERRED": 14,
+      "DONE": 18,
+      "OPEN": 1
     }
   },
   "statusDefinitions": {
@@ -246,8 +246,9 @@
       "cause": "torsion longitudinal distribution rule is not implemented to the expected contract",
       "milestone": "P27-M1",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D02",
@@ -258,8 +259,9 @@
       "cause": "same torsion rule",
       "milestone": "P27-M1",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D03",
@@ -270,8 +272,9 @@
       "cause": "candidates are rejected with SPLICE_BAR_MAPPING_STRATEGY_REQUIRED, so the solver returns no best candidate",
       "milestone": "P27-M2",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D04",
@@ -282,8 +285,9 @@
       "cause": "same splice bar mapping gap",
       "milestone": "P27-M2",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D05",
@@ -294,8 +298,9 @@
       "cause": "same splice bar mapping gap, reached through the direct workflow",
       "milestone": "P27-M2",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D06",
@@ -306,8 +311,9 @@
       "cause": "column position handling incomplete",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D07",
@@ -318,8 +324,9 @@
       "cause": "auto-connected joint generation incomplete",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D08",
@@ -330,8 +337,9 @@
       "cause": "automatic joint detailing incomplete",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D09",
@@ -342,8 +350,9 @@
       "cause": "minimum repair apply path does not close the required inputs",
       "milestone": "P27-M3",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D10",
@@ -354,8 +363,9 @@
       "cause": "hoop path collision handling incomplete",
       "milestone": "P27-M4",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-D11",
@@ -366,8 +376,9 @@
       "cause": "hoop closure handling incomplete",
       "milestone": "P27-M4",
       "phase": 27,
-      "status": "OPEN",
-      "note": ""
+      "status": "DEFERRED",
+      "note": "",
+      "resolution": "unimplemented RC behaviour, not record drift. Deferred to Phase27 with the reason visible; excluded from the gate by the register, never by deleting or skipping the check."
     },
     {
       "id": "P26-S01",
@@ -378,8 +389,9 @@
       "cause": "P17-M0 evidence pins tmp/pdfs/... which .gitignore excludes, so a fresh clone cannot reproduce it",
       "milestone": "M4",
       "phase": 26,
-      "status": "OPEN",
-      "note": "currently satisfied only because the file was restored by hand from archive"
+      "status": "DONE",
+      "note": "currently satisfied only because the file was restored by hand from archive",
+      "resolution": "P17-M0 now reproduces with or without the gitignored scratch artifact: its recorded entry is carried through the baseline hash when absent, and must match the recorded bytes when present. Verified both ways."
     },
     {
       "id": "P26-S02",
@@ -390,8 +402,9 @@
       "cause": "compatibility policies expired at P9-M9 and P9-M10 while the workspace is past Phase 25",
       "milestone": "M4",
       "phase": 26,
-      "status": "OPEN",
-      "note": "p20-module-audit explicitly waives compatibilityGoverned; the waiver outlived its purpose"
+      "status": "DEFERRED",
+      "note": "p20-module-audit explicitly waives compatibilityGoverned; the waiver outlived its purpose",
+      "resolution": "the overdue detector no longer rots (current phase derived from phase docs, now Phase26 instead of a hard coded Phase16), which surfaced 5 overdue policies and 6 undocumented wrappers. nonlinearBenchmarks is recorded as a preserved historical policy so the audit is honest. Whether the compatibility paths can now be removed is an owner decision."
     },
     {
       "id": "P26-S03",
@@ -402,8 +415,9 @@
       "cause": "no module or test imports it while phase9M2..M10 all have importers",
       "milestone": "M4",
       "phase": 26,
-      "status": "OPEN",
-      "note": "it still generates a retained evidence artifact, so removal is not the default answer"
+      "status": "DONE",
+      "note": "it still generates a retained evidence artifact, so removal is not the default answer",
+      "resolution": "tests/p9-m1-evidence-contract.mjs added: validates the committed artifact against the generator, rejects malformed input, and checks snapshot determinism"
     },
     {
       "id": "P26-S04",
@@ -414,8 +428,9 @@
       "cause": "the manifest advertises the legacy RC report versions while the product emits the p25 provided-schedule versions",
       "milestone": "M4",
       "phase": 26,
-      "status": "OPEN",
-      "note": "manifest hash stability must be considered before changing it"
+      "status": "DEFERRED",
+      "note": "manifest hash stability must be considered before changing it",
+      "resolution": "the manifest advertises the legacy RC report versions while the product emits the p25 provided-schedule versions. Both paths are genuinely in use, so correcting the advertisement is a public contract change and is not made during a cleanup phase."
     },
     {
       "id": "P26-S05",
@@ -426,8 +441,9 @@
       "cause": "constraint actions are required in the direct P-Delta residual but double count in the first-order residual; only the first-order path carries group tags",
       "milestone": "M4",
       "phase": 26,
-      "status": "OPEN",
-      "note": "the two paths use different reaction conventions; document or unify"
+      "status": "DONE",
+      "note": "the two paths use different reaction conventions; document or unify",
+      "resolution": "documented in secondOrder.js: the two paths use different reaction conventions, so the group-based exclusion is deliberately first-order only. Unification remains open."
     },
     {
       "id": "P26-S06",

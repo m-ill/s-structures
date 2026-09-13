@@ -832,8 +832,23 @@ function verifyWrittenArtifacts(artifacts) {
   const expectedSnapshots = Object.fromEntries(
     Object.entries(artifacts.evidence.phase15HistoricalSnapshot.current).map(([key, record]) => [key, snapshotRecord(record)]),
   );
+  // temporaryPdf records a scratch artifact under tmp/, which .gitignore
+  // excludes, so a fresh clone cannot have it. It is recorded as
+  // authoritative:false precisely because it proves nothing on its own. When it
+  // is absent the recorded entry is carried through so the baseline hash still
+  // cross-checks; when it is present it must match the recorded bytes. Every
+  // other field is compared exactly.
+  const storedScratch = evidence.phase15HistoricalSnapshot?.temporaryPdf ?? null;
+  const liveScratch = artifacts.evidence.phase15HistoricalSnapshot?.temporaryPdf ?? null;
+  if (liveScratch && storedScratch && jsonText(liveScratch) !== jsonText(storedScratch)) {
+    throw new Error('P17-M0 evidence drift: phase15HistoricalSnapshot.temporaryPdf does not match the recorded bytes');
+  }
   const expectedEvidence = withHash({
     ...artifacts.evidence,
+    phase15HistoricalSnapshot: {
+      ...artifacts.evidence.phase15HistoricalSnapshot,
+      temporaryPdf: liveScratch ?? storedScratch,
+    },
     artifacts: {
       ...artifacts.evidence.artifacts,
       contentAddressedSnapshots: expectedSnapshots,

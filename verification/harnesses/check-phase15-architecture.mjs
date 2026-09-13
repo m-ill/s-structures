@@ -1,10 +1,29 @@
 import { createHash } from 'node:crypto';
+import { readdirSync } from 'node:fs';
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const TOOL_VERSION = 'p16-m7-dual-root-architecture-audit-v1';
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+function workspacePhaseNumber(root) {
+  // A phase counts once it has an implementation record; a directory holding
+  // only a plan is not underway yet.
+  const phases = [];
+  for (const base of ['docs', 'docs/archive']) {
+    let entries = [];
+    try { entries = readdirSync(path.join(root, base), { withFileTypes: true }); } catch { entries = []; }
+    for (const entry of entries) {
+      const match = entry.isDirectory() && /^phase(\d+)$/.exec(entry.name);
+      if (!match) continue;
+      try {
+        readdirSync(path.join(root, base, entry.name)).includes('IMPLEMENTATION_STATUS.md') && phases.push(Number(match[1]));
+      } catch { /* unreadable phase directory */ }
+    }
+  }
+  return phases.length ? Math.max(...phases) : 16;
+}
 
 export async function analyzePhase15Architecture(options = {}) {
   const root = path.resolve(options.root || DEFAULT_ROOT);
@@ -200,6 +219,10 @@ function findDefinitions(sources, root, patterns) {
 
 function auditCompatibilityWrappers(imports, sources, root) {
   const wrappers = [];
+  // The workspace phase used to be hard coded here, so the overdue check went
+  // stale as the project advanced. It is derived from the phase documentation
+  // instead, and falls back to the previous literal when that is unreadable.
+  const currentPhaseNumber = workspacePhaseNumber(root);
   const overduePolicies = [];
   for (const [file, source] of sources) {
     const rel = relative(root, file);
@@ -216,13 +239,13 @@ function auditCompatibilityWrappers(imports, sources, root) {
     });
     for (const match of source.matchAll(/\b(reviewBy|expires|deleteBy)\s*:\s*['"](Phase\d+|P\d+-M\d+)['"]/g)) {
       const phase = Number(/\d+/.exec(match[2])?.[0]);
-      if (Number.isInteger(phase) && phase < 16) {
+      if (Number.isInteger(phase) && phase < currentPhaseNumber) {
         overduePolicies.push({
           file: rel,
           line: lineAt(source, match.index),
           field: match[1],
           value: match[2],
-          currentPhase: 'Phase16',
+          currentPhase: `Phase${currentPhaseNumber}`,
         });
       }
     }

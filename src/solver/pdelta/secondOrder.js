@@ -971,6 +971,14 @@ function buildConsistentReactionState(domain, assembly, D, allMemberResults, nod
     maximumMomentResidual: Math.max(0, ...momentIndices.map((dof) => Math.abs(closureResidual[dof]))),
     ...(constraintDofs.size ? { constraintWorkResidual } : {}),
   };
+  // Direct P-Delta recovers reactions from member end forces, so the constraint
+  // term is a required part of its residual. The first-order path builds
+  // reactions from the reduced system, where that term is already inside the
+  // reaction and adding it double counts; linear3dPost therefore drops a
+  // constraint group whose force path ends at a support, using the group tag
+  // that linear3dAssembly attaches. Rows built here carry no group tag, which
+  // keeps that exclusion out of this path on purpose. Unifying the two reaction
+  // conventions is tracked as P26-S05.
   const constraintActions={version:'p25-constraint-actions-v1',signConvention:'force applied by constraint to structural DOF',units:{force:'kN',moment:'kN.m'},rows:[...constraintDofs].sort((a,b)=>a-b).map(dof=>({nodeId:domain.nodes[Math.floor(dof/6)].id,dof:DISPLACEMENT_KEYS[dof%6],force:constraintForces[dof],supportCoupled:restrained.has(dof)}))};
   return { reactions, reactionVector, memberNodal, nodalExternal, constraintForces, constraintActions, closureResidual, closure };
 }

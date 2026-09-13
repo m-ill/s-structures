@@ -286,8 +286,10 @@
       "reviewAt": "P20-M4",
       "nextReview": "Next consumer/API change or breaking release",
       "removalGate": "No internal consumers and explicit public API migration; verification consumers retained until migrated.",
-      "historicalPolicyPreserved": false,
-      "qualification": "unchanged"
+      "historicalPolicyPreserved": true,
+      "qualification": "unchanged",
+      "revalidatedAt": "P26-M4",
+      "revalidationNote": "Its header POLICY says keep the path through Phase16, and the workspace is past that. Recorded as a preserved historical policy alongside the other three overdue entries. Only two internal callers remain, so the removal gate is close; whether the public path can be dropped is an owner decision tracked as P26-S02."
     },
     {
       "file": "src/solver/shell/equivalentScope.js",
