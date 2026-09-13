@@ -16,6 +16,10 @@
       "rc-engineering": 11,
       "reproducibility": 1,
       "stale-baseline": 8
+    },
+    "byStatus": {
+      "DONE": 5,
+      "OPEN": 28
     }
   },
   "statusDefinitions": {
@@ -33,8 +37,9 @@
       "cause": "buildDetailDrawings maxPages defaults to 60 while the current drawing set reaches it",
       "milestone": "M1",
       "phase": 26,
-      "status": "OPEN",
-      "note": "passes when the budget is raised; measured count=60 max=60"
+      "status": "DONE",
+      "note": "passes when the budget is raised; measured count=60 max=60",
+      "resolution": "buildDetailDrawings default maxPages 60 -> 600 per ADR-001; product callers already used 600"
     },
     {
       "id": "P26-A02",
@@ -45,8 +50,9 @@
       "cause": "same default page budget",
       "milestone": "M1",
       "phase": 26,
-      "status": "OPEN",
-      "note": "passes when the budget is raised"
+      "status": "DONE",
+      "note": "passes when the budget is raised",
+      "resolution": "buildDetailDrawings default maxPages 60 -> 600 per ADR-001; product callers already used 600"
     },
     {
       "id": "P26-A03",
@@ -57,8 +63,9 @@
       "cause": "same default page budget",
       "milestone": "M1",
       "phase": 26,
-      "status": "OPEN",
-      "note": "passes when the budget is raised"
+      "status": "DONE",
+      "note": "passes when the budget is raised",
+      "resolution": "buildDetailDrawings default maxPages 60 -> 600 per ADR-001; product callers already used 600"
     },
     {
       "id": "P26-A04",
@@ -69,8 +76,9 @@
       "cause": "same default page budget",
       "milestone": "M1",
       "phase": 26,
-      "status": "OPEN",
-      "note": "passes when the budget is raised"
+      "status": "DONE",
+      "note": "passes when the budget is raised",
+      "resolution": "buildDetailDrawings default maxPages 60 -> 600 per ADR-001; product callers already used 600"
     },
     {
       "id": "P26-A05",
@@ -81,8 +89,9 @@
       "cause": "vectorPdf enforces a separate hard limit of 60 pages",
       "milestone": "M1",
       "phase": 26,
-      "status": "OPEN",
-      "note": "not resolved by the drawing budget alone; needs its own decision"
+      "status": "DONE",
+      "note": "not resolved by the drawing budget alone; needs its own decision",
+      "resolution": "test now renders through renderPdfVolume instead of feeding a full document to buildVectorDetailPdf; the 60-page volume contract is unchanged"
     },
     {
       "id": "P26-B01",

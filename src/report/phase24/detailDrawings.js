@@ -30,7 +30,10 @@ function notes(p,rows,start=665) {
  for(const [i,s] of unique.slice(0,5).entries())text(p,35,start+i*17,s.slice(0,85),8);
  if(unique.length>5)text(p,35,start+85,`추가 미완료 항목 ${unique.length-5}건: 뒤쪽 검사별 계산서 참조`,8);
 }
-export function buildDetailDrawings(snapshot,{maxPages=60,pageOffset=0,pageLimit=maxPages,checkRetention='copy'}={}) {
+// maxPages is the whole-document ceiling counted by pageWindow, not the PDF
+// volume size; vectorPdf and pdfVolumeBundle own the 60-page volume contract.
+// The default matches what every product caller already passes (ADR-001).
+export function buildDetailDrawings(snapshot,{maxPages=600,pageOffset=0,pageLimit=maxPages,checkRetention='copy'}={}) {
  if(snapshot.designComparisonDetails)snapshot={...snapshot,designComparison:snapshot.designComparisonDetails};
  if(!['copy','reference','omit'].includes(checkRetention))throw Error('DRAWING_CHECK_RETENTION_INVALID');
  if(!Number.isInteger(maxPages)||maxPages<1||maxPages>600)throw Error('DRAWING_PAGE_BUDGET_INVALID');

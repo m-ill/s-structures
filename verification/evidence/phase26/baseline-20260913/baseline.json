@@ -1,0 +1,288 @@
+{
+  "version": "p26-m0-baseline-v1",
+  "capturedAt": "2026-09-13",
+  "baseCommit": "a2675a62",
+  "registered": 27,
+  "passed": 0,
+  "failed": 27,
+  "failedByGroup": {
+    "contract": 1,
+    "governance": 2,
+    "page-budget": 5,
+    "rc-engineering": 11,
+    "stale-baseline": 8
+  },
+  "note": "Serial execution is required: fixed ports and the shared data directory make concurrent runs report false failures.",
+  "results": [
+    {
+      "id": "P26-A01",
+      "target": "tests/p25-m5-webmcp-interface-bending.mjs",
+      "group": "page-budget",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "Error: DRAWING_PAGE_LIMIT",
+      "elapsedMs": 6242
+    },
+    {
+      "id": "P26-A02",
+      "target": "tests/p25-m5-webmcp-interface-shear.mjs",
+      "group": "page-budget",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "Error: DRAWING_PAGE_LIMIT",
+      "elapsedMs": 7039
+    },
+    {
+      "id": "P26-A03",
+      "target": "tests/p25-m5-webmcp-interface-tension.mjs",
+      "group": "page-budget",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "Error: DRAWING_PAGE_LIMIT",
+      "elapsedMs": 7265
+    },
+    {
+      "id": "P26-A04",
+      "target": "tests/p25-m6-compound-webmcp.mjs",
+      "group": "page-budget",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "Error: DRAWING_PAGE_LIMIT",
+      "elapsedMs": 3042
+    },
+    {
+      "id": "P26-A05",
+      "target": "tests/p25-m8-splice-schedule.mjs",
+      "group": "page-budget",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "if(!Array.isArray(pages)||!pages.length||pages.length>60)throw new Error('PDF_PAGE_LIMIT');",
+      "elapsedMs": 441
+    },
+    {
+      "id": "P26-B01",
+      "target": "tests/p19-m4-host-session.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 1110
+    },
+    {
+      "id": "P26-B02",
+      "target": "tests/p19-m5-nonlinear-contract.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 1427
+    },
+    {
+      "id": "P26-B03",
+      "target": "tests/p20-m1-metadata.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "elapsedMs": 903
+    },
+    {
+      "id": "P26-B04",
+      "target": "tests/p20-m3-elastic-parity.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "elapsedMs": 945
+    },
+    {
+      "id": "P26-B05",
+      "target": "tests/p20-m4-module-boundaries.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "elapsedMs": 962
+    },
+    {
+      "id": "P26-B06",
+      "target": "tests/p24-m0-scope.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 1014
+    },
+    {
+      "id": "P26-B07",
+      "target": "tests/p24-m4-kds-service.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 373
+    },
+    {
+      "id": "P26-B08",
+      "target": "tests/p24-m9-smoke.mjs",
+      "group": "stale-baseline",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 2378
+    },
+    {
+      "id": "P26-C01",
+      "target": "tests/p24-m8-drawings.mjs",
+      "group": "contract",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "TypeError: releaseFont is not a function",
+      "elapsedMs": 462
+    },
+    {
+      "id": "P26-E01",
+      "target": "tests/p17-m2-sb1-lock-package.mjs",
+      "group": "governance",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: verification/benchmarks/strix21/milestones/P17-M2/SB1/model/product-build-lock-r1.json",
+      "elapsedMs": 1129
+    },
+    {
+      "id": "P26-E02",
+      "target": "tests/p21-m4-review-artifact.mjs",
+      "group": "governance",
+      "phase": 26,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "elapsedMs": 1779
+    },
+    {
+      "id": "P26-D01",
+      "target": "tests/p25-m3-webmcp-torsion-extension.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: {\"id\":\"3dc58a2ed39df99b61816c3173e3a4ca2fdcb0547301d6c5a67c8995abbf15e1\",\"entityId\":\"AB\",\"comboId\":\"U\",\"checkId\":\"rc-torsion\",\"status\":\"NG\",\"ratio\":4.5740117416111215,\"reason\":\"TORSION_LONGITUDINAL_DISTRIBUTION_NOT_SATISFIED\",\"codeBasis\":{\"status\":\"NOT_ESTABLISHED\",\"w",
+      "elapsedMs": 2629
+    },
+    {
+      "id": "P26-D02",
+      "target": "tests/p25-m3-webmcp-torsion-hooks.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: {\"id\":\"3dc58a2ed39df99b61816c3173e3a4ca2fdcb0547301d6c5a67c8995abbf15e1\",\"entityId\":\"AB\",\"comboId\":\"U\",\"checkId\":\"rc-torsion\",\"status\":\"NG\",\"ratio\":4.5740117416111215,\"reason\":\"TORSION_LONGITUDINAL_DISTRIBUTION_NOT_SATISFIED\",\"codeBasis\":{\"status\":\"NOT_ESTABLISHED\",\"w",
+      "elapsedMs": 2874
+    },
+    {
+      "id": "P26-D03",
+      "target": "tests/p25-m4-splice-objects.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: {\"ok\":true,\"jobId\":\"candidate-job-b2ba048c83c244b8f3e8acf565ee8540610e4e8634a073b16b85419437a857af\",\"status\":\"NO_FEASIBLE_DESIGN\",\"stageTiming\":{\"activeStage\":null,\"activeElapsedMs\":0,\"durationsMs\":{\"preparation\":109.74350000000004,\"geometry\":555.6413000000002},\"basis",
+      "elapsedMs": 3210
+    },
+    {
+      "id": "P26-D04",
+      "target": "tests/p25-m4-webmcp-rc-splice-solve.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "elapsedMs": 13122
+    },
+    {
+      "id": "P26-D05",
+      "target": "tests/p25-m6-splice-direct-workflow.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "elapsedMs": 14168
+    },
+    {
+      "id": "P26-D06",
+      "target": "tests/p25-m5-webmcp-column-position.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:",
+      "elapsedMs": 2493
+    },
+    {
+      "id": "P26-D07",
+      "target": "tests/p25-m6-auto-connected-webmcp.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:",
+      "elapsedMs": 8453
+    },
+    {
+      "id": "P26-D08",
+      "target": "tests/p25-m6-joint-auto-webmcp.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 19895
+    },
+    {
+      "id": "P26-D09",
+      "target": "tests/p25-m6-rc-closure-inputs.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: {\"ok\":false,\"changed\":true,\"requestId\":\"minimum-repair-apply\",\"transactionId\":\"design-change-2\",\"inputIdentity\":{\"inputIdentityVersion\":\"p25-input-v2-moment-directions\",\"modelHash\":\"e6b6db377752a38365858eb8d2f63355fdfe524667e64af707deae96ac2f262c\",\"analysisCaseHash\":\"",
+      "elapsedMs": 11630
+    },
+    {
+      "id": "P26-D10",
+      "target": "tests/p25-m8-hoop-path-collision.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 274
+    },
+    {
+      "id": "P26-D11",
+      "target": "tests/p25-m8-webmcp-hoop-closure.mjs",
+      "group": "rc-engineering",
+      "phase": 27,
+      "passed": false,
+      "exitCode": 1,
+      "signature": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:",
+      "elapsedMs": 3627
+    }
+  ]
+}

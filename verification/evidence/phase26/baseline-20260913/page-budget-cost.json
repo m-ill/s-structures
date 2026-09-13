@@ -1,0 +1,48 @@
+{
+  "version": "p26-m1-page-budget-cost-v1",
+  "capturedAt": "2026-09-13",
+  "note": "Synthetic pagination snapshot. The retained page window, not the budget ceiling, governs memory.",
+  "rows": [
+    {
+      "label": "default-before (maxPages=60)",
+      "options": {},
+      "pages": null,
+      "error": "DRAWING_PAGE_LIMIT",
+      "elapsedMs": 38.2,
+      "heapDeltaMb": 7.22
+    },
+    {
+      "label": "product-worker budget (maxPages=600)",
+      "options": {
+        "maxPages": 600
+      },
+      "pages": 64,
+      "error": null,
+      "elapsedMs": 34.6,
+      "heapDeltaMb": 8.48
+    },
+    {
+      "label": "volume window (maxPages=600, 60-page window)",
+      "options": {
+        "maxPages": 600,
+        "pageOffset": 0,
+        "pageLimit": 60
+      },
+      "pages": 60,
+      "error": null,
+      "elapsedMs": 25.4,
+      "heapDeltaMb": 5.11
+    },
+    {
+      "label": "reference-retention (maxPages=600)",
+      "options": {
+        "maxPages": 600,
+        "checkRetention": "reference"
+      },
+      "pages": 64,
+      "error": null,
+      "elapsedMs": 24.9,
+      "heapDeltaMb": 11.42
+    }
+  ]
+}
