@@ -86,7 +86,6 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
     message: null,
     messageKind: 'info',
     rawControlsVisible: false,
-    autoOpened: false,
   };
 
   const ribbon = installWorkflowRibbon(target);
@@ -316,9 +315,9 @@ export function installElasticSetupWorkflow(target = globalThis, options = {}) {
   }
   target.addEventListener?.('sstructures:native-mode-change', (event) => {
     const mode = event?.detail?.activeMode || event?.detail?.modes?.find?.((item) => item.active)?.id;
-    if (mode !== 'elastic' || state.autoOpened) return;
-    state.autoOpened = true;
-    if (workflowNeedsAttention(currentModel(target))) api.open(firstRequiredStep(target));
+    // Tab navigation does not request a setup dialog. Leave it closed on entry,
+    // and preserve any draft through the normal close path when leaving.
+    if (mode && mode !== 'elastic' && state.open) api.close();
   });
   render(target, bridge, state, panel, api);
   refreshRibbon(target, ribbon);
