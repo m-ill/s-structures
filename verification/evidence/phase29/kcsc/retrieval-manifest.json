@@ -1,0 +1,15 @@
+{
+  "credentialStored": false,
+  "records": [
+    {
+      "code": "171000",
+      "docCode": "KDS 17 10 00",
+      "source": "https://kcsc.re.kr/api/standardCode/getCodeDetailInfo.do",
+      "file": "KDS-171000-public.json",
+      "sha256": "67f7abaaa8ece3c6b2cf830b548a78c06227fd6ce9959177fbc211e489339cbd",
+      "bytes": 588757,
+      "rows": 404,
+      "retrievedAt": "2026-09-13T23:04:58.548893+00:00"
+    }
+  ]
+}

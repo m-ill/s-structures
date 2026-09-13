@@ -1,16 +1,60 @@
 {
-  "version": "p29-m0-source-confirmation-v1",
+  "version": "p29-m0-source-confirmation-v2",
   "date": "2026-09-14",
   "purpose": "Per Phase29's rule, a clause may be implemented from the captured text; an equation or table the capture renders as an image must be confirmed separately and its origin recorded. This is the list of what falls on each side.",
   "evidenceRoot": "verification/evidence/phase25/kcsc/official-20260911",
   "extractedBy": "tools/extract-kcsc-clause-text.mjs",
   "documents": [
-    { "code": "411200", "name": "건축물 설계하중", "version": "2022", "entries": 1577, "clausesWithImageFormulas": 959 },
-    { "code": "411700", "name": "건축물 내진설계기준", "version": "2022", "entries": 1955, "clausesWithImageFormulas": 582 },
-    { "code": "411005", "name": "건축구조기준 총칙", "version": "2024", "entries": 219, "clausesWithImageFormulas": 0 },
-    { "code": "115005", "name": "얕은기초설계기준(일반설계법)", "version": "2025", "entries": 131, "clausesWithImageFormulas": 2 },
-    { "code": "142001", "name": "콘크리트구조설계(강도설계법) 일반사항", "version": "2022", "entries": 888, "clausesWithImageFormulas": 111 },
-    { "code": "142040", "name": "콘크리트구조 내구성 설계기준", "version": "2022", "entries": 337, "clausesWithImageFormulas": 142 }
+    {
+      "code": "411200",
+      "name": "건축물 설계하중",
+      "version": "2022",
+      "entries": 1577,
+      "clausesWithImageFormulas": 959
+    },
+    {
+      "code": "411700",
+      "name": "건축물 내진설계기준",
+      "version": "2022",
+      "entries": 1955,
+      "clausesWithImageFormulas": 582
+    },
+    {
+      "code": "411005",
+      "name": "건축구조기준 총칙",
+      "version": "2024",
+      "entries": 219,
+      "clausesWithImageFormulas": 0
+    },
+    {
+      "code": "115005",
+      "name": "얕은기초설계기준(일반설계법)",
+      "version": "2025",
+      "entries": 131,
+      "clausesWithImageFormulas": 2
+    },
+    {
+      "code": "142001",
+      "name": "콘크리트구조설계(강도설계법) 일반사항",
+      "version": "2022",
+      "entries": 888,
+      "clausesWithImageFormulas": 111
+    },
+    {
+      "code": "142040",
+      "name": "콘크리트구조 내구성 설계기준",
+      "version": "2022",
+      "entries": 337,
+      "clausesWithImageFormulas": 142
+    },
+    {
+      "code": "171000",
+      "name": "내진설계 일반",
+      "version": null,
+      "entries": 404,
+      "clausesWithImageFormulas": 118,
+      "note": "captured 2026-09-14 from the public endpoint, which returns no edition field; edition not pinned"
+    }
   ],
   "items": [
     {
@@ -58,7 +102,8 @@
       "textStatus": "TABLE_COMPLETE",
       "note": "411700-text.txt line 225: 중요도(특)→특→1.5, 중요도(1)→I→1.2, 중요도(2),(3)→II→1.0. Row labels and values are all text.",
       "confirmation": "NOT_REQUIRED",
-      "status": "READY"
+      "status": "IMPLEMENTED",
+      "implementedBy": "src/loads/seismicImportance.js"
     },
     {
       "id": "P29-G3-02",
@@ -69,7 +114,8 @@
       "textStatus": "PROSE_COMPLETE",
       "note": "411005-text.txt lines 93~. The document has zero image formulas; every criterion is prose (면적, 층수, 용도).",
       "confirmation": "NOT_REQUIRED",
-      "status": "READY"
+      "status": "IMPLEMENTED",
+      "implementedBy": "src/loads/seismicImportance.js"
     },
     {
       "id": "P29-G3-03",
@@ -77,11 +123,12 @@
       "document": "411700",
       "clause": "4.1.1(1)",
       "subject": "지반 종류 분류 기준",
-      "textStatus": "EXTERNAL_REFERENCE",
-      "note": "4.1.1(1) defers the classification itself to KDS 17 10 00 4.2.1.2, which is NOT among the captured documents. The building-specific modifications in ①~③ are prose, but the base table is not present.",
-      "confirmation": "SOURCE_CAPTURE_REQUIRED",
+      "textStatus": "TABLE_COMPLETE",
+      "note": "Resolved. KDS 17 10 00 was captured on 2026-09-14; table 4.2-4 carries the depth and velocity criteria as text. Site-class symbols were images and are owner-confirmed as S1..S6 in row order.",
+      "confirmation": "OWNER_CONFIRMED",
       "blocks": "site class derivation",
-      "status": "BLOCKED"
+      "status": "IMPLEMENTED",
+      "implementedBy": "src/loads/seismicSiteClass.js"
     },
     {
       "id": "P29-G3-04",
@@ -90,10 +137,11 @@
       "clause": "4.2.3 표 4.2-1, 표 4.2-2",
       "subject": "단주기·1초주기 지반증폭계수",
       "textStatus": "TABLE_VALUES_ONLY",
-      "note": "411700-text.txt lines 278~279 carry all 5×3 numeric values, but the site-class row labels are images, so which row belongs to which site class cannot be read from the text.",
-      "confirmation": "ROW_LABEL_CONFIRMATION_REQUIRED",
+      "note": "Resolved. Row order owner-confirmed as S1..S5 for both tables against KDS 41 17 00:2022 page 15. S6 has no row: it takes no tabulated coefficient and returns NOT_CHECKED rather than borrowing the S5 row.",
+      "confirmation": "OWNER_CONFIRMED",
       "blocks": "S_DS and S_D1 derivation",
-      "status": "BLOCKED"
+      "status": "IMPLEMENTED",
+      "implementedBy": "src/loads/seismicSiteClass.js"
     },
     {
       "id": "P29-G3-05",
@@ -128,15 +176,62 @@
       "confirmation": "OWNER_DECISION_REQUIRED",
       "blocks": "two-way slab by coefficient method",
       "status": "DEFERRED"
+    },
+    {
+      "id": "P29-G3-06",
+      "milestone": "M2",
+      "document": "171000",
+      "clause": "4.2.1.2(2) 식 (4.2-1)",
+      "subject": "토층평균전단파속도",
+      "textStatus": "IMAGE_ONLY",
+      "note": "171000-text.txt line 181 carries only the label (4.2-1).",
+      "confirmation": "OWNER_CONFIRMED",
+      "confirmedValue": "Vs_soil = sum(d_i) / sum(d_i / Vs_i)",
+      "recordedIn": "src/loads/seismicSiteClass.js AVERAGING_EQUATION",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "id": "P29-G3-07",
+      "milestone": "M2",
+      "document": "411700",
+      "clause": "4.1.1(1); 4.1.3; 4.2.2(2); 4.2.2(3)",
+      "subject": "건축물에 대한 지반분류 수정 규정",
+      "textStatus": "PROSE_COMPLETE",
+      "note": "Raised in owner review: implementing only the KDS 17 table drops these. All five are prose and each 'may be applied' relaxation is opt-in and recorded on the result.",
+      "confirmation": "NOT_REQUIRED",
+      "status": "IMPLEMENTED",
+      "implementedBy": "src/loads/seismicSiteClass.js"
+    },
+    {
+      "id": "P29-SRC-01",
+      "milestone": "M2",
+      "document": "171000",
+      "clause": "-",
+      "subject": "KDS 17 10 00 적용 판본 확정",
+      "textStatus": "NO_EDITION_FIELD",
+      "note": "The public endpoint returns no edition; the OpenApi endpoint that does needs a key. Owner read a 2024-03-21 reissue and flagged that the 2024-05 correction notice must be collated before the edition is pinned.",
+      "confirmation": "EDITION_PINNING_REQUIRED",
+      "currentBehaviour": "kcscRuleSources records edition null with verification 'edition-not-pinned'; every result carries sourceConfirmation.editionPinned = false",
+      "status": "OPEN"
     }
   ],
   "summary": {
-    "total": 10,
-    "implemented": 3,
-    "ready": 4,
-    "blocked": 2,
-    "deferred": 1,
-    "ownerDecisionsOpen": ["P29-G2-03", "P29-G1-02"],
-    "captureGaps": ["KDS 17 10 00 (지반분류 기준표)", "411700 표 4.2-1/4.2-2 지반종류 행 레이블"]
+    "total": 13,
+    "ownerDecisionsOpen": [
+      "P29-G2-03",
+      "P29-G1-02"
+    ],
+    "captureGaps": [],
+    "byStatus": {
+      "IMPLEMENTED": 8,
+      "IMPLEMENTED_CONSERVATIVELY": 1,
+      "READY_WITH_REVIEW": 1,
+      "READY": 1,
+      "DEFERRED": 1,
+      "OPEN": 1
+    },
+    "openSourceItems": [
+      "P29-SRC-01"
+    ]
   }
 }

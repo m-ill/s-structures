@@ -39,8 +39,7 @@ if (!source) throw new Error('Usage: node tools/extract-kcsc-clause-text.mjs <of
 const outFlagIndex = args.indexOf('--out');
 const check = args.includes('--check');
 
-const document = JSON.parse(await readFile(source, 'utf8'))['0'];
-if (!document?.list) throw new Error(`No clause list in ${source}`);
+const document = readDocument(JSON.parse(await readFile(source, 'utf8')), source);
 
 const target = outFlagIndex >= 0
   ? args[outFlagIndex + 1]
@@ -49,6 +48,43 @@ const target = outFlagIndex >= 0
 const text = document.list
   .map((entry) => `${entry.sort} ${entry.title}  ${stripMarkup(entry.contents)} `)
   .join('\r\n');
+
+// Two capture endpoints are in use and they return different envelopes. Both
+// carry the same thing -- an ordered list of clause entries with a heading and
+// an HTML body -- so they are normalised to one shape here rather than growing
+// a second extractor.
+function readDocument(parsed, from) {
+  const openApi = parsed?.['0'];
+  if (openApi?.list) {
+    return {
+      code: openApi.code,
+      name: openApi.name,
+      version: openApi.version,
+      list: openApi.list.map((entry) => ({
+        sort: entry.sort,
+        title: entry.title,
+        contents: entry.contents,
+      })),
+    };
+  }
+  const rows = parsed?.result?.document;
+  if (Array.isArray(rows) && rows.length) {
+    // KDS 171000_01 -> 171000
+    const code = (/KDS\s*(\d+)/i.exec(String(rows[0].onto_link_cd ?? '')) || [])[1] || 'unknown';
+    return {
+      code,
+      name: parsed?.result?.docName ?? null,
+      version: parsed?.result?.docVer ?? null,
+      // This envelope has no sort field; position is the order.
+      list: rows.map((row, index) => ({
+        sort: index + 1,
+        title: String(row.group_title ?? '').trim(),
+        contents: row.full_content,
+      })),
+    };
+  }
+  throw new Error(`Unrecognised capture envelope in ${from}`);
+}
 
 // A clause that renders its formula as an image is the reason this repository
 // separates "the clause exists" from "the equation is implemented", so the
