@@ -78,12 +78,21 @@ assert.equal(
   liveLoadReductionFactor({ ...column, occupancy: 'public-assembly', supportedStoryCount: 4 }).reason,
   'ASSEMBLY_OCCUPANCY_NOT_REDUCIBLE',
 );
-// 3.5.3(3) covers assembly only up to 5 kN/m2; above it the clause interaction
-// is unresolved and the load stays unreduced under its own reason.
-assert.equal(
-  liveLoadReductionFactor({ ...column, occupancy: 'public-assembly', liveLoadIntensity: 7.5, supportedStoryCount: 3 }).reason,
-  'ASSEMBLY_ABOVE_5KPA_CLAUSE_INTERACTION_UNRESOLVED',
-);
+// 3.5.3(3) covers assembly only up to 5 kN/m2. Above it 3.5.3(2) governs: one
+// storey is still not reducible, two or more may keep 0.8. That reading rests
+// on the clause text alone, so it travels on the result.
+const assemblyHeavy = { ...column, occupancy: 'public-assembly', liveLoadIntensity: 7.5 };
+const assemblyOne = liveLoadReductionFactor({ ...assemblyHeavy, supportedStoryCount: 1 });
+assert.equal(assemblyOne.factor, 1);
+assert.equal(assemblyOne.reason, 'LIVE_LOAD_ABOVE_5KPA_NOT_REDUCIBLE');
+assert.match(assemblyOne.interpretation.basis, /no separate official interpretation/);
+const assemblyMulti = liveLoadReductionFactor({ ...assemblyHeavy, supportedStoryCount: 3 });
+assert.equal(assemblyMulti.factor, 0.8);
+assert.equal(assemblyMulti.factorFloorGoverns, true);
+assert.match(assemblyMulti.interpretation.clauses, /3\.5\.3\(2\)/);
+// At or below 5 kN/m2 assembly is never reducible, whatever the storey count,
+// and that path carries no interpretation because the clause states it.
+assert.equal(liveLoadReductionFactor({ ...column, occupancy: 'public-assembly', supportedStoryCount: 4 }).interpretation ?? null, null);
 assert.equal(
   liveLoadReductionFactor({ ...column, occupancy: 'passenger-car-parking' }).reason,
   'PASSENGER_CAR_PARKING_LIMITED_REDUCTION',

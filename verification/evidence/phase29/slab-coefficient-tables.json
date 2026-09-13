@@ -1,0 +1,2259 @@
+{
+  "version": "p29-slab-coefficient-tables-v1",
+  "source": "verification/evidence/phase24/kcsc/KDS-142070-official.json",
+  "document": "142070",
+  "edition": "2021",
+  "momentEquations": {
+    "negative": "Ma = CA_neg * wu * l1^2, Mb = CB_neg * wu * l2^2 with wu = 1.2D + 1.6L",
+    "positive": "Ma+ = (CA_DL * 1.2D + CA_LL * 1.6L) * l1^2, Mb+ = (CB_DL * 1.2D + CB_LL * 1.6L) * l2^2",
+    "note": "a blank negative-moment coefficient means the table gives none for that direction, not that the design negative moment there is zero; the discontinuous-edge provision applies separately"
+  },
+  "suspectedSourceDefects": [
+    {
+      "table": "4-1",
+      "case": "Case4",
+      "spanRatio": 0.85,
+      "key": "CA_neg",
+      "printed": "0066",
+      "issue": "decimal point missing",
+      "neighbours": [
+        0.06,
+        0.071
+      ]
+    },
+    {
+      "table": "4-2",
+      "case": "Case7",
+      "spanRatio": 0.9,
+      "key": "CA_DL",
+      "printed": "0.025",
+      "issue": "breaks the otherwise monotonic column",
+      "neighbours": [
+        0.031,
+        0.04
+      ]
+    },
+    {
+      "table": "4-3",
+      "scope": "row labels",
+      "printed": "CB DL",
+      "issue": "the live load table labels its long-span rows DL; 4-3 carries LL coefficients"
+    },
+    {
+      "table": "4-2",
+      "scope": "footnote",
+      "printed": "짧은 경간 구속단부에서 부모멘트계수",
+      "issue": "the footnote is copied verbatim from table 4-1; 4-2 is a positive moment table at midspan"
+    }
+  ],
+  "tables": [
+    {
+      "id": "4-1",
+      "clause": "부록 표 4-1",
+      "subject": "슬래브의 부모멘트에 대한 계수",
+      "load": "계수고정하중+계수활하중",
+      "shortSpanKey": "CA_neg",
+      "longSpanKey": "CB_neg",
+      "spanRatioDefinition": "m = l1 / l2, l1 = 단변 순경간, l2 = 장변 순경간",
+      "caseLabels": [
+        "Case1",
+        "Case2",
+        "Case3",
+        "Case4",
+        "Case5",
+        "Case6",
+        "Case7",
+        "Case8",
+        "Case9"
+      ],
+      "supportConditions": {
+        "Case1": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "네 변 모두 단순지지"
+        },
+        "Case2": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "네 변 모두 연속/고정"
+        },
+        "Case3": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thick",
+          "right": "thick",
+          "summary": "왼쪽·오른쪽 두 대변"
+        },
+        "Case4": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thin",
+          "summary": "아래·왼쪽 두 인접변"
+        },
+        "Case5": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위·아래 두 대변"
+        },
+        "Case6": {
+          "top": "thick",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위 한 변"
+        },
+        "Case7": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thick",
+          "summary": "오른쪽 한 변"
+        },
+        "Case8": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "위를 제외한 세 변"
+        },
+        "Case9": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thick",
+          "summary": "왼쪽을 제외한 세 변"
+        }
+      },
+      "supportConditionProvenance": "owner-supplied from the published figures; the capture carries only the empty diagram band",
+      "diagramBandPresentInCapture": false,
+      "supportConditionCrossCheck": {
+        "basis": "a restrained edge must produce a negative moment coefficient in that direction",
+        "checked": 99,
+        "agreed": 99
+      },
+      "directionMapping": {
+        "shortSpan": "l1, carried by the top and bottom edges, gives the CA/WA coefficients",
+        "longSpan": "l2, carried by the left and right edges, gives the CB/WB coefficients",
+        "note": "orient the slab short-span-first before selecting a case; rotating it must carry the edge conditions and the A/B direction with it"
+      },
+      "footnotes": [
+        "굵은 선으로 된 연단은 그 슬래브가 받침점을 지나서 연속되었거나 받침점에서 고정된 것을 가리킨다. 아무 표시가 없는 연단은 비틀림 저항을 무시할 수 있는 받침점을 가리킨다.",
+        "는 짧은 경간 구속단부에서 부모멘트계수이고, 는 긴 경간 구속단부에서 부모멘트게수이다(구속이 1변에만 이루어진 경우는 구속단부에서 부모멘트계수이다)."
+      ],
+      "rows": [
+        {
+          "spanRatio": 1,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.045,
+              "CB_neg": 0.045
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.076
+            },
+            "Case4": {
+              "CA_neg": 0.05,
+              "CB_neg": 0.05
+            },
+            "Case5": {
+              "CA_neg": 0.075,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.071,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.071
+            },
+            "Case8": {
+              "CA_neg": 0.033,
+              "CB_neg": 0.061
+            },
+            "Case9": {
+              "CA_neg": 0.061,
+              "CB_neg": 0.033
+            }
+          }
+        },
+        {
+          "spanRatio": 0.95,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.05,
+              "CB_neg": 0.041
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.072
+            },
+            "Case4": {
+              "CA_neg": 0.055,
+              "CB_neg": 0.045
+            },
+            "Case5": {
+              "CA_neg": 0.079,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.075,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.067
+            },
+            "Case8": {
+              "CA_neg": 0.038,
+              "CB_neg": 0.056
+            },
+            "Case9": {
+              "CA_neg": 0.065,
+              "CB_neg": 0.029
+            }
+          }
+        },
+        {
+          "spanRatio": 0.9,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.055,
+              "CB_neg": 0.037
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.07
+            },
+            "Case4": {
+              "CA_neg": 0.06,
+              "CB_neg": 0.04
+            },
+            "Case5": {
+              "CA_neg": 0.08,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.079,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.062
+            },
+            "Case8": {
+              "CA_neg": 0.043,
+              "CB_neg": 0.052
+            },
+            "Case9": {
+              "CA_neg": 0.068,
+              "CB_neg": 0.025
+            }
+          }
+        },
+        {
+          "spanRatio": 0.85,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.06,
+              "CB_neg": 0.031
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.065
+            },
+            "Case4": {
+              "CA_neg": {
+                "raw": "0066",
+                "value": 66,
+                "malformedInSource": true
+              },
+              "CB_neg": 0.034
+            },
+            "Case5": {
+              "CA_neg": 0.082,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.083,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.057
+            },
+            "Case8": {
+              "CA_neg": 0.049,
+              "CB_neg": 0.046
+            },
+            "Case9": {
+              "CA_neg": 0.072,
+              "CB_neg": 0.021
+            }
+          }
+        },
+        {
+          "spanRatio": 0.8,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.065,
+              "CB_neg": 0.027
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.061
+            },
+            "Case4": {
+              "CA_neg": 0.071,
+              "CB_neg": 0.029
+            },
+            "Case5": {
+              "CA_neg": 0.083,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.086,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.051
+            },
+            "Case8": {
+              "CA_neg": 0.055,
+              "CB_neg": 0.041
+            },
+            "Case9": {
+              "CA_neg": 0.075,
+              "CB_neg": 0.017
+            }
+          }
+        },
+        {
+          "spanRatio": 0.75,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.069,
+              "CB_neg": 0.022
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.056
+            },
+            "Case4": {
+              "CA_neg": 0.076,
+              "CB_neg": 0.024
+            },
+            "Case5": {
+              "CA_neg": 0.085,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.088,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.044
+            },
+            "Case8": {
+              "CA_neg": 0.061,
+              "CB_neg": 0.036
+            },
+            "Case9": {
+              "CA_neg": 0.078,
+              "CB_neg": 0.014
+            }
+          }
+        },
+        {
+          "spanRatio": 0.7,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.074,
+              "CB_neg": 0.017
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.05
+            },
+            "Case4": {
+              "CA_neg": 0.081,
+              "CB_neg": 0.019
+            },
+            "Case5": {
+              "CA_neg": 0.086,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.091,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.038
+            },
+            "Case8": {
+              "CA_neg": 0.068,
+              "CB_neg": 0.029
+            },
+            "Case9": {
+              "CA_neg": 0.081,
+              "CB_neg": 0.011
+            }
+          }
+        },
+        {
+          "spanRatio": 0.65,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.077,
+              "CB_neg": 0.014
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.043
+            },
+            "Case4": {
+              "CA_neg": 0.085,
+              "CB_neg": 0.015
+            },
+            "Case5": {
+              "CA_neg": 0.087,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.093,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.031
+            },
+            "Case8": {
+              "CA_neg": 0.074,
+              "CB_neg": 0.024
+            },
+            "Case9": {
+              "CA_neg": 0.083,
+              "CB_neg": 0.008
+            }
+          }
+        },
+        {
+          "spanRatio": 0.6,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.081,
+              "CB_neg": 0.01
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.035
+            },
+            "Case4": {
+              "CA_neg": 0.089,
+              "CB_neg": 0.011
+            },
+            "Case5": {
+              "CA_neg": 0.088,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.096,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.024
+            },
+            "Case8": {
+              "CA_neg": 0.08,
+              "CB_neg": 0.018
+            },
+            "Case9": {
+              "CA_neg": 0.085,
+              "CB_neg": 0.006
+            }
+          }
+        },
+        {
+          "spanRatio": 0.55,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.084,
+              "CB_neg": 0.007
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.028
+            },
+            "Case4": {
+              "CA_neg": 0.092,
+              "CB_neg": 0.008
+            },
+            "Case5": {
+              "CA_neg": 0.089,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.096,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.019
+            },
+            "Case8": {
+              "CA_neg": 0.085,
+              "CB_neg": 0.014
+            },
+            "Case9": {
+              "CA_neg": 0.086,
+              "CB_neg": 0.005
+            }
+          }
+        },
+        {
+          "spanRatio": 0.5,
+          "values": {
+            "Case1": {
+              "CA_neg": null,
+              "CB_neg": null
+            },
+            "Case2": {
+              "CA_neg": 0.086,
+              "CB_neg": 0.006
+            },
+            "Case3": {
+              "CA_neg": null,
+              "CB_neg": 0.022
+            },
+            "Case4": {
+              "CA_neg": 0.094,
+              "CB_neg": 0.006
+            },
+            "Case5": {
+              "CA_neg": 0.09,
+              "CB_neg": null
+            },
+            "Case6": {
+              "CA_neg": 0.097,
+              "CB_neg": null
+            },
+            "Case7": {
+              "CA_neg": null,
+              "CB_neg": 0.014
+            },
+            "Case8": {
+              "CA_neg": 0.089,
+              "CB_neg": 0.01
+            },
+            "Case9": {
+              "CA_neg": 0.088,
+              "CB_neg": 0.003
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "4-2",
+      "clause": "부록 표 4-2",
+      "subject": "슬래브의 고정하중에 의한 정모멘트계수",
+      "load": "계수고정하중",
+      "shortSpanKey": "CA_DL",
+      "longSpanKey": "CB_DL",
+      "spanRatioDefinition": "m = l1 / l2, l1 = 단변 순경간, l2 = 장변 순경간",
+      "caseLabels": [
+        "Case1",
+        "Case2",
+        "Case3",
+        "Case4",
+        "Case5",
+        "Case6",
+        "Case7",
+        "Case8",
+        "Case9"
+      ],
+      "supportConditions": {
+        "Case1": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "네 변 모두 단순지지"
+        },
+        "Case2": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "네 변 모두 연속/고정"
+        },
+        "Case3": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thick",
+          "right": "thick",
+          "summary": "왼쪽·오른쪽 두 대변"
+        },
+        "Case4": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thin",
+          "summary": "아래·왼쪽 두 인접변"
+        },
+        "Case5": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위·아래 두 대변"
+        },
+        "Case6": {
+          "top": "thick",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위 한 변"
+        },
+        "Case7": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thick",
+          "summary": "오른쪽 한 변"
+        },
+        "Case8": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "위를 제외한 세 변"
+        },
+        "Case9": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thick",
+          "summary": "왼쪽을 제외한 세 변"
+        }
+      },
+      "supportConditionProvenance": "owner-supplied from the published figures; the capture carries only the empty diagram band",
+      "diagramBandPresentInCapture": false,
+      "supportConditionCrossCheck": null,
+      "directionMapping": {
+        "shortSpan": "l1, carried by the top and bottom edges, gives the CA/WA coefficients",
+        "longSpan": "l2, carried by the left and right edges, gives the CB/WB coefficients",
+        "note": "orient the slab short-span-first before selecting a case; rotating it must carry the edge conditions and the A/B direction with it"
+      },
+      "footnotes": [
+        "굵은 선으로 된 연단은 그 슬래브가 받침점을 지나서 연속되었거나 받침점에서 고정된 것을 가리킨다. 아무 표시가 없는 연단은 비틀림 저항을 무시할 수 있는 받침점을 가리킨다.",
+        "는 짧은 경간 구속단부에서 부모멘트계수이고, 는 긴 경간 구속단부에서 부모멘트게수이다(구속이 1변에만 이루어진 경우는 구속단부에서 부모멘트계수이다)."
+      ],
+      "rows": [
+        {
+          "spanRatio": 1,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.036,
+              "CB_DL": 0.036
+            },
+            "Case2": {
+              "CA_DL": 0.018,
+              "CB_DL": 0.018
+            },
+            "Case3": {
+              "CA_DL": 0.018,
+              "CB_DL": 0.027
+            },
+            "Case4": {
+              "CA_DL": 0.027,
+              "CB_DL": 0.027
+            },
+            "Case5": {
+              "CA_DL": 0.027,
+              "CB_DL": 0.018
+            },
+            "Case6": {
+              "CA_DL": 0.033,
+              "CB_DL": 0.027
+            },
+            "Case7": {
+              "CA_DL": 0.027,
+              "CB_DL": 0.033
+            },
+            "Case8": {
+              "CA_DL": 0.02,
+              "CB_DL": 0.023
+            },
+            "Case9": {
+              "CA_DL": 0.023,
+              "CB_DL": 0.02
+            }
+          }
+        },
+        {
+          "spanRatio": 0.95,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.04,
+              "CB_DL": 0.033
+            },
+            "Case2": {
+              "CA_DL": 0.02,
+              "CB_DL": 0.016
+            },
+            "Case3": {
+              "CA_DL": 0.021,
+              "CB_DL": 0.025
+            },
+            "Case4": {
+              "CA_DL": 0.03,
+              "CB_DL": 0.024
+            },
+            "Case5": {
+              "CA_DL": 0.028,
+              "CB_DL": 0.015
+            },
+            "Case6": {
+              "CA_DL": 0.036,
+              "CB_DL": 0.024
+            },
+            "Case7": {
+              "CA_DL": 0.031,
+              "CB_DL": 0.031
+            },
+            "Case8": {
+              "CA_DL": 0.022,
+              "CB_DL": 0.021
+            },
+            "Case9": {
+              "CA_DL": 0.024,
+              "CB_DL": 0.017
+            }
+          }
+        },
+        {
+          "spanRatio": 0.9,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.045,
+              "CB_DL": 0.029
+            },
+            "Case2": {
+              "CA_DL": 0.022,
+              "CB_DL": 0.014
+            },
+            "Case3": {
+              "CA_DL": 0.025,
+              "CB_DL": 0.024
+            },
+            "Case4": {
+              "CA_DL": 0.033,
+              "CB_DL": 0.022
+            },
+            "Case5": {
+              "CA_DL": 0.029,
+              "CB_DL": 0.013
+            },
+            "Case6": {
+              "CA_DL": 0.039,
+              "CB_DL": 0.021
+            },
+            "Case7": {
+              "CA_DL": 0.025,
+              "CB_DL": 0.028
+            },
+            "Case8": {
+              "CA_DL": 0.025,
+              "CB_DL": 0.019
+            },
+            "Case9": {
+              "CA_DL": 0.026,
+              "CB_DL": 0.015
+            }
+          }
+        },
+        {
+          "spanRatio": 0.85,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.05,
+              "CB_DL": 0.026
+            },
+            "Case2": {
+              "CA_DL": 0.024,
+              "CB_DL": 0.012
+            },
+            "Case3": {
+              "CA_DL": 0.029,
+              "CB_DL": 0.022
+            },
+            "Case4": {
+              "CA_DL": 0.036,
+              "CB_DL": 0.019
+            },
+            "Case5": {
+              "CA_DL": 0.031,
+              "CB_DL": 0.011
+            },
+            "Case6": {
+              "CA_DL": 0.042,
+              "CB_DL": 0.017
+            },
+            "Case7": {
+              "CA_DL": 0.04,
+              "CB_DL": 0.025
+            },
+            "Case8": {
+              "CA_DL": 0.029,
+              "CB_DL": 0.017
+            },
+            "Case9": {
+              "CA_DL": 0.028,
+              "CB_DL": 0.013
+            }
+          }
+        },
+        {
+          "spanRatio": 0.8,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.056,
+              "CB_DL": 0.023
+            },
+            "Case2": {
+              "CA_DL": 0.026,
+              "CB_DL": 0.011
+            },
+            "Case3": {
+              "CA_DL": 0.034,
+              "CB_DL": 0.02
+            },
+            "Case4": {
+              "CA_DL": 0.039,
+              "CB_DL": 0.016
+            },
+            "Case5": {
+              "CA_DL": 0.032,
+              "CB_DL": 0.009
+            },
+            "Case6": {
+              "CA_DL": 0.045,
+              "CB_DL": 0.015
+            },
+            "Case7": {
+              "CA_DL": 0.045,
+              "CB_DL": 0.022
+            },
+            "Case8": {
+              "CA_DL": 0.032,
+              "CB_DL": 0.015
+            },
+            "Case9": {
+              "CA_DL": 0.029,
+              "CB_DL": 0.01
+            }
+          }
+        },
+        {
+          "spanRatio": 0.75,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.061,
+              "CB_DL": 0.019
+            },
+            "Case2": {
+              "CA_DL": 0.028,
+              "CB_DL": 0.009
+            },
+            "Case3": {
+              "CA_DL": 0.04,
+              "CB_DL": 0.018
+            },
+            "Case4": {
+              "CA_DL": 0.043,
+              "CB_DL": 0.013
+            },
+            "Case5": {
+              "CA_DL": 0.033,
+              "CB_DL": 0.007
+            },
+            "Case6": {
+              "CA_DL": 0.048,
+              "CB_DL": 0.012
+            },
+            "Case7": {
+              "CA_DL": 0.051,
+              "CB_DL": 0.02
+            },
+            "Case8": {
+              "CA_DL": 0.036,
+              "CB_DL": 0.013
+            },
+            "Case9": {
+              "CA_DL": 0.031,
+              "CB_DL": 0.007
+            }
+          }
+        },
+        {
+          "spanRatio": 0.7,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.068,
+              "CB_DL": 0.016
+            },
+            "Case2": {
+              "CA_DL": 0.03,
+              "CB_DL": 0.007
+            },
+            "Case3": {
+              "CA_DL": 0.046,
+              "CB_DL": 0.016
+            },
+            "Case4": {
+              "CA_DL": 0.046,
+              "CB_DL": 0.011
+            },
+            "Case5": {
+              "CA_DL": 0.035,
+              "CB_DL": 0.005
+            },
+            "Case6": {
+              "CA_DL": 0.051,
+              "CB_DL": 0.009
+            },
+            "Case7": {
+              "CA_DL": 0.058,
+              "CB_DL": 0.017
+            },
+            "Case8": {
+              "CA_DL": 0.04,
+              "CB_DL": 0.011
+            },
+            "Case9": {
+              "CA_DL": 0.033,
+              "CB_DL": 0.006
+            }
+          }
+        },
+        {
+          "spanRatio": 0.65,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.074,
+              "CB_DL": 0.013
+            },
+            "Case2": {
+              "CA_DL": 0.032,
+              "CB_DL": 0.006
+            },
+            "Case3": {
+              "CA_DL": 0.054,
+              "CB_DL": 0.014
+            },
+            "Case4": {
+              "CA_DL": 0.05,
+              "CB_DL": 0.009
+            },
+            "Case5": {
+              "CA_DL": 0.036,
+              "CB_DL": 0.004
+            },
+            "Case6": {
+              "CA_DL": 0.054,
+              "CB_DL": 0.007
+            },
+            "Case7": {
+              "CA_DL": 0.065,
+              "CB_DL": 0.014
+            },
+            "Case8": {
+              "CA_DL": 0.044,
+              "CB_DL": 0.009
+            },
+            "Case9": {
+              "CA_DL": 0.034,
+              "CB_DL": 0.005
+            }
+          }
+        },
+        {
+          "spanRatio": 0.6,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.081,
+              "CB_DL": 0.01
+            },
+            "Case2": {
+              "CA_DL": 0.034,
+              "CB_DL": 0.004
+            },
+            "Case3": {
+              "CA_DL": 0.062,
+              "CB_DL": 0.011
+            },
+            "Case4": {
+              "CA_DL": 0.053,
+              "CB_DL": 0.007
+            },
+            "Case5": {
+              "CA_DL": 0.037,
+              "CB_DL": 0.003
+            },
+            "Case6": {
+              "CA_DL": 0.056,
+              "CB_DL": 0.006
+            },
+            "Case7": {
+              "CA_DL": 0.073,
+              "CB_DL": 0.012
+            },
+            "Case8": {
+              "CA_DL": 0.048,
+              "CB_DL": 0.007
+            },
+            "Case9": {
+              "CA_DL": 0.036,
+              "CB_DL": 0.004
+            }
+          }
+        },
+        {
+          "spanRatio": 0.55,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.088,
+              "CB_DL": 0.008
+            },
+            "Case2": {
+              "CA_DL": 0.035,
+              "CB_DL": 0.003
+            },
+            "Case3": {
+              "CA_DL": 0.071,
+              "CB_DL": 0.009
+            },
+            "Case4": {
+              "CA_DL": 0.056,
+              "CB_DL": 0.005
+            },
+            "Case5": {
+              "CA_DL": 0.038,
+              "CB_DL": 0.002
+            },
+            "Case6": {
+              "CA_DL": 0.058,
+              "CB_DL": 0.004
+            },
+            "Case7": {
+              "CA_DL": 0.081,
+              "CB_DL": 0.009
+            },
+            "Case8": {
+              "CA_DL": 0.052,
+              "CB_DL": 0.005
+            },
+            "Case9": {
+              "CA_DL": 0.037,
+              "CB_DL": 0.003
+            }
+          }
+        },
+        {
+          "spanRatio": 0.5,
+          "values": {
+            "Case1": {
+              "CA_DL": 0.095,
+              "CB_DL": 0.006
+            },
+            "Case2": {
+              "CA_DL": 0.037,
+              "CB_DL": 0.002
+            },
+            "Case3": {
+              "CA_DL": 0.08,
+              "CB_DL": 0.007
+            },
+            "Case4": {
+              "CA_DL": 0.059,
+              "CB_DL": 0.004
+            },
+            "Case5": {
+              "CA_DL": 0.039,
+              "CB_DL": 0.001
+            },
+            "Case6": {
+              "CA_DL": 0.061,
+              "CB_DL": 0.003
+            },
+            "Case7": {
+              "CA_DL": 0.089,
+              "CB_DL": 0.007
+            },
+            "Case8": {
+              "CA_DL": 0.056,
+              "CB_DL": 0.004
+            },
+            "Case9": {
+              "CA_DL": 0.038,
+              "CB_DL": 0.002
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "4-3",
+      "clause": "부록 표 4-3",
+      "subject": "슬래브의 활하중에 의한 정모멘트계수",
+      "load": "계수활하중",
+      "shortSpanKey": "CA_LL",
+      "longSpanKey": "CB_LL",
+      "spanRatioDefinition": "m = l1 / l2, l1 = 단변 순경간, l2 = 장변 순경간",
+      "caseLabels": [
+        "Case1",
+        "Case2",
+        "Case3",
+        "Case4",
+        "Case5",
+        "Case6",
+        "Case7",
+        "Case8",
+        "Case9"
+      ],
+      "supportConditions": {
+        "Case1": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "네 변 모두 단순지지"
+        },
+        "Case2": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "네 변 모두 연속/고정"
+        },
+        "Case3": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thick",
+          "right": "thick",
+          "summary": "왼쪽·오른쪽 두 대변"
+        },
+        "Case4": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thin",
+          "summary": "아래·왼쪽 두 인접변"
+        },
+        "Case5": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위·아래 두 대변"
+        },
+        "Case6": {
+          "top": "thick",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위 한 변"
+        },
+        "Case7": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thick",
+          "summary": "오른쪽 한 변"
+        },
+        "Case8": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "위를 제외한 세 변"
+        },
+        "Case9": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thick",
+          "summary": "왼쪽을 제외한 세 변"
+        }
+      },
+      "supportConditionProvenance": "owner-supplied from the published figures; the capture carries only the empty diagram band",
+      "diagramBandPresentInCapture": false,
+      "supportConditionCrossCheck": null,
+      "directionMapping": {
+        "shortSpan": "l1, carried by the top and bottom edges, gives the CA/WA coefficients",
+        "longSpan": "l2, carried by the left and right edges, gives the CB/WB coefficients",
+        "note": "orient the slab short-span-first before selecting a case; rotating it must carry the edge conditions and the A/B direction with it"
+      },
+      "footnotes": [
+        "굵은 선으로 된 연단은 그 슬래브가 받침점을 지나서 연속되었거나 받침점에서 고정된 것을 가리킨다. 아무 표시가 없는 연단은 비틀림 저항을 무시할 수 있는 받침점을 가리킨다.",
+        "는 짧은 경간 중앙부에서 정모멘트계수이고, 는 긴 경간 중앙부에서 정모멘트계수이다."
+      ],
+      "rows": [
+        {
+          "spanRatio": 1,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.036,
+              "CB_LL": 0.036
+            },
+            "Case2": {
+              "CA_LL": 0.027,
+              "CB_LL": 0.027
+            },
+            "Case3": {
+              "CA_LL": 0.027,
+              "CB_LL": 0.032
+            },
+            "Case4": {
+              "CA_LL": 0.032,
+              "CB_LL": 0.032
+            },
+            "Case5": {
+              "CA_LL": 0.032,
+              "CB_LL": 0.027
+            },
+            "Case6": {
+              "CA_LL": 0.035,
+              "CB_LL": 0.032
+            },
+            "Case7": {
+              "CA_LL": 0.032,
+              "CB_LL": 0.035
+            },
+            "Case8": {
+              "CA_LL": 0.028,
+              "CB_LL": 0.03
+            },
+            "Case9": {
+              "CA_LL": 0.03,
+              "CB_LL": 0.028
+            }
+          }
+        },
+        {
+          "spanRatio": 0.95,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.04,
+              "CB_LL": 0.033
+            },
+            "Case2": {
+              "CA_LL": 0.03,
+              "CB_LL": 0.025
+            },
+            "Case3": {
+              "CA_LL": 0.031,
+              "CB_LL": 0.029
+            },
+            "Case4": {
+              "CA_LL": 0.035,
+              "CB_LL": 0.029
+            },
+            "Case5": {
+              "CA_LL": 0.034,
+              "CB_LL": 0.024
+            },
+            "Case6": {
+              "CA_LL": 0.038,
+              "CB_LL": 0.029
+            },
+            "Case7": {
+              "CA_LL": 0.036,
+              "CB_LL": 0.032
+            },
+            "Case8": {
+              "CA_LL": 0.031,
+              "CB_LL": 0.027
+            },
+            "Case9": {
+              "CA_LL": 0.032,
+              "CB_LL": 0.025
+            }
+          }
+        },
+        {
+          "spanRatio": 0.9,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.045,
+              "CB_LL": 0.029
+            },
+            "Case2": {
+              "CA_LL": 0.034,
+              "CB_LL": 0.022
+            },
+            "Case3": {
+              "CA_LL": 0.035,
+              "CB_LL": 0.027
+            },
+            "Case4": {
+              "CA_LL": 0.039,
+              "CB_LL": 0.026
+            },
+            "Case5": {
+              "CA_LL": 0.037,
+              "CB_LL": 0.021
+            },
+            "Case6": {
+              "CA_LL": 0.042,
+              "CB_LL": 0.025
+            },
+            "Case7": {
+              "CA_LL": 0.04,
+              "CB_LL": 0.029
+            },
+            "Case8": {
+              "CA_LL": 0.035,
+              "CB_LL": 0.024
+            },
+            "Case9": {
+              "CA_LL": 0.036,
+              "CB_LL": 0.022
+            }
+          }
+        },
+        {
+          "spanRatio": 0.85,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.05,
+              "CB_LL": 0.026
+            },
+            "Case2": {
+              "CA_LL": 0.037,
+              "CB_LL": 0.019
+            },
+            "Case3": {
+              "CA_LL": 0.04,
+              "CB_LL": 0.024
+            },
+            "Case4": {
+              "CA_LL": 0.043,
+              "CB_LL": 0.023
+            },
+            "Case5": {
+              "CA_LL": 0.041,
+              "CB_LL": 0.019
+            },
+            "Case6": {
+              "CA_LL": 0.046,
+              "CB_LL": 0.022
+            },
+            "Case7": {
+              "CA_LL": 0.045,
+              "CB_LL": 0.026
+            },
+            "Case8": {
+              "CA_LL": 0.04,
+              "CB_LL": 0.022
+            },
+            "Case9": {
+              "CA_LL": 0.039,
+              "CB_LL": 0.02
+            }
+          }
+        },
+        {
+          "spanRatio": 0.8,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.056,
+              "CB_LL": 0.023
+            },
+            "Case2": {
+              "CA_LL": 0.041,
+              "CB_LL": 0.017
+            },
+            "Case3": {
+              "CA_LL": 0.045,
+              "CB_LL": 0.022
+            },
+            "Case4": {
+              "CA_LL": 0.048,
+              "CB_LL": 0.02
+            },
+            "Case5": {
+              "CA_LL": 0.044,
+              "CB_LL": 0.016
+            },
+            "Case6": {
+              "CA_LL": 0.051,
+              "CB_LL": 0.019
+            },
+            "Case7": {
+              "CA_LL": 0.051,
+              "CB_LL": 0.023
+            },
+            "Case8": {
+              "CA_LL": 0.044,
+              "CB_LL": 0.019
+            },
+            "Case9": {
+              "CA_LL": 0.042,
+              "CB_LL": 0.017
+            }
+          }
+        },
+        {
+          "spanRatio": 0.75,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.061,
+              "CB_LL": 0.019
+            },
+            "Case2": {
+              "CA_LL": 0.045,
+              "CB_LL": 0.014
+            },
+            "Case3": {
+              "CA_LL": 0.051,
+              "CB_LL": 0.019
+            },
+            "Case4": {
+              "CA_LL": 0.052,
+              "CB_LL": 0.016
+            },
+            "Case5": {
+              "CA_LL": 0.047,
+              "CB_LL": 0.013
+            },
+            "Case6": {
+              "CA_LL": 0.055,
+              "CB_LL": 0.016
+            },
+            "Case7": {
+              "CA_LL": 0.056,
+              "CB_LL": 0.02
+            },
+            "Case8": {
+              "CA_LL": 0.049,
+              "CB_LL": 0.016
+            },
+            "Case9": {
+              "CA_LL": 0.046,
+              "CB_LL": 0.013
+            }
+          }
+        },
+        {
+          "spanRatio": 0.7,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.068,
+              "CB_LL": 0.016
+            },
+            "Case2": {
+              "CA_LL": 0.049,
+              "CB_LL": 0.012
+            },
+            "Case3": {
+              "CA_LL": 0.057,
+              "CB_LL": 0.016
+            },
+            "Case4": {
+              "CA_LL": 0.057,
+              "CB_LL": 0.014
+            },
+            "Case5": {
+              "CA_LL": 0.051,
+              "CB_LL": 0.011
+            },
+            "Case6": {
+              "CA_LL": 0.06,
+              "CB_LL": 0.013
+            },
+            "Case7": {
+              "CA_LL": 0.063,
+              "CB_LL": 0.017
+            },
+            "Case8": {
+              "CA_LL": 0.054,
+              "CB_LL": 0.014
+            },
+            "Case9": {
+              "CA_LL": 0.05,
+              "CB_LL": 0.011
+            }
+          }
+        },
+        {
+          "spanRatio": 0.65,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.074,
+              "CB_LL": 0.013
+            },
+            "Case2": {
+              "CA_LL": 0.053,
+              "CB_LL": 0.01
+            },
+            "Case3": {
+              "CA_LL": 0.064,
+              "CB_LL": 0.014
+            },
+            "Case4": {
+              "CA_LL": 0.062,
+              "CB_LL": 0.011
+            },
+            "Case5": {
+              "CA_LL": 0.055,
+              "CB_LL": 0.009
+            },
+            "Case6": {
+              "CA_LL": 0.064,
+              "CB_LL": 0.01
+            },
+            "Case7": {
+              "CA_LL": 0.07,
+              "CB_LL": 0.014
+            },
+            "Case8": {
+              "CA_LL": 0.059,
+              "CB_LL": 0.011
+            },
+            "Case9": {
+              "CA_LL": 0.054,
+              "CB_LL": 0.009
+            }
+          }
+        },
+        {
+          "spanRatio": 0.6,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.081,
+              "CB_LL": 0.01
+            },
+            "Case2": {
+              "CA_LL": 0.058,
+              "CB_LL": 0.007
+            },
+            "Case3": {
+              "CA_LL": 0.071,
+              "CB_LL": 0.011
+            },
+            "Case4": {
+              "CA_LL": 0.067,
+              "CB_LL": 0.009
+            },
+            "Case5": {
+              "CA_LL": 0.059,
+              "CB_LL": 0.007
+            },
+            "Case6": {
+              "CA_LL": 0.068,
+              "CB_LL": 0.008
+            },
+            "Case7": {
+              "CA_LL": 0.077,
+              "CB_LL": 0.011
+            },
+            "Case8": {
+              "CA_LL": 0.065,
+              "CB_LL": 0.009
+            },
+            "Case9": {
+              "CA_LL": 0.059,
+              "CB_LL": 0.007
+            }
+          }
+        },
+        {
+          "spanRatio": 0.55,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.088,
+              "CB_LL": 0.008
+            },
+            "Case2": {
+              "CA_LL": 0.062,
+              "CB_LL": 0.006
+            },
+            "Case3": {
+              "CA_LL": 0.08,
+              "CB_LL": 0.009
+            },
+            "Case4": {
+              "CA_LL": 0.072,
+              "CB_LL": 0.007
+            },
+            "Case5": {
+              "CA_LL": 0.063,
+              "CB_LL": 0.005
+            },
+            "Case6": {
+              "CA_LL": 0.073,
+              "CB_LL": 0.006
+            },
+            "Case7": {
+              "CA_LL": 0.085,
+              "CB_LL": 0.009
+            },
+            "Case8": {
+              "CA_LL": 0.07,
+              "CB_LL": 0.007
+            },
+            "Case9": {
+              "CA_LL": 0.063,
+              "CB_LL": 0.006
+            }
+          }
+        },
+        {
+          "spanRatio": 0.5,
+          "values": {
+            "Case1": {
+              "CA_LL": 0.095,
+              "CB_LL": 0.005
+            },
+            "Case2": {
+              "CA_LL": 0.066,
+              "CB_LL": 0.004
+            },
+            "Case3": {
+              "CA_LL": 0.088,
+              "CB_LL": 0.007
+            },
+            "Case4": {
+              "CA_LL": 0.077,
+              "CB_LL": 0.005
+            },
+            "Case5": {
+              "CA_LL": 0.067,
+              "CB_LL": 0.004
+            },
+            "Case6": {
+              "CA_LL": 0.078,
+              "CB_LL": 0.005
+            },
+            "Case7": {
+              "CA_LL": 0.092,
+              "CB_LL": 0.007
+            },
+            "Case8": {
+              "CA_LL": 0.076,
+              "CB_LL": 0.005
+            },
+            "Case9": {
+              "CA_LL": 0.067,
+              "CB_LL": 0.004
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "4-4",
+      "clause": "부록 표 4-4",
+      "subject": "전단력과 받침점 하중 계산을 위한 하중분포비",
+      "load": "등분포하중 분포비",
+      "shortSpanKey": "WA",
+      "longSpanKey": "WB",
+      "spanRatioDefinition": "m = l1 / l2, l1 = 단변 순경간, l2 = 장변 순경간",
+      "caseLabels": [
+        "Case1",
+        "Case2",
+        "Case3",
+        "Case4",
+        "Case5",
+        "Case6",
+        "Case7",
+        "Case8",
+        "Case9"
+      ],
+      "supportConditions": {
+        "Case1": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "네 변 모두 단순지지"
+        },
+        "Case2": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "네 변 모두 연속/고정"
+        },
+        "Case3": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thick",
+          "right": "thick",
+          "summary": "왼쪽·오른쪽 두 대변"
+        },
+        "Case4": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thin",
+          "summary": "아래·왼쪽 두 인접변"
+        },
+        "Case5": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위·아래 두 대변"
+        },
+        "Case6": {
+          "top": "thick",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thin",
+          "summary": "위 한 변"
+        },
+        "Case7": {
+          "top": "thin",
+          "bottom": "thin",
+          "left": "thin",
+          "right": "thick",
+          "summary": "오른쪽 한 변"
+        },
+        "Case8": {
+          "top": "thin",
+          "bottom": "thick",
+          "left": "thick",
+          "right": "thick",
+          "summary": "위를 제외한 세 변"
+        },
+        "Case9": {
+          "top": "thick",
+          "bottom": "thick",
+          "left": "thin",
+          "right": "thick",
+          "summary": "왼쪽을 제외한 세 변"
+        }
+      },
+      "supportConditionProvenance": "owner-supplied from the published figures; the capture carries only the empty diagram band",
+      "diagramBandPresentInCapture": false,
+      "supportConditionCrossCheck": null,
+      "directionMapping": {
+        "shortSpan": "l1, carried by the top and bottom edges, gives the CA/WA coefficients",
+        "longSpan": "l2, carried by the left and right edges, gives the CB/WB coefficients",
+        "note": "orient the slab short-span-first before selecting a case; rotating it must carry the edge conditions and the A/B direction with it"
+      },
+      "footnotes": [
+        "굵은 선으로 된 연단은 그 슬래브가 받침점을 지나서 연속되었거나 받침점에서 고정된 것을 가리킨다. 아무 표시가 없는 연단은 비틀림 저항을 무시할 수 있는 받침점을 가리킨다.",
+        "는 짧은 경간 중앙부에서 정단력계수이고, 는 긴 경간 단부에서 전단력계수이다."
+      ],
+      "rows": [
+        {
+          "spanRatio": 1,
+          "values": {
+            "Case1": {
+              "WA": 0.5,
+              "WB": 0.5
+            },
+            "Case2": {
+              "WA": 0.5,
+              "WB": 0.5
+            },
+            "Case3": {
+              "WA": 0.17,
+              "WB": 0.83
+            },
+            "Case4": {
+              "WA": 0.5,
+              "WB": 0.5
+            },
+            "Case5": {
+              "WA": 0.83,
+              "WB": 0.17
+            },
+            "Case6": {
+              "WA": 0.71,
+              "WB": 0.29
+            },
+            "Case7": {
+              "WA": 0.29,
+              "WB": 0.71
+            },
+            "Case8": {
+              "WA": 0.33,
+              "WB": 0.67
+            },
+            "Case9": {
+              "WA": 0.67,
+              "WB": 0.33
+            }
+          }
+        },
+        {
+          "spanRatio": 0.95,
+          "values": {
+            "Case1": {
+              "WA": 0.55,
+              "WB": 0.45
+            },
+            "Case2": {
+              "WA": 0.55,
+              "WB": 0.45
+            },
+            "Case3": {
+              "WA": 0.2,
+              "WB": 0.8
+            },
+            "Case4": {
+              "WA": 0.55,
+              "WB": 0.45
+            },
+            "Case5": {
+              "WA": 0.86,
+              "WB": 0.14
+            },
+            "Case6": {
+              "WA": 0.75,
+              "WB": 0.25
+            },
+            "Case7": {
+              "WA": 0.33,
+              "WB": 0.67
+            },
+            "Case8": {
+              "WA": 0.38,
+              "WB": 0.62
+            },
+            "Case9": {
+              "WA": 0.71,
+              "WB": 0.29
+            }
+          }
+        },
+        {
+          "spanRatio": 0.9,
+          "values": {
+            "Case1": {
+              "WA": 0.6,
+              "WB": 0.4
+            },
+            "Case2": {
+              "WA": 0.6,
+              "WB": 0.4
+            },
+            "Case3": {
+              "WA": 0.23,
+              "WB": 0.77
+            },
+            "Case4": {
+              "WA": 0.6,
+              "WB": 0.4
+            },
+            "Case5": {
+              "WA": 0.88,
+              "WB": 0.12
+            },
+            "Case6": {
+              "WA": 0.79,
+              "WB": 0.21
+            },
+            "Case7": {
+              "WA": 0.38,
+              "WB": 0.62
+            },
+            "Case8": {
+              "WA": 0.43,
+              "WB": 0.57
+            },
+            "Case9": {
+              "WA": 0.75,
+              "WB": 0.25
+            }
+          }
+        },
+        {
+          "spanRatio": 0.85,
+          "values": {
+            "Case1": {
+              "WA": 0.66,
+              "WB": 0.34
+            },
+            "Case2": {
+              "WA": 0.66,
+              "WB": 0.34
+            },
+            "Case3": {
+              "WA": 0.28,
+              "WB": 0.72
+            },
+            "Case4": {
+              "WA": 0.66,
+              "WB": 0.34
+            },
+            "Case5": {
+              "WA": 0.9,
+              "WB": 0.1
+            },
+            "Case6": {
+              "WA": 0.83,
+              "WB": 0.17
+            },
+            "Case7": {
+              "WA": 0.43,
+              "WB": 0.57
+            },
+            "Case8": {
+              "WA": 0.49,
+              "WB": 0.51
+            },
+            "Case9": {
+              "WA": 0.79,
+              "WB": 0.21
+            }
+          }
+        },
+        {
+          "spanRatio": 0.8,
+          "values": {
+            "Case1": {
+              "WA": 0.71,
+              "WB": 0.29
+            },
+            "Case2": {
+              "WA": 0.71,
+              "WB": 0.29
+            },
+            "Case3": {
+              "WA": 0.33,
+              "WB": 0.67
+            },
+            "Case4": {
+              "WA": 0.71,
+              "WB": 0.29
+            },
+            "Case5": {
+              "WA": 0.92,
+              "WB": 0.08
+            },
+            "Case6": {
+              "WA": 0.86,
+              "WB": 0.14
+            },
+            "Case7": {
+              "WA": 0.49,
+              "WB": 0.51
+            },
+            "Case8": {
+              "WA": 0.55,
+              "WB": 0.45
+            },
+            "Case9": {
+              "WA": 0.83,
+              "WB": 0.17
+            }
+          }
+        },
+        {
+          "spanRatio": 0.75,
+          "values": {
+            "Case1": {
+              "WA": 0.76,
+              "WB": 0.24
+            },
+            "Case2": {
+              "WA": 0.76,
+              "WB": 0.24
+            },
+            "Case3": {
+              "WA": 0.39,
+              "WB": 0.61
+            },
+            "Case4": {
+              "WA": 0.76,
+              "WB": 0.24
+            },
+            "Case5": {
+              "WA": 0.94,
+              "WB": 0.06
+            },
+            "Case6": {
+              "WA": 0.88,
+              "WB": 0.12
+            },
+            "Case7": {
+              "WA": 0.56,
+              "WB": 0.44
+            },
+            "Case8": {
+              "WA": 0.61,
+              "WB": 0.39
+            },
+            "Case9": {
+              "WA": 0.86,
+              "WB": 0.14
+            }
+          }
+        },
+        {
+          "spanRatio": 0.7,
+          "values": {
+            "Case1": {
+              "WA": 0.81,
+              "WB": 0.19
+            },
+            "Case2": {
+              "WA": 0.81,
+              "WB": 0.19
+            },
+            "Case3": {
+              "WA": 0.45,
+              "WB": 0.55
+            },
+            "Case4": {
+              "WA": 0.81,
+              "WB": 0.19
+            },
+            "Case5": {
+              "WA": 0.95,
+              "WB": 0.05
+            },
+            "Case6": {
+              "WA": 0.91,
+              "WB": 0.09
+            },
+            "Case7": {
+              "WA": 0.62,
+              "WB": 0.38
+            },
+            "Case8": {
+              "WA": 0.68,
+              "WB": 0.32
+            },
+            "Case9": {
+              "WA": 0.89,
+              "WB": 0.11
+            }
+          }
+        },
+        {
+          "spanRatio": 0.65,
+          "values": {
+            "Case1": {
+              "WA": 0.85,
+              "WB": 0.15
+            },
+            "Case2": {
+              "WA": 0.85,
+              "WB": 0.15
+            },
+            "Case3": {
+              "WA": 0.53,
+              "WB": 0.47
+            },
+            "Case4": {
+              "WA": 0.85,
+              "WB": 0.15
+            },
+            "Case5": {
+              "WA": 0.96,
+              "WB": 0.04
+            },
+            "Case6": {
+              "WA": 0.93,
+              "WB": 0.07
+            },
+            "Case7": {
+              "WA": 0.69,
+              "WB": 0.31
+            },
+            "Case8": {
+              "WA": 0.74,
+              "WB": 0.26
+            },
+            "Case9": {
+              "WA": 0.92,
+              "WB": 0.08
+            }
+          }
+        },
+        {
+          "spanRatio": 0.6,
+          "values": {
+            "Case1": {
+              "WA": 0.89,
+              "WB": 0.11
+            },
+            "Case2": {
+              "WA": 0.89,
+              "WB": 0.11
+            },
+            "Case3": {
+              "WA": 0.61,
+              "WB": 0.39
+            },
+            "Case4": {
+              "WA": 0.89,
+              "WB": 0.11
+            },
+            "Case5": {
+              "WA": 0.97,
+              "WB": 0.03
+            },
+            "Case6": {
+              "WA": 0.95,
+              "WB": 0.05
+            },
+            "Case7": {
+              "WA": 0.76,
+              "WB": 0.24
+            },
+            "Case8": {
+              "WA": 0.8,
+              "WB": 0.2
+            },
+            "Case9": {
+              "WA": 0.94,
+              "WB": 0.06
+            }
+          }
+        },
+        {
+          "spanRatio": 0.55,
+          "values": {
+            "Case1": {
+              "WA": 0.92,
+              "WB": 0.08
+            },
+            "Case2": {
+              "WA": 0.92,
+              "WB": 0.08
+            },
+            "Case3": {
+              "WA": 0.69,
+              "WB": 0.31
+            },
+            "Case4": {
+              "WA": 0.92,
+              "WB": 0.08
+            },
+            "Case5": {
+              "WA": 0.98,
+              "WB": 0.02
+            },
+            "Case6": {
+              "WA": 0.96,
+              "WB": 0.04
+            },
+            "Case7": {
+              "WA": 0.81,
+              "WB": 0.19
+            },
+            "Case8": {
+              "WA": 0.85,
+              "WB": 0.15
+            },
+            "Case9": {
+              "WA": 0.95,
+              "WB": 0.05
+            }
+          }
+        },
+        {
+          "spanRatio": 0.5,
+          "values": {
+            "Case1": {
+              "WA": 0.94,
+              "WB": 0.06
+            },
+            "Case2": {
+              "WA": 0.94,
+              "WB": 0.06
+            },
+            "Case3": {
+              "WA": 0.76,
+              "WB": 0.24
+            },
+            "Case4": {
+              "WA": 0.94,
+              "WB": 0.06
+            },
+            "Case5": {
+              "WA": 0.99,
+              "WB": 0.01
+            },
+            "Case6": {
+              "WA": 0.97,
+              "WB": 0.03
+            },
+            "Case7": {
+              "WA": 0.86,
+              "WB": 0.14
+            },
+            "Case8": {
+              "WA": 0.89,
+              "WB": 0.11
+            },
+            "Case9": {
+              "WA": 0.97,
+              "WB": 0.03
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

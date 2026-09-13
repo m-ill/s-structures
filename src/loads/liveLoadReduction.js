@@ -37,17 +37,26 @@ const restricted = (factorFloor, reason) => ({ factorFloor, reason });
 // 3.5.3: occupancies that may not be reduced, and the cases where a member
 // carrying two or more floors may still keep 0.8.
 //
-// 3.5.3(3) restricts public assembly only "활하중 5kN/m2 이하의 공중집회 용도",
-// so the clause says nothing directly about assembly above 5 kN/m2. Reading
-// 3.5.3(2) across to it would allow 0.8 there, but that is a clause-interaction
-// judgement, not something the text states. Since guessing it wrong lowers the
-// design load, assembly above 5 kN/m2 is left unreduced under its own reason
-// rather than quietly taking either reading.
+// Public assembly needs the two clauses read together, because 3.5.3(3)
+// restricts only "활하중 5kN/m2 이하의 공중집회 용도":
+//
+//   <= 5 kN/m2, any storey count   3.5.3(3) forbids reduction
+//   >  5 kN/m2, one storey         3.5.3(2) forbids reduction
+//   >  5 kN/m2, two or more        3.5.3(2) allows C = 0.8
+//
+// The last line follows the clause text but has no separate official ruling
+// behind it, so results reaching it carry `interpretation` naming the reading.
+// It reduces the design load, so the basis travels with it.
 const OCCUPANCY_RULES = Object.freeze({
   'public-assembly': restricted(null, 'ASSEMBLY_OCCUPANCY_NOT_REDUCIBLE'),
   'passenger-car-parking': restricted(0.8, 'PASSENGER_CAR_PARKING_LIMITED_REDUCTION'),
 });
 const ASSEMBLY_INTENSITY_LIMIT = 5;
+const ASSEMBLY_ABOVE_LIMIT_INTERPRETATION = Object.freeze({
+  clauses: 'KDS 41 12 00 3.5.3(2) read with 3.5.3(3)',
+  reading: '3.5.3(3) restricts assembly only up to 5 kN/m2, so above it 3.5.3(2) governs and a member carrying two or more floors may keep 0.8',
+  basis: 'clause text; no separate official interpretation obtained',
+});
 
 const codeReferences = () => getKcscRuleSources(['411200'])
   .map((source) => ({ ...source, clause: '3.5.1; 3.5.2; 3.5.3' }));
@@ -107,16 +116,19 @@ export function liveLoadReductionFactor(input = {}) {
   }
 
   const carriesMultipleStories = supportedStoryCount >= 2;
-  if (occupancy === 'public-assembly' && liveLoadIntensity > ASSEMBLY_INTENSITY_LIMIT) {
-    return notReduced('ASSEMBLY_ABOVE_5KPA_CLAUSE_INTERACTION_UNRESOLVED', {
+
+  // Assembly above 5 kN/m2 leaves 3.5.3(3) and falls to 3.5.3(2).
+  const assemblyAboveLimit = occupancy === 'public-assembly' && liveLoadIntensity > ASSEMBLY_INTENSITY_LIMIT;
+  if (assemblyAboveLimit && !carriesMultipleStories) {
+    return notReduced('LIVE_LOAD_ABOVE_5KPA_NOT_REDUCIBLE', {
       influenceArea,
       occupancy,
       liveLoadIntensity,
       supportedStoryCount,
-      unresolved: '3.5.3(3) covers assembly only up to 5 kN/m2; whether 3.5.3(2) then permits 0.8 is not stated',
+      interpretation: ASSEMBLY_ABOVE_LIMIT_INTERPRETATION,
     });
   }
-  const occupancyRule = OCCUPANCY_RULES[occupancy];
+  const occupancyRule = assemblyAboveLimit ? null : OCCUPANCY_RULES[occupancy];
   if (occupancyRule && !(carriesMultipleStories && occupancyRule.factorFloor != null)) {
     return notReduced(occupancyRule.reason, { influenceArea, occupancy, supportedStoryCount });
   }
@@ -141,6 +153,7 @@ export function liveLoadReductionFactor(input = {}) {
   if (occupancyRule?.factorFloor != null) floors.push(occupancyRule.factorFloor);
   const factorFloor = Math.max(...floors);
   const factor = Math.min(1, Math.max(computed, factorFloor));
+  const interpretation = assemblyAboveLimit ? ASSEMBLY_ABOVE_LIMIT_INTERPRETATION : null;
 
   return {
     ...base(),
@@ -159,6 +172,7 @@ export function liveLoadReductionFactor(input = {}) {
     occupancy,
     units: { area: 'm2', intensity: 'kN/m2' },
     basis: 'retained fraction of the basic uniform live load; not a removed fraction',
+    interpretation,
     reason: factor < 1 ? null : 'FACTOR_FLOOR_LEAVES_NO_REDUCTION',
   };
 }

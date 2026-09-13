@@ -1,5 +1,5 @@
 {
-  "version": "p29-m0-source-confirmation-v3",
+  "version": "p29-m0-source-confirmation-v4",
   "date": "2026-09-14",
   "purpose": "Per Phase29's rule, a clause may be implemented from the captured text; an equation or table the capture renders as an image must be confirmed separately and its origin recorded. This is the list of what falls on each side.",
   "evidenceRoot": "verification/evidence/phase25/kcsc/official-20260911",
@@ -89,10 +89,10 @@
       "clause": "3.5.3(2); 3.5.3(3)",
       "subject": "5kN/m² 초과 공중집회 용도의 저감 가부",
       "textStatus": "PROSE_COMPLETE",
-      "note": "3.5.3(3) restricts assembly only up to 5 kN/m². Whether 3.5.3(2) then permits 0.8 above that is a clause-interaction reading the text does not state.",
-      "confirmation": "OWNER_DECISION_REQUIRED",
-      "currentBehaviour": "not reduced, reason ASSEMBLY_ABOVE_5KPA_CLAUSE_INTERACTION_UNRESOLVED",
-      "status": "IMPLEMENTED_CONSERVATIVELY"
+      "note": "Resolved by reading 3.5.3(2) with 3.5.3(3): (3) restricts assembly only up to 5 kN/m2, so above it (2) governs -- one storey not reducible, two or more may keep 0.8. The reading follows the clause text; no separate official interpretation was obtained, so results reaching that branch carry the reading on an `interpretation` field.",
+      "confirmation": "CLAUSE_TEXT_INTERPRETATION",
+      "currentBehaviour": "<=5 kN/m2 never reducible; >5 kN/m2 one storey not reducible; >5 kN/m2 two or more storeys C = 0.8 with interpretation recorded",
+      "status": "IMPLEMENTED"
     },
     {
       "id": "P29-G3-01",
@@ -151,9 +151,11 @@
       "clause": "6.2 표 6.2-1",
       "subject": "지진력저항시스템 설계계수 R, Ω0, Cd",
       "textStatus": "TABLE_LABELS_TEXT",
-      "note": "411700-text.txt line 310. System names are text; the column symbols are images but the column order is stated in 6.1(1) as 반응수정계수, 시스템초과강도계수, 변위증폭계수.",
-      "confirmation": "COLUMN_MAPPING_REVIEW",
-      "status": "READY_WITH_REVIEW"
+      "note": "Resolved. Column order after the system name owner-confirmed as R, omega0, Cd against pages 19~20, matching what 6.1(1) states. Twelve reinforced concrete rows entered. Keyed by framing family AND detail system because the same detail takes different coefficients under different families (RC ordinary shear wall: R = 4 / 5 / 6 / 5.5 / 4.5).",
+      "confirmation": "OWNER_CONFIRMED",
+      "status": "IMPLEMENTED",
+      "implementedBy": "src/loads/seismicSystemCoefficients.js",
+      "limitations": "height limits by seismic design category and system qualifying conditions are not evaluated; the steel, composite and masonry rows are not entered"
     },
     {
       "id": "P29-G1-01",
@@ -171,12 +173,13 @@
       "milestone": "M3",
       "document": "142070",
       "clause": "부록 표 4-1~4-3",
-      "subject": "이방향 슬래브 계수법 모멘트계수",
-      "textStatus": "TABLE_LAYOUT_DAMAGED",
-      "note": "The appendix tables are the three lines where the capture's own spacing is inconsistent; case columns are readable but the coefficient grid is not reliably aligned in text form.",
-      "confirmation": "OWNER_DECISION_REQUIRED",
-      "blocks": "two-way slab by coefficient method",
-      "status": "DEFERRED"
+      "subject": "이방향 슬래브 계수법 — 계수표와 Case 지지조건",
+      "textStatus": "COEFFICIENTS_RECOVERED_DIAGRAMS_MISSING",
+      "note": "The coefficients are recovered exactly: each case cell carries colspan=3 with three <p> sub-columns, so the blanks and the short-span/long-span attribution survive in the captured HTML even though the flattened text loses them. Tables 4-1 to 4-4 are extracted to verification/evidence/phase29/slab-coefficient-tables.json (4 tables x 11 span ratios x 9 cases). What is still missing is the Case 1~9 support-condition diagrams: they are drawn with cell borders in three rows of empty cells and the capture carries no border, style or class attribute. The owner is supplying the diagrams.",
+      "confirmation": "DIAGRAMS_PENDING_FROM_OWNER",
+      "blocks": "which edges are continuous or fixed in each case; the coefficient values themselves are not blocked",
+      "status": "PARTIALLY_RECOVERED",
+      "sourceDefect": "table 4-1, m = 0.85, Case4 short-span coefficient is printed as 0066 where 0.066 is meant; recorded as malformedInSource rather than silently corrected"
     },
     {
       "id": "P29-G3-06",
@@ -218,21 +221,16 @@
   ],
   "summary": {
     "total": 13,
-    "ownerDecisionsOpen": [
-      "P29-G2-03",
-      "P29-G1-02"
-    ],
+    "ownerDecisionsOpen": [],
     "captureGaps": [],
     "byStatus": {
-      "IMPLEMENTED": 9,
-      "IMPLEMENTED_CONSERVATIVELY": 1,
-      "READY_WITH_REVIEW": 1,
+      "IMPLEMENTED": 11,
       "READY": 1,
-      "DEFERRED": 1
+      "PARTIALLY_RECOVERED": 1
     },
     "openSourceItems": [],
     "ownerResearching": [
-      "P29-G3-05 표 6.2-1 열 매핑",
+      "KDS 14 20 70 부록 Case 1~9 지지조건 그림",
       "2024-05 정정고시 대조"
     ]
   }
