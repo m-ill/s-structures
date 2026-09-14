@@ -1,6 +1,6 @@
 # Phase30 진행 상태
 
-2026-09-14 · **M0~M4 완료 · M5 부분 완료**
+2026-09-14 · **M0~M6 완료**
 
 오너 결정 두 건이 확정돼 착수했다.
 
@@ -81,15 +81,78 @@ rc3050 → rc4060 → rc5080
 
 비율 30.793 / 11.547 = 2.667 = 0.40 / 0.15 — **면적비 그대로다.** 루프는 자중을 한 번도 직접 계산하지 않는다. 각 반복의 모델 해시도 서로 다르다(안쪽 핀을 재진입한 것이지 푼 것이 아니다).
 
-## M5 · 등록과 게이트 — 부분
+## M5 · 등록과 게이트
 
 - 비용 상한을 `practicalDesignLimits.js`에 등록(`p30-bounded-profile-v3-global-iteration`)
-- 시험 3개가 파일명 규칙으로 자동 편입(869개, 고아 0)
+- 시험이 파일명 규칙으로 자동 편입(872개, 고아 0)
 - 되먹임 근거 게이트가 `p30-m1` 시험에 편입
 
-**남은 것 하나**: 미수렴 결과를 설계 전달 경로에서 막는 연결이다. 판정 함수 `globalIterationBlocksTransfer`는 만들어 시험까지 걸려 있지만, **아직 이 루프를 호출하는 생산자가 없다.** 아무도 세우지 않는 필드를 `rcSplicePolicy`에서 검사하면 죽은 코드가 된다. 첫 호출자가 생길 때 그 자리에 붙이는 것이 맞고, 그때까지 열어 둔다.
+## M6 · 워크플로 연결
 
-모든 상태에서 `designTransferAllowed`는 false다. `CONVERGED`도 마찬가지다.
+오너 결정 세 건이 확정돼 진행했다.
+
+| 결정 | 확정 |
+| --- | --- |
+| 기동 | 명시 호출 |
+| 설계변수 | 단면치수 포함 + **허용 범위 선언** |
+| 차단 | `CONVERGED` 외 전부 차단, 사유 표면화 |
+
+### 리사이징 권한 — `globalResizeScope.js`
+
+```js
+{ sets: [{ memberIds: ['G1','G2'], sectionLadder: ['rc3050','rc4060','rc5080'] }] }
+```
+
+사다리는 **총단면적 순증가 강제**다. 순서가 없으면 "수요 증가 → 다음 단면"의 방향이 정의되지 않고 진동 검출이 무의미해진다. 한 부재를 두 집합이 점유하면 스텝이 순회 순서에 의존하므로 거부한다.
+
+스코프 밖 부재는 `nextSectionUp`과 `resizeCommands` **양쪽에서** 차단된다 — 호출자가 목록을 따로 조립해도 도달 불가다.
+
+### 두 가지 구동 형태
+
+**`globalDesignDriver`** — 자율 루프. 해석 콜백을 받아 스스로 돈다.
+
+**`globalIterationSession`** — 단계형. 이쪽이 서비스에 연결된 형태다.
+
+서비스가 자율 루프를 쓸 수 없는 이유는 분명하다. `evaluate()`는 조합별 **완료된 해석 run id**를 요구하고, 서비스는 해석 실행 생명주기를 소유하지 않는다 — `applyCandidateAndReview`가 해석을 직접 돌리지 않고 `new-analysis-and-design-evaluation`을 반환하는 것과 같은 이유다. 그래서 세션이 루프 상태를 호출 사이에 보관하고, 해석은 호출자가 돌린다. `plan → start → apply`와 같은 형태다.
+
+```
+open(scope) → submit(evaluation) → 명령 적용 + 재해석 → submit → ...
+```
+
+판정은 `judgeIteration`으로 **추출해 양쪽이 공유**한다. 세션과 자율 루프가 수렴을 다르게 판정하면 Phase28이 막으려던 바로 그 드리프트가 된다.
+
+### 드라이버가 구분해야 하는 두 상황
+
+원시 판정으로는 불가능한 것이다.
+
+| 상황 | 원시 판정 | 실제 |
+| --- | --- | --- |
+| 사다리 소진 + 여전히 NG | 설계 불변 → **CONVERGED 오독** | `RESIZE_LADDER_EXHAUSTED_WHILE_FAILING` |
+| 스코프 밖 부재가 NG | 동일 오독 | `FAILING_MEMBER_OUTSIDE_RESIZE_SCOPE` |
+
+### 전달 차단 — 서비스의 기존 어휘
+
+| 상태 | requiredNext |
+| --- | --- |
+| `CONVERGED` | `independent-review-and-artifacts` |
+| `CYCLE_DETECTED` | `resolve-design-state-cycle` |
+| `ITERATION_LIMIT_REACHED` | `raise-iteration-bound-or-revise-design` |
+| `FORCE_CONVERGED_SECTION_OSCILLATING` | `choose-between-oscillating-sections` |
+
+네 번째는 부재력 잔차가 허용오차 이내인데 이산 규격 채택이 미정인 상태다. 구조적으로 어느 쪽 rung이든 성립할 수 있으나 **무엇을 채택했는지가 결정되지 않았으므로** 결과가 아니라 결정 대상이다.
+
+### 노출
+
+| 계층 | 추가 |
+| --- | --- |
+| 서비스 | `openGlobalIteration` · `submitGlobalIteration` · `getGlobalIteration` |
+| 브리지 | `openGlobalDesignIteration` 외 2 |
+| WebMCP | `open_global_design_iteration` · `submit_global_design_iteration` · `get_global_design_iteration` |
+| 능력 목록 | optimization 모듈 + 제약 문구 |
+
+스키마의 `maxGlobalIterations` 상한은 **기본값 6이 아니라 하드캡 12**다 — 호출자가 `practicalDesignLimits`를 넘겨 요청할 수 없다. `submit` 스키마는 부재별 `secId`를 필수로 요구한다. 설계 상태 해시가 단면에 의존하므로, 단면 없이 비율만 받으면 정착한 설계가 영원히 미정착으로 보인다.
+
+신설 배관은 없었다. `designInputCommands`의 `member-assignment`가 이미 리사이징 경로이고, 자중은 `createSelfWeightLoads`가 조립 시마다 총단면적을 읽는다.
 
 ## 경계
 

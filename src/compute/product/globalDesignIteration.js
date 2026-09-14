@@ -43,6 +43,49 @@ export const GLOBAL_ITERATION_STATUS = Object.freeze({
 const DEFAULT_FORCE_TOLERANCE = 1e-3;
 
 /**
+ * The judgement for one iteration, shared by the autonomous loop and the
+ * step-wise session.
+ *
+ * Extracted so the two callers cannot drift: a session that judged convergence
+ * differently from the loop would be the same defect phase 28 found between the
+ * clause map and the modules.
+ */
+export function judgeIteration({
+  iteration,
+  forces,
+  designHash,
+  previousForces = null,
+  previousDesignHash = null,
+  seenDesigns,
+  forceTolerance = DEFAULT_FORCE_TOLERANCE,
+}) {
+  const forceResidual = previousForces === null ? null : relativeDifference(previousForces, forces);
+  const designChanged = previousDesignHash === null ? null : designHash !== previousDesignHash;
+  const firstSeenAt = seenDesigns?.get(designHash);
+  const revisited = firstSeenAt !== undefined;
+
+  const row = {
+    iteration,
+    designHash,
+    forceResidual,
+    designChanged,
+    forceConverged: forceResidual !== null && forceResidual <= forceTolerance,
+    revisitedDesignFromIteration: revisited ? firstSeenAt : null,
+  };
+
+  let status = null;
+  if (row.forceConverged && designChanged === false) status = GLOBAL_ITERATION_STATUS.CONVERGED;
+  else if (revisited) status = GLOBAL_ITERATION_STATUS.CYCLE_DETECTED;
+
+  return {
+    row,
+    status,
+    revisited,
+    cycle: revisited ? { firstSeenAt, revisitedAt: iteration, length: iteration - firstSeenAt } : null,
+  };
+}
+
+/**
  * Run the global design loop until it converges, cycles, or hits its bound.
  *
  * `evaluate({ model, iteration })` analyses and checks; it returns
@@ -111,45 +154,33 @@ export async function runGlobalDesignIteration(source, options = {}) {
       return finish(GLOBAL_ITERATION_STATUS.NOT_CHECKED, 'GLOBAL_ITERATION_EVALUATION_INCOMPLETE');
     }
 
-    const designHash = stableHash(evaluation.designState);
-    const forceResidual = previousForces === null ? null : relativeDifference(previousForces, evaluation.forces);
-    const designChanged = previousDesignHash === null ? null : designHash !== previousDesignHash;
-
-    // A design seen before means the loop has closed on itself. The first
-    // iteration's state is recorded but cannot be a revisit.
-    const firstSeenAt = seenDesigns.get(designHash);
-    const revisited = firstSeenAt !== undefined;
-    if (!revisited) seenDesigns.set(designHash, iteration);
-
-    const row = {
+    // The same judgement the step-wise session uses, so the two cannot drift.
+    const judged = judgeIteration({
       iteration,
-      modelHash,
-      designHash,
-      forceResidual,
-      designChanged,
-      forceConverged: forceResidual !== null && forceResidual <= forceTolerance,
-      revisitedDesignFromIteration: revisited ? firstSeenAt : null,
-    };
+      forces: evaluation.forces,
+      designHash: stableHash(evaluation.designState),
+      previousForces,
+      previousDesignHash,
+      seenDesigns,
+      forceTolerance,
+    });
+    if (!judged.revisited) seenDesigns.set(judged.row.designHash, iteration);
+    const row = { ...judged.row, modelHash };
     trace.push(row);
 
-    // Both judgements, and they are only meaningful once there is a previous
-    // iteration to compare against.
-    if (row.forceConverged && designChanged === false) {
+    if (judged.status === GLOBAL_ITERATION_STATUS.CONVERGED) {
       return finish(GLOBAL_ITERATION_STATUS.CONVERGED, null, { model, evaluation });
     }
-    if (revisited) {
-      // Distinguish a genuine two-or-more state cycle from a settled design.
-      // A revisit of the immediately previous state with the forces still
-      // moving is not the same thing as a loop between alternatives.
+    if (judged.status === GLOBAL_ITERATION_STATUS.CYCLE_DETECTED) {
       return finish(GLOBAL_ITERATION_STATUS.CYCLE_DETECTED, 'GLOBAL_ITERATION_DESIGN_STATE_REVISITED', {
         model,
         evaluation,
-        cycle: { firstSeenAt: firstSeenAt, revisitedAt: iteration, length: iteration - firstSeenAt },
+        cycle: judged.cycle,
       });
     }
 
     previousForces = evaluation.forces;
-    previousDesignHash = designHash;
+    previousDesignHash = judged.row.designHash;
 
     const next = await applyDesign({ model, evaluation, iteration });
     if (!next || typeof next !== 'object') {

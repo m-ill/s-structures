@@ -882,6 +882,9 @@ export function installIndexEngineBridge(target = globalThis) {
   bridge.cancelDesignCandidates=practicalWorkflow.cancelCandidates;
   bridge.applyDesignCandidate=practicalWorkflow.applyCandidate;
   bridge.applyDesignCandidateAndReview=practicalWorkflow.applyCandidateAndReview;
+  bridge.openGlobalDesignIteration=practicalWorkflow.openGlobalIteration;
+  bridge.submitGlobalDesignIteration=practicalWorkflow.submitGlobalIteration;
+  bridge.getGlobalDesignIteration=practicalWorkflow.getGlobalIteration;
   bridge.getPracticalDesignSnapshot=practicalWorkflow.readSnapshot;
   bridge.getPracticalDesignContext=()=>({...practicalWorkflow.getContext(),rcServiceIterations:rcServiceWorkflow.context(),rcSpliceInterval:rcSpliceExecution.context(),sharedResultCache:sharedPracticalCache.snapshot(),sources:bridge.listDesignAnalysisSources().slice(-30)});
   const drawingExporter=createDrawingExportService({bridge,workflow:practicalWorkflow,budget:resourceBudget,loadFont:target.SStructuresLoadDrawingFont||loadBundledDrawingFont});

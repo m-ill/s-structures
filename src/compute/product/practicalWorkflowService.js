@@ -47,6 +47,7 @@ import {designInputImpact} from '../../core/designDependencyIdentity.js';
 import {latestDetails,summarizePracticalChecks,designCombinationCoverage,PRACTICAL_EVALUATION_VERSION} from '../../design/evaluation/practicalEvaluation.js';
 import {practicalCommandFromRecord} from '../../modeling/practicalInputContract.js';
 import {DESIGN_INPUT_UNITS,finiteJson,object,stageDesignInputCommand} from '../../modeling/designInputCommands.js';
+import {openGlobalIterationSession} from './globalIterationSession.js';
 import {runCandidateSpliceRefinement,runCandidateGeometry,runCandidateAnalysis,runCandidateEvaluation,runRcServiceWorker,runRcSpliceWorker} from './candidateAnalysisClient.js';
 import {designSetSnapshot} from './candidateAnalysisSnapshot.js';
 import {normalizeProductAnalysisCaseSettings} from './analysisCaseSettings.js';
@@ -646,11 +647,45 @@ export function createPracticalWorkflowService({bridge,budget=createResourceBudg
   }catch(error){evaluations.clear();plans.clear();jobs.clear();applications.clear();throw error;}finally{staged.clear();}
   return {ok:true,evaluations:evaluations.size,interruptedJobs:[...jobs.values()].filter(x=>x.status==='interrupted').length};
  }
- return {evaluate,cancelEvaluation(){const active=!!evaluationController;evaluationController?.abort();return {ok:true,cancelRequested:active};},getEvaluation,getEvaluationStatus,releaseEvaluation,getCheckDetail,planCandidates,startCandidates,resumeCandidates,getCandidateJob,getCandidateDetail,getCandidateBasis,cancelCandidates,releaseCandidates,applyCandidate,applyCandidateAndReview,exportState,restoreState,resume(){disposed=false;},
+ // Phase30 M6. The global design loop, step-wise because this service does not
+ // own analysis execution: evaluate() needs a completed analysis run id per
+ // combination, which is why applyCandidateAndReview answers
+ // 'new-analysis-and-design-evaluation' rather than running one itself.
+ //
+ // Explicit, not folded into evaluate(): one global iteration is a whole
+ // analysis cycle, and an evaluation that silently became six of them would
+ // change the latency contract of every design run.
+ let globalSession=null;
+ function openGlobalIteration(input={}) {
+  finiteJson(input);object(input,['resizeScope','maxGlobalIterations','forceTolerance','inputHash']);
+  if(input.inputHash!==undefined)current(input.inputHash);
+  const opened=openGlobalIterationSession(clone(bridge.getCurrentModel()),{
+   resizeScope:input.resizeScope,
+   ...(input.maxGlobalIterations===undefined?{}:{maxGlobalIterations:input.maxGlobalIterations}),
+   ...(input.forceTolerance===undefined?{}:{forceTolerance:input.forceTolerance}),
+  });
+  if(!opened.ok){globalSession=null;return clone({ok:false,...opened});}
+  globalSession=opened;
+  return clone({ok:true,sessionId:opened.sessionId,scope:opened.scope,bounds:opened.bounds,requiredNext:opened.requiredNext,designTransferAllowed:false});
+ }
+ function submitGlobalIteration(input={}) {
+  finiteJson(input);object(input,['sessionId','members']);
+  if(!globalSession)reject('GLOBAL_ITERATION_SESSION_REQUIRED');
+  if(input.sessionId!==globalSession.sessionId)reject('GLOBAL_ITERATION_SESSION_STALE');
+  return clone(globalSession.submit({members:input.members}));
+ }
+ function getGlobalIteration(input={}) {
+  finiteJson(input);object(input,['sessionId']);
+  if(!globalSession)reject('GLOBAL_ITERATION_SESSION_REQUIRED');
+  if(input.sessionId!==undefined&&input.sessionId!==globalSession.sessionId)reject('GLOBAL_ITERATION_SESSION_STALE');
+  return clone(globalSession.status());
+ }
+
+ return {evaluate,cancelEvaluation(){const active=!!evaluationController;evaluationController?.abort();return {ok:true,cancelRequested:active};},getEvaluation,getEvaluationStatus,releaseEvaluation,getCheckDetail,planCandidates,startCandidates,resumeCandidates,getCandidateJob,getCandidateDetail,getCandidateBasis,cancelCandidates,releaseCandidates,applyCandidate,applyCandidateAndReview,openGlobalIteration,submitGlobalIteration,getGlobalIteration,exportState,restoreState,resume(){disposed=false;},
   getContext:()=>({ok:true,version:PRACTICAL_WORKFLOW_VERSION,candidateStrategyVersion:CANDIDATE_STRATEGY_VERSION,loadScopeHash:profileLoadScopeHash(bridge.getCurrentModel()),projectProfile:evaluateProjectProfile(bridge.getCurrentModel()),evaluations:[...evaluations.values()].map(x=>({evaluationId:x.id,inputHash:x.inputHash,...currentness(x),sources:clone((x.sets||[]).map(set=>set.source)),summary:clone(x.summary)})),jobs:[...jobs.keys()],plans:[...plans].map(([planId,p])=>({planId,evaluationId:p.evaluationId,referenced:[...jobs.values()].some(job=>job.planId===planId)})),limits:{...limits},evaluationExecution:{mode:'module-worker',active:!!evaluationController,timeoutMs:limits.maxEvaluationMillis},memory:budget.snapshot(),candidateDetailCache:candidateDetailReader.stats(),rules:'CLAUSE_PARTIAL_IMPLEMENTED',designTransferAllowed:false}),
-  hasRetainedState:()=>!!(evaluations.size||plans.size||jobs.size||applications.size||evaluationController||busy||candidateControllers.size||applicationReviews.size),
+  hasRetainedState:()=>!!(evaluations.size||plans.size||jobs.size||applications.size||evaluationController||busy||candidateControllers.size||applicationReviews.size||globalSession),
   drawingSnapshotBytes:evaluationId=>retainedBytes(selectDrawingSnapshot(read(evaluationId))),readDrawingSnapshot:evaluationId=>clone(selectDrawingSnapshot(read(evaluationId))),
-  snapshotBytes:evaluationId=>retainedBytes(read(evaluationId)),readSnapshot:evaluationId=>clone(read(evaluationId)),dispose(){candidateDetailReader.clear();evaluationController?.abort();disposed=true;generation++;busy=false;for(const controller of candidateControllers.values())controller.abort();candidateControllers.clear();applicationReviews.clear();for(const job of jobs.values())job.cancelled=true;evaluations.clear();plans.clear();jobs.clear();applications.clear();}};
+  snapshotBytes:evaluationId=>retainedBytes(read(evaluationId)),readSnapshot:evaluationId=>clone(read(evaluationId)),dispose(){candidateDetailReader.clear();globalSession=null;evaluationController?.abort();disposed=true;generation++;busy=false;for(const controller of candidateControllers.values())controller.abort();candidateControllers.clear();applicationReviews.clear();for(const job of jobs.values())job.cancelled=true;evaluations.clear();plans.clear();jobs.clear();applications.clear();}};
 }
 function compare(a,b){for(let i=0;i<a.length;i++)if(a[i]!==b[i])return a[i]-b[i];return 0;}
 
