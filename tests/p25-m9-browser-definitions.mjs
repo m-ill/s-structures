@@ -8,7 +8,15 @@ try{
  const before=JSON.stringify(tools),advertised=browserDefinitions(tools);
  assert.equal(JSON.stringify(tools),before);assert.deepEqual(advertised.map(t=>t.name),tools.map(t=>t.name));
  advertised.forEach((t,i)=>assert.equal(t.execute,tools[i].execute));
- const size=Buffer.byteLength(JSON.stringify(advertised));assert.ok(size<64000);
+ // Advertised payload budget. The phase 25 closure audit is explicit that no
+ // per-browser limit was ever confirmed and that this is a PRODUCT REGRESSION
+ // baseline, not an external constraint: 56,308 bytes then, 61,389 before the
+ // phase 30 tools, 64,132 with them. Raised here rather than dropping a tool to
+ // fit a number, and the margin is printed so the next approach is visible in
+ // the gate output instead of only when it fails.
+ const ADVERTISED_BUDGET=68000;
+ const size=Buffer.byteLength(JSON.stringify(advertised));
+ assert.ok(size<ADVERTISED_BUDGET,`advertised definitions ${size} bytes exceed the ${ADVERTISED_BUDGET} budget`);
  const preview=advertised.find(t=>t.name==='preview_design_changes'),original=tools.find(t=>t.name===preview.name);
  assert.ok(original.inputSchema.properties.commands.items.oneOf.length>5);
  assert.equal(preview.inputSchema.properties.commands.maxItems,original.inputSchema.properties.commands.maxItems);
@@ -28,5 +36,5 @@ try{
  assert.deepEqual(registered.map(x=>x.definition.inputSchema),advertised.map(x=>x.inputSchema));
  state.dispose();assert.ok(registered.every(x=>x.options.signal.aborted));
  assert.throws(()=>registered[0].definition.execute({}),/inactive/);
- console.log(JSON.stringify({count:advertised.length,utf8Bytes:size,canonicalBytes:Buffer.byteLength(before),sameExecution:true}));
+ console.log(JSON.stringify({count:advertised.length,utf8Bytes:size,budget:ADVERTISED_BUDGET,marginBytes:ADVERTISED_BUDGET-size,canonicalBytes:Buffer.byteLength(before),sameExecution:true}));
 }finally{tools.dispose();}
