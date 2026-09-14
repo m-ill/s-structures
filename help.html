@@ -330,10 +330,10 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 <p>루트 주소(<code>/</code>)와 <code>index.html</code>이 다르게 보이면 오래된 서버 또는 캐시가 남아 있을 수 있다. 현재 기준의 작업 화면은 <code>index.html</code> 진입을 기준으로 검증한다.</p>
 <h2>Main Work Tabs</h2>
 <p>상단에는 네 개의 큰 작업 탭이 있다.</p>
-<table><thead><tr><th>탭</th><th>목적</th><th>현재 사용 기준</th></tr></thead><tbody><tr><td>모델링</td><td>구조 모델 생성/편집</td><td>기본 시작 위치</td></tr><tr><td>탄성해석</td><td>조합, 결과, 설계기준 입력, 보고서</td><td>해석과 보고서 작업의 중심</td></tr><tr><td>비선형해석</td><td>pushover 예비 기능</td><td>연구/검토용, 정식 설계 결과로 취급하지 않음</td></tr><tr><td>태블릿메모</td><td>펜, 지우개, 이미지, 선택</td><td>현장 메모 또는 검토 표시</td></tr></tbody></table>
+<table><thead><tr><th>탭</th><th>목적</th><th>현재 사용 기준</th></tr></thead><tbody><tr><td>모델링</td><td>구조 모델 생성/편집</td><td>기본 시작 위치</td></tr><tr><td>일반구조설계</td><td>조합, 결과, 설계기준 입력, 보고서</td><td>해석과 보고서 작업의 중심</td></tr><tr><td>비선형해석</td><td>pushover 예비 기능</td><td>연구/검토용, 정식 설계 결과로 취급하지 않음</td></tr><tr><td>태블릿메모</td><td>펜, 지우개, 이미지, 선택</td><td>현장 메모 또는 검토 표시</td></tr></tbody></table>
 <p>태블릿 사용을 고려해 왼쪽 모델링 도구는 접었다 펼 수 있게 두고, 상단 리본은 작업 모드별 핵심 기능만 노출하는 방향이다.</p>
 <h2>Basic User Flow</h2>
-<ol><li><code>모델링</code> 탭에서 구조 골조를 만든다.</li><li>절점, 부재, 지점조건, 단면, 재료를 확인한다.</li><li>부재 하중 또는 노드 하중을 입력한다.</li><li><code>탄성해석</code> 탭에서 하중조합과 결과 표시를 확인한다.</li><li>필요하면 설계기준 입력값을 preview 후 apply 하여 자동 하중을 생성한다.</li><li>해석 결과에서 변위, 부재력, 반력, 포락, 층간변위를 검토한다.</li><li><code>설계요약</code>, <code>검증</code>, <code>Calculation Package</code> 메뉴로 보고서를 연다.</li><li>브라우저 인쇄 기능으로 PDF를 저장한다.</li><li>프로젝트 JSON 또는 product book 형태로 저장한다.</li></ol>
+<ol><li><code>모델링</code> 탭에서 구조 골조를 만든다.</li><li>절점, 부재, 지점조건, 단면, 재료를 확인한다.</li><li>부재 하중 또는 노드 하중을 입력한다.</li><li><code>일반구조설계</code> 탭에서 하중조합과 결과 표시를 확인한다.</li><li>필요하면 설계기준 입력값을 preview 후 apply 하여 자동 하중을 생성한다.</li><li>해석 결과에서 변위, 부재력, 반력, 포락, 층간변위를 검토한다.</li><li><code>설계요약</code>, <code>검증</code>, <code>Calculation Package</code> 메뉴로 보고서를 연다.</li><li>브라우저 인쇄 기능으로 PDF를 저장한다.</li><li>프로젝트 JSON 또는 product book 형태로 저장한다.</li></ol>
 <h2>Minimum Valid Model</h2>
 <p>해석 가능한 최소 모델은 다음 조건을 만족해야 한다.</p>
 <table><thead><tr><th>항목</th><th>조건</th></tr></thead><tbody><tr><td>절점</td><td>고유 ID와 3D 좌표가 있어야 함</td></tr><tr><td>부재</td><td>서로 다른 두 절점을 연결해야 함</td></tr><tr><td>재료/단면</td><td>부재가 참조하는 재료와 단면이 존재해야 함</td></tr><tr><td>지점</td><td>전체 모델이 강체 운동을 하지 않도록 충분한 구속이 있어야 함</td></tr><tr><td>하중</td><td>하중케이스에 연결된 부재하중 또는 노드하중이 있어야 함</td></tr><tr><td>조합</td><td>하중케이스를 참조하는 하나 이상의 조합이 있어야 함</td></tr></tbody></table>
@@ -373,7 +373,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 <p>해석 결과에서 우선 확인할 항목은 다음과 같다.</p>
 <table><thead><tr><th>결과</th><th>확인 내용</th></tr></thead><tbody><tr><td><code>analysis.ok</code></td><td>전체 해석 성공 여부</td></tr><tr><td>validation errors</td><td>모델 입력 오류</td></tr><tr><td>equilibrium residual</td><td>총하중과 총반력의 평형 오차</td></tr><tr><td>max displacement</td><td>최대 변위</td></tr><tr><td>member force envelope</td><td>부재별 축력, 전단, 휨 포락</td></tr><tr><td>reactions</td><td>지점 반력</td></tr><tr><td>design utilization</td><td>예비 설계 검토비</td></tr><tr><td>serviceability drift</td><td>층간변위 및 제한비</td></tr></tbody></table>
 <h2>Result UI</h2>
-<p><code>탄성해석</code> 탭으로 처음 이동하면 현재 모델에서 완료되지 않은 단계가 자동으로 열린다. 번호 버튼을 따라 기본설정부터 결과검토까지 진행한다.</p>
+<p><code>일반구조설계</code> 탭에서 해석 설정을 열고, 번호 버튼을 따라 기본설정부터 결과검토까지 진행한다. 설정 창은 탭 진입만으로 자동으로 열리지 않으며 다른 작업 탭으로 이동하면 닫힌다.</p>
 <table><thead><tr><th>단계</th><th>하는 일</th><th>필요한 이유</th></tr></thead><tbody><tr><td>1 기본설정</td><td>프로젝트 ID, 설계법, 용도, 지역, 지반, 중요도 입력</td><td>적용 하중과 조합법의 범위 고정</td></tr><tr><td>2 하중·질량</td><td>D/L/Lr/W/E와 층 질량 적용</td><td>정적 조합과 동적 질량 입력 통일</td></tr><tr><td>3 하중조합</td><td>KDS 조합 미리보기, 계수·방향 검토, 프로젝트 승인</td><td>강도와 사용성 조합 혼용 방지</td></tr><tr><td>4 모델검증</td><td>지점·연결·단면·참조 오류 검사</td><td>잘못된 입력을 해석 전에 차단</td></tr><tr><td>5 1차해석</td><td>선형 정적해석과 평형 확인</td><td>고급해석의 비교 기준 생성</td></tr><tr><td>6 고급해석</td><td>Direct P-Delta, 모달/RSA, 좌굴, 선형 THA 선택</td><td>검토 목적에 맞는 해석만 수행</td></tr><tr><td>7 결과검토</td><td>수렴·평형·질량참여·지배조합·경고 확인</td><td>설계전달 가능 결과 선별</td></tr></tbody></table>
 <p>상세 하중 입력줄은 기본적으로 접혀 있다. 절차 리본 끝의 <code>⋯</code> 버튼으로 표시할 수 있다.</p>
 <h3>하중조합 판정</h3>
@@ -395,7 +395,7 @@ footer.control-key code{ background:#f4f0e4; border:1px solid #e4d9b8; border-ra
 <template data-help-page="03-loads-design-and-reports" data-title="하중·설계 검토·계산서" data-crumb="사용 안내서 · 핵심 작업">
 <h1>03 Loads Design And Reports</h1>
 <h2>Design-Basis Load Input</h2>
-<p><code>탄성해석</code> 탭의 설계기준 입력 영역은 자동 하중 생성 전용이다. 입력값을 preview하면 모델에는 설계기준 상태만 저장되고, apply를 눌러야 실제 하중 entity가 생성된다.</p>
+<p><code>일반구조설계</code> 탭의 설계기준 입력 영역은 자동 하중 생성 전용이다. 입력값을 preview하면 모델에는 설계기준 상태만 저장되고, apply를 눌러야 실제 하중 entity가 생성된다.</p>
 <table><thead><tr><th>입력</th><th>의미</th><th>저장 위치</th></tr></thead><tbody><tr><td><code>occupancy</code></td><td>용도 preset</td><td><code>model.designBasis.occupancy</code></td></tr><tr><td><code>floorArea</code></td><td>기준층 면적</td><td><code>model.designBasis.floorArea</code></td></tr><tr><td><code>roofArea</code></td><td>지붕 면적</td><td><code>model.designBasis.roofArea</code></td></tr><tr><td><code>deadLoad</code></td><td>고정하중 강도</td><td><code>model.designBasis.deadLoad</code></td></tr><tr><td><code>liveLoad</code></td><td>활하중 강도</td><td><code>model.designBasis.liveLoad</code></td></tr><tr><td><code>roofLiveLoad</code></td><td>지붕 활하중 강도</td><td><code>model.designBasis.roofLiveLoad</code></td></tr><tr><td><code>windPressureX/Y</code></td><td>등가 풍하중 압력</td><td><code>model.designBasis.windPressureX/Y</code></td></tr><tr><td><code>seismicCoefficientX/Y</code></td><td>등가 지진계수</td><td><code>model.designBasis.seismicCoefficientX/Y</code></td></tr><tr><td><code>seismicLiveLoadFactor</code></td><td>지진중량 활하중 참여계수</td><td><code>model.designBasis.seismicLiveLoadFactor</code></td></tr></tbody></table>
 <h2>Preview And Apply</h2>
 <table><thead><tr><th>버튼/API</th><th>동작</th></tr></thead><tbody><tr><td>Preview</td><td><code>model.designBasis</code> 저장, 예상 하중 산정 결과 미리보기</td></tr><tr><td>Apply</td><td>하중케이스와 하중 entity 생성, <code>model.loadEstimation</code> 저장, 재해석</td></tr></tbody></table>
@@ -806,7 +806,7 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <p class="summary">두 절점을 잇는 3D 프레임 부재. 단면·재료 배정, 로컬축 지정.</p>
       </header>
       <p class="description">부재는 두 절점을 잇는 3D 보 요소로, 단면과 재료를 배정해야 해석이 가능하다. 팔레트의 부재 도구는 절점 두 개를 차례로 클릭해 잇고, 기둥 도구는 클릭 지점 위로 수직 부재를 만든다. 로컬축(강축 방향)은 부재 속성의 roll 각으로 제어한다.</p>
-      <h4>사용 방법</h4><ol><li>[모델링] 모드 → 팔레트에서 부재 도구 선택 → 시작 절점, 끝 절점 순서로 클릭</li><li>기둥은 기둥 도구로 평면 위치를 클릭하면 층고만큼 수직 생성된다</li><li>부재를 선택하고 단면/재료를 배정한다 (setMemberSection / setMemberMaterial)</li><li>로컬축 표시는 탄성해석 모드의 결과 토글 axes로 확인한다</li></ol>
+      <h4>사용 방법</h4><ol><li>[모델링] 모드 → 팔레트에서 부재 도구 선택 → 시작 절점, 끝 절점 순서로 클릭</li><li>기둥은 기둥 도구로 평면 위치를 클릭하면 층고만큼 수직 생성된다</li><li>부재를 선택하고 단면/재료를 배정한다 (setMemberSection / setMemberMaterial)</li><li>로컬축 표시는 일반구조설계 모드의 결과 토글 axes로 확인한다</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>addMember</code> <code>updateMember</code> <code>deleteMember</code> <code>nativeDrawMember</code> <code>nativeAddColumn</code> <code>setMemberSection</code> <code>setMemberMaterial</code> <code>assignSection</code> <code>setMemberBehavior</code> <code>nativeSetMemberBehavior</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.members</code> (기본 상시) </footer>
@@ -932,8 +932,8 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <h2>선택·편집 도구 <span class="badge badge-stable">정식</span></h2>
         <p class="summary">개체 선택/박스선택/삭제/모드 전환 등 화면 편집 도구 일체.</p>
       </header>
-      <p class="description">팔레트의 선택·이동·박스선택·삭제 도구와 상단 모드 탭(모델링/탄성해석/비선형해석/태블릿메모) 전환이 편집의 기본기다. 개체를 선택하면 속성이 표시되고, 박스선택으로 여러 개체를 한 번에 잡는다. 페이지 전체 초기화(nativeClearPage)는 현재 페이지 모델을 비운다.</p>
-      <h4>사용 방법</h4><ol><li>상단 모드 탭으로 작업 모드를 전환한다 (모델링 ↔ 탄성해석 등)</li><li>팔레트에서 선택/박스선택 도구를 켜고 개체를 클릭 또는 드래그로 선택한다</li><li>삭제 도구(sdelete) 또는 deleteElement로 선택 개체를 제거한다</li></ol>
+      <p class="description">팔레트의 선택·이동·박스선택·삭제 도구와 상단 모드 탭(모델링/일반구조설계/비선형해석/태블릿메모) 전환이 편집의 기본기다. 개체를 선택하면 속성이 표시되고, 박스선택으로 여러 개체를 한 번에 잡는다. 페이지 전체 초기화(nativeClearPage)는 현재 페이지 모델을 비운다.</p>
+      <h4>사용 방법</h4><ol><li>상단 모드 탭으로 작업 모드를 전환한다 (모델링 ↔ 일반구조설계 등)</li><li>팔레트에서 선택/박스선택 도구를 켜고 개체를 클릭 또는 드래그로 선택한다</li><li>삭제 도구(sdelete) 또는 deleteElement로 선택 개체를 제거한다</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>selectEntity</code> <code>clearSelection</code> <code>nativeSelectTool</code> <code>nativeSelectMember</code> <code>nativeDeleteElement</code> <code>nativeClearPage</code> <code>setNativeMode</code> <code>clickNativeControl</code></p>
       <p class="manual-link">자세한 절차: <a href="#01-getting-started" data-guide-link="01-getting-started">첫걸음 — 화면과 기본 흐름</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.selection-editing</code> (기본 상시) </footer>
@@ -1176,7 +1176,7 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <p class="summary">보유 하중케이스 기반 KDS 강도/사용성 조합 일괄 생성과 수동 조합 편집.</p>
       </header>
       <p class="description">모델의 하중 케이스 구성(D/L/W/E…)을 읽어 KDS 강도설계 조합과 사용성 조합을 일괄 생성한다. 조합마다 그룹(strength/service/seismic/foundation)이 붙어 결과·설계에서 목적별로 걸러 쓸 수 있고, 특수 조합은 수동으로 추가·수정한다.</p>
-      <h4>사용 방법</h4><ol><li>하중 케이스 구성 완료 후 applyKdsLoadCombinations를 실행한다</li><li>탄성해석 리본의 [하중조합] 버튼으로 조합표를 확인한다</li><li>특수 조합은 addLoadCombination({ id, factors })으로 직접 추가한다</li></ol>
+      <h4>사용 방법</h4><ol><li>하중 케이스 구성 완료 후 applyKdsLoadCombinations를 실행한다</li><li>일반구조설계 리본의 [하중조합] 버튼으로 조합표를 확인한다</li><li>특수 조합은 addLoadCombination({ id, factors })으로 직접 추가한다</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>applyKdsLoadCombinations</code> <code>openNativeLoadCombinations</code> <code>addLoadCombination</code> <code>updateLoadCombination</code></p>
       <p class="manual-link">자세한 절차: <a href="#03-loads-design-and-reports" data-guide-link="03-loads-design-and-reports">하중·설계 검토·계산서</a></p>
       <footer class="control-key">기능 제어 키: <code>feature.kds-combinations</code> (기본 상시) </footer>
@@ -1237,7 +1237,7 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <p class="summary">3D 강성법 해석 — 조합별 변위/부재력/반력. 해석 전 validation, 해석 후 평형 audit.</p>
       </header>
       <p class="description">3D 프레임 강성법으로 전 조합을 해석해 절점 변위, 부재 단력과 station별 내력, 반력을 만든다. 해석 전 검증 게이트가 오류 모델을 차단하고, 해석 후에는 조합별 힘·모멘트 평형 잔차를 검사하는 audit이 별도로 남아 &quot;해석이 돌았다&quot;와 &quot;결과가 믿을 만하다&quot;를 구분한다.</p>
-      <h4>사용 방법</h4><ol><li>모델·하중·조합을 준비하고 해석 실행(runAnalysis)을 누른다</li><li>상단 모드 탭 [탄성해석]으로 전환해 조합 선택 후 결과를 본다</li><li>해석 설정(반복 허용오차, station 수 등)은 setAnalysisSetting으로 조정한다</li></ol>
+      <h4>사용 방법</h4><ol><li>모델·하중·조합을 준비하고 해석 실행(runAnalysis)을 누른다</li><li>상단 모드 탭 [일반구조설계]로 전환해 조합 선택 후 결과를 본다</li><li>해석 설정(반복 허용오차, station 수 등)은 setAnalysisSetting으로 조정한다</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>runAnalysis</code> <code>setAnalysisSetting</code> <code>addAnalysisCase</code> <code>updateAnalysisCase</code> <code>deleteAnalysisCase</code> <code>listAnalysisCases</code> <code>runAnalysisCase</code> <code>runAnalysisCases</code> <code>runAllAnalysisCases</code> <code>getAnalysisCaseResult</code></p>
       <h4>관련 읽기 API</h4><p class="api-list"><code>getResults</code> <code>getAnalysisCases</code> <code>listAnalysisCases</code> <code>getAnalysisResults</code> <code>getAnalysisCaseResult</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
@@ -1270,7 +1270,7 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <p class="summary">오류(중복/기구/참조 깨짐 등)가 있으면 solver 진입을 차단하고, 경고는 계산서에 남긴다.</p>
       </header>
       <p class="description">해석 전에 모델을 검사해 오류(참조 깨진 부재, 지지 없는 모델, 0길이 부재 등)는 해석을 차단하고, 경고(자유 절점, 중복 좌표, 미사용 케이스 등)는 통과시키되 계산서에 표기한다. 리본의 [검증] 버튼으로 언제든 수동 실행할 수 있다.</p>
-      <h4>사용 방법</h4><ol><li>탄성해석 리본의 [검증](mValidate)을 눌러 오류/경고 목록을 확인한다</li><li>오류 항목을 먼저 해소한다 — 오류가 있으면 해석이 실행되지 않는다</li><li>경고는 사유를 확인하고 의도된 것인지 판단한다 (계산서에 그대로 남음)</li></ol>
+      <h4>사용 방법</h4><ol><li>일반구조설계 리본의 [검증](mValidate)을 눌러 오류/경고 목록을 확인한다</li><li>오류 항목을 먼저 해소한다 — 오류가 있으면 해석이 실행되지 않는다</li><li>경고는 사유를 확인하고 의도된 것인지 판단한다 (계산서에 그대로 남음)</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>runNativeValidation</code></p>
       <h4>관련 읽기 API</h4><p class="api-list"><code>getBaselineContract</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
@@ -1286,7 +1286,7 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <p class="summary">Direct 접선강성 P-Delta와 비교용 등가하중 반복 결과를 Global/Story/Member/수렴으로 구분해 제공한다.</p>
       </header>
       <p class="description">설계 검토 기본 경로는 축력으로 기하강성을 조립하는 Direct Kt 방식이다. 각 하중조합의 최종 수렴값에서 층 안정성, 최종 2차 부재력과 반력을 산정하고, 1차·2차 전역 횡변위 곡선과 부재 진단값을 분리한다. 등가 횡하중 반복 방식은 비교용 legacy 결과로만 유지한다.</p>
-      <h4>사용 방법</h4><ol><li>탄성해석 리본에서 [전체 탄성해석]을 실행한다</li><li>결과 그룹의 [P-Delta]를 눌러 우측 결과 팝업을 연다</li><li>[전체]와 [층] 탭에서 같은 전역 횡변위 기준의 1차·2차 응답과 층 drift를 비교한다</li><li>수직부재를 선택하고 [부재] 탭에서 chord drift, 축력, N/Pcr을 진단한다</li><li>[수렴] 탭에서 조합별 load step과 접선강성 수렴 상태를 확인한다</li></ol>
+      <h4>사용 방법</h4><ol><li>일반구조설계 리본에서 [전체 탄성해석]을 실행한다</li><li>결과 그룹의 [P-Delta]를 눌러 우측 결과 팝업을 연다</li><li>[전체]와 [층] 탭에서 같은 전역 횡변위 기준의 1차·2차 응답과 층 drift를 비교한다</li><li>수직부재를 선택하고 [부재] 탭에서 chord drift, 축력, N/Pcr을 진단한다</li><li>[수렴] 탭에서 조합별 load step과 접선강성 수렴 상태를 확인한다</li></ol>
       <h4>한계</h4><ul class="limits"><li>Direct P-Delta의 지원 요소·릴리스 범위를 벗어나면 설계 전달을 차단한다. legacy 등가하중 반복 결과는 비교용이며 설계값으로 전달하지 않는다.</li></ul>
       <h4>관련 실행 액션</h4><p class="api-list"><code>setNativePDeltaEnabled</code> <code>setNativePDeltaStep</code> <code>setPDeltaStep</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
@@ -1440,8 +1440,8 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <h2>결과 패널 <span class="badge badge-stable">정식</span></h2>
         <p class="summary">조합 선택, 변위/모멘트/전단/축력/반력 표시 토글, 결과 스케일.</p>
       </header>
-      <p class="description">탄성해석 모드 리본에서 조합을 고르고 결과 토글로 표시 항목을 겹친다: 변형(def), 모멘트(M), 전단(Q), 축력(N), 반력(react), 수치(val), 판정(chk), 절점/부재 번호(nid/mid), 길이(len), 로컬축(axes), 설계(design), 처짐한계(defl). 결과 스케일 슬라이더로 다이어그램 크기를 조절하고, 부재를 클릭하면 상세 내력이 표시된다.</p>
-      <h4>사용 방법</h4><ol><li>[탄성해석] 모드에서 조합 콤보(#comboSel)로 볼 조합을 선택한다</li><li>결과 토글 버튼(M/Q/N/def/react 등)을 눌러 표시 항목을 켠다</li><li>결과 스케일(ssNativeResultScale)로 다이어그램 크기를 조절한다</li><li>부재 클릭(showNativeMemberResult)으로 station별 상세 내력을 본다</li></ol>
+      <p class="description">일반구조설계 모드 리본에서 조합을 고르고 결과 토글로 표시 항목을 겹친다: 변형(def), 모멘트(M), 전단(Q), 축력(N), 반력(react), 수치(val), 판정(chk), 절점/부재 번호(nid/mid), 길이(len), 로컬축(axes), 설계(design), 처짐한계(defl). 결과 스케일 슬라이더로 다이어그램 크기를 조절하고, 부재를 클릭하면 상세 내력이 표시된다.</p>
+      <h4>사용 방법</h4><ol><li>[일반구조설계] 모드에서 조합 콤보(#comboSel)로 볼 조합을 선택한다</li><li>결과 토글 버튼(M/Q/N/def/react 등)을 눌러 표시 항목을 켠다</li><li>결과 스케일(ssNativeResultScale)로 다이어그램 크기를 조절한다</li><li>부재 클릭(showNativeMemberResult)으로 station별 상세 내력을 본다</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>setResultsPanelOpen</code> <code>setResultTab</code> <code>setNativeResultToggle</code> <code>setNativeCombo</code> <code>setNativeResultScale</code> <code>showNativeMemberResult</code></p>
       <h4>관련 읽기 API</h4><p class="api-list"><code>getResultView</code></p>
       <p class="manual-link">자세한 절차: <a href="#02-modeling-and-elastic-analysis" data-guide-link="02-modeling-and-elastic-analysis">모델링과 탄성해석</a></p>
@@ -1627,7 +1627,7 @@ const response = JSON.parse(document.getElementById('sstructuresAgentApi').textC
         <p class="summary">설계 모듈 전체를 묶은 통합 결과와 일람.</p>
       </header>
       <p class="description">RC/철골/접합/기초 검토를 한 화면과 한 계약으로 통합해 부재 일람표를 만든다. 리본의 [설계요약] 버튼이 요약 화면을 열고, 통합 결과 계약은 계산서 설계 장의 원본 데이터가 된다.</p>
-      <h4>사용 방법</h4><ol><li>탄성해석 리본의 [설계요약](openNativeDesignReport)을 연다</li><li>전체 통합 데이터는 getP3DetailedDesignReport / getP3IntegratedResults로 읽는다</li><li>NG 부재를 수정하고 재해석→재검토 사이클을 돈다</li></ol>
+      <h4>사용 방법</h4><ol><li>일반구조설계 리본의 [설계요약](openNativeDesignReport)을 연다</li><li>전체 통합 데이터는 getP3DetailedDesignReport / getP3IntegratedResults로 읽는다</li><li>NG 부재를 수정하고 재해석→재검토 사이클을 돈다</li></ol>
       <h4>관련 실행 액션</h4><p class="api-list"><code>openNativeDesignReport</code></p>
       <h4>관련 읽기 API</h4><p class="api-list"><code>getP3DetailedDesignReport</code> <code>getP3IntegratedResults</code></p>
       <p class="manual-link">자세한 절차: <a href="#03-loads-design-and-reports" data-guide-link="03-loads-design-and-reports">하중·설계 검토·계산서</a></p>
