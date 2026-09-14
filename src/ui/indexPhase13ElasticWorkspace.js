@@ -1072,7 +1072,7 @@ function renderKdsProcedures(doc, root, model, api, ui) {
 function renderAnalysis(doc, root, _model, analysisCase, _bridge, runState) {
   root.appendChild(sectionTitle(doc, '탄성해석 실행', '선택 케이스와 불변 실행기록을 기준으로 상태를 판정합니다.'));
   if (!analysisCase) {
-    root.appendChild(notice(doc, '해석 케이스 없음', '왼쪽 트리에서 케이스를 만들거나 기존 탄성해석 리본을 사용하세요.', 'warning'));
+    root.appendChild(notice(doc, '해석 케이스 없음', '왼쪽 트리에서 케이스를 만들거나 일반구조설계 리본을 사용하세요.', 'warning'));
     return;
   }
   const cards = element(doc, 'div', 'ss-p13-card-grid');

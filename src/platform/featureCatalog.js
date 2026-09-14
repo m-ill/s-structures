@@ -10,7 +10,7 @@ export const FEATURE_CATALOG_VERSION = 'p4-feature-catalog-v3-p14-foundation';
  *    양방향 커버리지, (b) 항목별 본문 충실도(howTo 2단계 이상, 상세 설명, preliminary 한계 명기)를
  *    강제한다. 기능/액션을 추가하면 여기 등재 없이는 테스트가 실패한다.
  *
- * UI 용어 기준: 상단 모드 탭 = [모델링 | 탄성해석 | 비선형해석 | 태블릿메모],
+ * UI 용어 기준: 상단 모드 탭 = [모델링 | 일반구조설계 | 비선형해석 | 태블릿메모],
  * 모델링 팔레트 도구 = 절점/부재/기둥/지지(고정·힌지·롤러)/절점하중/등분포/모멘트/이동/박스선택/삭제,
  * 앱 셸 라우트 = #/login, #/projects, #/p/:id/modeler, #/p/:id/revisions, #/p/:id/library, #/p/:id/import/:jobId.
  */
@@ -128,7 +128,7 @@ export const FEATURE_CATEGORIES = [
           '[모델링] 모드 → 팔레트에서 부재 도구 선택 → 시작 절점, 끝 절점 순서로 클릭',
           '기둥은 기둥 도구로 평면 위치를 클릭하면 층고만큼 수직 생성된다',
           '부재를 선택하고 단면/재료를 배정한다 (setMemberSection / setMemberMaterial)',
-          '로컬축 표시는 탄성해석 모드의 결과 토글 axes로 확인한다',
+          '로컬축 표시는 일반구조설계 모드의 결과 토글 axes로 확인한다',
         ],
         relatedActions: ['addMember', 'updateMember', 'deleteMember', 'nativeDrawMember', 'nativeAddColumn', 'setMemberSection', 'setMemberMaterial', 'assignSection', 'setMemberBehavior', 'nativeSetMemberBehavior'],
         manualPage: '02-modeling-and-elastic-analysis.md',
@@ -229,7 +229,7 @@ export const FEATURE_CATEGORIES = [
       feature('selection-editing', '선택·편집 도구', '개체 선택/박스선택/삭제/모드 전환 등 화면 편집 도구 일체.', {
         description: '팔레트의 선택·이동·박스선택·삭제 도구와 상단 모드 탭(모델링/일반구조설계/비선형해석/태블릿메모) 전환이 편집의 기본기다. 개체를 선택하면 속성이 표시되고, 박스선택으로 여러 개체를 한 번에 잡는다. 페이지 전체 초기화(nativeClearPage)는 현재 페이지 모델을 비운다.',
         howTo: [
-          '상단 모드 탭으로 작업 모드를 전환한다 (모델링 ↔ 탄성해석 등)',
+          '상단 모드 탭으로 작업 모드를 전환한다 (모델링 ↔ 일반구조설계 등)',
           '팔레트에서 선택/박스선택 도구를 켜고 개체를 클릭 또는 드래그로 선택한다',
           '삭제 도구(sdelete) 또는 deleteElement로 선택 개체를 제거한다',
         ],
@@ -415,7 +415,7 @@ export const FEATURE_CATEGORIES = [
         description: '모델의 하중 케이스 구성(D/L/W/E…)을 읽어 KDS 강도설계 조합과 사용성 조합을 일괄 생성한다. 조합마다 그룹(strength/service/seismic/foundation)이 붙어 결과·설계에서 목적별로 걸러 쓸 수 있고, 특수 조합은 수동으로 추가·수정한다.',
         howTo: [
           '하중 케이스 구성 완료 후 applyKdsLoadCombinations를 실행한다',
-          '탄성해석 리본의 [하중조합] 버튼으로 조합표를 확인한다',
+          '일반구조설계 리본의 [하중조합] 버튼으로 조합표를 확인한다',
           '특수 조합은 addLoadCombination({ id, factors })으로 직접 추가한다',
         ],
         relatedActions: ['applyKdsLoadCombinations', 'openNativeLoadCombinations', 'addLoadCombination', 'updateLoadCombination'],
@@ -500,7 +500,7 @@ export const FEATURE_CATEGORIES = [
       feature('validation-gate', '모델 검증 게이트', '오류(중복/기구/참조 깨짐 등)가 있으면 solver 진입을 차단하고, 경고는 계산서에 남긴다.', {
         description: '해석 전에 모델을 검사해 오류(참조 깨진 부재, 지지 없는 모델, 0길이 부재 등)는 해석을 차단하고, 경고(자유 절점, 중복 좌표, 미사용 케이스 등)는 통과시키되 계산서에 표기한다. 리본의 [검증] 버튼으로 언제든 수동 실행할 수 있다.',
         howTo: [
-          '탄성해석 리본의 [검증](mValidate)을 눌러 오류/경고 목록을 확인한다',
+          '일반구조설계 리본의 [검증](mValidate)을 눌러 오류/경고 목록을 확인한다',
           '오류 항목을 먼저 해소한다 — 오류가 있으면 해석이 실행되지 않는다',
           '경고는 사유를 확인하고 의도된 것인지 판단한다 (계산서에 그대로 남음)',
         ],
@@ -511,7 +511,7 @@ export const FEATURE_CATEGORIES = [
       feature('pdelta', 'P-Delta (2차효과)', 'Direct 접선강성 P-Delta와 비교용 등가하중 반복 결과를 Global/Story/Member/수렴으로 구분해 제공한다.', {
         description: '설계 검토 기본 경로는 축력으로 기하강성을 조립하는 Direct Kt 방식이다. 각 하중조합의 최종 수렴값에서 층 안정성, 최종 2차 부재력과 반력을 산정하고, 1차·2차 전역 횡변위 곡선과 부재 진단값을 분리한다. 등가 횡하중 반복 방식은 비교용 legacy 결과로만 유지한다.',
         howTo: [
-          '탄성해석 리본에서 [전체 탄성해석]을 실행한다',
+          '일반구조설계 리본에서 [전체 탄성해석]을 실행한다',
           '결과 그룹의 [P-Delta]를 눌러 우측 결과 팝업을 연다',
           '[전체]와 [층] 탭에서 같은 전역 횡변위 기준의 1차·2차 응답과 층 drift를 비교한다',
           '수직부재를 선택하고 [부재] 탭에서 chord drift, 축력, N/Pcr을 진단한다',
@@ -678,7 +678,7 @@ export const FEATURE_CATEGORIES = [
     summary: '결과 패널, 3D overlay, 층 결과표, 부재 station 최대력, 기초 반력, 층간변위.',
     features: [
       feature('results-panel', '결과 패널', '조합 선택, 변위/모멘트/전단/축력/반력 표시 토글, 결과 스케일.', {
-        description: '탄성해석 모드 리본에서 조합을 고르고 결과 토글로 표시 항목을 겹친다: 변형(def), 모멘트(M), 전단(Q), 축력(N), 반력(react), 수치(val), 판정(chk), 절점/부재 번호(nid/mid), 길이(len), 로컬축(axes), 설계(design), 처짐한계(defl). 결과 스케일 슬라이더로 다이어그램 크기를 조절하고, 부재를 클릭하면 상세 내력이 표시된다.',
+        description: '일반구조설계 모드 리본에서 조합을 고르고 결과 토글로 표시 항목을 겹친다: 변형(def), 모멘트(M), 전단(Q), 축력(N), 반력(react), 수치(val), 판정(chk), 절점/부재 번호(nid/mid), 길이(len), 로컬축(axes), 설계(design), 처짐한계(defl). 결과 스케일 슬라이더로 다이어그램 크기를 조절하고, 부재를 클릭하면 상세 내력이 표시된다.',
         howTo: [
           '[일반구조설계] 모드에서 조합 콤보(#comboSel)로 볼 조합을 선택한다',
           '결과 토글 버튼(M/Q/N/def/react 등)을 눌러 표시 항목을 켠다',
@@ -820,7 +820,7 @@ export const FEATURE_CATEGORIES = [
       feature('integrated-design-report', '통합 설계 리포트', '설계 모듈 전체를 묶은 통합 결과와 일람.', {
         description: 'RC/철골/접합/기초 검토를 한 화면과 한 계약으로 통합해 부재 일람표를 만든다. 리본의 [설계요약] 버튼이 요약 화면을 열고, 통합 결과 계약은 계산서 설계 장의 원본 데이터가 된다.',
         howTo: [
-          '탄성해석 리본의 [설계요약](openNativeDesignReport)을 연다',
+          '일반구조설계 리본의 [설계요약](openNativeDesignReport)을 연다',
           '전체 통합 데이터는 getP3DetailedDesignReport / getP3IntegratedResults로 읽는다',
           'NG 부재를 수정하고 재해석→재검토 사이클을 돈다',
         ],
