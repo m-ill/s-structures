@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 869,
+  "plannedCount": 882,
   "categoryCounts": {
     "e2e": 14,
     "integration": 51,
     "qualification": 225,
-    "unit": 579
+    "unit": 592
   },
   "executionCounts": {
     "default": 314,
-    "release-long": 555
+    "release-long": 568
   },
   "records": [
     {
@@ -3883,6 +3883,48 @@
       "owner": "phase28"
     },
     {
+      "file": "tests/p29-live-load-reduction.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
+      "file": "tests/p29-seismic-importance.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
+      "file": "tests/p29-seismic-site-class.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
+      "file": "tests/p29-seismic-system-coefficients.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
+      "file": "tests/p29-slab-coefficient-method.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
+      "file": "tests/p29-slab-strip-review.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
+      "file": "tests/p29-wall-section-review.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase29"
+    },
+    {
       "file": "tests/p3-app-shell.mjs",
       "taxonomy": "unit",
       "execution": "default",
@@ -4127,6 +4169,42 @@
       "taxonomy": "unit",
       "execution": "default",
       "owner": "phase3"
+    },
+    {
+      "file": "tests/p30-m0-feedback-baseline.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase30"
+    },
+    {
+      "file": "tests/p30-m1-feedback-paths.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase30"
+    },
+    {
+      "file": "tests/p30-m2-global-iteration.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase30"
+    },
+    {
+      "file": "tests/p30-m6-global-design-driver.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase30"
+    },
+    {
+      "file": "tests/p30-m6-iteration-session.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase30"
+    },
+    {
+      "file": "tests/p30-m6-tool-surface.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "phase30"
     },
     {
       "file": "tests/p4-approval-route-guards.mjs",
