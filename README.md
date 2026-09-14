@@ -2,6 +2,8 @@
 
 ## 실행물과 개발 자료 분리 (2026-09-13)
 
+대용량 계산 근거 `reports/representative-building-calculation-packages/**/calculation-package.json`은 Git LFS로 보존합니다. 개발용 clone에서 해당 근거를 읽거나 전체 검증을 실행하려면 Git LFS 설치 후 `git lfs pull`을 실행하십시오. 웹 배포물과 로컬 실행물에는 이 과거 보고서 데이터가 포함되지 않습니다.
+
 독립 실행물은 `python tools/export-runtime.py <새 출력 폴더>`로 만듭니다. Node.js가 필요하며 사용자 데이터는 별도입니다. 과거 Phase 문서는 [보관 영역](docs/archive/README.md), 현재 개발 상태는 [Phase29 완료 기록](docs/phase29/IMPLEMENTATION_STATUS.md)를 확인하십시오. 테스트·verification은 개발 근거로 유지하고 실행물에서는 제외합니다. [폴더 구조와 운영 규칙](docs/WORKSPACE_LAYOUT.md)을 참고하십시오.
 
 
