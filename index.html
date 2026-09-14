@@ -16,8 +16,26 @@
 <style>
 /* Keep layout measurable while the modern workspace replaces the legacy shell. */
 html:not([data-ui-startup="ready"]) body > :not(#ssStartup){visibility:hidden!important;}
-#ssStartup{position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;gap:16px;text-align:center;background:#e7edf4;color:#00467f;font:15px 'Segoe UI','Malgun Gothic',sans-serif;}
-#ssStartup a{color:#00467f;text-decoration:underline;}
+#ssStartup{position:fixed;inset:0;z-index:2147483647;display:grid;place-content:center;justify-items:center;gap:24px;padding:32px 24px;text-align:center;overflow:auto;background:radial-gradient(ellipse at 50% 40%,#124b72 0%,#082a46 48%,#061b30 100%);color:#edf6ff;font:15px 'Segoe UI','Malgun Gothic',sans-serif;}
+#ssStartup::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(#c0dfff08 1px,transparent 1px),linear-gradient(90deg,#c0dfff08 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse,#000,transparent 75%);}
+#ssStartup > *{position:relative;}
+#ssStartup .ss-startup-mark{width:clamp(132px,22vh,210px);height:auto;filter:drop-shadow(0 12px 28px #0004);}
+#ssStartup .ss-startup-trace{stroke-dasharray:42 278;animation:ss-startup-trace 3.2s linear infinite;}
+#ssStartup .ss-startup-brand{font-size:clamp(28px,5vw,48px);font-weight:650;letter-spacing:-1.5px;line-height:1.15;}
+#ssStartup .ss-startup-brand span{color:#efb84f;}
+#ssStartup .ss-startup-caption{display:block;margin-top:12px;font-size:11px;letter-spacing:4px;color:#9ebbd1;font-weight:400;}
+#ssStartup .ss-startup-status{display:grid;justify-items:center;gap:16px;margin-top:8px;max-width:380px;line-height:1.7;color:#b9cede;font-size:13px;}
+#ssStartup .ss-startup-track{width:160px;height:2px;overflow:hidden;background:#ffffff18;border-radius:2px;}
+#ssStartup .ss-startup-track::after{content:"";display:block;width:60%;height:100%;background:linear-gradient(90deg,transparent,#efb84f,transparent);animation:ss-startup-progress 1.8s ease-in-out infinite;}
+#ssStartup a{display:none;color:#edf6ff;text-decoration:none;border:1px solid #7eabc3;border-radius:8px;padding:9px 22px;font-size:13px;}
+#ssStartup a:hover{background:#ffffff12;}
+#ssStartup a:focus-visible{outline:3px solid #efb84f;outline-offset:4px;}
+html[data-ui-startup="slow"] #ssStartup a,html[data-ui-startup="failed"] #ssStartup a{display:inline-block;}
+html[data-ui-startup="failed"] #ssStartup .ss-startup-trace,html[data-ui-startup="failed"] #ssStartup .ss-startup-track::after{animation:none;}
+html[data-ui-startup="failed"] #ssStartup .ss-startup-track{display:none;}
+@keyframes ss-startup-trace{to{stroke-dashoffset:-320;}}
+@keyframes ss-startup-progress{from{transform:translateX(-100%);}to{transform:translateX(267%);}}
+@media(prefers-reduced-motion:reduce){#ssStartup .ss-startup-trace,#ssStartup .ss-startup-track::after{animation:none;}}
 html[data-ui-startup="ready"] #ssStartup{display:none;}
 </style>
 <script>
@@ -25,11 +43,11 @@ html[data-ui-startup="ready"] #ssStartup{display:none;}
   const root = document.documentElement;
   const message = (text) => { const el = document.getElementById('ssStartupMessage'); if (el) el.textContent = text; };
   const slow = setTimeout(() => {
-    if (root.dataset.uiStartup !== 'ready') message('준비가 오래 걸리고 있습니다. 네트워크 연결을 확인하거나 다시 시도해 주세요.');
+    if (root.dataset.uiStartup !== 'ready') { root.dataset.uiStartup = 'slow'; message('준비가 오래 걸리고 있습니다. 네트워크 연결을 확인하거나 다시 시도해 주세요.'); }
   }, 30000);
   window.SStructuresStartup = {
     ready() { clearTimeout(slow); root.dataset.uiStartup = 'ready'; document.body?.removeAttribute('aria-busy'); },
-    fail() { clearTimeout(slow); root.dataset.uiStartup = 'failed'; message('화면을 준비하지 못했습니다. 네트워크 연결을 확인하고 다시 시도해 주세요.'); }
+    fail() { clearTimeout(slow); root.dataset.uiStartup = 'failed'; document.body?.removeAttribute('aria-busy'); message('화면을 준비하지 못했습니다. 네트워크 연결을 확인하고 다시 시도해 주세요.'); }
   };
 })();
 </script>
@@ -170,9 +188,18 @@ canvas{position:absolute; left:0; top:0; touch-action:none;}
 </style>
 </head>
 <body aria-busy="true">
-<div id="ssStartup" role="status" aria-live="polite">
-  <strong>S-Structures</strong>
-  <p id="ssStartupMessage">작업 화면을 준비하고 있습니다.</p>
+<div id="ssStartup">
+  <svg class="ss-startup-mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+    <path d="M50 8 86 29V71L50 92 14 71V29ZM14 29 50 50 86 29M50 50V92M14 50 50 71 86 50M32 19V81M68 19V81" stroke="#75a5c1" stroke-opacity=".35" stroke-width="1" stroke-linejoin="round"/>
+    <path d="M68 19 32 40 68 61 32 82" stroke="#edf6ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="ss-startup-trace" d="M50 8 86 29V71L50 92 14 71V29Z" pathLength="320" stroke="#efb84f" stroke-width="2" stroke-linejoin="round"/>
+    <g fill="#efb84f"><circle cx="68" cy="19" r="3"/><circle cx="32" cy="40" r="3"/><circle cx="68" cy="61" r="3"/><circle cx="32" cy="82" r="3"/></g>
+  </svg>
+  <div class="ss-startup-brand">S<span>·</span>Structures<small class="ss-startup-caption">STRUCTURAL DESIGN WORKSPACE</small></div>
+  <div class="ss-startup-status">
+    <div class="ss-startup-track" aria-hidden="true"></div>
+    <p id="ssStartupMessage" role="status" aria-live="polite">설계 작업 공간을 준비하고 있습니다.</p>
+  </div>
   <a href="">다시 시도</a>
   <noscript>이 프로그램을 사용하려면 브라우저에서 JavaScript를 활성화해 주세요.</noscript>
 </div>
