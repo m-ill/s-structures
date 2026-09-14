@@ -30,13 +30,58 @@ async function moduleSources() {
         for (const match of text.matchAll(/getKcscRuleSources\(\[([^\]]*)\]\)/g)) {
           for (const id of match[1].matchAll(/'(\d+)'/g)) documents.add(id[1]);
         }
+        // A module may instead declare its references per check in a
+        // CHECK_REFERENCES table, which is more precise than one set for the
+        // whole module: the comparison can then be made check by check rather
+        // than lumping every document a module touches onto each of its checks.
+        const perCheck = checkReferenceTable(text);
+        for (const ids of perCheck.values()) for (const id of ids) documents.add(id);
         const clauses = [...text.matchAll(/clause:\s*'([^']+)'/g)].map((m) => m[1]);
-        if (documents.size || clauses.length) found.set(rel, { documents: [...documents].sort(), clauses });
+        if (documents.size || clauses.length) found.set(rel, { documents: [...documents].sort(), clauses, perCheck });
       }
     }
   };
   await walk(DESIGN);
   return found;
+}
+
+// Parse a `const CHECK_REFERENCES = Object.freeze({ 'check-id': [['142070', ...
+// ]] })` table into check id -> document ids. Text scanning is deliberate: this
+// harness must not import the design modules it is auditing.
+function checkReferenceTable(text) {
+  const table = new Map();
+  const start = text.indexOf('CHECK_REFERENCES');
+  if (start < 0) return table;
+  const open = text.indexOf('{', start);
+  if (open < 0) return table;
+  let depth = 0;
+  let end = open;
+  for (; end < text.length; end += 1) {
+    if (text[end] === '{') depth += 1;
+    else if (text[end] === '}') {
+      depth -= 1;
+      if (depth === 0) break;
+    }
+  }
+  const body = text.slice(open + 1, end);
+  // Each entry's value is bracket-balanced rather than regex-matched: a comment
+  // between entries let a non-greedy match run on into the next one, which
+  // silently attributed one check's documents to another.
+  for (const head of body.matchAll(/'([a-z0-9-]+)'\s*:\s*\[/g)) {
+    let depth = 0;
+    let cursor = head.index + head[0].length - 1;
+    for (; cursor < body.length; cursor += 1) {
+      if (body[cursor] === '[') depth += 1;
+      else if (body[cursor] === ']') {
+        depth -= 1;
+        if (depth === 0) break;
+      }
+    }
+    const value = body.slice(head.index + head[0].length, cursor);
+    const ids = [...value.matchAll(/'(\d{6})'/g)].map((match) => match[1]);
+    if (ids.length) table.set(head[1], [...new Set(ids)].sort());
+  }
+  return table;
 }
 
 const modules = await moduleSources();
@@ -58,8 +103,10 @@ for (const rule of PRACTICAL_RULE_IMPLEMENTATIONS) {
       unmapped.push({ rule: rule.id, checkId, why: 'no central clause target' });
       continue;
     }
-    const missingCentrally = implementation.documents.filter((id) => !centralDocuments.includes(id));
-    const missingInModule = centralDocuments.filter((id) => !implementation.documents.includes(id));
+    // Prefer the module's own per-check declaration when it has one.
+    const declared = implementation.perCheck?.get(checkId) ?? implementation.documents;
+    const missingCentrally = declared.filter((id) => !centralDocuments.includes(id));
+    const missingInModule = centralDocuments.filter((id) => !declared.includes(id));
     // Asymmetric on purpose. A document the module actually pulls must appear in
     // the review map, or a revision impact review under-scopes the change. The
     // map listing extra documents for review is allowed and only reported.
@@ -82,6 +129,7 @@ const report = {
   version: 'p28-code-reference-consistency-v1',
   rules: PRACTICAL_RULE_IMPLEMENTATIONS.length,
   modulesDeclaringReferences: modules.size,
+  modulesDeclaringPerCheckReferences: [...modules.values()].filter((row) => row.perCheck?.size).length,
   inlineClauseDeclarations: [...modules.values()].reduce((sum, row) => sum + row.clauses.length, 0),
   disagreements,
   advisories,
