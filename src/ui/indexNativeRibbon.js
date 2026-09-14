@@ -30,7 +30,7 @@ export const NATIVE_MAIN_MODES = [
   },
   {
     id: 'elastic',
-    label: '탄성해석',
+    label: '일반구조설계',
     legacyMode: 'select',
   },
   {
@@ -48,7 +48,7 @@ export const NATIVE_MAIN_MODES = [
 export const NATIVE_RIBBON_PANELS = [
   { id: 'common', label: '공통', mode: 'common' },
   { id: 'modeling', label: '모델링', mode: 'modeling' },
-  { id: 'elastic', label: '탄성해석', mode: 'elastic' },
+  { id: 'elastic', label: '일반구조설계', mode: 'elastic' },
   { id: 'nonlinear', label: '비선형해석', mode: 'nonlinear' },
   { id: 'memo', label: '태블릿메모', mode: 'memo' },
 ];

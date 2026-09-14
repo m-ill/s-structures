@@ -227,7 +227,7 @@ export const FEATURE_CATEGORIES = [
         manualPage: '02-modeling-and-elastic-analysis.md',
       }),
       feature('selection-editing', '선택·편집 도구', '개체 선택/박스선택/삭제/모드 전환 등 화면 편집 도구 일체.', {
-        description: '팔레트의 선택·이동·박스선택·삭제 도구와 상단 모드 탭(모델링/탄성해석/비선형해석/태블릿메모) 전환이 편집의 기본기다. 개체를 선택하면 속성이 표시되고, 박스선택으로 여러 개체를 한 번에 잡는다. 페이지 전체 초기화(nativeClearPage)는 현재 페이지 모델을 비운다.',
+        description: '팔레트의 선택·이동·박스선택·삭제 도구와 상단 모드 탭(모델링/일반구조설계/비선형해석/태블릿메모) 전환이 편집의 기본기다. 개체를 선택하면 속성이 표시되고, 박스선택으로 여러 개체를 한 번에 잡는다. 페이지 전체 초기화(nativeClearPage)는 현재 페이지 모델을 비운다.',
         howTo: [
           '상단 모드 탭으로 작업 모드를 전환한다 (모델링 ↔ 탄성해석 등)',
           '팔레트에서 선택/박스선택 도구를 켜고 개체를 클릭 또는 드래그로 선택한다',
@@ -463,7 +463,7 @@ export const FEATURE_CATEGORIES = [
         description: '3D 프레임 강성법으로 전 조합을 해석해 절점 변위, 부재 단력과 station별 내력, 반력을 만든다. 해석 전 검증 게이트가 오류 모델을 차단하고, 해석 후에는 조합별 힘·모멘트 평형 잔차를 검사하는 audit이 별도로 남아 "해석이 돌았다"와 "결과가 믿을 만하다"를 구분한다.',
         howTo: [
           '모델·하중·조합을 준비하고 해석 실행(runAnalysis)을 누른다',
-          '상단 모드 탭 [탄성해석]으로 전환해 조합 선택 후 결과를 본다',
+          '상단 모드 탭 [일반구조설계]로 전환해 조합 선택 후 결과를 본다',
           '해석 설정(반복 허용오차, station 수 등)은 setAnalysisSetting으로 조정한다',
         ],
         relatedActions: ['runAnalysis', 'setAnalysisSetting', 'addAnalysisCase', 'updateAnalysisCase', 'deleteAnalysisCase', 'listAnalysisCases', 'runAnalysisCase', 'runAnalysisCases', 'runAllAnalysisCases', 'getAnalysisCaseResult'],
@@ -680,7 +680,7 @@ export const FEATURE_CATEGORIES = [
       feature('results-panel', '결과 패널', '조합 선택, 변위/모멘트/전단/축력/반력 표시 토글, 결과 스케일.', {
         description: '탄성해석 모드 리본에서 조합을 고르고 결과 토글로 표시 항목을 겹친다: 변형(def), 모멘트(M), 전단(Q), 축력(N), 반력(react), 수치(val), 판정(chk), 절점/부재 번호(nid/mid), 길이(len), 로컬축(axes), 설계(design), 처짐한계(defl). 결과 스케일 슬라이더로 다이어그램 크기를 조절하고, 부재를 클릭하면 상세 내력이 표시된다.',
         howTo: [
-          '[탄성해석] 모드에서 조합 콤보(#comboSel)로 볼 조합을 선택한다',
+          '[일반구조설계] 모드에서 조합 콤보(#comboSel)로 볼 조합을 선택한다',
           '결과 토글 버튼(M/Q/N/def/react 등)을 눌러 표시 항목을 켠다',
           '결과 스케일(ssNativeResultScale)로 다이어그램 크기를 조절한다',
           '부재 클릭(showNativeMemberResult)으로 station별 상세 내력을 본다',
