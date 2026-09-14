@@ -2,20 +2,20 @@
 
 ## 실행물과 개발 자료 분리 (2026-09-13)
 
-독립 실행물은 `python tools/export-runtime.py <새 출력 폴더>`로 만듭니다. Node.js가 필요하며 사용자 데이터는 별도입니다. 과거 Phase 문서는 [보관 영역](docs/archive/README.md), 현재 개발 상태는 [Phase25](docs/phase25/README.md)를 확인하십시오. 테스트·verification은 개발 근거로 유지하고 실행물에서는 제외합니다. [폴더 구조와 운영 규칙](docs/WORKSPACE_LAYOUT.md)을 참고하십시오.
+독립 실행물은 `python tools/export-runtime.py <새 출력 폴더>`로 만듭니다. Node.js가 필요하며 사용자 데이터는 별도입니다. 과거 Phase 문서는 [보관 영역](docs/archive/README.md), 현재 개발 상태는 [Phase29 완료 기록](docs/phase29/IMPLEMENTATION_STATUS.md)를 확인하십시오. 테스트·verification은 개발 근거로 유지하고 실행물에서는 제외합니다. [폴더 구조와 운영 규칙](docs/WORKSPACE_LAYOUT.md)을 참고하십시오.
 
 
 **브라우저에서 구조 모델링·해석·결과 검토를 수행하고, WebMCP로 에이전트가 같은 모델의 입력·검토·보완·출력을 제어하는 구조해석 웹앱입니다.**
 
-[웹에서 실행](https://m-ill.github.io/s-structures/) · [로컬 실행](#로컬-실행) · [현재 개발 상태](docs/phase25/CLOSURE_AUDIT.md) · [RC 검토·WebMCP 실행 안내](docs/phase25/USAGE.md) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md)
+[웹에서 실행](https://m-ill.github.io/s-structures/) · [로컬 실행](#로컬-실행) · [현재 개발 상태](docs/phase29/IMPLEMENTATION_STATUS.md) · [RC 검토·WebMCP 실행 안내](docs/phase25/USAGE.md) · [21개 벤치마크 비교](docs/verification/STRIX21_COMPARISON.md)
 
-문서 갱신: **2026-09-13** · 소스 상태: **Phase25 개발 진행 중·전체 완료 전**.
+문서 갱신: **2026-09-14** · 소스 상태: **Phase29 M0~M5 완료 · Phase30 계획 단계**.
 
 현재 작업 소스에는 제공 RC 배근·접합·독립기초 검토, KDS 출처와 판정 사유 조회, 보완 후보 생성·적용·재해석, 검토용 상세도·수량표·PDF 출력이 연결되어 있습니다. 입력 누락·미지원·NG·계산 실패를 구분하며, 개별 검사 통과만으로 프로젝트 적합성이나 제작 승인을 부여하지 않습니다. 철골·목재·조적의 전용 상세 설계 완결은 Phase25 RC 범위와 구분합니다.
 
 **GitHub Pages는 최신 main의 개발 공개판을 제공합니다.** 필수 기능 검사와 정적 패키지 빌드가 통과한 커밋을 배포하며, 공학적 적합성 검증 완료를 의미하지 않습니다. 실행 중인 커밋은 [SOURCE-IDENTITY.json](https://m-ill.github.io/s-structures/SOURCE-IDENTITY.json), 공개판 상태는 [RELEASE-STATUS.json](https://m-ill.github.io/s-structures/RELEASE-STATUS.json)에서 확인하세요. [배포 정책](docs/releases/DEVELOPMENT_PREVIEW.md) · [Phase20 이전 릴리스](https://github.com/m-ill/s-structures/releases/tag/phase20-boundaries-preview-20260908).
 
-Phase25는 변경 기능의 작은 TDD와 선택 검증을 진행 중입니다. 원래 M0~M10 전체 완료 감사, 남은 지원 상세의 통합 증거 및 독립 방법 검토가 남아 있습니다. 종합 회귀·장시간 전체 메모리·외부 비교/pilot은 [후속 검증 계약](docs/phase25/VERIFICATION_HANDOFF.md)에 따릅니다. 과거 21개 비교나 이전 phase의 PASS를 새 RC 규칙의 적합성 증거로 사용하지 않습니다.
+Phase26~28의 기술부채·RC 보완·검사 등록 정리에 이어, Phase29에서 활하중 저감·내진 기준계수·슬래브/벽 검사를 연결했습니다. 현재 실무 검사는 42종입니다. [구현 범위와 남은 대조](docs/phase29/IMPLEMENTATION_STATUS.md)를 확인하십시오. [Phase30](docs/phase30/README.md)은 후속 계획이며, 전체 공학적 적합성이나 최종 설계 전달 승인을 뜻하지 않습니다. 종합·독립 검증은 별도 기록을 따릅니다.
 
 접합 보완은 후크 정착, 상·하부 기둥 깊이, 공간 후프 접촉, 관통 보 철근층 및 대향 후크 위치를 단계별 후보로 다룹니다. 후보마다 재해석하며, 제한된 배치 탐색에서 적합한 해를 찾지 못하면 시도별 사유를 반환합니다. 최근 합성 접합 예제의 9개 검사 중 7개는 OK이고 후프–보 주근 간섭에 관련된 2개는 NG입니다. [변경 및 검증 기록](docs/phase25/IMPLEMENTATION_STATUS.md)을 확인하세요.
 

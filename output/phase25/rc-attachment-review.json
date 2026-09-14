@@ -91,7 +91,7 @@
       "iterationId": "rc-iteration-71f4766d421555dd11c4cf551a11299b0f59fca46a04b7a463fd8c22a7adb56b",
       "comboId": "S",
       "factor": 1,
-      "resultHash": "3805a7c598c0b2a7df2c2f9fd033685e47146652b62f8c5585973d6703be3359",
+      "resultHash": "e0ce76048bb664ef3dd0421bc99d3dff76b6fe0992721453678e2954858722c8",
       "stiffnessMode": "fully-cracked-elastic",
       "timeEffect": "sustained-effective-modulus",
       "timeState": {
@@ -137,7 +137,7 @@
       "iterationId": "rc-iteration-3d1bcd620d07cabc946d99829d1f99a90fdccda5844314664515dc1f4e94bc9b",
       "comboId": "S",
       "factor": -1,
-      "resultHash": "7fcf14b1218841d637c5da3e79e6cfd2cf7eb158efd08db28f8f08227f0224e4",
+      "resultHash": "6bb7f5be99c87e308a3cb7734829878d6c0fe4622f403ce7db8afcd1e3f0f1cf",
       "stiffnessMode": "fully-cracked-elastic",
       "timeEffect": "attachment-effective-modulus",
       "timeState": {
@@ -240,5 +240,5 @@
   "scope": "constant-sustained-endpoint-difference; specified-limit-acceptance",
   "timeHistoryQualified": false,
   "designTransferAllowed": false,
-  "resultHash": "1a934042950c090aabbe6c092fee6f952c6d0ef4d618417ba3e6e40a62ab54a3"
+  "resultHash": "24dd1504780f2eccf9cc58e8ad7dfa90e6cd049d895ab2d225872d40719756d9"
 }

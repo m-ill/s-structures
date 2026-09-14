@@ -1,0 +1,3530 @@
+{
+  "evaluationId": "evaluation-172adf05f421372d4fa734e162bde584aa94b2875c0c6ea748cdffdac6af7765",
+  "checks": [
+    {
+      "id": "fb9119260dc22eaf90df12a648dc816bd7671a3a722af7c9b525016f2bda712f",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-equilibrium",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.000017763568394002505,
+      "reason": null,
+      "actions": [
+        {
+          "memberId": "AB",
+          "end": "j",
+          "global": [
+            -1.7763568394002505e-13,
+            0,
+            -7.000000000000003,
+            0,
+            21.000000000000085,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        },
+        {
+          "memberId": "BC",
+          "end": "i",
+          "global": [
+            0,
+            0,
+            7.000000000000007,
+            0,
+            -21.00000000000005,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        },
+        {
+          "memberId": "BD",
+          "end": "i",
+          "global": [
+            0,
+            0,
+            -1.0658141036401503e-14,
+            0,
+            -2.1316282072803006e-14,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        }
+      ],
+      "residual": [
+        -1.7763568394002505e-13,
+        0,
+        -6.217248937900877e-15,
+        0,
+        1.4210854715202004e-14,
+        0
+      ],
+      "constraintAction": {
+        "status": "N_A",
+        "global": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rows": []
+      },
+      "externalAction": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "2d893065b399e59988efb495421d73350e11eeba950983f7c93388012d886613",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-probable-forces",
+      "category": "connection",
+      "status": "OK",
+      "ratio": null,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.6.1(1)"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "designTransferAllowed": false,
+      "members": [
+        {
+          "memberId": "BC",
+          "detailId": "RB",
+          "detailVersion": 1,
+          "axis": "X",
+          "fy": 235,
+          "topArea": 0.00015707963267948968,
+          "bottomArea": 0.00015707963267948968,
+          "topForce": 46.14214209960009,
+          "bottomForce": 46.14214209960009,
+          "envelopeForce": 46.14214209960009
+        }
+      ],
+      "axes": {
+        "X": 46.14214209960009,
+        "Y": 0
+      },
+      "stressMultiplier": 1.25,
+      "units": {
+        "force": "kN",
+        "area": "m2",
+        "fy": "MPa"
+      },
+      "panelDemandMethod": {
+        "id": "sum-beam-face-envelopes-no-column-shear-credit",
+        "methodReviewRequired": true,
+        "reason": "column-shear sign and slab participation require independent method review"
+      },
+      "scope": "computed beam longitudinal forces; panel demand bound separately qualified",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-probable-forces",
+          "version": 1,
+          "checkIds": [
+            "joint-probable-forces"
+          ],
+          "module": "src/design/connection/jointProbableForces.js",
+          "scope": "beam-end 1.25fy forces; panel bound requires independent method review",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(1)"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "be2bcc38f7f937ca45ac52b4bc963d5dfe4e9c2990335b29146c9ba37a810f01",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-shear",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.07848937762709325,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142010",
+          "code": "KDS 14 20 10",
+          "name": "콘크리트구조 해석과 설계 원칙",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:20:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+          "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+          "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.3(2)"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "designTransferAllowed": false,
+      "demand": 46.14214209960009,
+      "capacity": 587.8775382679628,
+      "nominalCapacity": 783.836717690617,
+      "coefficient": 1,
+      "phi": 0.75,
+      "area": 0.16000000000000003,
+      "unit": "kN",
+      "axis": "X",
+      "effectiveWidth": 0.4,
+      "columnDepth": 0.4,
+      "probableForces": {
+        "codeReferences": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(1)"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "status": "OK",
+        "ratio": null,
+        "members": [
+          {
+            "memberId": "BC",
+            "detailId": "RB",
+            "detailVersion": 1,
+            "axis": "X",
+            "fy": 235,
+            "topArea": 0.00015707963267948968,
+            "bottomArea": 0.00015707963267948968,
+            "topForce": 46.14214209960009,
+            "bottomForce": 46.14214209960009,
+            "envelopeForce": 46.14214209960009
+          }
+        ],
+        "axes": {
+          "X": 46.14214209960009,
+          "Y": 0
+        },
+        "stressMultiplier": 1.25,
+        "units": {
+          "force": "kN",
+          "area": "m2",
+          "fy": "MPa"
+        },
+        "panelDemandMethod": {
+          "id": "sum-beam-face-envelopes-no-column-shear-credit",
+          "methodReviewRequired": true,
+          "reason": "column-shear sign and slab participation require independent method review"
+        },
+        "scope": "computed beam longitudinal forces; panel demand bound separately qualified",
+        "jointTopology": {
+          "version": "p25-joint-topology-v1",
+          "classificationOnly": true,
+          "status": "OK",
+          "beamArrangement": "one-sided",
+          "beamFaces": [
+            {
+              "face": "X+",
+              "axis": "X",
+              "side": "+",
+              "memberId": "BC",
+              "end": "i"
+            }
+          ],
+          "columns": [
+            {
+              "memberId": "BD",
+              "side": "above"
+            },
+            {
+              "memberId": "AB",
+              "side": "below"
+            }
+          ],
+          "oppositeBeamPair": false,
+          "anchorageMode": "special-frame-beam-90-hooks"
+        }
+      },
+      "methodReviewRequired": true,
+      "axes": [
+        {
+          "codeReferences": [
+            {
+              "id": "142010",
+              "code": "KDS 14 20 10",
+              "name": "콘크리트구조 해석과 설계 원칙",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:20:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+              "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3(2)"
+            },
+            {
+              "id": "142080",
+              "code": "KDS 14 20 80",
+              "name": "콘크리트 내진설계기준",
+              "edition": "2021",
+              "updateDate": "2021-02-18T15:14:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+              "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)"
+            }
+          ],
+          "qualification": "clause-scoped-not-whole-design",
+          "designTransferAllowed": false,
+          "status": "OK",
+          "ratio": 0.07848937762709325,
+          "demand": 46.14214209960009,
+          "capacity": 587.8775382679628,
+          "nominalCapacity": 783.836717690617,
+          "coefficient": 1,
+          "phi": 0.75,
+          "area": 0.16000000000000003,
+          "unit": "kN",
+          "axis": "X",
+          "effectiveWidth": 0.4,
+          "columnDepth": 0.4
+        }
+      ],
+      "confinement": "other",
+      "capacityDemandBasis": "derived-1.25fy-no-column-shear-credit",
+      "demandQualification": "explicit-capacity-design-input-independent-review-pending",
+      "scope": "centered-orthogonal-normal-concrete-special-moment-frame-joint",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-shear",
+          "version": 1,
+          "checkIds": [
+            "joint-shear"
+          ],
+          "module": "src/design/connection/kdsJointShear.js",
+          "scope": "centered orthogonal special frame; supplied probable demand",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "d10f67ce04f80503b5da25ca93091d9e92277195956122f27263cd3673506652",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-confinement",
+      "category": "connection",
+      "status": "NG",
+      "ratio": 1.49864273288906,
+      "reason": "JOINT_HOOP_AREA_INSUFFICIENT",
+      "codeReferences": [
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.4; 4.1.5; 4.5.4; Eq.4.5-3; Eq.4.5-4; Eq.4.5-5; 4.6.2"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "scope": "full rectangular hoop amount and spacing; no four-face reduction; physical detailing separate",
+      "designTransferAllowed": false,
+      "criteria": [
+        {
+          "id": "hoop-area",
+          "provided": 0.00015707963267948965,
+          "limit": 0.00023540625000000007,
+          "relation": "minimum",
+          "ratio": 1.49864273288906,
+          "unit": "m2",
+          "clause": "4.5.4(1)②",
+          "repairKind": "spacing-or-area",
+          "reason": "JOINT_HOOP_AREA_INSUFFICIENT",
+          "status": "NG"
+        },
+        {
+          "id": "vertical-spacing",
+          "provided": 0.075,
+          "limit": 0.1,
+          "relation": "maximum",
+          "ratio": 0.7499999999999999,
+          "unit": "m",
+          "clause": "4.5.4(2)",
+          "repairKind": "spacing",
+          "reason": "JOINT_HOOP_VERTICAL_SPACING_EXCEEDED",
+          "status": "OK"
+        },
+        {
+          "id": "horizontal-spacing",
+          "provided": 0.31,
+          "limit": 0.35,
+          "relation": "maximum",
+          "ratio": 0.8857142857142858,
+          "unit": "m",
+          "clause": "4.5.4(3)",
+          "repairKind": "hoop-topology",
+          "reason": "JOINT_TRANSVERSE_HORIZONTAL_SPACING_EXCEEDED",
+          "status": "OK"
+        },
+        {
+          "id": "unconfined-cover",
+          "provided": 0.04,
+          "limit": 0.1,
+          "relation": "maximum",
+          "ratio": 0.39999999999999997,
+          "unit": "m",
+          "clause": "4.5.4(1)⑤",
+          "repairKind": "additional-confinement",
+          "reason": "JOINT_UNCONFINED_COVER_EXCEEDED",
+          "status": "OK"
+        },
+        {
+          "id": "concrete-strength-scope",
+          "provided": 24,
+          "limit": 21,
+          "relation": "minimum",
+          "ratio": 0.875,
+          "unit": "MPa",
+          "clause": "4.1.4",
+          "repairKind": "material-scope",
+          "reason": "JOINT_CONCRETE_STRENGTH_SCOPE",
+          "status": "OK"
+        },
+        {
+          "id": "steel-strength-scope",
+          "provided": 400,
+          "limit": 500,
+          "relation": "maximum",
+          "ratio": 0.8,
+          "unit": "MPa",
+          "clause": "4.1.5",
+          "repairKind": "material-scope",
+          "reason": "JOINT_HOOP_STEEL_STRENGTH_SCOPE",
+          "status": "OK"
+        }
+      ],
+      "governingCriterion": "hoop-area",
+      "failedCriteria": [
+        "hoop-area"
+      ],
+      "directions": [
+        {
+          "steelDirection": "B",
+          "coreDimension": "H",
+          "hc": 0.31,
+          "providedArea": 0.00015707963267948965,
+          "requiredArea": 0.00023540625000000007,
+          "ratio": 1.49864273288906,
+          "status": "NG",
+          "equations": [
+            {
+              "id": "4.5-3",
+              "requiredArea": 0.00023540625000000007
+            },
+            {
+              "id": "4.5-4",
+              "requiredArea": 0.00012555
+            }
+          ],
+          "governingEquation": "4.5-3",
+          "additionalAreaCredited": 0,
+          "spacingRepairLimit": 0.050045283211306926
+        },
+        {
+          "steelDirection": "H",
+          "coreDimension": "B",
+          "hc": 0.31,
+          "providedArea": 0.00015707963267948965,
+          "requiredArea": 0.00023540625000000007,
+          "ratio": 1.49864273288906,
+          "status": "NG",
+          "equations": [
+            {
+              "id": "4.5-3",
+              "requiredArea": 0.00023540625000000007
+            },
+            {
+              "id": "4.5-4",
+              "requiredArea": 0.00012555
+            }
+          ],
+          "governingEquation": "4.5-3",
+          "additionalAreaCredited": 0,
+          "spacingRepairLimit": 0.050045283211306926
+        }
+      ],
+      "areaGoverningDirection": "B",
+      "hxBasis": "single-closed-hoop-centerline-spacing",
+      "requiredArea": 0.00023540625000000007,
+      "providedArea": 0.00015707963267948965,
+      "spacing": 0.075,
+      "spacingLimit": 0.1,
+      "spacingRepairLimit": 0.050045283211306926,
+      "hx": 0.31,
+      "Ag": 0.16000000000000003,
+      "Ach": 0.1024,
+      "hcB": 0.31,
+      "hcH": 0.31,
+      "fck": 24,
+      "fy": 400,
+      "reductionApplied": false,
+      "units": {
+        "area": "m2",
+        "length": "m",
+        "strength": "MPa"
+      },
+      "columnMemberId": "AB",
+      "columnDetailId": "RC",
+      "columnDetailVersion": 1,
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hoops",
+          "version": 1,
+          "checkIds": [
+            "joint-confinement",
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/kdsJointHoops.js",
+          "scope": "special frame full rectangular hoop amount and spacing; physical detailing separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            },
+            {
+              "id": "142001",
+              "edition": "2022",
+              "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.4; 4.1.5; 4.5.4; Eq.4.5-3; Eq.4.5-4; Eq.4.5-5; 4.6.2"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "6b26e0171ef80c606dc60d5ee94e66ddce15523d9140d2bac02c19061dd4c9d7",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-hoop-detail",
+      "category": "connection",
+      "status": "NOT_CHECKED",
+      "ratio": null,
+      "reason": "JOINT_TRANSVERSE_DIMENSIONS_REQUIRED",
+      "codeReferences": [
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.5.4, 4.6.2"
+        },
+        {
+          "id": "142001",
+          "code": "KDS 14 20 01",
+          "name": "콘크리트구조 설계(강도설계법) 일반사항",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:10:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+          "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+          "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "1.4"
+        }
+      ],
+      "incomplete": true,
+      "incompleteReasons": [
+        "JOINT_TRANSVERSE_DIMENSIONS_REQUIRED",
+        "JOINT_SEISMIC_HOOK_TAIL_REQUIRED",
+        "JOINT_HOOP_DISTRIBUTION_REQUIRED",
+        "JOINT_OUTER_HOOP_SHAPE_REQUIRED",
+        "JOINT_OUTER_HOOP_ASSEMBLY_REQUIRED",
+        "JOINT_HOOP_CROSS_TIE_ASSEMBLY_REQUIRED",
+        "JOINT_TRANSVERSE_PATH_MAPPING_REQUIRED",
+        "JOINT_COLUMN_CONTACT_PATHS_REQUIRED",
+        "JOINT_ACTUAL_PERIMETER_SUPPORT_REQUIRED",
+        "JOINT_CROSS_TIE_ASSEMBLY_REQUIRED",
+        "JOINT_ALL_CROSS_TIE_CONTACT_REQUIRED",
+        "JOINT_CROSS_TIE_ELIGIBILITY_REQUIRED"
+      ],
+      "spatialClosure": {
+        "status": "NOT_CHECKED",
+        "reason": "JOINT_HOOP_SHAPE_INPUT_REQUIRED",
+        "codeReferences": []
+      },
+      "transverseLongitudinalAssembly": {
+        "scope": "physical intersection of prepared hoop/cross-tie paths and joint longitudinal paths; aggregate clearance and support qualification separate",
+        "fabricationApproved": false,
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.2"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1; 4.6.4"
+          }
+        ],
+        "units": {
+          "length": "m"
+        },
+        "status": "NOT_CHECKED",
+        "reason": "JOINT_TRANSVERSE_PATH_MAPPING_REQUIRED",
+        "checks": []
+      },
+      "outerHoopSupport": {
+        "fabricationApproved": false,
+        "methodReviewRequired": true,
+        "scope": "actual outer hoop closure/corner contact and straight-face membership of mapped column bars; seismic confinement credit separate",
+        "status": "NOT_CHECKED",
+        "reason": "JOINT_COLUMN_CONTACT_PATHS_REQUIRED"
+      },
+      "longitudinalSupport": {
+        "methodReviewRequired": true,
+        "fabricationApproved": false,
+        "policy": "existing KDS 142050 lateral-support owner; 150 mm interpretation review remains open",
+        "status": "NOT_CHECKED",
+        "reason": "JOINT_ACTUAL_PERIMETER_SUPPORT_REQUIRED",
+        "checks": []
+      },
+      "checks": [],
+      "readiness": [
+        {
+          "id": "dimensions",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_TRANSVERSE_DIMENSIONS_REQUIRED"
+        },
+        {
+          "id": "seismic-tail",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_SEISMIC_HOOK_TAIL_REQUIRED"
+        },
+        {
+          "id": "distribution",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_HOOP_DISTRIBUTION_REQUIRED"
+        },
+        {
+          "id": "outer-hoop-shape",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_OUTER_HOOP_SHAPE_REQUIRED"
+        },
+        {
+          "id": "outer-hoop-self-assembly",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_OUTER_HOOP_ASSEMBLY_REQUIRED"
+        },
+        {
+          "id": "hoop-cross-tie-assembly",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_HOOP_CROSS_TIE_ASSEMBLY_REQUIRED"
+        },
+        {
+          "id": "transverse-longitudinal-assembly",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_TRANSVERSE_PATH_MAPPING_REQUIRED"
+        },
+        {
+          "id": "outer-hoop-support",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_COLUMN_CONTACT_PATHS_REQUIRED"
+        },
+        {
+          "id": "longitudinal-support",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_ACTUAL_PERIMETER_SUPPORT_REQUIRED"
+        },
+        {
+          "id": "cross-tie-assembly",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_CROSS_TIE_ASSEMBLY_REQUIRED"
+        },
+        {
+          "id": "cross-tie-support",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_ALL_CROSS_TIE_CONTACT_REQUIRED"
+        },
+        {
+          "id": "cross-tie-eligibility",
+          "status": "NOT_CHECKED",
+          "reason": "JOINT_CROSS_TIE_ELIGIBILITY_REQUIRED"
+        }
+      ],
+      "methodReviewRequired": true,
+      "fabricationApproved": false,
+      "scope": "current spatial hoop and declared cross-tie dimensions, contact, lateral support and assembly; whole-design and fabrication qualification separate",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-outer-support",
+          "version": 1,
+          "checkIds": [
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/jointHoopSupport.js",
+          "scope": "actual closure, distinct corner supports and straight-face membership; seismic qualification separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CHECK_INCOMPLETE",
+          "METHOD_REVIEW_REQUIRED",
+          "CHECK_NOT_EVALUATED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.4, 4.6.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CHECK_INCOMPLETE, METHOD_REVIEW_REQUIRED, CHECK_NOT_EVALUATED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "1a6f0c9eafdde69b9c4a67a75f0cbdd4c477cf38453ce4be0354f1fe3e1a101f",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-bar-congestion",
+      "category": "connection",
+      "status": "OK",
+      "ratio": null,
+      "reason": null,
+      "qualification": "longitudinal-bar-geometry-review",
+      "methodReviewRequired": true,
+      "designTransferAllowed": false,
+      "codeReferences": [
+        {
+          "id": "142050",
+          "code": "KDS 14 20 50",
+          "name": "콘크리트구조 철근상세 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:12:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+          "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+          "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.2"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.6.1; 4.6.4"
+        }
+      ],
+      "minimum": {
+        "bars": [
+          "BC:B4",
+          "AB:B5"
+        ],
+        "clearance": 0.017040073532710916,
+        "required": 0
+      },
+      "failedPairs": [],
+      "pairCount": 66,
+      "barCount": 12,
+      "minimumClearance": 0,
+      "units": {
+        "length": "m"
+      },
+      "columnContinuity": {
+        "mode": "aligned-through-bars",
+        "pairCount": 8,
+        "pairs": [
+          [
+            "AB:B1",
+            "BD:B1"
+          ],
+          [
+            "AB:B2",
+            "BD:B2"
+          ],
+          [
+            "AB:B3",
+            "BD:B3"
+          ],
+          [
+            "AB:B4",
+            "BD:B4"
+          ],
+          [
+            "AB:B5",
+            "BD:B5"
+          ],
+          [
+            "AB:B6",
+            "BD:B6"
+          ],
+          [
+            "AB:B7",
+            "BD:B7"
+          ],
+          [
+            "AB:B8",
+            "BD:B8"
+          ]
+        ],
+        "qualification": "explicit aligned straight bars; physical continuity requires detailing review"
+      },
+      "barPaths": [
+        {
+          "id": "AB:B1",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                -0.13707106781186548,
+                -0.13707106781186548,
+                -0.1499999999999999
+              ],
+              [
+                -0.13707106781186548,
+                -0.13707106781186548,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B1",
+            "BD:B1"
+          ]
+        },
+        {
+          "id": "AB:B2",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                -0.14,
+                0,
+                -0.1499999999999999
+              ],
+              [
+                -0.14,
+                0,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B2",
+            "BD:B2"
+          ]
+        },
+        {
+          "id": "AB:B3",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                -0.1370761338731522,
+                0.13707612364099503,
+                -0.1499999999999999
+              ],
+              [
+                -0.1370761338731522,
+                0.13707612364099503,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B3",
+            "BD:B3"
+          ]
+        },
+        {
+          "id": "AB:B4",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                0.14,
+                -0.1499999999999999
+              ],
+              [
+                0,
+                0.14,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B4",
+            "BD:B4"
+          ]
+        },
+        {
+          "id": "AB:B5",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0.13705881297103725,
+                0.1370588129710381,
+                -0.1499999999999999
+              ],
+              [
+                0.13705881297103725,
+                0.1370588129710381,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B5",
+            "BD:B5"
+          ]
+        },
+        {
+          "id": "AB:B6",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0.14,
+                0,
+                -0.1499999999999999
+              ],
+              [
+                0.14,
+                0,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B6",
+            "BD:B6"
+          ]
+        },
+        {
+          "id": "AB:B7",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0.13707612364239832,
+                -0.1370761338745583,
+                -0.1499999999999999
+              ],
+              [
+                0.13707612364239832,
+                -0.1370761338745583,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B7",
+            "BD:B7"
+          ]
+        },
+        {
+          "id": "AB:B8",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                -0.14,
+                -0.1499999999999999
+              ],
+              [
+                0,
+                -0.14,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B8",
+            "BD:B8"
+          ]
+        },
+        {
+          "id": "BC:B1",
+          "diameter": 0.01,
+          "sagitta": 0.000018739438327201038,
+          "segments": [
+            [
+              [
+                -0.14500000000000007,
+                -0.045,
+                0.04999999999999982
+              ],
+              [
+                -0.14500000000000007,
+                -0.045,
+                -0.06999999999999984
+              ]
+            ],
+            [
+              [
+                -0.14500000000000007,
+                -0.045,
+                -0.06999999999999984
+              ],
+              [
+                -0.14492506231335117,
+                -0.045,
+                -0.07228910952305512
+              ]
+            ],
+            [
+              [
+                -0.14492506231335117,
+                -0.045,
+                -0.07228910952305512
+              ],
+              [
+                -0.14470057014808352,
+                -0.045,
+                -0.07456841672770187
+              ]
+            ],
+            [
+              [
+                -0.14470057014808352,
+                -0.045,
+                -0.07456841672770187
+              ],
+              [
+                -0.14432748481411323,
+                -0.045,
+                -0.07682816127056435
+              ]
+            ],
+            [
+              [
+                -0.14432748481411323,
+                -0.045,
+                -0.07682816127056435
+              ],
+              [
+                -0.14380740392011743,
+                -0.045,
+                -0.07905866657858818
+              ]
+            ],
+            [
+              [
+                -0.14380740392011743,
+                -0.045,
+                -0.07905866657858818
+              ],
+              [
+                -0.14314255453232888,
+                -0.045,
+                -0.08125038128561046
+              ]
+            ],
+            [
+              [
+                -0.14314255453232888,
+                -0.045,
+                -0.08125038128561046
+              ],
+              [
+                -0.14233578363789517,
+                -0.045,
+                -0.08339392013277802
+              ]
+            ],
+            [
+              [
+                -0.14233578363789517,
+                -0.045,
+                -0.08339392013277802
+              ],
+              [
+                -0.14139054595364425,
+                -0.045,
+                -0.08548010415766516
+              ]
+            ],
+            [
+              [
+                -0.14139054595364425,
+                -0.045,
+                -0.08548010415766516
+              ],
+              [
+                -0.14031088913245543,
+                -0.045,
+                -0.08749999999999991
+              ]
+            ],
+            [
+              [
+                -0.14031088913245543,
+                -0.045,
+                -0.08749999999999991
+              ],
+              [
+                -0.1391014364305892,
+                -0.045,
+                -0.0894449581556862
+              ]
+            ],
+            [
+              [
+                -0.1391014364305892,
+                -0.045,
+                -0.0894449581556862
+              ],
+              [
+                -0.13776736691019337,
+                -0.045,
+                -0.09130665001530502
+              ]
+            ],
+            [
+              [
+                -0.13776736691019337,
+                -0.045,
+                -0.09130665001530502
+              ],
+              [
+                -0.13631439326176437,
+                -0.045,
+                -0.09307710352850229
+              ]
+            ],
+            [
+              [
+                -0.13631439326176437,
+                -0.045,
+                -0.09307710352850229
+              ],
+              [
+                -0.1347487373415293,
+                -0.045,
+                -0.09474873734152922
+              ]
+            ],
+            [
+              [
+                -0.1347487373415293,
+                -0.045,
+                -0.09474873734152922
+              ],
+              [
+                -0.1330771035285026,
+                -0.045,
+                -0.09631439326176405
+              ]
+            ],
+            [
+              [
+                -0.1330771035285026,
+                -0.045,
+                -0.09631439326176405
+              ],
+              [
+                -0.13130665001530534,
+                -0.045,
+                -0.09776736691019305
+              ]
+            ],
+            [
+              [
+                -0.13130665001530534,
+                -0.045,
+                -0.09776736691019305
+              ],
+              [
+                -0.1294449581556863,
+                -0.045,
+                -0.09910143643058911
+              ]
+            ],
+            [
+              [
+                -0.1294449581556863,
+                -0.045,
+                -0.09910143643058911
+              ],
+              [
+                -0.12750000000000022,
+                -0.045,
+                -0.10031088913245556
+              ]
+            ],
+            [
+              [
+                -0.12750000000000022,
+                -0.045,
+                -0.10031088913245556
+              ],
+              [
+                -0.12548010415766525,
+                -0.045,
+                -0.10139054595364394
+              ]
+            ],
+            [
+              [
+                -0.12548010415766525,
+                -0.045,
+                -0.10139054595364394
+              ],
+              [
+                -0.12339392013277833,
+                -0.045,
+                -0.10233578363789508
+              ]
+            ],
+            [
+              [
+                -0.12339392013277833,
+                -0.045,
+                -0.10233578363789508
+              ],
+              [
+                -0.12125038128561078,
+                -0.045,
+                -0.10314255453232857
+              ]
+            ],
+            [
+              [
+                -0.12125038128561078,
+                -0.045,
+                -0.10314255453232857
+              ],
+              [
+                -0.11905866657858827,
+                -0.045,
+                -0.10380740392011756
+              ]
+            ],
+            [
+              [
+                -0.11905866657858827,
+                -0.045,
+                -0.10380740392011756
+              ],
+              [
+                -0.11682816127056467,
+                -0.045,
+                -0.10432748481411291
+              ]
+            ],
+            [
+              [
+                -0.11682816127056467,
+                -0.045,
+                -0.10432748481411291
+              ],
+              [
+                -0.11456841672770196,
+                -0.045,
+                -0.1047005701480832
+              ]
+            ],
+            [
+              [
+                -0.11456841672770196,
+                -0.045,
+                -0.1047005701480832
+              ],
+              [
+                -0.11228910952305521,
+                -0.045,
+                -0.10492506231335108
+              ]
+            ],
+            [
+              [
+                -0.11228910952305521,
+                -0.045,
+                -0.10492506231335108
+              ],
+              [
+                -0.11000000000000015,
+                -0.045,
+                -0.10499999999999998
+              ]
+            ],
+            [
+              [
+                -0.11000000000000015,
+                -0.045,
+                -0.10499999999999998
+              ],
+              [
+                0.2,
+                -0.045,
+                -0.10499999999999998
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0
+          ]
+        },
+        {
+          "id": "BC:B2",
+          "diameter": 0.01,
+          "sagitta": 0.000018739438327201038,
+          "segments": [
+            [
+              [
+                -0.14500000000000007,
+                -0.105,
+                0.04999999999999982
+              ],
+              [
+                -0.14500000000000007,
+                -0.105,
+                -0.06999999999999984
+              ]
+            ],
+            [
+              [
+                -0.14500000000000007,
+                -0.105,
+                -0.06999999999999984
+              ],
+              [
+                -0.14492506231335117,
+                -0.105,
+                -0.07228910952305512
+              ]
+            ],
+            [
+              [
+                -0.14492506231335117,
+                -0.105,
+                -0.07228910952305512
+              ],
+              [
+                -0.14470057014808352,
+                -0.105,
+                -0.07456841672770187
+              ]
+            ],
+            [
+              [
+                -0.14470057014808352,
+                -0.105,
+                -0.07456841672770187
+              ],
+              [
+                -0.14432748481411323,
+                -0.105,
+                -0.07682816127056435
+              ]
+            ],
+            [
+              [
+                -0.14432748481411323,
+                -0.105,
+                -0.07682816127056435
+              ],
+              [
+                -0.14380740392011743,
+                -0.105,
+                -0.07905866657858818
+              ]
+            ],
+            [
+              [
+                -0.14380740392011743,
+                -0.105,
+                -0.07905866657858818
+              ],
+              [
+                -0.14314255453232888,
+                -0.105,
+                -0.08125038128561046
+              ]
+            ],
+            [
+              [
+                -0.14314255453232888,
+                -0.105,
+                -0.08125038128561046
+              ],
+              [
+                -0.14233578363789517,
+                -0.105,
+                -0.08339392013277802
+              ]
+            ],
+            [
+              [
+                -0.14233578363789517,
+                -0.105,
+                -0.08339392013277802
+              ],
+              [
+                -0.14139054595364425,
+                -0.105,
+                -0.08548010415766516
+              ]
+            ],
+            [
+              [
+                -0.14139054595364425,
+                -0.105,
+                -0.08548010415766516
+              ],
+              [
+                -0.14031088913245543,
+                -0.105,
+                -0.08749999999999991
+              ]
+            ],
+            [
+              [
+                -0.14031088913245543,
+                -0.105,
+                -0.08749999999999991
+              ],
+              [
+                -0.1391014364305892,
+                -0.105,
+                -0.0894449581556862
+              ]
+            ],
+            [
+              [
+                -0.1391014364305892,
+                -0.105,
+                -0.0894449581556862
+              ],
+              [
+                -0.13776736691019337,
+                -0.105,
+                -0.09130665001530502
+              ]
+            ],
+            [
+              [
+                -0.13776736691019337,
+                -0.105,
+                -0.09130665001530502
+              ],
+              [
+                -0.13631439326176437,
+                -0.105,
+                -0.09307710352850229
+              ]
+            ],
+            [
+              [
+                -0.13631439326176437,
+                -0.105,
+                -0.09307710352850229
+              ],
+              [
+                -0.1347487373415293,
+                -0.105,
+                -0.09474873734152922
+              ]
+            ],
+            [
+              [
+                -0.1347487373415293,
+                -0.105,
+                -0.09474873734152922
+              ],
+              [
+                -0.1330771035285026,
+                -0.105,
+                -0.09631439326176405
+              ]
+            ],
+            [
+              [
+                -0.1330771035285026,
+                -0.105,
+                -0.09631439326176405
+              ],
+              [
+                -0.13130665001530534,
+                -0.105,
+                -0.09776736691019305
+              ]
+            ],
+            [
+              [
+                -0.13130665001530534,
+                -0.105,
+                -0.09776736691019305
+              ],
+              [
+                -0.1294449581556863,
+                -0.105,
+                -0.09910143643058911
+              ]
+            ],
+            [
+              [
+                -0.1294449581556863,
+                -0.105,
+                -0.09910143643058911
+              ],
+              [
+                -0.12750000000000022,
+                -0.105,
+                -0.10031088913245556
+              ]
+            ],
+            [
+              [
+                -0.12750000000000022,
+                -0.105,
+                -0.10031088913245556
+              ],
+              [
+                -0.12548010415766525,
+                -0.105,
+                -0.10139054595364394
+              ]
+            ],
+            [
+              [
+                -0.12548010415766525,
+                -0.105,
+                -0.10139054595364394
+              ],
+              [
+                -0.12339392013277833,
+                -0.105,
+                -0.10233578363789508
+              ]
+            ],
+            [
+              [
+                -0.12339392013277833,
+                -0.105,
+                -0.10233578363789508
+              ],
+              [
+                -0.12125038128561078,
+                -0.105,
+                -0.10314255453232857
+              ]
+            ],
+            [
+              [
+                -0.12125038128561078,
+                -0.105,
+                -0.10314255453232857
+              ],
+              [
+                -0.11905866657858827,
+                -0.105,
+                -0.10380740392011756
+              ]
+            ],
+            [
+              [
+                -0.11905866657858827,
+                -0.105,
+                -0.10380740392011756
+              ],
+              [
+                -0.11682816127056467,
+                -0.105,
+                -0.10432748481411291
+              ]
+            ],
+            [
+              [
+                -0.11682816127056467,
+                -0.105,
+                -0.10432748481411291
+              ],
+              [
+                -0.11456841672770196,
+                -0.105,
+                -0.1047005701480832
+              ]
+            ],
+            [
+              [
+                -0.11456841672770196,
+                -0.105,
+                -0.1047005701480832
+              ],
+              [
+                -0.11228910952305521,
+                -0.105,
+                -0.10492506231335108
+              ]
+            ],
+            [
+              [
+                -0.11228910952305521,
+                -0.105,
+                -0.10492506231335108
+              ],
+              [
+                -0.11000000000000015,
+                -0.105,
+                -0.10499999999999998
+              ]
+            ],
+            [
+              [
+                -0.11000000000000015,
+                -0.105,
+                -0.10499999999999998
+              ],
+              [
+                0.2,
+                -0.105,
+                -0.10499999999999998
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0
+          ]
+        },
+        {
+          "id": "BC:B3",
+          "diameter": 0.01,
+          "sagitta": 0.000018739438327201038,
+          "segments": [
+            [
+              [
+                -0.14500000000000007,
+                0.045,
+                -0.08499999999999996
+              ],
+              [
+                -0.14500000000000007,
+                0.045,
+                0.03500000000000014
+              ]
+            ],
+            [
+              [
+                -0.14500000000000007,
+                0.045,
+                0.03500000000000014
+              ],
+              [
+                -0.14492506231335117,
+                0.045,
+                0.037289109523054975
+              ]
+            ],
+            [
+              [
+                -0.14492506231335117,
+                0.045,
+                0.037289109523054975
+              ],
+              [
+                -0.14470057014808352,
+                0.045,
+                0.03956841672770173
+              ]
+            ],
+            [
+              [
+                -0.14470057014808352,
+                0.045,
+                0.03956841672770173
+              ],
+              [
+                -0.14432748481411323,
+                0.045,
+                0.04182816127056466
+              ]
+            ],
+            [
+              [
+                -0.14432748481411323,
+                0.045,
+                0.04182816127056466
+              ],
+              [
+                -0.14380740392011743,
+                0.045,
+                0.044058666578588035
+              ]
+            ],
+            [
+              [
+                -0.14380740392011743,
+                0.045,
+                0.044058666578588035
+              ],
+              [
+                -0.14314255453232888,
+                0.045,
+                0.046250381285610764
+              ]
+            ],
+            [
+              [
+                -0.14314255453232888,
+                0.045,
+                0.046250381285610764
+              ],
+              [
+                -0.14233578363789517,
+                0.045,
+                0.04839392013277832
+              ]
+            ],
+            [
+              [
+                -0.14233578363789517,
+                0.045,
+                0.04839392013277832
+              ],
+              [
+                -0.14139054595364425,
+                0.045,
+                0.05048010415766502
+              ]
+            ],
+            [
+              [
+                -0.14139054595364425,
+                0.045,
+                0.05048010415766502
+              ],
+              [
+                -0.14031088913245543,
+                0.045,
+                0.05250000000000021
+              ]
+            ],
+            [
+              [
+                -0.14031088913245543,
+                0.045,
+                0.05250000000000021
+              ],
+              [
+                -0.1391014364305892,
+                0.045,
+                0.05444495815568606
+              ]
+            ],
+            [
+              [
+                -0.1391014364305892,
+                0.045,
+                0.05444495815568606
+              ],
+              [
+                -0.13776736691019337,
+                0.045,
+                0.056306650015305326
+              ]
+            ],
+            [
+              [
+                -0.13776736691019337,
+                0.045,
+                0.056306650015305326
+              ],
+              [
+                -0.13631439326176437,
+                0.045,
+                0.058077103528502594
+              ]
+            ],
+            [
+              [
+                -0.13631439326176437,
+                0.045,
+                0.058077103528502594
+              ],
+              [
+                -0.1347487373415293,
+                0.045,
+                0.05974873734152908
+              ]
+            ],
+            [
+              [
+                -0.1347487373415293,
+                0.045,
+                0.05974873734152908
+              ],
+              [
+                -0.1330771035285026,
+                0.045,
+                0.061314393261764355
+              ]
+            ],
+            [
+              [
+                -0.1330771035285026,
+                0.045,
+                0.061314393261764355
+              ],
+              [
+                -0.13130665001530534,
+                0.045,
+                0.06276736691019336
+              ]
+            ],
+            [
+              [
+                -0.13130665001530534,
+                0.045,
+                0.06276736691019336
+              ],
+              [
+                -0.1294449581556863,
+                0.045,
+                0.06410143643058897
+              ]
+            ],
+            [
+              [
+                -0.1294449581556863,
+                0.045,
+                0.06410143643058897
+              ],
+              [
+                -0.12750000000000022,
+                0.045,
+                0.06531088913245542
+              ]
+            ],
+            [
+              [
+                -0.12750000000000022,
+                0.045,
+                0.06531088913245542
+              ],
+              [
+                -0.12548010415766525,
+                0.045,
+                0.06639054595364424
+              ]
+            ],
+            [
+              [
+                -0.12548010415766525,
+                0.045,
+                0.06639054595364424
+              ],
+              [
+                -0.12339392013277833,
+                0.045,
+                0.06733578363789494
+              ]
+            ],
+            [
+              [
+                -0.12339392013277833,
+                0.045,
+                0.06733578363789494
+              ],
+              [
+                -0.12125038128561078,
+                0.045,
+                0.06814255453232887
+              ]
+            ],
+            [
+              [
+                -0.12125038128561078,
+                0.045,
+                0.06814255453232887
+              ],
+              [
+                -0.11905866657858827,
+                0.045,
+                0.06880740392011742
+              ]
+            ],
+            [
+              [
+                -0.11905866657858827,
+                0.045,
+                0.06880740392011742
+              ],
+              [
+                -0.11682816127056467,
+                0.045,
+                0.06932748481411322
+              ]
+            ],
+            [
+              [
+                -0.11682816127056467,
+                0.045,
+                0.06932748481411322
+              ],
+              [
+                -0.11456841672770196,
+                0.045,
+                0.06970057014808351
+              ]
+            ],
+            [
+              [
+                -0.11456841672770196,
+                0.045,
+                0.06970057014808351
+              ],
+              [
+                -0.11228910952305521,
+                0.045,
+                0.06992506231335094
+              ]
+            ],
+            [
+              [
+                -0.11228910952305521,
+                0.045,
+                0.06992506231335094
+              ],
+              [
+                -0.11000000000000015,
+                0.045,
+                0.06999999999999984
+              ]
+            ],
+            [
+              [
+                -0.11000000000000015,
+                0.045,
+                0.06999999999999984
+              ],
+              [
+                0.2,
+                0.045,
+                0.06999999999999984
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0
+          ]
+        },
+        {
+          "id": "BC:B4",
+          "diameter": 0.01,
+          "sagitta": 0.000018739438327201038,
+          "segments": [
+            [
+              [
+                -0.14500000000000007,
+                0.105,
+                -0.08499999999999996
+              ],
+              [
+                -0.14500000000000007,
+                0.105,
+                0.03500000000000014
+              ]
+            ],
+            [
+              [
+                -0.14500000000000007,
+                0.105,
+                0.03500000000000014
+              ],
+              [
+                -0.14492506231335117,
+                0.105,
+                0.037289109523054975
+              ]
+            ],
+            [
+              [
+                -0.14492506231335117,
+                0.105,
+                0.037289109523054975
+              ],
+              [
+                -0.14470057014808352,
+                0.105,
+                0.03956841672770173
+              ]
+            ],
+            [
+              [
+                -0.14470057014808352,
+                0.105,
+                0.03956841672770173
+              ],
+              [
+                -0.14432748481411323,
+                0.105,
+                0.04182816127056466
+              ]
+            ],
+            [
+              [
+                -0.14432748481411323,
+                0.105,
+                0.04182816127056466
+              ],
+              [
+                -0.14380740392011743,
+                0.105,
+                0.044058666578588035
+              ]
+            ],
+            [
+              [
+                -0.14380740392011743,
+                0.105,
+                0.044058666578588035
+              ],
+              [
+                -0.14314255453232888,
+                0.105,
+                0.046250381285610764
+              ]
+            ],
+            [
+              [
+                -0.14314255453232888,
+                0.105,
+                0.046250381285610764
+              ],
+              [
+                -0.14233578363789517,
+                0.105,
+                0.04839392013277832
+              ]
+            ],
+            [
+              [
+                -0.14233578363789517,
+                0.105,
+                0.04839392013277832
+              ],
+              [
+                -0.14139054595364425,
+                0.105,
+                0.05048010415766502
+              ]
+            ],
+            [
+              [
+                -0.14139054595364425,
+                0.105,
+                0.05048010415766502
+              ],
+              [
+                -0.14031088913245543,
+                0.105,
+                0.05250000000000021
+              ]
+            ],
+            [
+              [
+                -0.14031088913245543,
+                0.105,
+                0.05250000000000021
+              ],
+              [
+                -0.1391014364305892,
+                0.105,
+                0.05444495815568606
+              ]
+            ],
+            [
+              [
+                -0.1391014364305892,
+                0.105,
+                0.05444495815568606
+              ],
+              [
+                -0.13776736691019337,
+                0.105,
+                0.056306650015305326
+              ]
+            ],
+            [
+              [
+                -0.13776736691019337,
+                0.105,
+                0.056306650015305326
+              ],
+              [
+                -0.13631439326176437,
+                0.105,
+                0.058077103528502594
+              ]
+            ],
+            [
+              [
+                -0.13631439326176437,
+                0.105,
+                0.058077103528502594
+              ],
+              [
+                -0.1347487373415293,
+                0.105,
+                0.05974873734152908
+              ]
+            ],
+            [
+              [
+                -0.1347487373415293,
+                0.105,
+                0.05974873734152908
+              ],
+              [
+                -0.1330771035285026,
+                0.105,
+                0.061314393261764355
+              ]
+            ],
+            [
+              [
+                -0.1330771035285026,
+                0.105,
+                0.061314393261764355
+              ],
+              [
+                -0.13130665001530534,
+                0.105,
+                0.06276736691019336
+              ]
+            ],
+            [
+              [
+                -0.13130665001530534,
+                0.105,
+                0.06276736691019336
+              ],
+              [
+                -0.1294449581556863,
+                0.105,
+                0.06410143643058897
+              ]
+            ],
+            [
+              [
+                -0.1294449581556863,
+                0.105,
+                0.06410143643058897
+              ],
+              [
+                -0.12750000000000022,
+                0.105,
+                0.06531088913245542
+              ]
+            ],
+            [
+              [
+                -0.12750000000000022,
+                0.105,
+                0.06531088913245542
+              ],
+              [
+                -0.12548010415766525,
+                0.105,
+                0.06639054595364424
+              ]
+            ],
+            [
+              [
+                -0.12548010415766525,
+                0.105,
+                0.06639054595364424
+              ],
+              [
+                -0.12339392013277833,
+                0.105,
+                0.06733578363789494
+              ]
+            ],
+            [
+              [
+                -0.12339392013277833,
+                0.105,
+                0.06733578363789494
+              ],
+              [
+                -0.12125038128561078,
+                0.105,
+                0.06814255453232887
+              ]
+            ],
+            [
+              [
+                -0.12125038128561078,
+                0.105,
+                0.06814255453232887
+              ],
+              [
+                -0.11905866657858827,
+                0.105,
+                0.06880740392011742
+              ]
+            ],
+            [
+              [
+                -0.11905866657858827,
+                0.105,
+                0.06880740392011742
+              ],
+              [
+                -0.11682816127056467,
+                0.105,
+                0.06932748481411322
+              ]
+            ],
+            [
+              [
+                -0.11682816127056467,
+                0.105,
+                0.06932748481411322
+              ],
+              [
+                -0.11456841672770196,
+                0.105,
+                0.06970057014808351
+              ]
+            ],
+            [
+              [
+                -0.11456841672770196,
+                0.105,
+                0.06970057014808351
+              ],
+              [
+                -0.11228910952305521,
+                0.105,
+                0.06992506231335094
+              ]
+            ],
+            [
+              [
+                -0.11228910952305521,
+                0.105,
+                0.06992506231335094
+              ],
+              [
+                -0.11000000000000015,
+                0.105,
+                0.06999999999999984
+              ]
+            ],
+            [
+              [
+                -0.11000000000000015,
+                0.105,
+                0.06999999999999984
+              ],
+              [
+                0.2,
+                0.105,
+                0.06999999999999984
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0.000018739438327201038,
+            0
+          ]
+        }
+      ],
+      "pathCoordinates": "column-local-y,z,x; metres from joint node",
+      "pathDimensions": {
+        "u": 0.4,
+        "v": 0.4,
+        "w": 0.3
+      },
+      "scope": "explicit clearance between longitudinal paths only; hoop contacts and aggregate placement separate",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-congestion",
+          "version": 1,
+          "checkIds": [
+            "joint-bar-congestion"
+          ],
+          "module": "src/design/connection/jointCongestion.js",
+          "scope": "longitudinal 3D path clearance with conservative arc error; geometric review only",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1; 4.6.4",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "longitudinal-bar-geometry-review",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "60d09ddbd10230ee4fc1d41d67d7463db5218085e25df83370b2348a010c2045",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-member-strength-ratio",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.08675048147881478,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142010",
+          "code": "KDS 14 20 10",
+          "name": "콘크리트구조 해석과 설계 원칙",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:20:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+          "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+          "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.3(2)"
+        },
+        {
+          "id": "142020",
+          "code": "KDS 14 20 20",
+          "name": "콘크리트구조 휨 및 압축 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:11:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+          "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+          "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1; 4.1.2"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.5.2(2); Eq.4.5-1"
+        }
+      ],
+      "qualification": "conservative-sufficient-strength-bound-not-whole-design",
+      "designTransferAllowed": false,
+      "columnLowerBound": 164.89765801881032,
+      "beamUpperBound": 11.92079268988395,
+      "factor": 1.2,
+      "axis": "X",
+      "members": [
+        {
+          "memberId": "AB",
+          "basis": "minimum-design-strength-over-supplied-axial-stations",
+          "negative": 82.9510935701157,
+          "positive": 82.95006045161297,
+          "axialValues": [
+            -7.000000000000003
+          ]
+        },
+        {
+          "memberId": "BD",
+          "basis": "minimum-design-strength-over-supplied-axial-stations",
+          "negative": 81.94865069180435,
+          "positive": 81.94759756719736,
+          "axialValues": [
+            1.0658141036401503e-14
+          ]
+        },
+        {
+          "memberId": "BC",
+          "basis": "nominal-zero-axial-strength",
+          "negative": 9.336832732306345,
+          "positive": 11.92079268988395,
+          "axialValues": [
+            0
+          ]
+        }
+      ],
+      "axesChecks": [
+        {
+          "status": "OK",
+          "ratio": 0.08675048147881478,
+          "columnLowerBound": 164.89765801881032,
+          "beamUpperBound": 11.92079268988395,
+          "factor": 1.2,
+          "reason": null,
+          "axis": "X",
+          "members": [
+            {
+              "memberId": "AB",
+              "basis": "minimum-design-strength-over-supplied-axial-stations",
+              "negative": 82.9510935701157,
+              "positive": 82.95006045161297,
+              "axialValues": [
+                -7.000000000000003
+              ]
+            },
+            {
+              "memberId": "BD",
+              "basis": "minimum-design-strength-over-supplied-axial-stations",
+              "negative": 81.94865069180435,
+              "positive": 81.94759756719736,
+              "axialValues": [
+                1.0658141036401503e-14
+              ]
+            },
+            {
+              "memberId": "BC",
+              "basis": "nominal-zero-axial-strength",
+              "negative": 9.336832732306345,
+              "positive": 11.92079268988395,
+              "axialValues": [
+                0
+              ]
+            }
+          ]
+        }
+      ],
+      "scope": "column design-strength lower bound versus beam nominal-strength upper bound; both signs; no slab credit",
+      "methodReviewRequired": true,
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-strength-relation",
+          "version": 1,
+          "checkIds": [
+            "joint-member-strength-ratio"
+          ],
+          "module": "src/design/connection/jointStrengthRelation.js",
+          "scope": "column lower/design versus beam upper/nominal strength bound; method review pending",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142020",
+              "edition": "2022",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2(2); Eq.4.5-1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "conservative-sufficient-strength-bound-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "5523a6d8cbba8cf67828a11aa5bde37e19fc255b027476d2c3a2dfeff021b1c2",
+      "entityId": "joint:B",
+      "memberId": "BC",
+      "comboId": "U",
+      "checkId": "joint-anchorage",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.42857142857142844,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142050",
+          "code": "KDS 14 20 50",
+          "name": "콘크리트구조 철근상세 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:12:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+          "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+          "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1; 4.1.2"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.6.1(3); 4.6.4(1); Eq.4.6-3"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "designTransferAllowed": false,
+      "barIndex": 1,
+      "end": "start",
+      "contained": true,
+      "farFaceReached": true,
+      "farReach": 0.15000000000000008,
+      "required": 0.15,
+      "available": 0.3500000000000001,
+      "units": {
+        "length": "m"
+      },
+      "checks": [
+        {
+          "memberId": "BC",
+          "barIndex": 1,
+          "end": "start",
+          "status": "OK",
+          "ratio": 0.42857142857142844,
+          "contained": true,
+          "farFaceReached": true,
+          "farReach": 0.15000000000000008,
+          "required": 0.15,
+          "available": 0.3500000000000001,
+          "reason": null,
+          "units": {
+            "length": "m"
+          }
+        },
+        {
+          "memberId": "BC",
+          "barIndex": 2,
+          "end": "start",
+          "status": "OK",
+          "ratio": 0.42857142857142844,
+          "contained": true,
+          "farFaceReached": true,
+          "farReach": 0.15000000000000008,
+          "required": 0.15,
+          "available": 0.3500000000000001,
+          "reason": null,
+          "units": {
+            "length": "m"
+          }
+        },
+        {
+          "memberId": "BC",
+          "barIndex": 3,
+          "end": "start",
+          "status": "OK",
+          "ratio": 0.42857142857142844,
+          "contained": true,
+          "farFaceReached": true,
+          "farReach": 0.15000000000000008,
+          "required": 0.15,
+          "available": 0.3500000000000001,
+          "reason": null,
+          "units": {
+            "length": "m"
+          }
+        },
+        {
+          "memberId": "BC",
+          "barIndex": 4,
+          "end": "start",
+          "status": "OK",
+          "ratio": 0.42857142857142844,
+          "contained": true,
+          "farFaceReached": true,
+          "farReach": 0.15000000000000008,
+          "required": 0.15,
+          "available": 0.3500000000000001,
+          "reason": null,
+          "units": {
+            "length": "m"
+          }
+        }
+      ],
+      "scope": "normal-concrete-orthogonal-beam-90-hooks-in-explicit-core; confinement capacity and crossing-bar congestion separate",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hook-anchorage",
+          "version": 1,
+          "checkIds": [
+            "joint-anchorage"
+          ],
+          "module": "src/design/connection/jointHookAnchorage.js",
+          "scope": "ordinary-weight special-frame 90-degree hooks, explicit matched straight through-bars, or an explicit through axis with perpendicular hooks; KDS 4.6.1(4) depth; physical continuity and independent review remain distinct",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(3); 4.6.4(1); Eq.4.6-3"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142052",
+            "code": "KDS 14 20 52",
+            "name": "콘크리트구조 정착 및 이음 설계기준",
+            "edition": "2024",
+            "updateDate": "2024-12-31T10:54:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+            "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+            "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    },
+    {
+      "id": "ba776840c261d722f57824a228092b317e91d9b23a977fdc1fdae50de04452f2",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-stiffness",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0,
+      "reason": null,
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "one-sided",
+        "beamFaces": [
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": false,
+        "anchorageMode": "special-frame-beam-90-hooks"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:56:47.444Z:2"
+    }
+  ],
+  "summary": {
+    "scopeComplete": false,
+    "combinationCoverage": {
+      "projectProfile": {
+        "qualification": "user-declared-scope-only",
+        "codeQualified": false,
+        "loadScopeHash": "4f9c324b8ceb4afd6055b99671fab90df8d6c3c46f17778febc728454df24552",
+        "status": "NOT_CHECKED",
+        "issues": [
+          {
+            "code": "PROJECT_PROFILE_REQUIRED"
+          }
+        ]
+      },
+      "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+      "expectedIds": [
+        "U"
+      ],
+      "missingIds": [],
+      "evaluatedComboIds": [
+        "U"
+      ],
+      "missingEvaluationIds": [],
+      "missingPurposes": [
+        "service"
+      ],
+      "codeQualified": false
+    },
+    "counts": {
+      "OK": 7,
+      "NG": 1,
+      "WARN": 0,
+      "NOT_CHECKED": 47,
+      "N_A": 11,
+      "FAILED": 0
+    },
+    "closureDiagnosticCounts": {
+      "OK": 0,
+      "NG": 0,
+      "NOT_CHECKED": 0,
+      "N_A": 0
+    },
+    "incompleteCheckCount": 47,
+    "checkCount": 66,
+    "failedEntityCount": 1,
+    "uncheckedEntityCount": 5,
+    "complete": false
+  }
+}

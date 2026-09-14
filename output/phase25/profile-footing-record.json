@@ -1,0 +1,52 @@
+{
+  "id": "F",
+  "name": "synthetic",
+  "version": 2,
+  "sourceNote": "test",
+  "nodeId": "A",
+  "foundationType": "isolated",
+  "B": 2.75,
+  "L": 2.45,
+  "thickness": 0.5,
+  "cover": 0.05,
+  "materialId": "concrete@1",
+  "groundId": "G@1",
+  "aggregateMaxSize": 0.02,
+  "columnTransferType": "cast-in-place-continuous-straight-bars",
+  "columnMemberId": "AB",
+  "columnEmbedmentLength": 0.3,
+  "columnDevelopmentAbove": 0.3,
+  "punchingMomentMethod": "conservative-perimeter-shear",
+  "punchingPerimeterScope": "interior-solid-no-openings",
+  "shrinkageRestraint": "ordinary-not-severely-restrained",
+  "barShape": "straight",
+  "footingWeightCaseId": "D",
+  "flexureStandard": "KDS-142020-2022",
+  "reactionBasis": "superstructure-only",
+  "columnWidth": 0.6,
+  "columnDepth": 0.3,
+  "punchingStandard": "KDS-142022-2022",
+  "concreteWeight": "normal",
+  "barCoating": "uncoated",
+  "barDistribution": "kds-centered-band",
+  "inputContract": "p24-practical-input-v1",
+  "reinforcement": {
+    "materialId": "steel@1",
+    "bottomB": {
+      "diameter": 0.016,
+      "spacing": 0.15
+    },
+    "bottomL": {
+      "diameter": 0.016,
+      "spacing": 0.15
+    },
+    "topB": {
+      "diameter": 0.016,
+      "spacing": 0.15
+    },
+    "topL": {
+      "diameter": 0.016,
+      "spacing": 0.15
+    }
+  }
+}

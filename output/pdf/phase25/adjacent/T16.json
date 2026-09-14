@@ -1,0 +1,2390 @@
+{
+  "version": "p25-detail-drawing-v46-through-bar-pdf",
+  "evaluatorVersion": null,
+  "rulePackHash": null,
+  "preparedGeometryHash": "fe01e676bf4cd2d6cfbf5df5699bb85893b8e681f0673a6378086d1d977bc8ae",
+  "geometryPreparation": "legacy-export-compatibility",
+  "evaluationId": "EVALUATION-T16",
+  "inputHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "detailHash": "271da08430021e26457228d12cd8524521cc029ff34b3706027bdace0284709a",
+  "sourceAnalysisRunIds": [],
+  "analysisSources": [],
+  "reviewOnly": true,
+  "designTransferAllowed": false,
+  "spliceGeometryIssues": [],
+  "pages": [
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "부재 AB 배근 검토도",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: R @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "rect",
+          "x": 55,
+          "y": 182,
+          "w": 122.5,
+          "h": 245
+        },
+        {
+          "kind": "text",
+          "x": 55,
+          "y": 164,
+          "text": "단면 300 x 600 mm",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 55,
+          "y": 442,
+          "text": "띠철근 굽힘 형상 미확정",
+          "size": 8
+        },
+        {
+          "kind": "rect",
+          "x": 310,
+          "y": 200,
+          "w": 230,
+          "h": 130
+        },
+        {
+          "kind": "text",
+          "x": 310,
+          "y": 180,
+          "text": "배근 구간 길이 3000 mm",
+          "size": 10
+        },
+        {
+          "kind": "circle",
+          "x": 83.58333333333333,
+          "y": 222.83333333333331,
+          "r": 4.083333333333334
+        },
+        {
+          "kind": "text",
+          "x": 88.58333333333333,
+          "y": 217.83333333333331,
+          "text": "B1",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 310,
+          "y1": 221.66666666666666,
+          "x2": 540,
+          "y2": 221.66666666666666
+        },
+        {
+          "kind": "circle",
+          "x": 148.91666666666669,
+          "y": 222.83333333333331,
+          "r": 4.083333333333334
+        },
+        {
+          "kind": "text",
+          "x": 153.91666666666669,
+          "y": 217.83333333333331,
+          "text": "B2",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 310,
+          "y1": 221.66666666666666,
+          "x2": 540,
+          "y2": 221.66666666666666
+        },
+        {
+          "kind": "circle",
+          "x": 83.58333333333333,
+          "y": 386.1666666666667,
+          "r": 4.083333333333334
+        },
+        {
+          "kind": "text",
+          "x": 88.58333333333333,
+          "y": 381.1666666666667,
+          "text": "B3",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 310,
+          "y1": 308.33333333333337,
+          "x2": 540,
+          "y2": 308.33333333333337
+        },
+        {
+          "kind": "circle",
+          "x": 148.91666666666669,
+          "y": 386.1666666666667,
+          "r": 4.083333333333334
+        },
+        {
+          "kind": "text",
+          "x": 153.91666666666669,
+          "y": 381.1666666666667,
+          "text": "B4",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 310,
+          "y1": 308.33333333333337,
+          "x2": 540,
+          "y2": 308.33333333333337
+        },
+        {
+          "kind": "text",
+          "x": 310,
+          "y": 353,
+          "text": "피복 40 mm",
+          "size": 10
+        },
+        {
+          "kind": "line",
+          "x1": 310,
+          "y1": 208,
+          "x2": 310,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 321.5,
+          "y1": 208,
+          "x2": 321.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 333,
+          "y1": 208,
+          "x2": 333,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 344.5,
+          "y1": 208,
+          "x2": 344.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 356,
+          "y1": 208,
+          "x2": 356,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 367.5,
+          "y1": 208,
+          "x2": 367.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 379,
+          "y1": 208,
+          "x2": 379,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 390.5,
+          "y1": 208,
+          "x2": 390.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 402,
+          "y1": 208,
+          "x2": 402,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 413.5,
+          "y1": 208,
+          "x2": 413.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 425,
+          "y1": 208,
+          "x2": 425,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 436.5,
+          "y1": 208,
+          "x2": 436.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 448,
+          "y1": 208,
+          "x2": 448,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 459.5,
+          "y1": 208,
+          "x2": 459.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 471,
+          "y1": 208,
+          "x2": 471,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 482.5,
+          "y1": 208,
+          "x2": 482.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 494,
+          "y1": 208,
+          "x2": 494,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 505.5,
+          "y1": 208,
+          "x2": 505.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 517,
+          "y1": 208,
+          "x2": 517,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 528.5,
+          "y1": 208,
+          "x2": 528.5,
+          "y2": 322
+        },
+        {
+          "kind": "line",
+          "x1": 540,
+          "y1": 208,
+          "x2": 540,
+          "y2": 322
+        },
+        {
+          "kind": "text",
+          "x": 310,
+          "y": 374,
+          "text": "스터럽 2다리 10 @150",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 310,
+          "y": 393,
+          "text": "제공 단부 위치 기준 21개 / 후크 기하 미확정",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 468,
+          "text": "철근 일람 - 형상 길이 / 제작 승인 및 정착 검토 별도",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 45,
+          "y": 495,
+          "text": "B1   직경 20   1개   본체 3000 mm   절단 길이 미확정",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 45,
+          "y": 513,
+          "text": "B2   직경 20   1개   본체 3000 mm   절단 길이 미확정",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 45,
+          "y": 531,
+          "text": "B3   직경 20   1개   본체 3000 mm   절단 길이 미확정",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 45,
+          "y": 549,
+          "text": "B4   직경 20   1개   본체 3000 mm   절단 길이 미확정",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 665,
+          "text": "rc-code-compliance: RULE_UNAVAILABLE",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "1 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "R",
+      "detailVersion": 1
+    },
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "KDS 계산 근거 및 적용 범위",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: code-basis @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 165,
+          "text": "적용 확인 필요: KDS 41 20 00:2024 건축물 콘크리트구조 설계기준",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 178,
+          "text": "조항/식/표: 4",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 191,
+          "text": "공식 출처: https://kcsc.re.kr/OpenApi/CodeViewer/KDS/412000",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 204,
+          "text": "SHA-256: e635ceb4dd9b0b664b7bb37c7a9e1ada660feef9dce7444fc094305f8f7d9a5c",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "2 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "code-basis",
+      "detailVersion": 1
+    },
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "철근 전수 일람 및 수량",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: recorded-data @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 163,
+          "text": "R@1 / B1 / longitudinal",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 176,
+          "text": "geometricQuantity: B1 / NOT_CHECKED / 조각 미정개 / 단면적 0.00031415926",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 189,
+          "text": "535897936 m²",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 202,
+          "text": "조각 기하 길이 합 미정 m / 체적 미정 m³ / 제작 미승인",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 215,
+          "text": "사유: LONGITUDINAL_END_LENGTH_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 228,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 241,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 254,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 267,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 280,
+          "text": "부재 ID: AB",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 293,
+          "text": "직경 (m): 0.02",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 306,
+          "text": "단면적 (m²): 0.00031415926535897936",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 319,
+          "text": "단면적 근거: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 332,
+          "text": "제품 호칭: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 345,
+          "text": "productCatalogId: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 358,
+          "text": "unitMassKgPerM: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 371,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 384,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 397,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 410,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 423,
+          "text": "pieceMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 436,
+          "text": "totalMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 449,
+          "text": "제품 자료: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 462,
+          "text": "제품 판본: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 475,
+          "text": "제품 확인 상태: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 488,
+          "text": "개수: 1",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 501,
+          "text": "본체 길이 (m): 3",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 514,
+          "text": "본체 체적 (m³): 0.000942477796076938",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 527,
+          "text": "형상 길이 (m): 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 540,
+          "text": "사유: BAR_SHAPE_NOT_DEFINED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 553,
+          "text": "제작 승인: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 566,
+          "text": "R@1 / B2 / longitudinal",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 579,
+          "text": "geometricQuantity: B2 / NOT_CHECKED / 조각 미정개 / 단면적 0.00031415926",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 592,
+          "text": "535897936 m²",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 605,
+          "text": "조각 기하 길이 합 미정 m / 체적 미정 m³ / 제작 미승인",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 618,
+          "text": "사유: LONGITUDINAL_END_LENGTH_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 631,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 644,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 657,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 670,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 683,
+          "text": "부재 ID: AB",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 696,
+          "text": "직경 (m): 0.02",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 709,
+          "text": "단면적 (m²): 0.00031415926535897936",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 722,
+          "text": "단면적 근거: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 735,
+          "text": "제품 호칭: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 748,
+          "text": "productCatalogId: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "3 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "recorded-data",
+      "detailVersion": 1
+    },
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "철근 전수 일람 및 수량",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: recorded-data @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 163,
+          "text": "unitMassKgPerM: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 176,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 189,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 202,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 215,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 228,
+          "text": "pieceMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 241,
+          "text": "totalMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 254,
+          "text": "제품 자료: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 267,
+          "text": "제품 판본: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 280,
+          "text": "제품 확인 상태: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 293,
+          "text": "개수: 1",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 306,
+          "text": "본체 길이 (m): 3",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 319,
+          "text": "본체 체적 (m³): 0.000942477796076938",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 332,
+          "text": "형상 길이 (m): 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 345,
+          "text": "사유: BAR_SHAPE_NOT_DEFINED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 358,
+          "text": "제작 승인: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 371,
+          "text": "R@1 / B3 / longitudinal",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 384,
+          "text": "geometricQuantity: B3 / NOT_CHECKED / 조각 미정개 / 단면적 0.00031415926",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 397,
+          "text": "535897936 m²",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 410,
+          "text": "조각 기하 길이 합 미정 m / 체적 미정 m³ / 제작 미승인",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 423,
+          "text": "사유: LONGITUDINAL_END_LENGTH_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 436,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 449,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 462,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 475,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 488,
+          "text": "부재 ID: AB",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 501,
+          "text": "직경 (m): 0.02",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 514,
+          "text": "단면적 (m²): 0.00031415926535897936",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 527,
+          "text": "단면적 근거: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 540,
+          "text": "제품 호칭: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 553,
+          "text": "productCatalogId: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 566,
+          "text": "unitMassKgPerM: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 579,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 592,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 605,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 618,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 631,
+          "text": "pieceMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 644,
+          "text": "totalMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 657,
+          "text": "제품 자료: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 670,
+          "text": "제품 판본: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 683,
+          "text": "제품 확인 상태: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 696,
+          "text": "개수: 1",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 709,
+          "text": "본체 길이 (m): 3",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 722,
+          "text": "본체 체적 (m³): 0.000942477796076938",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 735,
+          "text": "형상 길이 (m): 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 748,
+          "text": "사유: BAR_SHAPE_NOT_DEFINED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "4 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "recorded-data",
+      "detailVersion": 1
+    },
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "철근 전수 일람 및 수량",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: recorded-data @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 163,
+          "text": "제작 승인: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 176,
+          "text": "R@1 / B4 / longitudinal",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 189,
+          "text": "geometricQuantity: B4 / NOT_CHECKED / 조각 미정개 / 단면적 0.00031415926",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 202,
+          "text": "535897936 m²",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 215,
+          "text": "조각 기하 길이 합 미정 m / 체적 미정 m³ / 제작 미승인",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 228,
+          "text": "사유: LONGITUDINAL_END_LENGTH_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 241,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 254,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 267,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 280,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 293,
+          "text": "부재 ID: AB",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 306,
+          "text": "직경 (m): 0.02",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 319,
+          "text": "단면적 (m²): 0.00031415926535897936",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 332,
+          "text": "단면적 근거: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 345,
+          "text": "제품 호칭: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 358,
+          "text": "productCatalogId: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 371,
+          "text": "unitMassKgPerM: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 384,
+          "text": "공칭 질량: 미확정 / 단중 미확정 kg/m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 397,
+          "text": "대상 조각 미확정개 / 중심선 길이 합 미확정 m / 제작 승인 별도",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 410,
+          "text": "질량 미확정 사유: PRODUCT_UNIT_MASS_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 423,
+          "text": "가공 공차와 구매 손실은 포함하지 않음",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 436,
+          "text": "pieceMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 449,
+          "text": "totalMassKg: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 462,
+          "text": "제품 자료: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 475,
+          "text": "제품 판본: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 488,
+          "text": "제품 확인 상태: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 501,
+          "text": "개수: 1",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 514,
+          "text": "본체 길이 (m): 3",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 527,
+          "text": "본체 체적 (m³): 0.000942477796076938",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 540,
+          "text": "형상 길이 (m): 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 553,
+          "text": "사유: BAR_SHAPE_NOT_DEFINED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 566,
+          "text": "제작 승인: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 579,
+          "text": "R@1 / S1 / stirrup",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 592,
+          "text": "geometricQuantity: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 605,
+          "text": "제작 승인: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 618,
+          "text": "직경 (m): 0.01",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 631,
+          "text": "단면적 (m²): 0.00007853981633974483",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 644,
+          "text": "단면적 근거: geometric-diameter",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 657,
+          "text": "제품 자료: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 670,
+          "text": "제품 판본: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 683,
+          "text": "개수: 21",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 696,
+          "text": "positions: 공통 자료 D1",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 709,
+          "text": "positions: [0,0.15,0.3,0.44999999999999996,0.6,0.75,0.8999999999",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 722,
+          "text": "999999,1.05,1.2,1.3499999999999999,1.5,1.65,1.7999999999999998,1",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 735,
+          "text": ".95,2.1,2.25,2.4,2.55,2.6999999999999997,2.85,3]",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 748,
+          "text": "distribution: {\"count\":21,\"first\":0,\"last\":3,\"spacing\":0.15,\"exp",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "5 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "recorded-data",
+      "detailVersion": 1
+    },
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "철근 전수 일람 및 수량",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: recorded-data @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 163,
+          "text": "licitEnds\":false}",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 176,
+          "text": "간격 (m): 0.15",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 189,
+          "text": "perimeterGeometry: 공통 자료 D2",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 202,
+          "text": "perimeterGeometry.fabricationApproved: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 215,
+          "text": "perimeterGeometry.cutLength: 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 228,
+          "text": "perimeterGeometry.closureStatus: NOT_CHECKED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 241,
+          "text": "perimeterGeometry.reason: OUTER_HOOP_GEOMETRY_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 254,
+          "text": "perimeterGeometry.units.length: m",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 267,
+          "text": "perimeterGeometry.status: NOT_CHECKED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 280,
+          "text": "perimeterGeometry.actualPathAssembly.status: NOT_CHECKED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 293,
+          "text": "perimeterGeometry.actualPathAssembly.reason: OUTER_HOOP_GEOMETRY",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 306,
+          "text": "_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 319,
+          "text": "perimeterGeometry.actualPathAssembly.checks: []",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 332,
+          "text": "perimeterGeometry.actualPathAssembly.fabricationApproved: 아니오",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 345,
+          "text": "형상 길이 (m): 미정",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 358,
+          "text": "사유: OUTER_HOOP_GEOMETRY_REQUIRED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "6 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "recorded-data",
+      "detailVersion": 1
+    },
+    {
+      "width": 595.28,
+      "height": 841.89,
+      "commands": [
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 42,
+          "text": "검사별 계산 및 미완료 사유",
+          "size": 18
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 66,
+          "text": "검토용 - 시공 및 최종 설계 승인용 아님",
+          "size": 11
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 88,
+          "text": "상세: recorded-data @1",
+          "size": 10
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 106,
+          "text": "입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 124,
+          "text": "평가: EVALUATION-T16",
+          "size": 8
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 138,
+          "x2": 560,
+          "y2": 138
+        },
+        {
+          "kind": "line",
+          "x1": 35,
+          "y1": 787,
+          "x2": 560,
+          "y2": 787
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 804,
+          "text": "KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요",
+          "size": 9
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 163,
+          "text": "AB / - / rc-code-compliance / NOT_CHECKED",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 176,
+          "text": "사유: RULE_UNAVAILABLE",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 189,
+          "text": "KDS: NOT_ESTABLISHED / missing-or-unqualified-input",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 202,
+          "text": "KDS: KDS 41 20 00:2024 4 [e635ceb4dd9b0b664b7bb37c7a9e1ada660fee",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 35,
+          "y": 215,
+          "text": "f9dce7444fc094305f8f7d9a5c] (근거 K1)",
+          "size": 8
+        },
+        {
+          "kind": "text",
+          "x": 500,
+          "y": 820,
+          "text": "7 / 7",
+          "size": 9
+        }
+      ],
+      "detailId": "recorded-data",
+      "detailVersion": 1
+    }
+  ],
+  "totalPages": 7,
+  "pageOffset": 0,
+  "retainedPageCount": 7,
+  "quantities": [
+    {
+      "geometricQuantity": {
+        "geometryKind": "longitudinal-quantity-row-v1",
+        "barIndex": 1,
+        "mark": "B1",
+        "area": 0.00031415926535897936,
+        "geometricLength": null,
+        "volume": null,
+        "pieceCount": null,
+        "fabricationApproved": false,
+        "status": "NOT_CHECKED",
+        "reason": "LONGITUDINAL_END_LENGTH_REQUIRED",
+        "massQuantity": {
+          "version": "p25-reinforcement-mass-v1",
+          "status": "NOT_CHECKED",
+          "unitMassKgPerM": null,
+          "pieceMassKg": null,
+          "totalMassKg": null,
+          "totalLength": null,
+          "pieceCount": null,
+          "units": {
+            "length": "m",
+            "mass": "kg",
+            "unitMass": "kg/m"
+          },
+          "basis": "product-unit-mass-times-prepared-centerline",
+          "fabricationApproved": false,
+          "allowancesIncluded": false,
+          "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+          "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+        }
+      },
+      "detailId": "R",
+      "version": 1,
+      "memberId": "AB",
+      "mark": "B1",
+      "kind": "longitudinal",
+      "diameter": 0.02,
+      "area": 0.00031415926535897936,
+      "areaBasis": "geometric-diameter",
+      "designation": null,
+      "productCatalogId": null,
+      "unitMassKgPerM": null,
+      "massQuantity": {
+        "version": "p25-reinforcement-mass-v1",
+        "status": "NOT_CHECKED",
+        "unitMassKgPerM": null,
+        "pieceMassKg": null,
+        "totalMassKg": null,
+        "totalLength": null,
+        "pieceCount": null,
+        "units": {
+          "length": "m",
+          "mass": "kg",
+          "unitMass": "kg/m"
+        },
+        "basis": "product-unit-mass-times-prepared-centerline",
+        "fabricationApproved": false,
+        "allowancesIncluded": false,
+        "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+        "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+      },
+      "pieceMassKg": null,
+      "totalMassKg": null,
+      "productReference": null,
+      "productEdition": null,
+      "productVerification": "geometric-diameter",
+      "count": 1,
+      "bodyLength": 3,
+      "bodyVolume": 0.000942477796076938,
+      "cutLength": null,
+      "reason": "BAR_SHAPE_NOT_DEFINED",
+      "fabricationApproved": false
+    },
+    {
+      "geometricQuantity": {
+        "geometryKind": "longitudinal-quantity-row-v1",
+        "barIndex": 2,
+        "mark": "B2",
+        "area": 0.00031415926535897936,
+        "geometricLength": null,
+        "volume": null,
+        "pieceCount": null,
+        "fabricationApproved": false,
+        "status": "NOT_CHECKED",
+        "reason": "LONGITUDINAL_END_LENGTH_REQUIRED",
+        "massQuantity": {
+          "version": "p25-reinforcement-mass-v1",
+          "status": "NOT_CHECKED",
+          "unitMassKgPerM": null,
+          "pieceMassKg": null,
+          "totalMassKg": null,
+          "totalLength": null,
+          "pieceCount": null,
+          "units": {
+            "length": "m",
+            "mass": "kg",
+            "unitMass": "kg/m"
+          },
+          "basis": "product-unit-mass-times-prepared-centerline",
+          "fabricationApproved": false,
+          "allowancesIncluded": false,
+          "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+          "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+        }
+      },
+      "detailId": "R",
+      "version": 1,
+      "memberId": "AB",
+      "mark": "B2",
+      "kind": "longitudinal",
+      "diameter": 0.02,
+      "area": 0.00031415926535897936,
+      "areaBasis": "geometric-diameter",
+      "designation": null,
+      "productCatalogId": null,
+      "unitMassKgPerM": null,
+      "massQuantity": {
+        "version": "p25-reinforcement-mass-v1",
+        "status": "NOT_CHECKED",
+        "unitMassKgPerM": null,
+        "pieceMassKg": null,
+        "totalMassKg": null,
+        "totalLength": null,
+        "pieceCount": null,
+        "units": {
+          "length": "m",
+          "mass": "kg",
+          "unitMass": "kg/m"
+        },
+        "basis": "product-unit-mass-times-prepared-centerline",
+        "fabricationApproved": false,
+        "allowancesIncluded": false,
+        "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+        "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+      },
+      "pieceMassKg": null,
+      "totalMassKg": null,
+      "productReference": null,
+      "productEdition": null,
+      "productVerification": "geometric-diameter",
+      "count": 1,
+      "bodyLength": 3,
+      "bodyVolume": 0.000942477796076938,
+      "cutLength": null,
+      "reason": "BAR_SHAPE_NOT_DEFINED",
+      "fabricationApproved": false
+    },
+    {
+      "geometricQuantity": {
+        "geometryKind": "longitudinal-quantity-row-v1",
+        "barIndex": 3,
+        "mark": "B3",
+        "area": 0.00031415926535897936,
+        "geometricLength": null,
+        "volume": null,
+        "pieceCount": null,
+        "fabricationApproved": false,
+        "status": "NOT_CHECKED",
+        "reason": "LONGITUDINAL_END_LENGTH_REQUIRED",
+        "massQuantity": {
+          "version": "p25-reinforcement-mass-v1",
+          "status": "NOT_CHECKED",
+          "unitMassKgPerM": null,
+          "pieceMassKg": null,
+          "totalMassKg": null,
+          "totalLength": null,
+          "pieceCount": null,
+          "units": {
+            "length": "m",
+            "mass": "kg",
+            "unitMass": "kg/m"
+          },
+          "basis": "product-unit-mass-times-prepared-centerline",
+          "fabricationApproved": false,
+          "allowancesIncluded": false,
+          "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+          "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+        }
+      },
+      "detailId": "R",
+      "version": 1,
+      "memberId": "AB",
+      "mark": "B3",
+      "kind": "longitudinal",
+      "diameter": 0.02,
+      "area": 0.00031415926535897936,
+      "areaBasis": "geometric-diameter",
+      "designation": null,
+      "productCatalogId": null,
+      "unitMassKgPerM": null,
+      "massQuantity": {
+        "version": "p25-reinforcement-mass-v1",
+        "status": "NOT_CHECKED",
+        "unitMassKgPerM": null,
+        "pieceMassKg": null,
+        "totalMassKg": null,
+        "totalLength": null,
+        "pieceCount": null,
+        "units": {
+          "length": "m",
+          "mass": "kg",
+          "unitMass": "kg/m"
+        },
+        "basis": "product-unit-mass-times-prepared-centerline",
+        "fabricationApproved": false,
+        "allowancesIncluded": false,
+        "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+        "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+      },
+      "pieceMassKg": null,
+      "totalMassKg": null,
+      "productReference": null,
+      "productEdition": null,
+      "productVerification": "geometric-diameter",
+      "count": 1,
+      "bodyLength": 3,
+      "bodyVolume": 0.000942477796076938,
+      "cutLength": null,
+      "reason": "BAR_SHAPE_NOT_DEFINED",
+      "fabricationApproved": false
+    },
+    {
+      "geometricQuantity": {
+        "geometryKind": "longitudinal-quantity-row-v1",
+        "barIndex": 4,
+        "mark": "B4",
+        "area": 0.00031415926535897936,
+        "geometricLength": null,
+        "volume": null,
+        "pieceCount": null,
+        "fabricationApproved": false,
+        "status": "NOT_CHECKED",
+        "reason": "LONGITUDINAL_END_LENGTH_REQUIRED",
+        "massQuantity": {
+          "version": "p25-reinforcement-mass-v1",
+          "status": "NOT_CHECKED",
+          "unitMassKgPerM": null,
+          "pieceMassKg": null,
+          "totalMassKg": null,
+          "totalLength": null,
+          "pieceCount": null,
+          "units": {
+            "length": "m",
+            "mass": "kg",
+            "unitMass": "kg/m"
+          },
+          "basis": "product-unit-mass-times-prepared-centerline",
+          "fabricationApproved": false,
+          "allowancesIncluded": false,
+          "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+          "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+        }
+      },
+      "detailId": "R",
+      "version": 1,
+      "memberId": "AB",
+      "mark": "B4",
+      "kind": "longitudinal",
+      "diameter": 0.02,
+      "area": 0.00031415926535897936,
+      "areaBasis": "geometric-diameter",
+      "designation": null,
+      "productCatalogId": null,
+      "unitMassKgPerM": null,
+      "massQuantity": {
+        "version": "p25-reinforcement-mass-v1",
+        "status": "NOT_CHECKED",
+        "unitMassKgPerM": null,
+        "pieceMassKg": null,
+        "totalMassKg": null,
+        "totalLength": null,
+        "pieceCount": null,
+        "units": {
+          "length": "m",
+          "mass": "kg",
+          "unitMass": "kg/m"
+        },
+        "basis": "product-unit-mass-times-prepared-centerline",
+        "fabricationApproved": false,
+        "allowancesIncluded": false,
+        "allowanceBasis": "nominal centerline only; fabrication tolerances and procurement waste excluded",
+        "reason": "PRODUCT_UNIT_MASS_REQUIRED"
+      },
+      "pieceMassKg": null,
+      "totalMassKg": null,
+      "productReference": null,
+      "productEdition": null,
+      "productVerification": "geometric-diameter",
+      "count": 1,
+      "bodyLength": 3,
+      "bodyVolume": 0.000942477796076938,
+      "cutLength": null,
+      "reason": "BAR_SHAPE_NOT_DEFINED",
+      "fabricationApproved": false
+    },
+    {
+      "geometricQuantity": null,
+      "fabricationApproved": false,
+      "detailId": "R",
+      "version": 1,
+      "mark": "S1",
+      "kind": "stirrup",
+      "diameter": 0.01,
+      "area": 0.00007853981633974483,
+      "areaBasis": "geometric-diameter",
+      "productReference": null,
+      "productEdition": null,
+      "count": 21,
+      "positions": [
+        0,
+        0.15,
+        0.3,
+        0.44999999999999996,
+        0.6,
+        0.75,
+        0.8999999999999999,
+        1.05,
+        1.2,
+        1.3499999999999999,
+        1.5,
+        1.65,
+        1.7999999999999998,
+        1.95,
+        2.1,
+        2.25,
+        2.4,
+        2.55,
+        2.6999999999999997,
+        2.85,
+        3
+      ],
+      "distribution": {
+        "count": 21,
+        "first": 0,
+        "last": 3,
+        "spacing": 0.15,
+        "explicitEnds": false
+      },
+      "spacing": 0.15,
+      "perimeterGeometry": {
+        "fabricationApproved": false,
+        "cutLength": null,
+        "closureStatus": "NOT_CHECKED",
+        "reason": "OUTER_HOOP_GEOMETRY_REQUIRED",
+        "units": {
+          "length": "m"
+        },
+        "status": "NOT_CHECKED",
+        "actualPathAssembly": {
+          "status": "NOT_CHECKED",
+          "reason": "OUTER_HOOP_GEOMETRY_REQUIRED",
+          "checks": [],
+          "fabricationApproved": false
+        }
+      },
+      "cutLength": null,
+      "reason": "OUTER_HOOP_GEOMETRY_REQUIRED"
+    }
+  ],
+  "throughBarSchedule": {
+    "version": "p25-through-bar-schedule-v2-canonical",
+    "records": [],
+    "physicalBarCount": 0,
+    "sourceFragmentCount": 0,
+    "fabricationApproved": false
+  },
+  "checkCount": 1,
+  "checks": [
+    {
+      "entityId": "AB",
+      "checkId": "rc-code-compliance",
+      "status": "NOT_CHECKED",
+      "reason": "RULE_UNAVAILABLE",
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CHECK_NOT_EVALUATED",
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "412000",
+            "code": "KDS 41 20 00",
+            "name": "건축물 콘크리트구조 설계기준",
+            "edition": "2024",
+            "updateDate": "2025-01-02T09:40:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/412000",
+            "retrievedAt": "2026-09-11T01:06:18.820940+00:00",
+            "sha256": "e635ceb4dd9b0b664b7bb37c7a9e1ada660feef9dce7444fc094305f8f7d9a5c",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CHECK_NOT_EVALUATED, CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    }
+  ]
+}

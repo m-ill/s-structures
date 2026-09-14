@@ -1,0 +1,1331 @@
+{
+  "scope": "synthetic external joint; all required checks retained; not whole-design qualification",
+  "evaluationId": "evaluation-253dab18450a7a7a4add7ff3a4bde0d345f1e07be99a111dddce1bbca47787bf",
+  "appliedEvaluationId": "evaluation-576efa38491be832aa29ad79525b78b53c1d024955c246664f9623918505427e",
+  "before": [
+    {
+      "checkId": "joint-equilibrium",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0.000008526512829121202,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-probable-forces",
+      "status": "OK",
+      "reason": null,
+      "ratio": null,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-probable-forces",
+          "version": 1,
+          "checkIds": [
+            "joint-probable-forces"
+          ],
+          "module": "src/design/connection/jointProbableForces.js",
+          "scope": "beam-end 1.25fy forces; panel bound requires independent method review",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(1)"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-shear",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0.2790733426741093,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-shear",
+          "version": 1,
+          "checkIds": [
+            "joint-shear"
+          ],
+          "module": "src/design/connection/kdsJointShear.js",
+          "scope": "centered orthogonal special frame; supplied probable demand",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-confinement",
+      "status": "NG",
+      "reason": "JOINT_HOOP_AREA_INSUFFICIENT",
+      "ratio": 8.556260672770492,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hoops",
+          "version": 1,
+          "checkIds": [
+            "joint-confinement",
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/kdsJointHoops.js",
+          "scope": "special frame full rectangular hoop amount and spacing; physical detailing separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            },
+            {
+              "id": "142001",
+              "edition": "2022",
+              "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.4; 4.1.5; 4.5.4; Eq.4.5-3; Eq.4.5-4; Eq.4.5-5; 4.6.2"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-hoop-detail",
+      "status": "NOT_CHECKED",
+      "reason": "JOINT_SEISMIC_HOOK_AND_PANEL_GEOMETRY_REQUIRED",
+      "ratio": null,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-outer-support",
+          "version": 1,
+          "checkIds": [
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/jointHoopSupport.js",
+          "scope": "actual closure, distinct corner supports and straight-face membership; seismic qualification separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CHECK_NOT_EVALUATED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.4, 4.6.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CHECK_NOT_EVALUATED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-bar-congestion",
+      "status": "NG",
+      "reason": "JOINT_LONGITUDINAL_BAR_CLEARANCE_NOT_SATISFIED",
+      "ratio": null,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-congestion",
+          "version": 1,
+          "checkIds": [
+            "joint-bar-congestion"
+          ],
+          "module": "src/design/connection/jointCongestion.js",
+          "scope": "longitudinal 3D path clearance with conservative arc error; geometric review only",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1; 4.6.4",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "longitudinal-bar-geometry-review",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-member-strength-ratio",
+      "status": "NG",
+      "reason": "CONSERVATIVE_COLUMN_BEAM_BOUND_NOT_SATISFIED",
+      "ratio": 1.3437390434776453,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-strength-relation",
+          "version": 1,
+          "checkIds": [
+            "joint-member-strength-ratio"
+          ],
+          "module": "src/design/connection/jointStrengthRelation.js",
+          "scope": "column lower/design versus beam upper/nominal strength bound; method review pending",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142020",
+              "edition": "2022",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2(2); Eq.4.5-1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "conservative-sufficient-strength-bound-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-anchorage",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0.3230247416128209,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hook-anchorage",
+          "version": 1,
+          "checkIds": [
+            "joint-anchorage"
+          ],
+          "module": "src/design/connection/jointHookAnchorage.js",
+          "scope": "ordinary-weight special-frame 90-degree hooks, explicit matched straight through-bars, or an explicit through axis with perpendicular hooks; KDS 4.6.1(4) depth; physical continuity and independent review remain distinct",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(3); 4.6.4(1); Eq.4.6-3"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142052",
+            "code": "KDS 14 20 52",
+            "name": "콘크리트구조 정착 및 이음 설계기준",
+            "edition": "2024",
+            "updateDate": "2024-12-31T10:54:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+            "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+            "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-stiffness",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    }
+  ],
+  "after": [
+    {
+      "checkId": "joint-equilibrium",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0.000008526512829121202,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-probable-forces",
+      "status": "OK",
+      "reason": null,
+      "ratio": null,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-probable-forces",
+          "version": 1,
+          "checkIds": [
+            "joint-probable-forces"
+          ],
+          "module": "src/design/connection/jointProbableForces.js",
+          "scope": "beam-end 1.25fy forces; panel bound requires independent method review",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(1)"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-shear",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0.2790733426741093,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-shear",
+          "version": 1,
+          "checkIds": [
+            "joint-shear"
+          ],
+          "module": "src/design/connection/kdsJointShear.js",
+          "scope": "centered orthogonal special frame; supplied probable demand",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-confinement",
+      "status": "NG",
+      "reason": "JOINT_HOOP_AREA_INSUFFICIENT",
+      "ratio": 5.704173781846994,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hoops",
+          "version": 1,
+          "checkIds": [
+            "joint-confinement",
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/kdsJointHoops.js",
+          "scope": "special frame full rectangular hoop amount and spacing; physical detailing separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            },
+            {
+              "id": "142001",
+              "edition": "2022",
+              "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.4; 4.1.5; 4.5.4; Eq.4.5-3; Eq.4.5-4; Eq.4.5-5; 4.6.2"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-hoop-detail",
+      "status": "NOT_CHECKED",
+      "reason": "JOINT_SEISMIC_HOOK_AND_PANEL_GEOMETRY_REQUIRED",
+      "ratio": null,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-outer-support",
+          "version": 1,
+          "checkIds": [
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/jointHoopSupport.js",
+          "scope": "actual closure, distinct corner supports and straight-face membership; seismic qualification separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CHECK_NOT_EVALUATED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.4, 4.6.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CHECK_NOT_EVALUATED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-bar-congestion",
+      "status": "NG",
+      "reason": "JOINT_LONGITUDINAL_BAR_CLEARANCE_NOT_SATISFIED",
+      "ratio": null,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-congestion",
+          "version": 1,
+          "checkIds": [
+            "joint-bar-congestion"
+          ],
+          "module": "src/design/connection/jointCongestion.js",
+          "scope": "longitudinal 3D path clearance with conservative arc error; geometric review only",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1; 4.6.4",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "longitudinal-bar-geometry-review",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-member-strength-ratio",
+      "status": "NG",
+      "reason": "CONSERVATIVE_COLUMN_BEAM_BOUND_NOT_SATISFIED",
+      "ratio": 1.3437390434776453,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-strength-relation",
+          "version": 1,
+          "checkIds": [
+            "joint-member-strength-ratio"
+          ],
+          "module": "src/design/connection/jointStrengthRelation.js",
+          "scope": "column lower/design versus beam upper/nominal strength bound; method review pending",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142020",
+              "edition": "2022",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2(2); Eq.4.5-1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "conservative-sufficient-strength-bound-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-anchorage",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0.3230247416128209,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hook-anchorage",
+          "version": 1,
+          "checkIds": [
+            "joint-anchorage"
+          ],
+          "module": "src/design/connection/jointHookAnchorage.js",
+          "scope": "ordinary-weight special-frame 90-degree hooks, explicit matched straight through-bars, or an explicit through axis with perpendicular hooks; KDS 4.6.1(4) depth; physical continuity and independent review remain distinct",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(3); 4.6.4(1); Eq.4.6-3"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142052",
+            "code": "KDS 14 20 52",
+            "name": "콘크리트구조 정착 및 이음 설계기준",
+            "edition": "2024",
+            "updateDate": "2024-12-31T10:54:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+            "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+            "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      }
+    },
+    {
+      "checkId": "joint-stiffness",
+      "status": "OK",
+      "reason": null,
+      "ratio": 0,
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      }
+    }
+  ]
+}

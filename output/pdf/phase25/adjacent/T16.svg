@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="595.28" height="841.89" viewBox="0 0 595.28 841.89"><rect width="100%" height="100%" fill="white"/><g fill="none" stroke="#183d68" stroke-width="0.8" font-family="sans-serif"><text x="35" y="42" font-size="18" fill="#172338" stroke="none">부재 AB 배근 검토도</text>
+<text x="35" y="66" font-size="11" fill="#172338" stroke="none">검토용 - 시공 및 최종 설계 승인용 아님</text>
+<text x="35" y="88" font-size="10" fill="#172338" stroke="none">상세: R @1</text>
+<text x="35" y="106" font-size="8" fill="#172338" stroke="none">입력: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</text>
+<text x="35" y="124" font-size="8" fill="#172338" stroke="none">평가: EVALUATION-T16</text>
+<line x1="35" y1="138" x2="560" y2="138"/>
+<line x1="35" y1="787" x2="560" y2="787"/>
+<text x="35" y="804" font-size="9" fill="#172338" stroke="none">KDS 규칙·정착·이음·구속 및 누락 검토는 별도 확인 필요</text>
+<rect x="55" y="182" width="122.5" height="245"/>
+<text x="55" y="164" font-size="11" fill="#172338" stroke="none">단면 300 x 600 mm</text>
+<text x="55" y="442" font-size="8" fill="#172338" stroke="none">띠철근 굽힘 형상 미확정</text>
+<rect x="310" y="200" width="230" height="130"/>
+<text x="310" y="180" font-size="10" fill="#172338" stroke="none">배근 구간 길이 3000 mm</text>
+<circle cx="83.58333333333333" cy="222.83333333333331" r="4.083333333333334"/>
+<text x="88.58333333333333" y="217.83333333333331" font-size="8" fill="#172338" stroke="none">B1</text>
+<line x1="310" y1="221.66666666666666" x2="540" y2="221.66666666666666"/>
+<circle cx="148.91666666666669" cy="222.83333333333331" r="4.083333333333334"/>
+<text x="153.91666666666669" y="217.83333333333331" font-size="8" fill="#172338" stroke="none">B2</text>
+<line x1="310" y1="221.66666666666666" x2="540" y2="221.66666666666666"/>
+<circle cx="83.58333333333333" cy="386.1666666666667" r="4.083333333333334"/>
+<text x="88.58333333333333" y="381.1666666666667" font-size="8" fill="#172338" stroke="none">B3</text>
+<line x1="310" y1="308.33333333333337" x2="540" y2="308.33333333333337"/>
+<circle cx="148.91666666666669" cy="386.1666666666667" r="4.083333333333334"/>
+<text x="153.91666666666669" y="381.1666666666667" font-size="8" fill="#172338" stroke="none">B4</text>
+<line x1="310" y1="308.33333333333337" x2="540" y2="308.33333333333337"/>
+<text x="310" y="353" font-size="10" fill="#172338" stroke="none">피복 40 mm</text>
+<line x1="310" y1="208" x2="310" y2="322"/>
+<line x1="321.5" y1="208" x2="321.5" y2="322"/>
+<line x1="333" y1="208" x2="333" y2="322"/>
+<line x1="344.5" y1="208" x2="344.5" y2="322"/>
+<line x1="356" y1="208" x2="356" y2="322"/>
+<line x1="367.5" y1="208" x2="367.5" y2="322"/>
+<line x1="379" y1="208" x2="379" y2="322"/>
+<line x1="390.5" y1="208" x2="390.5" y2="322"/>
+<line x1="402" y1="208" x2="402" y2="322"/>
+<line x1="413.5" y1="208" x2="413.5" y2="322"/>
+<line x1="425" y1="208" x2="425" y2="322"/>
+<line x1="436.5" y1="208" x2="436.5" y2="322"/>
+<line x1="448" y1="208" x2="448" y2="322"/>
+<line x1="459.5" y1="208" x2="459.5" y2="322"/>
+<line x1="471" y1="208" x2="471" y2="322"/>
+<line x1="482.5" y1="208" x2="482.5" y2="322"/>
+<line x1="494" y1="208" x2="494" y2="322"/>
+<line x1="505.5" y1="208" x2="505.5" y2="322"/>
+<line x1="517" y1="208" x2="517" y2="322"/>
+<line x1="528.5" y1="208" x2="528.5" y2="322"/>
+<line x1="540" y1="208" x2="540" y2="322"/>
+<text x="310" y="374" font-size="10" fill="#172338" stroke="none">스터럽 2다리 10 @150</text>
+<text x="310" y="393" font-size="9" fill="#172338" stroke="none">제공 단부 위치 기준 21개 / 후크 기하 미확정</text>
+<text x="35" y="468" font-size="11" fill="#172338" stroke="none">철근 일람 - 형상 길이 / 제작 승인 및 정착 검토 별도</text>
+<text x="45" y="495" font-size="9" fill="#172338" stroke="none">B1   직경 20   1개   본체 3000 mm   절단 길이 미확정</text>
+<text x="45" y="513" font-size="9" fill="#172338" stroke="none">B2   직경 20   1개   본체 3000 mm   절단 길이 미확정</text>
+<text x="45" y="531" font-size="9" fill="#172338" stroke="none">B3   직경 20   1개   본체 3000 mm   절단 길이 미확정</text>
+<text x="45" y="549" font-size="9" fill="#172338" stroke="none">B4   직경 20   1개   본체 3000 mm   절단 길이 미확정</text>
+<text x="35" y="665" font-size="8" fill="#172338" stroke="none">rc-code-compliance: RULE_UNAVAILABLE</text>
+<text x="500" y="820" font-size="9" fill="#172338" stroke="none">1 / 7</text></g></svg>

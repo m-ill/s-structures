@@ -1,0 +1,314 @@
+{
+  "joined": {
+    "version": "p25-through-bar-schedule-v2-canonical",
+    "records": [
+      {
+        "id": "CB-01afb727b0ab33b0",
+        "status": "OK",
+        "count": 1,
+        "cutLength": 8.92,
+        "volume": 0.0007005751617505239,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 2,
+            "mark": "B2",
+            "cutLength": 3,
+            "volume": 0.0002356194490192345
+          },
+          {
+            "detailId": "RF",
+            "version": 1,
+            "memberId": "CF",
+            "barIndex": 2,
+            "mark": "B2",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 2,
+            "mark": "B2",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J",
+          "J2"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+      },
+      {
+        "id": "CB-29901fb4394bbdaa",
+        "status": "OK",
+        "count": 1,
+        "cutLength": 8.92,
+        "volume": 0.0007005751617505239,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 1,
+            "mark": "B1",
+            "cutLength": 3,
+            "volume": 0.0002356194490192345
+          },
+          {
+            "detailId": "RF",
+            "version": 1,
+            "memberId": "CF",
+            "barIndex": 1,
+            "mark": "B1",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 1,
+            "mark": "B1",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J",
+          "J2"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+      },
+      {
+        "id": "CB-70daf9c41b939033",
+        "status": "OK",
+        "count": 1,
+        "cutLength": 8.92,
+        "volume": 0.0007005751617505239,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 3,
+            "mark": "B3",
+            "cutLength": 3,
+            "volume": 0.0002356194490192345
+          },
+          {
+            "detailId": "RF",
+            "version": 1,
+            "memberId": "CF",
+            "barIndex": 3,
+            "mark": "B3",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 3,
+            "mark": "B3",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J",
+          "J2"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+      },
+      {
+        "id": "CB-c9bf322f373bf4fa",
+        "status": "OK",
+        "count": 1,
+        "cutLength": 8.92,
+        "volume": 0.0007005751617505239,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 4,
+            "mark": "B4",
+            "cutLength": 3,
+            "volume": 0.0002356194490192345
+          },
+          {
+            "detailId": "RF",
+            "version": 1,
+            "memberId": "CF",
+            "barIndex": 4,
+            "mark": "B4",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 4,
+            "mark": "B4",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J",
+          "J2"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+      }
+    ],
+    "physicalBarCount": 4,
+    "sourceFragmentCount": 12,
+    "fabricationApproved": false
+  },
+  "incomplete": {
+    "version": "p25-through-bar-schedule-v2-canonical",
+    "records": [
+      {
+        "id": "CB-1536894e7ff079c6",
+        "status": "NOT_CHECKED",
+        "count": null,
+        "cutLength": null,
+        "volume": null,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 3,
+            "mark": "B3",
+            "cutLength": null,
+            "volume": null
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 3,
+            "mark": "B3",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_BAR_FRAGMENT_GEOMETRY_REQUIRED"
+      },
+      {
+        "id": "CB-1bde7fcd8905d1d2",
+        "status": "NOT_CHECKED",
+        "count": null,
+        "cutLength": null,
+        "volume": null,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 2,
+            "mark": "B2",
+            "cutLength": null,
+            "volume": null
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 2,
+            "mark": "B2",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_BAR_FRAGMENT_GEOMETRY_REQUIRED"
+      },
+      {
+        "id": "CB-4ad4f1678689138c",
+        "status": "NOT_CHECKED",
+        "count": null,
+        "cutLength": null,
+        "volume": null,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 1,
+            "mark": "B1",
+            "cutLength": null,
+            "volume": null
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 1,
+            "mark": "B1",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_BAR_FRAGMENT_GEOMETRY_REQUIRED"
+      },
+      {
+        "id": "CB-5c82abf84152f7c8",
+        "status": "NOT_CHECKED",
+        "count": null,
+        "cutLength": null,
+        "volume": null,
+        "sourceFragments": [
+          {
+            "detailId": "RB",
+            "version": 1,
+            "memberId": "BC",
+            "barIndex": 4,
+            "mark": "B4",
+            "cutLength": null,
+            "volume": null
+          },
+          {
+            "detailId": "RL",
+            "version": 1,
+            "memberId": "EB",
+            "barIndex": 4,
+            "mark": "B4",
+            "cutLength": 2.96,
+            "volume": 0.00023247785636564471
+          }
+        ],
+        "connectionIds": [
+          "J"
+        ],
+        "fabricationApproved": false,
+        "reason": "CONTINUOUS_BAR_FRAGMENT_GEOMETRY_REQUIRED"
+      }
+    ],
+    "physicalBarCount": null,
+    "sourceFragmentCount": 8,
+    "fabricationApproved": false
+  }
+}

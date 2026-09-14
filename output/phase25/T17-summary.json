@@ -1,0 +1,2131 @@
+{
+  "evaluation": {
+    "ok": true,
+    "evaluationId": "evaluation-1d0289274de196d0624a2fbec05c398fbbb1eb36e587214d115e5e07913e338a",
+    "offset": 0,
+    "limit": 20,
+    "inputHash": "320042513530a12db29c981edda7d0cb3dc56405fe391e6a2bdb3b5932c750cd",
+    "stale": false,
+    "staleReasons": [],
+    "summary": {
+      "scopeComplete": false,
+      "combinationCoverage": {
+        "projectProfile": {
+          "qualification": "user-declared-scope-only",
+          "codeQualified": false,
+          "loadScopeHash": "3ad45af3ed1bc2576616d42adb00885bf0813fc123a7bf6d9526f0175d7cd417",
+          "status": "NOT_CHECKED",
+          "issues": [
+            {
+              "code": "PROJECT_PROFILE_REQUIRED"
+            }
+          ]
+        },
+        "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+        "expectedIds": [
+          "U"
+        ],
+        "missingIds": [],
+        "evaluatedComboIds": [
+          "U"
+        ],
+        "missingEvaluationIds": [],
+        "missingPurposes": [
+          "service"
+        ],
+        "codeQualified": false
+      },
+      "counts": {
+        "OK": 6,
+        "NG": 0,
+        "WARN": 0,
+        "NOT_CHECKED": 17,
+        "N_A": 6,
+        "FAILED": 0
+      },
+      "closureDiagnosticCounts": {
+        "OK": 0,
+        "NG": 0,
+        "NOT_CHECKED": 0,
+        "N_A": 0
+      },
+      "incompleteCheckCount": 17,
+      "checkCount": 29,
+      "failedEntityCount": 0,
+      "uncheckedEntityCount": 2,
+      "complete": false
+    },
+    "checks": [
+      {
+        "id": "d3e9a36f15376cdf6eced82ba78740a65c3a56bd63617af98d54d99db1a231fe",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-section-strength",
+        "category": "concrete",
+        "status": "OK",
+        "ratio": 0.5557930963919538,
+        "reason": null,
+        "qualification": "explicit-law-unqualified",
+        "capacity": 75.56768925819999,
+        "demand": 41.999999999999964,
+        "equilibrium": {
+          "N": -52.49999548953335,
+          "My": 7.105427357601002e-15,
+          "Mz": 94.45961157274999
+        },
+        "equilibriumConvention": "rc-section",
+        "sectionDemand": {
+          "N": -42.00000000000001,
+          "My": 0,
+          "Mz": 41.999999999999964
+        },
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 21,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 21,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "strengthRepairRegions": [
+          {
+            "detailId": "R",
+            "detailVersion": 1,
+            "needsRepair": false,
+            "blocked": false,
+            "evaluatedLocations": 21
+          }
+        ],
+        "strengthRepairRegionsTruncated": false,
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-section-strength",
+            "version": 1,
+            "checkIds": [
+              "rc-section-strength"
+            ],
+            "module": "src/design/rc/kdsStrength.js",
+            "scope": "rectangular-tied-section; tabulated blocks or explicit parabolic law at intermediate strengths",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142010",
+                "edition": "2021",
+                "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+              },
+              {
+                "id": "142020",
+                "edition": "2022",
+                "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142020",
+              "code": "KDS 14 20 20",
+              "name": "콘크리트구조 휨 및 압축 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+              "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.1.1, 4.1.2",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142010",
+              "code": "KDS 14 20 10",
+              "name": "콘크리트구조 해석과 설계 원칙",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:20:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+              "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "explicit-law-unqualified",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "9c172315e92900e7a21885ccd30555ccae26975ec97f48fb397d8ec9db8fb345",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-stability",
+        "category": "concrete",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "reason": "BRACED_COLUMN_CLASSIFICATION_AND_REFERENCE_REQUIRED",
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-local-stability",
+            "version": 1,
+            "checkIds": [
+              "rc-stability"
+            ],
+            "module": "src/design/rc/kdsStability.js",
+            "scope": "explicit braced first-order column or KDS specified-inertia refined Direct member check with current stiffness, cut equilibrium, mesh convergence and full-interval moment comparison; independent method qualification pending",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142020",
+                "edition": "2022",
+                "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CHECK_NOT_EVALUATED",
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142020",
+              "code": "KDS 14 20 20",
+              "name": "콘크리트구조 휨 및 압축 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+              "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.4.6",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CHECK_NOT_EVALUATED, CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "eb0e913f65eed7f9ae840c64d9e6cdfe4d8b7d96058098f85877345a6df62fc4",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-shear-y",
+        "category": "concrete",
+        "status": "OK",
+        "ratio": 0.07602904653842027,
+        "reason": null,
+        "qualification": "explicit-law-unqualified",
+        "capacity": 184.14014955356936,
+        "demand": 13.999999999999993,
+        "effectiveDepth": 0.5,
+        "components": {
+          "Vc": 122.4744871391589,
+          "Vs": 123.04571226560024,
+          "nominalUpperBound": 484.99896907106927
+        },
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 21,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 21,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-shear",
+            "version": 1,
+            "checkIds": [
+              "rc-shear-y",
+              "rc-shear-z"
+            ],
+            "module": "src/design/rc/kdsShear.js",
+            "scope": "provided ordinary rectangular transverse reinforcement",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142010",
+                "edition": "2021",
+                "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+              },
+              {
+                "id": "142022",
+                "edition": "2022",
+                "sha256": "0a185decea2f04610b0af803443c5e72fec857f5055f8eb2b7a9c3d0e28d888e"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142022",
+              "code": "KDS 14 20 22",
+              "name": "콘크리트구조 전단 및 비틀림 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142022",
+              "retrievedAt": "2026-09-11T01:06:18.130613+00:00",
+              "sha256": "0a185decea2f04610b0af803443c5e72fec857f5055f8eb2b7a9c3d0e28d888e",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142010",
+              "code": "KDS 14 20 10",
+              "name": "콘크리트구조 해석과 설계 원칙",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:20:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+              "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3(2)",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "explicit-law-unqualified",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "a1b48c20626879410bd6a04dee2cedc62080665dfe2fdac4877eddd015c1ce70",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-shear-z",
+        "category": "concrete",
+        "status": "OK",
+        "ratio": 0,
+        "reason": null,
+        "qualification": "explicit-law-unqualified",
+        "capacity": 126.95816685765172,
+        "demand": 0,
+        "effectiveDepth": 0.22999999999999998,
+        "components": {
+          "Vc": 112.67652816802618,
+          "Vs": 56.60102764217611,
+          "nominalUpperBound": 446.19905154538367
+        },
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 21,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 21,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-shear",
+            "version": 1,
+            "checkIds": [
+              "rc-shear-y",
+              "rc-shear-z"
+            ],
+            "module": "src/design/rc/kdsShear.js",
+            "scope": "provided ordinary rectangular transverse reinforcement",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142010",
+                "edition": "2021",
+                "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+              },
+              {
+                "id": "142022",
+                "edition": "2022",
+                "sha256": "0a185decea2f04610b0af803443c5e72fec857f5055f8eb2b7a9c3d0e28d888e"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142022",
+              "code": "KDS 14 20 22",
+              "name": "콘크리트구조 전단 및 비틀림 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142022",
+              "retrievedAt": "2026-09-11T01:06:18.130613+00:00",
+              "sha256": "0a185decea2f04610b0af803443c5e72fec857f5055f8eb2b7a9c3d0e28d888e",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142010",
+              "code": "KDS 14 20 10",
+              "name": "콘크리트구조 해석과 설계 원칙",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:20:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+              "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3(2)",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "explicit-law-unqualified",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "8568c9f7e6f10a9348be6e3d178d1414c20694ece7a618202981d625370516e4",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-spacing",
+        "category": "concrete",
+        "status": "OK",
+        "ratio": 0.17857142857142858,
+        "reason": null,
+        "qualification": "explicit-law-unqualified",
+        "clearSpacing": 0.14,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 21,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 21,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-spacing",
+            "version": 1,
+            "checkIds": [
+              "rc-spacing"
+            ],
+            "module": "src/design/rc/kdsSpacing.js",
+            "scope": "single bars, aggregate, aligned layers; no bundles or splices",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142050",
+                "edition": "2022",
+                "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+              },
+              {
+                "id": "142001",
+                "edition": "2022",
+                "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142050",
+              "code": "KDS 14 20 50",
+              "name": "콘크리트구조 철근상세 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:12:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+              "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.2",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142001",
+              "code": "KDS 14 20 01",
+              "name": "콘크리트구조 설계(강도설계법) 일반사항",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:10:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+              "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+              "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "3.1.1(2)",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "explicit-law-unqualified",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "f79513cca4f978b6831a1dd9bd546fe180218f99dc6ede38a023cbeb037b0693",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-cover",
+        "category": "concrete",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "reason": "DESIGN_STANDARD_SELECTION_REQUIRED",
+        "designTransferAllowed": false,
+        "blockerKind": "input-required",
+        "requiredInputFields": [
+          "coverStandard"
+        ],
+        "supportedStandard": "KDS-142050-2022",
+        "ruleSelection": [
+          {
+            "detailId": "R",
+            "detailVersion": 1,
+            "field": "coverStandard",
+            "value": null
+          }
+        ],
+        "automaticSelectionAllowed": false,
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-cover",
+            "version": 1,
+            "checkIds": [
+              "rc-cover"
+            ],
+            "module": "src/design/rc/kdsCover.js",
+            "scope": "explicit exposure and external cover requirements",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142050",
+                "edition": "2022",
+                "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CHECK_NOT_EVALUATED",
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142050",
+              "code": "KDS 14 20 50",
+              "name": "콘크리트구조 철근상세 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:12:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+              "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.3.1, 4.3.6",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CHECK_NOT_EVALUATED, CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "1d401bd9f7ec8a0ca5a9ca8af1fc6ead4aabc1c3e0c3dd4d739ab4c46fc42f3a",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-reinforcement-ratio",
+        "category": "concrete",
+        "status": "OK",
+        "ratio": 0.14323944878270578,
+        "reason": null,
+        "qualification": "explicit-law-unqualified",
+        "providedRatio": 0.006981317007977319,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 21,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 21,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-minimum-steel",
+            "version": 1,
+            "checkIds": [
+              "rc-reinforcement-ratio"
+            ],
+            "module": "src/design/rc/kdsDetailing.js",
+            "scope": "tied column or uniaxial flexural member",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142020",
+                "edition": "2022",
+                "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+              },
+              {
+                "id": "142030",
+                "edition": "2021",
+                "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142020",
+              "code": "KDS 14 20 20",
+              "name": "콘크리트구조 휨 및 압축 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+              "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2, 4.3",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142030",
+              "code": "KDS 14 20 30",
+              "name": "콘크리트구조 사용성 설계기준",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:39:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+              "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+              "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.1(3); Eq.4.2-2",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "explicit-law-unqualified",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "b94c037189ff52be56f15eb4af7b860a9dab0c934eb36563224d05b1f80f3842",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-confinement",
+        "category": "concrete",
+        "status": "OK",
+        "ratio": 0.7499999999999999,
+        "reason": null,
+        "qualification": "explicit-law-unqualified",
+        "spacing": 0.15,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 42,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 42,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-confinement",
+            "version": 1,
+            "checkIds": [
+              "rc-confinement"
+            ],
+            "module": "src/design/rc/kdsConfinement.js",
+            "scope": "ordinary tied column and closed-tie flexural member; nominal/spatial support and separate closure qualification",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142050",
+                "edition": "2022",
+                "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142050",
+              "code": "KDS 14 20 50",
+              "name": "콘크리트구조 철근상세 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:12:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+              "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.4",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "explicit-law-unqualified",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "338b6c70f262a16039b090dc7d51f2cb602d9a6fc84ffedb725848174d151ef2",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-anchorage",
+        "category": "concrete",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "reason": "ANCHORAGE_SCOPE_REQUIRED",
+        "blockerKind": "input-required",
+        "requiredInputFields": [
+          "anchorageStandard",
+          "reinforcementForm",
+          "anchorageMode"
+        ],
+        "inputTargets": [
+          {
+            "type": "reinforcement-record",
+            "id": "R",
+            "version": 1,
+            "memberId": "AB"
+          }
+        ],
+        "automaticSelectionAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "bar": 0,
+        "incomplete": true,
+        "methodReviewRequired": true,
+        "locationCoverage": {
+          "counts": {
+            "OK": 0,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 4,
+            "N_A": 0,
+            "FAILED": 0
+          },
+          "incompleteCount": 4,
+          "total": 4,
+          "complete": false,
+          "missingLocations": [
+            {
+              "status": "NOT_CHECKED",
+              "reason": "ANCHORAGE_SCOPE_REQUIRED",
+              "ratio": null,
+              "x": null,
+              "side": null,
+              "comboId": null,
+              "detailId": "R",
+              "detailVersion": 1,
+              "bar": 0
+            },
+            {
+              "status": "NOT_CHECKED",
+              "reason": "ANCHORAGE_SCOPE_REQUIRED",
+              "ratio": null,
+              "x": null,
+              "side": null,
+              "comboId": null,
+              "detailId": "R",
+              "detailVersion": 1,
+              "bar": 1
+            },
+            {
+              "status": "NOT_CHECKED",
+              "reason": "ANCHORAGE_SCOPE_REQUIRED",
+              "ratio": null,
+              "x": null,
+              "side": null,
+              "comboId": null,
+              "detailId": "R",
+              "detailVersion": 1,
+              "bar": 2
+            },
+            {
+              "status": "NOT_CHECKED",
+              "reason": "ANCHORAGE_SCOPE_REQUIRED",
+              "ratio": null,
+              "x": null,
+              "side": null,
+              "comboId": null,
+              "detailId": "R",
+              "detailVersion": 1,
+              "bar": 3
+            }
+          ],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "calculations": [],
+        "incompleteReasons": [
+          "ANCHORAGE_SCOPE_REQUIRED"
+        ],
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-anchorage",
+            "version": 1,
+            "checkIds": [
+              "rc-anchorage"
+            ],
+            "module": "src/design/rc/providedAnchorage.js",
+            "scope": "provided development and explicit both-end tension geometry",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142052",
+                "edition": "2024",
+                "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CHECK_INCOMPLETE",
+            "LOCATION_COVERAGE_INCOMPLETE",
+            "METHOD_REVIEW_REQUIRED",
+            "CHECK_NOT_EVALUATED",
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142052",
+              "code": "KDS 14 20 52",
+              "name": "콘크리트구조 정착 및 이음 설계기준",
+              "edition": "2024",
+              "updateDate": "2024-12-31T10:54:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+              "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+              "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.1, 4.5",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CHECK_INCOMPLETE, LOCATION_COVERAGE_INCOMPLETE, METHOD_REVIEW_REQUIRED, CHECK_NOT_EVALUATED, CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "fe9777eccd16491d11a2fc7a269897a09000e14f8a1018d6900053bc1541225d",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-splices",
+        "category": "concrete",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "reason": "EXPLICIT_SPLICE_OBJECT_REQUIRED",
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-splices",
+            "version": 1,
+            "checkIds": [
+              "rc-splices"
+            ],
+            "module": "src/design/rc/spliceGeometry.js",
+            "scope": "explicit ordinary same-size single-bar tension B and analysis-proven uniaxial single-layer A lap, no extra strength credit",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142050",
+                "edition": "2022",
+                "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+              },
+              {
+                "id": "142052",
+                "edition": "2024",
+                "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51"
+              },
+              {
+                "id": "142001",
+                "edition": "2022",
+                "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CHECK_NOT_EVALUATED",
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142052",
+              "code": "KDS 14 20 52",
+              "name": "콘크리트구조 정착 및 이음 설계기준",
+              "edition": "2024",
+              "updateDate": "2024-12-31T10:54:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+              "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+              "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.5.1",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142052",
+              "code": "KDS 14 20 52",
+              "name": "콘크리트구조 정착 및 이음 설계기준",
+              "edition": "2024",
+              "updateDate": "2024-12-31T10:54:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+              "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+              "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.5.2",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142052",
+              "code": "KDS 14 20 52",
+              "name": "콘크리트구조 정착 및 이음 설계기준",
+              "edition": "2024",
+              "updateDate": "2024-12-31T10:54:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+              "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+              "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.5.3",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142050",
+              "code": "KDS 14 20 50",
+              "name": "콘크리트구조 철근상세 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:12:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+              "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.2",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142001",
+              "code": "KDS 14 20 01",
+              "name": "콘크리트구조 설계(강도설계법) 일반사항",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:10:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+              "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+              "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "3.1.1",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CHECK_NOT_EVALUATED, CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "afd4027fc468ce7268047a8929a25d53df327c2aa4bae1433a579a5cff0ab030",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-deflection",
+        "category": "concrete",
+        "status": "N_A",
+        "ratio": null,
+        "reason": "CHECK_REQUIRES_SERVICE_COMBINATION",
+        "applicability": {
+          "expectedPurpose": "service",
+          "actualPurpose": "strength",
+          "basis": "declared-load-combination-purpose; required-combination-coverage-separate"
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-deflection",
+            "version": 1,
+            "checkIds": [
+              "rc-deflection"
+            ],
+            "module": "src/design/rc/kdsServiceability.js",
+            "scope": "instant live or sustained post-attachment uniaxial curvature; instantaneous total-minus-dead splice or specified-inertia refined Direct frame displacement with separate method qualification",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142030",
+                "edition": "2021",
+                "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142030",
+              "code": "KDS 14 20 30",
+              "name": "콘크리트구조 사용성 설계기준",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:39:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+              "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+              "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.1",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "1a836d895b3885087aaf78d5bafa03534b91cd6024b70026baac363843dc5d7f",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-serviceability",
+        "category": "concrete",
+        "status": "N_A",
+        "ratio": null,
+        "reason": "CHECK_REQUIRES_SERVICE_COMBINATION",
+        "applicability": {
+          "expectedPurpose": "service",
+          "actualPurpose": "strength",
+          "basis": "declared-load-combination-purpose; required-combination-coverage-separate"
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-crack-control",
+            "version": 1,
+            "checkIds": [
+              "rc-serviceability"
+            ],
+            "module": "src/design/rc/kdsCrackControl.js",
+            "scope": "ordinary uniaxial flexural spacing or explicit sustained-load appendix crack width; compression/tension and single-axis bending; method review separate",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142020",
+                "edition": "2022",
+                "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+              },
+              {
+                "id": "142030",
+                "edition": "2021",
+                "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142030",
+              "code": "KDS 14 20 30",
+              "name": "콘크리트구조 사용성 설계기준",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:39:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+              "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+              "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.1, 4.2",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142020",
+              "code": "KDS 14 20 20",
+              "name": "콘크리트구조 휨 및 압축 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+              "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3(4); Eq.4.2-3; Eq.4.2-4",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "3dc58a2ed39df99b61816c3173e3a4ca2fdcb0547301d6c5a67c8995abbf15e1",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-torsion",
+        "category": "concrete",
+        "status": "N_A",
+        "ratio": null,
+        "reason": "ZERO_TORSION_IN_SELECTED_CONCURRENT_DEMAND",
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "U",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -42.00000000000001,
+          "Vy": -13.999999999999993,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": -41.999999999999964,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "detailId": "R",
+        "detailVersion": 1,
+        "x": 0,
+        "incomplete": false,
+        "locationCoverage": {
+          "counts": {
+            "OK": 0,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 21,
+            "FAILED": 0
+          },
+          "incompleteCount": 0,
+          "total": 21,
+          "complete": true,
+          "missingLocations": [],
+          "failedLocations": [],
+          "witnessLimit": 12,
+          "witnessesTruncated": false
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-torsion-threshold",
+            "version": 1,
+            "checkIds": [
+              "rc-torsion"
+            ],
+            "module": "src/design/rc/kdsTorsion.js",
+            "scope": "solid rectangular neglect threshold or 45-degree reinforced demand with shared steel allocation; full detailing separate",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [
+              {
+                "id": "142010",
+                "edition": "2021",
+                "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+              },
+              {
+                "id": "142022",
+                "edition": "2022",
+                "sha256": "0a185decea2f04610b0af803443c5e72fec857f5055f8eb2b7a9c3d0e28d888e"
+              }
+            ],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142022",
+              "code": "KDS 14 20 22",
+              "name": "콘크리트구조 전단 및 비틀림 설계기준",
+              "edition": "2022",
+              "updateDate": "2022-01-13T14:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142022",
+              "retrievedAt": "2026-09-11T01:06:18.130613+00:00",
+              "sha256": "0a185decea2f04610b0af803443c5e72fec857f5055f8eb2b7a9c3d0e28d888e",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "142010",
+              "code": "KDS 14 20 10",
+              "name": "콘크리트구조 해석과 설계 원칙",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:20:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+              "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3(2)",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "c1322014a967acb45b1347f9f79a15dfc4d62c3466747a396c09b6d2d987c3e4",
+        "entityId": "AB",
+        "memberId": "AB",
+        "comboId": "U",
+        "checkId": "rc-code-compliance",
+        "category": "concrete",
+        "status": "NOT_CHECKED",
+        "ratio": null,
+        "reason": "REQUIRED_KDS_CHECKS_INCOMPLETE",
+        "requiredCheckIds": [
+          "d3e9a36f15376cdf6eced82ba78740a65c3a56bd63617af98d54d99db1a231fe",
+          "9c172315e92900e7a21885ccd30555ccae26975ec97f48fb397d8ec9db8fb345",
+          "eb0e913f65eed7f9ae840c64d9e6cdfe4d8b7d96058098f85877345a6df62fc4",
+          "a1b48c20626879410bd6a04dee2cedc62080665dfe2fdac4877eddd015c1ce70",
+          "8568c9f7e6f10a9348be6e3d178d1414c20694ece7a618202981d625370516e4",
+          "f79513cca4f978b6831a1dd9bd546fe180218f99dc6ede38a023cbeb037b0693",
+          "1d401bd9f7ec8a0ca5a9ca8af1fc6ead4aabc1c3e0c3dd4d739ab4c46fc42f3a",
+          "b94c037189ff52be56f15eb4af7b860a9dab0c934eb36563224d05b1f80f3842",
+          "338b6c70f262a16039b090dc7d51f2cb602d9a6fc84ffedb725848174d151ef2",
+          "fe9777eccd16491d11a2fc7a269897a09000e14f8a1018d6900053bc1541225d",
+          "afd4027fc468ce7268047a8929a25d53df327c2aa4bae1433a579a5cff0ab030",
+          "1a836d895b3885087aaf78d5bafa03534b91cd6024b70026baac363843dc5d7f",
+          "3dc58a2ed39df99b61816c3173e3a4ca2fdcb0547301d6c5a67c8995abbf15e1"
+        ],
+        "missingCheckIds": [
+          "rc-section-strength",
+          "rc-stability",
+          "rc-shear-y",
+          "rc-shear-z",
+          "rc-spacing",
+          "rc-cover",
+          "rc-reinforcement-ratio",
+          "rc-confinement",
+          "rc-anchorage",
+          "rc-splices"
+        ],
+        "failedCheckIds": [],
+        "qualification": "scoped-check-aggregation-not-project-qualification",
+        "codeReferences": [],
+        "wholeDesignQualified": false,
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": null,
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CHECK_NOT_EVALUATED",
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "412000",
+              "code": "KDS 41 20 00",
+              "name": "건축물 콘크리트구조 설계기준",
+              "edition": "2024",
+              "updateDate": "2025-01-02T09:40:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/412000",
+              "retrievedAt": "2026-09-11T01:06:18.820940+00:00",
+              "sha256": "e635ceb4dd9b0b664b7bb37c7a9e1ada660feef9dce7444fc094305f8f7d9a5c",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "scoped-check-aggregation-not-project-qualification",
+          "reason": "KDS application not established: CHECK_NOT_EVALUATED, CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "b3de6643b22c6cffc2db73932d3b9b3086fc57611e1a9c69f6bdfd021224297b",
+        "entityId": "foundation:A",
+        "memberId": "foundation:A",
+        "comboId": "U",
+        "checkId": "foundation-bearing",
+        "category": "foundation",
+        "status": "N_A",
+        "ratio": null,
+        "reason": "CHECK_REQUIRES_SERVICE_COMBINATION",
+        "applicability": {
+          "expectedPurpose": "service",
+          "actualPurpose": "strength",
+          "basis": "declared-load-combination-purpose; required-combination-coverage-separate"
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": null,
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "115005",
+              "code": "KDS 11 50 05",
+              "name": "얕은기초 설계기준(일반설계법)",
+              "edition": "2025",
+              "updateDate": "2025-12-29T14:53:04.200301",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/115005",
+              "retrievedAt": "2026-09-11T08:27:10.940245+00:00",
+              "sha256": "fbadf14f98c82adf4ccbb35353ae53ec5378caf129b6be996d0f115ddfb16172",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.1.2",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      },
+      {
+        "id": "643ba043ddc0071f9406daf9c7b6247076d203a605549b9b5c9d698be7266680",
+        "entityId": "foundation:A",
+        "memberId": "foundation:A",
+        "comboId": "U",
+        "checkId": "foundation-ground-review",
+        "category": "foundation",
+        "status": "N_A",
+        "ratio": null,
+        "reason": "CHECK_REQUIRES_SERVICE_COMBINATION",
+        "applicability": {
+          "expectedPurpose": "service",
+          "actualPurpose": "strength",
+          "basis": "declared-load-combination-purpose; required-combination-coverage-separate"
+        },
+        "codeBasis": {
+          "version": "p25-code-basis-v5-method-specific-targets",
+          "rule": {
+            "id": "p25-ground-evidence",
+            "version": 1,
+            "checkIds": [
+              "foundation-ground-review"
+            ],
+            "module": "src/design/foundation/groundReview.js",
+            "scope": "user supplied external review, never automatic code certification",
+            "implementation": "PARTIAL_PROFILE",
+            "sources": [],
+            "independentlyVerified": false
+          },
+          "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+          "status": "NOT_ESTABLISHED",
+          "blockers": [
+            "CODE_REFERENCES_MISSING"
+          ],
+          "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+          "applied": [],
+          "reviewTargets": [
+            {
+              "id": "142070",
+              "code": "KDS 14 20 70",
+              "name": "콘크리트 슬래브와 기초판 설계기준",
+              "edition": "2021",
+              "updateDate": "2021-02-18T15:11:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142070",
+              "retrievedAt": "2026-09-11T01:06:18.593118+00:00",
+              "sha256": "eacf28e9e32d5e313c6aac73471e79934c42cfd63c8a4e00627047efc681fd2b",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2",
+              "applicability": "TO_BE_CONFIRMED"
+            },
+            {
+              "id": "115005",
+              "code": "KDS 11 50 05",
+              "name": "얕은기초 설계기준(일반설계법)",
+              "edition": "2025",
+              "updateDate": "2025-12-29T14:53:04.200301",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/115005",
+              "retrievedAt": "2026-09-11T08:27:10.940245+00:00",
+              "sha256": "fbadf14f98c82adf4ccbb35353ae53ec5378caf129b6be996d0f115ddfb16172",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "1.9, 4.2",
+              "applicability": "TO_BE_CONFIRMED"
+            }
+          ],
+          "calculationBasis": "missing-or-unqualified-input",
+          "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+          "wholeDesignQualified": false
+        },
+        "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1"
+      }
+    ],
+    "total": 29,
+    "nextOffset": 16,
+    "designTransferAllowed": false,
+    "remainingRepairs": {
+      "ngCheckCount": 0,
+      "incompleteCheckCount": 17,
+      "targetCount": 0,
+      "truncated": false,
+      "detailQuery": {
+        "tool": "get_practical_design_check",
+        "evaluationId": "evaluation-1d0289274de196d0624a2fbec05c398fbbb1eb36e587214d115e5e07913e338a",
+        "checkId": "0fce261e7e5f17a0139f00bcf0decdc706b4e5a1ca6f828c46f449342c1a8493"
+      }
+    }
+  },
+  "job": {
+    "ok": true,
+    "jobId": "candidate-job-a1c7c55d8ce986ee429213f97866c0ca9a9920fc1a8552b208782d177138da92",
+    "status": "NEEDS_INPUT",
+    "stageTiming": {
+      "activeStage": null,
+      "activeElapsedMs": 0,
+      "durationsMs": {
+        "preparation": 148.39559999999938,
+        "geometry": 1127.3336000000004,
+        "analysis": 0.33459999999968204,
+        "evaluation": 571.5699999999997,
+        "quantity": 3.1016999999997097,
+        "comparison": 13.045799999999872
+      },
+      "basis": "wall-clock stage duration; not CPU time or completion percentage"
+    },
+    "previousJobId": null,
+    "nextCursor": 2,
+    "continuationAvailable": false,
+    "workerTerminationUnconfirmedAtFailure": false,
+    "discardedCandidateCount": 0,
+    "applicationRequest": null,
+    "application": null,
+    "candidateCount": 2,
+    "offset": 0,
+    "total": 2,
+    "nextOffset": null,
+    "candidates": [
+      {
+        "candidateId": "11f9a081d8b0c193f58296394cc7662b53c0126027d0e22060388bee1488b8a1",
+        "status": "rejected",
+        "reason": "CANDIDATE_NO_CHANGE",
+        "reinforcementChangeCount": 0,
+        "spliceChangeCount": 0,
+        "detailQuery": {
+          "tool": "get_design_candidate_detail",
+          "jobId": "candidate-job-a1c7c55d8ce986ee429213f97866c0ca9a9920fc1a8552b208782d177138da92",
+          "candidateId": "11f9a081d8b0c193f58296394cc7662b53c0126027d0e22060388bee1488b8a1"
+        },
+        "analysisProofCount": 0
+      },
+      {
+        "engineeringSeverity": {
+          "version": "p25-candidate-severity-v3-strain-deficit",
+          "basis": "recorded-NG-utilization-or-required-to-actual-tension-strain; aggregate-code-compliance-excluded",
+          "affected": {
+            "maximumNgRatio": 0,
+            "sumNgExcess": 0,
+            "unquantifiedNgCount": 0
+          },
+          "project": {
+            "maximumNgRatio": 0,
+            "sumNgExcess": 0,
+            "unquantifiedNgCount": 0
+          }
+        },
+        "affectedScope": {
+          "version": "p25-candidate-scope-v4-source-record-lineage",
+          "basis": "target-members-incident-details-and-declared-footprint-neighbors",
+          "entityIds": [
+            "AB",
+            "foundation:A",
+            "foundation:B",
+            "joint:A",
+            "joint:B"
+          ],
+          "summary": {
+            "scopeComplete": false,
+            "combinationCoverage": {
+              "projectProfile": {
+                "qualification": "user-declared-scope-only",
+                "codeQualified": false,
+                "loadScopeHash": "3ad45af3ed1bc2576616d42adb00885bf0813fc123a7bf6d9526f0175d7cd417",
+                "status": "NOT_CHECKED",
+                "issues": [
+                  {
+                    "code": "PROJECT_PROFILE_REQUIRED"
+                  }
+                ]
+              },
+              "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+              "expectedIds": [
+                "U"
+              ],
+              "missingIds": [],
+              "evaluatedComboIds": [
+                "U"
+              ],
+              "missingEvaluationIds": [],
+              "missingPurposes": [
+                "service"
+              ],
+              "codeQualified": false
+            },
+            "counts": {
+              "OK": 6,
+              "NG": 0,
+              "WARN": 0,
+              "NOT_CHECKED": 17,
+              "N_A": 6,
+              "FAILED": 0
+            },
+            "closureDiagnosticCounts": {
+              "OK": 0,
+              "NG": 0,
+              "NOT_CHECKED": 0,
+              "N_A": 0
+            },
+            "incompleteCheckCount": 17,
+            "checkCount": 29,
+            "failedEntityCount": 0,
+            "uncheckedEntityCount": 2,
+            "complete": false
+          },
+          "complete": false,
+          "projectComplete": false,
+          "unaffectedRegressionCount": 0,
+          "unaffectedSourceRecordChangeCount": 0,
+          "missingCheckCount": 0,
+          "missingEntityIds": [],
+          "duplicateChecks": false,
+          "supported": true,
+          "designTransferAllowed": false
+        },
+        "candidateId": "bf61ef0593b7ada2761570a2c6926622226f21f2d9280a2ca3733dead2d9f8d4",
+        "candidateInputHash": "fcee7fdbfb69edb4b21041b13526ee9d2cf1405e80ad272966c0daa24406f665",
+        "objective": {
+          "name": "incomplete-geometry-longitudinal-proxy",
+          "value": 0.003769911184307752,
+          "longitudinalVolume": null,
+          "unit": "m3",
+          "secondary": null,
+          "secondaryUnit": "m3",
+          "quantityComplete": false,
+          "transverseQuantityComplete": false,
+          "longitudinalQuantityComplete": false,
+          "longitudinalBasis": "body-plus-lap-proxy",
+          "estimatedSteelVolume": null,
+          "secondaryFallback": 0.004869468613064179,
+          "secondaryFallbackComplete": true,
+          "secondaryFallbackUnit": "m2",
+          "quantityReason": "TRANSVERSE_GEOMETRY_INCOMPLETE; AREA_COUNT_PROXY_ONLY",
+          "concreteVolume": 0.54,
+          "fabricationQuantity": false,
+          "scope": "all-member-reinforcement-regions"
+        },
+        "impact": "REUSE_PROOF_REQUIRED",
+        "reinforcementChangeCount": 1,
+        "spliceChangeCount": 0,
+        "completionBlockers": {
+          "counts": {
+            "input": 13,
+            "designNg": 0,
+            "failure": 0,
+            "method": 1,
+            "review": 2
+          },
+          "total": 15,
+          "truncated": false,
+          "automaticInputSelectionAllowed": false,
+          "detailAvailable": true
+        },
+        "changes": {
+          "kind": "reinforcement-record",
+          "differentialReferences": [],
+          "regionCount": 1,
+          "changedRegionCount": 1,
+          "regionPolicy": "local-constraints-override-global; omitted-fields-preserved-per-region",
+          "spliceLengthChanges": [],
+          "spliceRefinementState": {
+            "status": "NOT_REQUESTED",
+            "performedPasses": 0,
+            "attemptedPasses": 0,
+            "maximumPasses": 2,
+            "remainingLengthChecks": 0,
+            "reason": null,
+            "wholeDesignQualified": false,
+            "basis": "current calculated A-class length deficits only; spacing, other checks and unproven A-class cases remain separate"
+          },
+          "dependentDetails": [],
+          "detailEdit": null,
+          "stirrupSpacing": 100,
+          "barDiameter": null,
+          "barsPerFace": null,
+          "cover": null,
+          "section": null,
+          "spliceRefinement": [],
+          "spliceDevelopment": [],
+          "endDevelopment": []
+        },
+        "summary": {
+          "complete": false,
+          "checkCount": 29,
+          "incompleteCheckCount": 17,
+          "closureDiagnosticCounts": {
+            "OK": 0,
+            "NG": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0
+          },
+          "counts": {
+            "OK": 6,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 17,
+            "N_A": 6,
+            "FAILED": 0
+          }
+        },
+        "detailQuery": {
+          "tool": "get_design_candidate_detail",
+          "jobId": "candidate-job-a1c7c55d8ce986ee429213f97866c0ca9a9920fc1a8552b208782d177138da92",
+          "candidateId": "bf61ef0593b7ada2761570a2c6926622226f21f2d9280a2ca3733dead2d9f8d4"
+        },
+        "codeBasisCount": 29,
+        "codeBasisQuery": {
+          "tool": "get_design_candidate_basis",
+          "jobId": "candidate-job-a1c7c55d8ce986ee429213f97866c0ca9a9920fc1a8552b208782d177138da92",
+          "candidateId": "bf61ef0593b7ada2761570a2c6926622226f21f2d9280a2ca3733dead2d9f8d4"
+        },
+        "analysisProofCount": 0
+      }
+    ],
+    "best": {
+      "engineeringSeverity": {
+        "version": "p25-candidate-severity-v3-strain-deficit",
+        "basis": "recorded-NG-utilization-or-required-to-actual-tension-strain; aggregate-code-compliance-excluded",
+        "affected": {
+          "maximumNgRatio": 0,
+          "sumNgExcess": 0,
+          "unquantifiedNgCount": 0
+        },
+        "project": {
+          "maximumNgRatio": 0,
+          "sumNgExcess": 0,
+          "unquantifiedNgCount": 0
+        }
+      },
+      "affectedScope": {
+        "version": "p25-candidate-scope-v4-source-record-lineage",
+        "basis": "target-members-incident-details-and-declared-footprint-neighbors",
+        "entityIds": [
+          "AB",
+          "foundation:A",
+          "foundation:B",
+          "joint:A",
+          "joint:B"
+        ],
+        "summary": {
+          "scopeComplete": false,
+          "combinationCoverage": {
+            "projectProfile": {
+              "qualification": "user-declared-scope-only",
+              "codeQualified": false,
+              "loadScopeHash": "3ad45af3ed1bc2576616d42adb00885bf0813fc123a7bf6d9526f0175d7cd417",
+              "status": "NOT_CHECKED",
+              "issues": [
+                {
+                  "code": "PROJECT_PROFILE_REQUIRED"
+                }
+              ]
+            },
+            "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+            "expectedIds": [
+              "U"
+            ],
+            "missingIds": [],
+            "evaluatedComboIds": [
+              "U"
+            ],
+            "missingEvaluationIds": [],
+            "missingPurposes": [
+              "service"
+            ],
+            "codeQualified": false
+          },
+          "counts": {
+            "OK": 6,
+            "NG": 0,
+            "WARN": 0,
+            "NOT_CHECKED": 17,
+            "N_A": 6,
+            "FAILED": 0
+          },
+          "closureDiagnosticCounts": {
+            "OK": 0,
+            "NG": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0
+          },
+          "incompleteCheckCount": 17,
+          "checkCount": 29,
+          "failedEntityCount": 0,
+          "uncheckedEntityCount": 2,
+          "complete": false
+        },
+        "complete": false,
+        "projectComplete": false,
+        "unaffectedRegressionCount": 0,
+        "unaffectedSourceRecordChangeCount": 0,
+        "missingCheckCount": 0,
+        "missingEntityIds": [],
+        "duplicateChecks": false,
+        "supported": true,
+        "designTransferAllowed": false
+      },
+      "candidateId": "bf61ef0593b7ada2761570a2c6926622226f21f2d9280a2ca3733dead2d9f8d4",
+      "candidateInputHash": "fcee7fdbfb69edb4b21041b13526ee9d2cf1405e80ad272966c0daa24406f665",
+      "objective": {
+        "name": "incomplete-geometry-longitudinal-proxy",
+        "value": 0.003769911184307752,
+        "longitudinalVolume": null,
+        "unit": "m3",
+        "secondary": null,
+        "secondaryUnit": "m3",
+        "quantityComplete": false,
+        "transverseQuantityComplete": false,
+        "longitudinalQuantityComplete": false,
+        "longitudinalBasis": "body-plus-lap-proxy",
+        "estimatedSteelVolume": null,
+        "secondaryFallback": 0.004869468613064179,
+        "secondaryFallbackComplete": true,
+        "secondaryFallbackUnit": "m2",
+        "quantityReason": "TRANSVERSE_GEOMETRY_INCOMPLETE; AREA_COUNT_PROXY_ONLY",
+        "concreteVolume": 0.54,
+        "fabricationQuantity": false,
+        "scope": "all-member-reinforcement-regions"
+      },
+      "impact": "REUSE_PROOF_REQUIRED",
+      "reinforcementChangeCount": 1,
+      "spliceChangeCount": 0,
+      "completionBlockers": {
+        "counts": {
+          "input": 13,
+          "designNg": 0,
+          "failure": 0,
+          "method": 1,
+          "review": 2
+        },
+        "total": 15,
+        "truncated": false,
+        "automaticInputSelectionAllowed": false,
+        "detailAvailable": true
+      },
+      "changes": {
+        "kind": "reinforcement-record",
+        "differentialReferences": [],
+        "regionCount": 1,
+        "changedRegionCount": 1,
+        "regionPolicy": "local-constraints-override-global; omitted-fields-preserved-per-region",
+        "spliceLengthChanges": [],
+        "spliceRefinementState": {
+          "status": "NOT_REQUESTED",
+          "performedPasses": 0,
+          "attemptedPasses": 0,
+          "maximumPasses": 2,
+          "remainingLengthChecks": 0,
+          "reason": null,
+          "wholeDesignQualified": false,
+          "basis": "current calculated A-class length deficits only; spacing, other checks and unproven A-class cases remain separate"
+        },
+        "dependentDetails": [],
+        "detailEdit": null,
+        "stirrupSpacing": 100,
+        "barDiameter": null,
+        "barsPerFace": null,
+        "cover": null,
+        "section": null,
+        "spliceRefinement": [],
+        "spliceDevelopment": [],
+        "endDevelopment": []
+      },
+      "summary": {
+        "complete": false,
+        "checkCount": 29,
+        "incompleteCheckCount": 17,
+        "closureDiagnosticCounts": {
+          "OK": 0,
+          "NG": 0,
+          "NOT_CHECKED": 0,
+          "N_A": 0
+        },
+        "counts": {
+          "OK": 6,
+          "NG": 0,
+          "WARN": 0,
+          "NOT_CHECKED": 17,
+          "N_A": 6,
+          "FAILED": 0
+        }
+      },
+      "detailQuery": {
+        "tool": "get_design_candidate_detail",
+        "jobId": "candidate-job-a1c7c55d8ce986ee429213f97866c0ca9a9920fc1a8552b208782d177138da92",
+        "candidateId": "bf61ef0593b7ada2761570a2c6926622226f21f2d9280a2ca3733dead2d9f8d4"
+      },
+      "codeBasisCount": 29,
+      "codeBasisQuery": {
+        "tool": "get_design_candidate_basis",
+        "jobId": "candidate-job-a1c7c55d8ce986ee429213f97866c0ca9a9920fc1a8552b208782d177138da92",
+        "candidateId": "bf61ef0593b7ada2761570a2c6926622226f21f2d9280a2ca3733dead2d9f8d4"
+      },
+      "analysisProof": []
+    },
+    "elapsedMs": 1863.9296,
+    "error": null,
+    "stale": false,
+    "designTransferAllowed": false
+  },
+  "artifact": {
+    "ok": true,
+    "artifactId": "drawing-bef7e9b4faa85c3eab21224825fecf75e6071bc17a6141973969cacf24055b6b",
+    "evaluationId": "evaluation-1d0289274de196d0624a2fbec05c398fbbb1eb36e587214d115e5e07913e338a",
+    "format": "svg",
+    "mime": "image/svg+xml",
+    "spliceGeometryIssueCount": 0,
+    "byteLength": 5097,
+    "sha256": "bef7e9b4faa85c3eab21224825fecf75e6071bc17a6141973969cacf24055b6b",
+    "fontSha256": null,
+    "inputHash": "320042513530a12db29c981edda7d0cb3dc56405fe391e6a2bdb3b5932c750cd",
+    "evaluatorVersion": "p25-practical-evaluation-v207-post-attachment-calculation",
+    "rulePackHash": "5032999a19af5633e208f1f80d1070c0386cb138160f6b880621045064a6252f",
+    "preparedGeometryHash": "e21baf552dd9ccff23bd5460cdc6e3ffefe15a49723ea5bafebb99e718c12412",
+    "detailHash": "8c1261df8c329bb2f52d2dcc4dc77bc927e5f6ee11b0a0e9cefc9170e980d152",
+    "analysisSources": [
+      {
+        "source": {
+          "analysisRunId": "ELASTIC:2026-09-13T21:51:23.158Z:1",
+          "comboId": "U"
+        },
+        "resultHash": "c5af4a0672d8737879f0b358fe7c1664eeaa82a698ed3a58f37dce78432eaa8e"
+      }
+    ],
+    "sourceAnalysisRunIds": [
+      "ELASTIC:2026-09-13T21:51:23.158Z:1"
+    ],
+    "pages": 1,
+    "totalPages": 29,
+    "retainedPages": 1,
+    "volume": null,
+    "volumeCount": null,
+    "pageStart": null,
+    "pageEnd": null,
+    "nextVolume": null,
+    "reviewOnly": true,
+    "designTransferAllowed": false
+  },
+  "application": {
+    "ok": true,
+    "changed": true,
+    "requestId": "T17-apply",
+    "transactionId": "design-change-1",
+    "inputIdentity": {
+      "inputIdentityVersion": "p25-input-v2-moment-directions",
+      "modelHash": "bfc20b215dfb3d7574e20bf848ffa418bdbff3ec8cca0dc147cb75e6d435f77a",
+      "analysisCaseHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "settingsHash": "d958aff94d0f314daa8aaf6fda11240d32dc009eb981e8121b6b3fd6e7a5cd45",
+      "designBasisHash": "04ded9b113934ee650c0000af746e17e1119bd2554e40468389e67d218d43e52",
+      "materialsHash": "fbe55dd6ccfac9c212b2d0ffcf1338cc7fedd889b16ced7ebe3ae280dce0407b",
+      "sectionsHash": "e64b93bc0e260cb9fd47da1dff95dfe399560543582860fc65b308ee1ffe5f14",
+      "rulePackHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "buildHash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+      "inputHash": "fabd3d133d7191d858bfd9456423701bdbf3f8d59a462c73612622f428481d2e",
+      "buildBound": false,
+      "rulePackBound": false
+    },
+    "requiredNext": "explicit-analysis-reuse-and-new-design-evaluation",
+    "designTransferAllowed": false
+  }
+}

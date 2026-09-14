@@ -1,0 +1,3888 @@
+{
+  "evaluationId": "evaluation-d073fe54d08de9dd1acfb9e874c1025d244df5f7980adbf2418b37808b815cdc",
+  "checks": [
+    {
+      "id": "fb9119260dc22eaf90df12a648dc816bd7671a3a722af7c9b525016f2bda712f",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-equilibrium",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.000012789769243681803,
+      "reason": null,
+      "actions": [
+        {
+          "memberId": "AB",
+          "end": "j",
+          "global": [
+            1.2079226507921703e-13,
+            0,
+            -7.0000000000000036,
+            0,
+            21.000000000000163,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        },
+        {
+          "memberId": "BC",
+          "end": "i",
+          "global": [
+            0,
+            0,
+            7,
+            0,
+            -21.000000000000078,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        },
+        {
+          "memberId": "BD",
+          "end": "i",
+          "global": [
+            -2.1316282072803006e-14,
+            0,
+            6.217248937900877e-15,
+            0,
+            -7.105427357601002e-14,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        },
+        {
+          "memberId": "EB",
+          "end": "j",
+          "global": [
+            -2.2737367544323206e-13,
+            0,
+            -7.105427357601002e-15,
+            0,
+            -4.618527782440651e-14,
+            0
+          ],
+          "actionSource": "offset-joint-end",
+          "offsetTransferred": false
+        }
+      ],
+      "residual": [
+        -1.2789769243681803e-13,
+        0,
+        -4.440892098500626e-15,
+        0,
+        -3.197442310920451e-14,
+        0
+      ],
+      "constraintAction": {
+        "status": "N_A",
+        "global": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "rows": []
+      },
+      "externalAction": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "2d893065b399e59988efb495421d73350e11eeba950983f7c93388012d886613",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-probable-forces",
+      "category": "connection",
+      "status": "OK",
+      "ratio": null,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.6.1(1)"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "designTransferAllowed": false,
+      "members": [
+        {
+          "memberId": "BC",
+          "detailId": "RB",
+          "detailVersion": 1,
+          "axis": "X",
+          "fy": 235,
+          "topArea": 0.00015707963267948968,
+          "bottomArea": 0.00015707963267948968,
+          "topForce": 46.14214209960009,
+          "bottomForce": 46.14214209960009,
+          "envelopeForce": 46.14214209960009
+        },
+        {
+          "memberId": "EB",
+          "detailId": "RL",
+          "detailVersion": 1,
+          "axis": "X",
+          "fy": 235,
+          "topArea": 0.00015707963267948968,
+          "bottomArea": 0.00015707963267948968,
+          "topForce": 46.14214209960009,
+          "bottomForce": 46.14214209960009,
+          "envelopeForce": 46.14214209960009
+        }
+      ],
+      "axes": {
+        "X": 92.28428419920019,
+        "Y": 0
+      },
+      "stressMultiplier": 1.25,
+      "units": {
+        "force": "kN",
+        "area": "m2",
+        "fy": "MPa"
+      },
+      "panelDemandMethod": {
+        "id": "sum-beam-face-envelopes-no-column-shear-credit",
+        "methodReviewRequired": true,
+        "reason": "column-shear sign and slab participation require independent method review"
+      },
+      "scope": "computed beam longitudinal forces; panel demand bound separately qualified",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-probable-forces",
+          "version": 1,
+          "checkIds": [
+            "joint-probable-forces"
+          ],
+          "module": "src/design/connection/jointProbableForces.js",
+          "scope": "beam-end 1.25fy forces; panel bound requires independent method review",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(1)"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "be2bcc38f7f937ca45ac52b4bc963d5dfe4e9c2990335b29146c9ba37a810f01",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-shear",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.1569787552541865,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142010",
+          "code": "KDS 14 20 10",
+          "name": "콘크리트구조 해석과 설계 원칙",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:20:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+          "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+          "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.3(2)"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "designTransferAllowed": false,
+      "demand": 92.28428419920019,
+      "capacity": 587.8775382679628,
+      "nominalCapacity": 783.836717690617,
+      "coefficient": 1,
+      "phi": 0.75,
+      "area": 0.16000000000000003,
+      "unit": "kN",
+      "axis": "X",
+      "effectiveWidth": 0.4,
+      "columnDepth": 0.4,
+      "probableForces": {
+        "codeReferences": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(1)"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "status": "OK",
+        "ratio": null,
+        "members": [
+          {
+            "memberId": "BC",
+            "detailId": "RB",
+            "detailVersion": 1,
+            "axis": "X",
+            "fy": 235,
+            "topArea": 0.00015707963267948968,
+            "bottomArea": 0.00015707963267948968,
+            "topForce": 46.14214209960009,
+            "bottomForce": 46.14214209960009,
+            "envelopeForce": 46.14214209960009
+          },
+          {
+            "memberId": "EB",
+            "detailId": "RL",
+            "detailVersion": 1,
+            "axis": "X",
+            "fy": 235,
+            "topArea": 0.00015707963267948968,
+            "bottomArea": 0.00015707963267948968,
+            "topForce": 46.14214209960009,
+            "bottomForce": 46.14214209960009,
+            "envelopeForce": 46.14214209960009
+          }
+        ],
+        "axes": {
+          "X": 92.28428419920019,
+          "Y": 0
+        },
+        "stressMultiplier": 1.25,
+        "units": {
+          "force": "kN",
+          "area": "m2",
+          "fy": "MPa"
+        },
+        "panelDemandMethod": {
+          "id": "sum-beam-face-envelopes-no-column-shear-credit",
+          "methodReviewRequired": true,
+          "reason": "column-shear sign and slab participation require independent method review"
+        },
+        "scope": "computed beam longitudinal forces; panel demand bound separately qualified",
+        "jointTopology": {
+          "version": "p25-joint-topology-v1",
+          "classificationOnly": true,
+          "status": "OK",
+          "beamArrangement": "two-opposite",
+          "beamFaces": [
+            {
+              "face": "X-",
+              "axis": "X",
+              "side": "-",
+              "memberId": "EB",
+              "end": "j"
+            },
+            {
+              "face": "X+",
+              "axis": "X",
+              "side": "+",
+              "memberId": "BC",
+              "end": "i"
+            }
+          ],
+          "columns": [
+            {
+              "memberId": "BD",
+              "side": "above"
+            },
+            {
+              "memberId": "AB",
+              "side": "below"
+            }
+          ],
+          "oppositeBeamPair": true,
+          "anchorageMode": "special-frame-beam-through-bars"
+        }
+      },
+      "methodReviewRequired": true,
+      "axes": [
+        {
+          "codeReferences": [
+            {
+              "id": "142010",
+              "code": "KDS 14 20 10",
+              "name": "콘크리트구조 해석과 설계 원칙",
+              "edition": "2021",
+              "updateDate": "2021-02-18T14:20:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+              "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "4.2.3(2)"
+            },
+            {
+              "id": "142080",
+              "code": "KDS 14 20 80",
+              "name": "콘크리트 내진설계기준",
+              "edition": "2021",
+              "updateDate": "2021-02-18T15:14:00",
+              "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+              "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+              "verification": "official-source-captured-independent-review-pending",
+              "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)"
+            }
+          ],
+          "qualification": "clause-scoped-not-whole-design",
+          "designTransferAllowed": false,
+          "status": "OK",
+          "ratio": 0.1569787552541865,
+          "demand": 92.28428419920019,
+          "capacity": 587.8775382679628,
+          "nominalCapacity": 783.836717690617,
+          "coefficient": 1,
+          "phi": 0.75,
+          "area": 0.16000000000000003,
+          "unit": "kN",
+          "axis": "X",
+          "effectiveWidth": 0.4,
+          "columnDepth": 0.4
+        }
+      ],
+      "confinement": "other",
+      "capacityDemandBasis": "derived-1.25fy-no-column-shear-credit",
+      "demandQualification": "explicit-capacity-design-input-independent-review-pending",
+      "scope": "centered-orthogonal-normal-concrete-special-moment-frame-joint",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-shear",
+          "version": 1,
+          "checkIds": [
+            "joint-shear"
+          ],
+          "module": "src/design/connection/kdsJointShear.js",
+          "scope": "centered orthogonal special frame; supplied probable demand",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.5 Aj; 4.6.1(1),(2); 4.6.3(1)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "d10f67ce04f80503b5da25ca93091d9e92277195956122f27263cd3673506652",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-confinement",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.9990951552593733,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.4; 4.1.5; 4.5.4; Eq.4.5-3; Eq.4.5-4; Eq.4.5-5; 4.6.2"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "scope": "full rectangular hoop amount and spacing; no four-face reduction; physical detailing separate",
+      "designTransferAllowed": false,
+      "criteria": [
+        {
+          "id": "hoop-area",
+          "provided": 0.00023561944901923448,
+          "limit": 0.00023540625000000007,
+          "relation": "minimum",
+          "ratio": 0.9990951552593733,
+          "unit": "m2",
+          "clause": "4.5.4(1)②",
+          "repairKind": "spacing-or-area",
+          "reason": "JOINT_HOOP_AREA_INSUFFICIENT",
+          "status": "OK"
+        },
+        {
+          "id": "vertical-spacing",
+          "provided": 0.075,
+          "limit": 0.1,
+          "relation": "maximum",
+          "ratio": 0.7499999999999999,
+          "unit": "m",
+          "clause": "4.5.4(2)",
+          "repairKind": "spacing",
+          "reason": "JOINT_HOOP_VERTICAL_SPACING_EXCEEDED",
+          "status": "OK"
+        },
+        {
+          "id": "horizontal-spacing",
+          "provided": 0.18,
+          "limit": 0.35,
+          "relation": "maximum",
+          "ratio": 0.5142857142857143,
+          "unit": "m",
+          "clause": "4.5.4(3)",
+          "repairKind": "hoop-topology",
+          "reason": "JOINT_TRANSVERSE_HORIZONTAL_SPACING_EXCEEDED",
+          "status": "OK"
+        },
+        {
+          "id": "unconfined-cover",
+          "provided": 0.04,
+          "limit": 0.1,
+          "relation": "maximum",
+          "ratio": 0.39999999999999997,
+          "unit": "m",
+          "clause": "4.5.4(1)⑤",
+          "repairKind": "additional-confinement",
+          "reason": "JOINT_UNCONFINED_COVER_EXCEEDED",
+          "status": "OK"
+        },
+        {
+          "id": "concrete-strength-scope",
+          "provided": 24,
+          "limit": 21,
+          "relation": "minimum",
+          "ratio": 0.875,
+          "unit": "MPa",
+          "clause": "4.1.4",
+          "repairKind": "material-scope",
+          "reason": "JOINT_CONCRETE_STRENGTH_SCOPE",
+          "status": "OK"
+        },
+        {
+          "id": "steel-strength-scope",
+          "provided": 400,
+          "limit": 500,
+          "relation": "maximum",
+          "ratio": 0.8,
+          "unit": "MPa",
+          "clause": "4.1.5",
+          "repairKind": "material-scope",
+          "reason": "JOINT_HOOP_STEEL_STRENGTH_SCOPE",
+          "status": "OK"
+        }
+      ],
+      "governingCriterion": "hoop-area",
+      "failedCriteria": [],
+      "directions": [
+        {
+          "steelDirection": "B",
+          "coreDimension": "H",
+          "hc": 0.31,
+          "providedArea": 0.00023561944901923448,
+          "requiredArea": 0.00023540625000000007,
+          "ratio": 0.9990951552593733,
+          "status": "OK",
+          "equations": [
+            {
+              "id": "4.5-3",
+              "requiredArea": 0.00023540625000000007
+            },
+            {
+              "id": "4.5-4",
+              "requiredArea": 0.00012555
+            }
+          ],
+          "governingEquation": "4.5-3",
+          "additionalAreaCredited": 0.00007853981633974483,
+          "spacingRepairLimit": 0.07506792481696038
+        },
+        {
+          "steelDirection": "H",
+          "coreDimension": "B",
+          "hc": 0.31,
+          "providedArea": 0.00023561944901923448,
+          "requiredArea": 0.00023540625000000007,
+          "ratio": 0.9990951552593733,
+          "status": "OK",
+          "equations": [
+            {
+              "id": "4.5-3",
+              "requiredArea": 0.00023540625000000007
+            },
+            {
+              "id": "4.5-4",
+              "requiredArea": 0.00012555
+            }
+          ],
+          "governingEquation": "4.5-3",
+          "additionalAreaCredited": 0.00007853981633974483,
+          "spacingRepairLimit": 0.07506792481696038
+        }
+      ],
+      "areaGoverningDirection": "B",
+      "transverseCredit": {
+        "designTransferAllowed": false,
+        "methodReviewRequired": true,
+        "status": "OK",
+        "reason": null,
+        "diameter": 0.01,
+        "spacing": 0.075,
+        "hx": 0.18,
+        "directions": [
+          {
+            "steelDirection": "B",
+            "additionalArea": 0.00007853981633974483
+          },
+          {
+            "steelDirection": "H",
+            "additionalArea": 0.00007853981633974483
+          }
+        ],
+        "sourceCount": 2,
+        "basis": "current opposite-face hook contact, all-phase alternation and physical assembly; full design and fabrication qualification separate"
+      },
+      "hxBasis": "qualified-cross-tie-phase-spacing",
+      "requiredArea": 0.00023540625000000007,
+      "providedArea": 0.00023561944901923448,
+      "spacing": 0.075,
+      "spacingLimit": 0.1,
+      "spacingRepairLimit": 0.07506792481696038,
+      "hx": 0.18,
+      "Ag": 0.16000000000000003,
+      "Ach": 0.1024,
+      "hcB": 0.31,
+      "hcH": 0.31,
+      "fck": 24,
+      "fy": 400,
+      "reductionApplied": false,
+      "units": {
+        "area": "m2",
+        "length": "m",
+        "strength": "MPa"
+      },
+      "columnMemberId": "AB",
+      "columnDetailId": "RC",
+      "columnDetailVersion": 1,
+      "crossTieTopology": {
+        "creditApplied": true,
+        "scope": "orthogonal cross-tie body positions and nominal area per repeat phase",
+        "units": {
+          "length": "m",
+          "area": "m2"
+        },
+        "status": "OK",
+        "reason": null,
+        "phases": [
+          {
+            "phase": 0,
+            "count": 2,
+            "directions": [
+              {
+                "steelDirection": "B",
+                "coreDimension": "H",
+                "hc": 0.31,
+                "positions": [
+                  -0.155,
+                  0.025,
+                  0.155
+                ],
+                "ties": [
+                  {
+                    "mark": "CT2-1",
+                    "sourceMark": "CT2",
+                    "position": 0.025,
+                    "nominalArea": 0.00007853981633974483
+                  }
+                ],
+                "nominalAdditionalArea": 0.00007853981633974483,
+                "maximumGap": 0.18
+              },
+              {
+                "steelDirection": "H",
+                "coreDimension": "B",
+                "hc": 0.31,
+                "positions": [
+                  -0.155,
+                  0.025,
+                  0.155
+                ],
+                "ties": [
+                  {
+                    "mark": "CT1-1",
+                    "sourceMark": "CT1",
+                    "position": 0.025,
+                    "nominalArea": 0.00007853981633974483
+                  }
+                ],
+                "nominalAdditionalArea": 0.00007853981633974483,
+                "maximumGap": 0.18
+              }
+            ]
+          },
+          {
+            "phase": 1,
+            "count": 2,
+            "directions": [
+              {
+                "steelDirection": "B",
+                "coreDimension": "H",
+                "hc": 0.31,
+                "positions": [
+                  -0.155,
+                  -0.025,
+                  0.155
+                ],
+                "ties": [
+                  {
+                    "mark": "CT2-2",
+                    "sourceMark": "CT2",
+                    "position": -0.025,
+                    "nominalArea": 0.00007853981633974483
+                  }
+                ],
+                "nominalAdditionalArea": 0.00007853981633974483,
+                "maximumGap": 0.18
+              },
+              {
+                "steelDirection": "H",
+                "coreDimension": "B",
+                "hc": 0.31,
+                "positions": [
+                  -0.155,
+                  -0.025,
+                  0.155
+                ],
+                "ties": [
+                  {
+                    "mark": "CT1-2",
+                    "sourceMark": "CT1",
+                    "position": -0.025,
+                    "nominalArea": 0.00007853981633974483
+                  }
+                ],
+                "nominalAdditionalArea": 0.00007853981633974483,
+                "maximumGap": 0.18
+              }
+            ]
+          }
+        ],
+        "nominalHx": 0.18,
+        "directions": [
+          {
+            "steelDirection": "B",
+            "minimumNominalAdditionalArea": 0.00007853981633974483
+          },
+          {
+            "steelDirection": "H",
+            "minimumNominalAdditionalArea": 0.00007853981633974483
+          }
+        ],
+        "qualificationRequired": [
+          "opposite-face-anchorage",
+          "seismic-end-alternation",
+          "support-and-assembly"
+        ],
+        "supportAndAssembly": [
+          {
+            "id": "outer-hoop-support",
+            "status": "OK",
+            "reason": null
+          },
+          {
+            "id": "cross-tie-support",
+            "status": "OK",
+            "reason": null
+          },
+          {
+            "id": "longitudinal-assembly",
+            "status": "OK",
+            "reason": null
+          },
+          {
+            "id": "outer-hoop-self-assembly",
+            "status": "OK",
+            "reason": null
+          },
+          {
+            "id": "hoop-cross-tie-assembly",
+            "status": "OK",
+            "reason": null
+          },
+          {
+            "id": "cross-tie-assembly",
+            "status": "OK",
+            "reason": null
+          }
+        ]
+      },
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hoops",
+          "version": 1,
+          "checkIds": [
+            "joint-confinement",
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/kdsJointHoops.js",
+          "scope": "special frame full rectangular hoop amount and spacing; physical detailing separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            },
+            {
+              "id": "142001",
+              "edition": "2022",
+              "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "CLAUSE_APPLIED",
+        "blockers": [],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.4; 4.1.5; 4.5.4; Eq.4.5-3; Eq.4.5-4; Eq.4.5-5; 4.6.2"
+          }
+        ],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6 (special moment frame applicability must be established)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": null,
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "6b26e0171ef80c606dc60d5ee94e66ddce15523d9140d2bac02c19061dd4c9d7",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-hoop-detail",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 1,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142050",
+          "code": "KDS 14 20 50",
+          "name": "콘크리트구조 철근상세 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:12:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+          "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+          "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1(2); 4.1.2(2); 4.4.2(3)"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.5.4, 4.6.2"
+        },
+        {
+          "id": "142001",
+          "code": "KDS 14 20 01",
+          "name": "콘크리트구조 설계(강도설계법) 일반사항",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:10:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+          "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+          "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "1.4"
+        }
+      ],
+      "qualification": "clause-scoped-not-whole-design",
+      "designTransferAllowed": false,
+      "incomplete": false,
+      "incompleteReasons": [],
+      "checks": [
+        {
+          "kind": "tie-diameter",
+          "ratio": 0.953,
+          "provided": 0.01,
+          "required": 0.00953
+        },
+        {
+          "kind": "tie-spacing",
+          "ratio": 0.234375,
+          "provided": 0.075,
+          "maximum": 0.32
+        },
+        {
+          "kind": "start-first-tie",
+          "ratio": 1,
+          "provided": 0.0375,
+          "maximum": 0.0375
+        },
+        {
+          "kind": "end-first-tie",
+          "ratio": 1,
+          "provided": 0.0375,
+          "maximum": 0.0375
+        },
+        {
+          "kind": "135-hook-tail",
+          "ratio": 0.8,
+          "provided": 0.075,
+          "required": 0.06
+        },
+        {
+          "kind": "inside-bend-radius",
+          "ratio": 1,
+          "provided": 0.02,
+          "required": 0.02
+        },
+        {
+          "kind": "cross-tie-hook-and-body",
+          "bars": [
+            1,
+            5
+          ],
+          "status": "OK",
+          "bodyLength": 0.26,
+          "requiredInsideRadius": 0.02,
+          "requiredTail": 0.06,
+          "providedTail": 0.075
+        },
+        {
+          "kind": "cross-tie-hook-and-body",
+          "bars": [
+            3,
+            7
+          ],
+          "status": "OK",
+          "bodyLength": 0.26,
+          "requiredInsideRadius": 0.02,
+          "requiredTail": 0.06,
+          "providedTail": 0.075
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            4,
+            3
+          ],
+          "provided": 0.11709036725521262,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            3,
+            2
+          ],
+          "provided": 0.11710731392078656,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            2,
+            1
+          ],
+          "provided": 0.11710730347275124,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            1,
+            0
+          ],
+          "provided": 0.11710235692666872,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            0,
+            7
+          ],
+          "provided": 0.11710235692666894,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            7,
+            6
+          ],
+          "provided": 0.11710730347412414,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            6,
+            5
+          ],
+          "provided": 0.11710731392216235,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        },
+        {
+          "kind": "supported-bar-clearance",
+          "bars": [
+            5,
+            4
+          ],
+          "provided": 0.1170903672552135,
+          "maximumExclusive": 0.15,
+          "status": "OK"
+        }
+      ],
+      "requiredSeismicTail": 0.075,
+      "distribution": {
+        "count": 4,
+        "positions": [
+          0.0375,
+          0.11249999999999999,
+          0.1875,
+          0.26249999999999996
+        ],
+        "units": {
+          "length": "m"
+        },
+        "fabricationApproved": false,
+        "height": 0.3,
+        "start": 0.0375,
+        "end": 0.2625,
+        "spacing": 0.075,
+        "status": "OK",
+        "reason": null
+      },
+      "panelHeight": 0.3,
+      "scope": "current spatial hoop and declared cross-tie dimensions, contact, lateral support and assembly; whole-design and fabrication qualification separate",
+      "spatialClosure": {
+        "status": "OK",
+        "reason": "HOOP_ASSEMBLY_AND_SUPPORT_REVIEW_REQUIRED",
+        "assemblyStatus": "NOT_CHECKED",
+        "assemblyReason": "JOINT_LONGITUDINAL_AND_TRANSVERSE_ASSEMBLY_REQUIRED",
+        "selfAssembly": {
+          "scope": "non-adjacent body/hook primitives within one hoop and all primitives across distinct stations",
+          "fabricationApproved": false,
+          "status": "OK",
+          "reason": null,
+          "sameStation": {
+            "status": "OK",
+            "centerlineLowerBound": 0.03056526444174712,
+            "centerlineUpperBound": 0.030672318279816944,
+            "requiredDistance": 0.01,
+            "witness": {
+              "firstSegment": 2,
+              "secondSegment": 58
+            }
+          },
+          "repeatedStations": {
+            "status": "OK",
+            "axialSeparationLowerBound": 0.04237205834386182,
+            "requiredDistance": 0.01,
+            "method": "exact-axial-bounds"
+          },
+          "segmentPairs": 2355,
+          "stationEvaluations": 0
+        },
+        "crossTieAssembly": {
+          "scope": "actual spatial hoop body/hooks against cross-ties at all repeated station pairs",
+          "fabricationApproved": false,
+          "status": "OK",
+          "reason": null,
+          "checks": [
+            {
+              "tie": "CT1-1",
+              "centerlineLowerBound": 0.02626144390903418,
+              "centerlineUpperBound": 0.026368497747104005,
+              "requiredDistance": 0.01,
+              "witness": {
+                "indices": [
+                  0,
+                  0
+                ],
+                "relativeShift": 0,
+                "hoopSegment": 32,
+                "tieSegment": 6
+              },
+              "status": "OK"
+            },
+            {
+              "tie": "CT2-1",
+              "centerlineLowerBound": 0.026261443909034177,
+              "centerlineUpperBound": 0.026368497747104,
+              "requiredDistance": 0.01,
+              "witness": {
+                "indices": [
+                  0,
+                  0
+                ],
+                "relativeShift": 0,
+                "hoopSegment": 45,
+                "tieSegment": 31
+              },
+              "status": "OK"
+            },
+            {
+              "tie": "CT1-2",
+              "centerlineLowerBound": 0.012865243077253369,
+              "centerlineUpperBound": 0.012865243077253369,
+              "requiredDistance": 0.01,
+              "witness": {
+                "indices": [
+                  1,
+                  1
+                ],
+                "relativeShift": 0,
+                "hoopSegment": 0,
+                "tieSegment": 38
+              },
+              "status": "OK"
+            },
+            {
+              "tie": "CT2-2",
+              "centerlineLowerBound": 0.012865243077253365,
+              "centerlineUpperBound": 0.012865243077253365,
+              "requiredDistance": 0.01,
+              "witness": {
+                "indices": [
+                  1,
+                  1
+                ],
+                "relativeShift": 0,
+                "hoopSegment": 77,
+                "tieSegment": 0
+              },
+              "status": "OK"
+            }
+          ],
+          "segmentPairs": 12168,
+          "stationEvaluations": 97344
+        },
+        "coverStatus": "OK",
+        "hookPair": {
+          "status": "OK",
+          "centerlineLowerBound": 0.03120675872048736,
+          "centerlineUpperBound": 0.03142086639662701,
+          "requiredDistance": 0.01,
+          "witness": {
+            "startSegment": 18,
+            "endSegment": 12
+          }
+        },
+        "geometricLength": 1.426408376732448,
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1(2); 4.1.2(2)"
+          }
+        ]
+      },
+      "crossTies": {
+        "status": "OK",
+        "assemblyStatus": "OK",
+        "reason": "ALTERNATING_CROSS_TIE_FULL_JOINT_REVIEW_REQUIRED",
+        "pieceCount": 4,
+        "pieceChecks": [
+          {
+            "mark": "CT1-1",
+            "status": "OK",
+            "failedChecks": []
+          },
+          {
+            "mark": "CT2-1",
+            "status": "OK",
+            "failedChecks": []
+          },
+          {
+            "mark": "CT1-2",
+            "status": "OK",
+            "failedChecks": []
+          },
+          {
+            "mark": "CT2-2",
+            "status": "OK",
+            "failedChecks": []
+          }
+        ],
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1(2); 4.1.2(2)"
+          }
+        ],
+        "columnDetailId": "RC",
+        "columnDetailVersion": 1
+      },
+      "transverseLongitudinalAssembly": {
+        "scope": "physical intersection of prepared hoop/cross-tie paths and joint longitudinal paths; aggregate clearance and support qualification separate",
+        "fabricationApproved": false,
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.2"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1; 4.6.4"
+          }
+        ],
+        "units": {
+          "length": "m"
+        },
+        "status": "OK",
+        "incomplete": false,
+        "incompleteReasons": [],
+        "reason": null,
+        "checks": [
+          {
+            "barId": "AB:B1",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -1.214306433183765e-17,
+            "clearanceUpperBound": -1.214306433183765e-17,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 39,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015,
+              "arcAngle": 0.7853981633974483
+            }
+          },
+          {
+            "barId": "AB:B2",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -1.3877787807814457e-17,
+            "clearanceUpperBound": -1.3877787807814457e-17,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 32,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015
+            }
+          },
+          {
+            "barId": "AB:B3",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -5.456364353395582e-11,
+            "clearanceUpperBound": 3.3904459101341544e-12,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 26,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015,
+              "arcAngle": 0.7857337216947983
+            }
+          },
+          {
+            "barId": "AB:B4",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -1.3877787807814457e-17,
+            "clearanceUpperBound": -1.3877787807814457e-17,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 19,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015
+            }
+          },
+          {
+            "barId": "AB:B5",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -4.438259482153484e-11,
+            "clearanceUpperBound": 1.5023034899419585e-12,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 65,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015,
+              "arcAngle": 0.7881545351256802
+            }
+          },
+          {
+            "barId": "AB:B6",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -1.3877787807814457e-17,
+            "clearanceUpperBound": -1.3877787807814457e-17,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 58,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015
+            }
+          },
+          {
+            "barId": "AB:B7",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -5.655018467387585e-11,
+            "clearanceUpperBound": 1.403904770214126e-12,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 51,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015,
+              "arcAngle": 0.7850626051000983
+            }
+          },
+          {
+            "barId": "AB:B8",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": -1.3877787807814457e-17,
+            "clearanceUpperBound": -1.3877787807814457e-17,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 45,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.015
+            }
+          },
+          {
+            "barId": "BC:B1",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": 0.007081021309833816,
+            "clearanceUpperBound": 0.007081021309833816,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 0,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.01
+            }
+          },
+          {
+            "barId": "BC:B2",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": 0.012500000000000138,
+            "clearanceUpperBound": 0.012500000000000138,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "outer-hoop",
+              "transverseSegment": 32,
+              "stationIndex": 0,
+              "stationPlane": 0.0375,
+              "requiredCenterlineDistance": 0.01
+            }
+          },
+          {
+            "barId": "BC:B3",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": 0.006185029171931098,
+            "clearanceUpperBound": 0.006185029171931098,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "CT2-2",
+              "transverseSegment": 0,
+              "stationIndex": 3,
+              "stationPlane": 0.2625,
+              "requiredCenterlineDistance": 0.01
+            }
+          },
+          {
+            "barId": "BC:B4",
+            "status": "OK",
+            "reason": null,
+            "clearanceLowerBound": 0.006185029171931098,
+            "clearanceUpperBound": 0.006185029171931098,
+            "requiredClearance": 0,
+            "witness": {
+              "transverseMark": "CT2-2",
+              "transverseSegment": 19,
+              "stationIndex": 3,
+              "stationPlane": 0.2625,
+              "requiredCenterlineDistance": 0.01
+            }
+          }
+        ],
+        "segmentPairs": 3978,
+        "stationEvaluations": 13458,
+        "arcRefinements": 13
+      },
+      "outerHoopSupport": {
+        "fabricationApproved": false,
+        "methodReviewRequired": true,
+        "scope": "actual outer hoop closure/corner contact and straight-face membership of mapped column bars; seismic confinement credit separate",
+        "perimeterLayout": {
+          "metric": "longitudinal-center-polygon",
+          "units": {
+            "length": "m"
+          },
+          "fabricationQuantity": false,
+          "methodReviewRequired": true,
+          "scope": "station-invariant cyclic bar order proven by actual corner/face contacts; polygon distances are not hoop steel lengths",
+          "status": "OK",
+          "reason": null,
+          "cornerCount": 4,
+          "cornerBarIndices": [
+            5,
+            3,
+            1,
+            7
+          ],
+          "positions": [
+            {
+              "barIndex": 5,
+              "s": 0
+            },
+            {
+              "barIndex": 4,
+              "s": 0.13709036725521273
+            },
+            {
+              "barIndex": 3,
+              "s": 0.2741976811759992
+            },
+            {
+              "barIndex": 2,
+              "s": 0.4113049846487503
+            },
+            {
+              "barIndex": 1,
+              "s": 0.5484073415754191
+            },
+            {
+              "barIndex": 8,
+              "s": 0.6855096985020881
+            },
+            {
+              "barIndex": 7,
+              "s": 0.8226170019762122
+            },
+            {
+              "barIndex": 6,
+              "s": 0.9597243158983746
+            }
+          ],
+          "gaps": [
+            {
+              "from": 5,
+              "to": 4,
+              "length": 0.13709036725521273
+            },
+            {
+              "from": 4,
+              "to": 3,
+              "length": 0.13710731392078648
+            },
+            {
+              "from": 3,
+              "to": 2,
+              "length": 0.13710730347275116
+            },
+            {
+              "from": 2,
+              "to": 1,
+              "length": 0.1371023569266689
+            },
+            {
+              "from": 1,
+              "to": 8,
+              "length": 0.1371023569266689
+            },
+            {
+              "from": 8,
+              "to": 7,
+              "length": 0.13710730347412414
+            },
+            {
+              "from": 7,
+              "to": 6,
+              "length": 0.13710731392216233
+            },
+            {
+              "from": 6,
+              "to": 5,
+              "length": 0.13709036725521362
+            }
+          ],
+          "perimeter": 1.096814683153588,
+          "maximumGap": 0.13710731392216233,
+          "failures": []
+        },
+        "status": "OK",
+        "reason": null,
+        "columnDetailId": "RC",
+        "columnDetailVersion": 1,
+        "cornerSupport": {
+          "status": "OK",
+          "reason": null,
+          "supportedBarIndices": [
+            5,
+            3,
+            1,
+            7
+          ],
+          "closureBarIndices": [
+            5
+          ],
+          "bodyContactStatus": "OK",
+          "bodyCoverage": [
+            {
+              "bend": 1,
+              "status": "OK",
+              "candidates": [
+                {
+                  "bar": 3,
+                  "covered": 4,
+                  "total": 4,
+                  "firstMissing": null,
+                  "firstMissingPlane": null
+                }
+              ]
+            },
+            {
+              "bend": 2,
+              "status": "OK",
+              "candidates": [
+                {
+                  "bar": 1,
+                  "covered": 4,
+                  "total": 4,
+                  "firstMissing": null,
+                  "firstMissingPlane": null
+                }
+              ]
+            },
+            {
+              "bend": 3,
+              "status": "OK",
+              "candidates": [
+                {
+                  "bar": 7,
+                  "covered": 4,
+                  "total": 4,
+                  "firstMissing": null,
+                  "firstMissingPlane": null
+                }
+              ]
+            }
+          ],
+          "fabricationApproved": false
+        },
+        "closureCommonBarIndices": [
+          5
+        ],
+        "faceMembership": {
+          "status": "OK",
+          "faces": [
+            {
+              "face": 1,
+              "contactedBarIndices": [
+                4
+              ]
+            },
+            {
+              "face": 2,
+              "contactedBarIndices": [
+                2
+              ]
+            },
+            {
+              "face": 3,
+              "contactedBarIndices": [
+                8
+              ]
+            },
+            {
+              "face": 4,
+              "contactedBarIndices": [
+                6
+              ]
+            }
+          ]
+        },
+        "perimeterBarIndices": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "missingPerimeterBarIndices": [],
+        "sourcePaths": [
+          {
+            "bar": 1,
+            "pathId": "AB:B1",
+            "expectedPathId": "AB:B1",
+            "pieceCount": 1
+          },
+          {
+            "bar": 2,
+            "pathId": "AB:B2",
+            "expectedPathId": "AB:B2",
+            "pieceCount": 1
+          },
+          {
+            "bar": 3,
+            "pathId": "AB:B3",
+            "expectedPathId": "AB:B3",
+            "pieceCount": 1
+          },
+          {
+            "bar": 4,
+            "pathId": "AB:B4",
+            "expectedPathId": "AB:B4",
+            "pieceCount": 1
+          },
+          {
+            "bar": 5,
+            "pathId": "AB:B5",
+            "expectedPathId": "AB:B5",
+            "pieceCount": 1
+          },
+          {
+            "bar": 6,
+            "pathId": "AB:B6",
+            "expectedPathId": "AB:B6",
+            "pieceCount": 1
+          },
+          {
+            "bar": 7,
+            "pathId": "AB:B7",
+            "expectedPathId": "AB:B7",
+            "pieceCount": 1
+          },
+          {
+            "bar": 8,
+            "pathId": "AB:B8",
+            "expectedPathId": "AB:B8",
+            "pieceCount": 1
+          }
+        ],
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1(2); 4.1.2(2)"
+          }
+        ]
+      },
+      "crossTieSupport": {
+        "status": "OK",
+        "checks": [
+          {
+            "tie": "CT1-1",
+            "bar": 2,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT1-1",
+            "bar": 6,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT2-1",
+            "bar": 4,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT2-1",
+            "bar": 8,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT1-2",
+            "bar": 2,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT1-2",
+            "bar": 6,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT2-2",
+            "bar": 4,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          },
+          {
+            "tie": "CT2-2",
+            "bar": 8,
+            "status": "OK",
+            "reason": null,
+            "coverage": {
+              "status": "OK",
+              "totalCount": 2,
+              "coveredCount": 2,
+              "uncoveredCount": 0,
+              "firstUncoveredIndex": null,
+              "firstUncoveredPlane": null,
+              "axialTolerance": 1e-9,
+              "method": "union of station-index intervals; no station expansion"
+            }
+          }
+        ],
+        "scope": "declared cross-tie hook contact with mapped straight column paths at all repeated planes; seismic anchorage and confinement credit separate",
+        "fabricationApproved": false,
+        "methodReviewRequired": true,
+        "reason": null,
+        "columnDetailId": "RC",
+        "columnDetailVersion": 1,
+        "sourcePaths": [
+          {
+            "bar": 1,
+            "pathId": "AB:B1",
+            "expectedPathId": "AB:B1",
+            "pieceCount": 1
+          },
+          {
+            "bar": 2,
+            "pathId": "AB:B2",
+            "expectedPathId": "AB:B2",
+            "pieceCount": 1
+          },
+          {
+            "bar": 3,
+            "pathId": "AB:B3",
+            "expectedPathId": "AB:B3",
+            "pieceCount": 1
+          },
+          {
+            "bar": 4,
+            "pathId": "AB:B4",
+            "expectedPathId": "AB:B4",
+            "pieceCount": 1
+          },
+          {
+            "bar": 5,
+            "pathId": "AB:B5",
+            "expectedPathId": "AB:B5",
+            "pieceCount": 1
+          },
+          {
+            "bar": 6,
+            "pathId": "AB:B6",
+            "expectedPathId": "AB:B6",
+            "pieceCount": 1
+          },
+          {
+            "bar": 7,
+            "pathId": "AB:B7",
+            "expectedPathId": "AB:B7",
+            "pieceCount": 1
+          },
+          {
+            "bar": 8,
+            "pathId": "AB:B8",
+            "expectedPathId": "AB:B8",
+            "pieceCount": 1
+          }
+        ],
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1(2); 4.1.2(2)"
+          }
+        ]
+      },
+      "longitudinalSupport": {
+        "status": "OK",
+        "checks": [
+          {
+            "kind": "cross-tie-hook-and-body",
+            "bars": [
+              1,
+              5
+            ],
+            "status": "OK",
+            "bodyLength": 0.26,
+            "requiredInsideRadius": 0.02,
+            "requiredTail": 0.06,
+            "providedTail": 0.075
+          },
+          {
+            "kind": "cross-tie-hook-and-body",
+            "bars": [
+              3,
+              7
+            ],
+            "status": "OK",
+            "bodyLength": 0.26,
+            "requiredInsideRadius": 0.02,
+            "requiredTail": 0.06,
+            "providedTail": 0.075
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              4,
+              3
+            ],
+            "provided": 0.11709036725521262,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              3,
+              2
+            ],
+            "provided": 0.11710731392078656,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              2,
+              1
+            ],
+            "provided": 0.11710730347275124,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              1,
+              0
+            ],
+            "provided": 0.11710235692666872,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              0,
+              7
+            ],
+            "provided": 0.11710235692666894,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              7,
+              6
+            ],
+            "provided": 0.11710730347412414,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              6,
+              5
+            ],
+            "provided": 0.11710731392216235,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          },
+          {
+            "kind": "supported-bar-clearance",
+            "bars": [
+              5,
+              4
+            ],
+            "provided": 0.1170903672552135,
+            "maximumExclusive": 0.15,
+            "status": "OK"
+          }
+        ],
+        "supportedBarIndices": [
+          5,
+          3,
+          1,
+          7,
+          2,
+          6,
+          4,
+          8
+        ],
+        "segments": [
+          {
+            "bars": [
+              1,
+              5
+            ],
+            "length": 0.28,
+            "bodyLength": 0.26,
+            "hookAngle": 135
+          },
+          {
+            "bars": [
+              3,
+              7
+            ],
+            "length": 0.28,
+            "bodyLength": 0.26,
+            "hookAngle": 135
+          }
+        ],
+        "fabricationApproved": false,
+        "methodReviewRequired": true,
+        "scope": "declared paired 135-degree cross-tie support topology; full cage geometry separate",
+        "policy": "existing KDS 142050 lateral-support owner; 150 mm interpretation review remains open",
+        "columnDetailId": "RC",
+        "columnDetailVersion": 1,
+        "codeReferences": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1(2); 4.1.2(2); 4.4.2(3)"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.4, 4.6.2"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4"
+          }
+        ],
+        "reason": null
+      },
+      "readiness": [
+        {
+          "id": "dimensions",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "seismic-tail",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "distribution",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "outer-hoop-shape",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "outer-hoop-self-assembly",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "hoop-cross-tie-assembly",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "transverse-longitudinal-assembly",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "outer-hoop-support",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "longitudinal-support",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "cross-tie-assembly",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "cross-tie-support",
+          "status": "OK",
+          "reason": null
+        },
+        {
+          "id": "cross-tie-eligibility",
+          "status": "OK",
+          "reason": null
+        }
+      ],
+      "methodReviewRequired": true,
+      "fabricationApproved": false,
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-outer-support",
+          "version": 1,
+          "checkIds": [
+            "joint-hoop-detail"
+          ],
+          "module": "src/design/connection/jointHoopSupport.js",
+          "scope": "actual closure, distinct corner supports and straight-face membership; seismic qualification separate",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1(2); 4.1.2(2); 4.4.2(3)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.4, 4.6.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142001",
+            "code": "KDS 14 20 01",
+            "name": "콘크리트구조 설계(강도설계법) 일반사항",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:10:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142001",
+            "retrievedAt": "2026-09-11T08:27:10.001635+00:00",
+            "sha256": "b51425cec82aef79227f184a5eb567a41c9511348020c42c3a0ec941ea947780",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "1.4",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "clause-scoped-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "1a6f0c9eafdde69b9c4a67a75f0cbdd4c477cf38453ce4be0354f1fe3e1a101f",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-bar-congestion",
+      "category": "connection",
+      "status": "OK",
+      "ratio": null,
+      "reason": null,
+      "qualification": "longitudinal-bar-geometry-review",
+      "methodReviewRequired": true,
+      "designTransferAllowed": false,
+      "codeReferences": [
+        {
+          "id": "142050",
+          "code": "KDS 14 20 50",
+          "name": "콘크리트구조 철근상세 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:12:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+          "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+          "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.2"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.6.1; 4.6.4"
+        }
+      ],
+      "minimum": {
+        "bars": [
+          "BC:B3",
+          "AB:B5"
+        ],
+        "clearance": 0.017058812971038118,
+        "required": 0
+      },
+      "failedPairs": [],
+      "pairCount": 66,
+      "barCount": 12,
+      "minimumClearance": 0,
+      "units": {
+        "length": "m"
+      },
+      "columnContinuity": {
+        "mode": "aligned-through-bars",
+        "pairCount": 8,
+        "pairs": [
+          [
+            "AB:B1",
+            "BD:B1"
+          ],
+          [
+            "AB:B2",
+            "BD:B2"
+          ],
+          [
+            "AB:B3",
+            "BD:B3"
+          ],
+          [
+            "AB:B4",
+            "BD:B4"
+          ],
+          [
+            "AB:B5",
+            "BD:B5"
+          ],
+          [
+            "AB:B6",
+            "BD:B6"
+          ],
+          [
+            "AB:B7",
+            "BD:B7"
+          ],
+          [
+            "AB:B8",
+            "BD:B8"
+          ]
+        ],
+        "qualification": "explicit aligned straight bars; physical continuity requires detailing review"
+      },
+      "barPaths": [
+        {
+          "id": "AB:B1",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                -0.13707106781186548,
+                -0.13707106781186548,
+                -0.1499999999999999
+              ],
+              [
+                -0.13707106781186548,
+                -0.13707106781186548,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B1",
+            "BD:B1"
+          ]
+        },
+        {
+          "id": "AB:B2",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                -0.14,
+                0,
+                -0.1499999999999999
+              ],
+              [
+                -0.14,
+                0,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B2",
+            "BD:B2"
+          ]
+        },
+        {
+          "id": "AB:B3",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                -0.1370761338731522,
+                0.13707612364099503,
+                -0.1499999999999999
+              ],
+              [
+                -0.1370761338731522,
+                0.13707612364099503,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B3",
+            "BD:B3"
+          ]
+        },
+        {
+          "id": "AB:B4",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                0.14,
+                -0.1499999999999999
+              ],
+              [
+                0,
+                0.14,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B4",
+            "BD:B4"
+          ]
+        },
+        {
+          "id": "AB:B5",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0.13705881297103725,
+                0.1370588129710381,
+                -0.1499999999999999
+              ],
+              [
+                0.13705881297103725,
+                0.1370588129710381,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B5",
+            "BD:B5"
+          ]
+        },
+        {
+          "id": "AB:B6",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0.14,
+                0,
+                -0.1499999999999999
+              ],
+              [
+                0.14,
+                0,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B6",
+            "BD:B6"
+          ]
+        },
+        {
+          "id": "AB:B7",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0.13707612364239832,
+                -0.1370761338745583,
+                -0.1499999999999999
+              ],
+              [
+                0.13707612364239832,
+                -0.1370761338745583,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B7",
+            "BD:B7"
+          ]
+        },
+        {
+          "id": "AB:B8",
+          "diameter": 0.02,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                -0.14,
+                -0.1499999999999999
+              ],
+              [
+                0,
+                -0.14,
+                0.1499999999999999
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0
+          ],
+          "continuationIds": [
+            "AB:B8",
+            "BD:B8"
+          ]
+        },
+        {
+          "id": "BC:B1",
+          "diameter": 0.01,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                0.045,
+                -0.08999999999999986
+              ],
+              [
+                0.2,
+                0.045,
+                -0.08999999999999986
+              ]
+            ],
+            [
+              [
+                -0.19999999999999996,
+                0.045,
+                -0.08999999999999986
+              ],
+              [
+                0,
+                0.045,
+                -0.08999999999999986
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0
+          ],
+          "continuationIds": [
+            "BC:B1",
+            "EB:B1"
+          ]
+        },
+        {
+          "id": "BC:B2",
+          "diameter": 0.01,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                -0.105,
+                -0.08999999999999986
+              ],
+              [
+                0.2,
+                -0.105,
+                -0.08999999999999986
+              ]
+            ],
+            [
+              [
+                -0.19999999999999996,
+                -0.105,
+                -0.08999999999999986
+              ],
+              [
+                0,
+                -0.105,
+                -0.08999999999999986
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0
+          ],
+          "continuationIds": [
+            "BC:B2",
+            "EB:B2"
+          ]
+        },
+        {
+          "id": "BC:B3",
+          "diameter": 0.01,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                0.105,
+                0.06999999999999984
+              ],
+              [
+                0.2,
+                0.105,
+                0.06999999999999984
+              ]
+            ],
+            [
+              [
+                -0.19999999999999996,
+                0.105,
+                0.06999999999999984
+              ],
+              [
+                0,
+                0.105,
+                0.06999999999999984
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0
+          ],
+          "continuationIds": [
+            "BC:B3",
+            "EB:B3"
+          ]
+        },
+        {
+          "id": "BC:B4",
+          "diameter": 0.01,
+          "sagitta": 0,
+          "segments": [
+            [
+              [
+                0,
+                0.045,
+                0.06999999999999984
+              ],
+              [
+                0.2,
+                0.045,
+                0.06999999999999984
+              ]
+            ],
+            [
+              [
+                -0.19999999999999996,
+                0.045,
+                0.06999999999999984
+              ],
+              [
+                0,
+                0.045,
+                0.06999999999999984
+              ]
+            ]
+          ],
+          "segmentErrors": [
+            0,
+            0
+          ],
+          "continuationIds": [
+            "BC:B4",
+            "EB:B4"
+          ]
+        }
+      ],
+      "pathCoordinates": "column-local-y,z,x; metres from joint node",
+      "pathDimensions": {
+        "u": 0.4,
+        "v": 0.4,
+        "w": 0.3
+      },
+      "scope": "explicit clearance between longitudinal paths only; hoop contacts and aggregate placement separate",
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-congestion",
+          "version": 1,
+          "checkIds": [
+            "joint-bar-congestion"
+          ],
+          "module": "src/design/connection/jointCongestion.js",
+          "scope": "longitudinal 3D path clearance with conservative arc error; geometric review only",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1; 4.6.4",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "longitudinal-bar-geometry-review",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "60d09ddbd10230ee4fc1d41d67d7463db5218085e25df83370b2348a010c2045",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-member-strength-ratio",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.1650045867379187,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142010",
+          "code": "KDS 14 20 10",
+          "name": "콘크리트구조 해석과 설계 원칙",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:20:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+          "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+          "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.3(2)"
+        },
+        {
+          "id": "142020",
+          "code": "KDS 14 20 20",
+          "name": "콘크리트구조 휨 및 압축 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:11:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+          "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+          "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1; 4.1.2"
+        },
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.5.2(2); Eq.4.5-1"
+        }
+      ],
+      "qualification": "conservative-sufficient-strength-bound-not-whole-design",
+      "designTransferAllowed": false,
+      "columnLowerBound": 164.89765801881032,
+      "beamUpperBound": 22.674058262870368,
+      "factor": 1.2,
+      "axis": "X",
+      "members": [
+        {
+          "memberId": "AB",
+          "basis": "minimum-design-strength-over-supplied-axial-stations",
+          "negative": 82.9510935701157,
+          "positive": 82.95006045161297,
+          "axialValues": [
+            -7.0000000000000036
+          ]
+        },
+        {
+          "memberId": "BD",
+          "basis": "minimum-design-strength-over-supplied-axial-stations",
+          "negative": 81.94865069180435,
+          "positive": 81.94759756719736,
+          "axialValues": [
+            -6.217248937900877e-15
+          ]
+        },
+        {
+          "memberId": "BC",
+          "basis": "nominal-zero-axial-strength",
+          "negative": 9.86048058424783,
+          "positive": 11.337029131435184,
+          "axialValues": [
+            0
+          ]
+        },
+        {
+          "memberId": "EB",
+          "basis": "nominal-zero-axial-strength",
+          "negative": 9.86048058424783,
+          "positive": 11.337029131435184,
+          "axialValues": [
+            -2.2737367544323206e-13
+          ]
+        }
+      ],
+      "axesChecks": [
+        {
+          "status": "OK",
+          "ratio": 0.1650045867379187,
+          "columnLowerBound": 164.89765801881032,
+          "beamUpperBound": 22.674058262870368,
+          "factor": 1.2,
+          "reason": null,
+          "axis": "X",
+          "members": [
+            {
+              "memberId": "AB",
+              "basis": "minimum-design-strength-over-supplied-axial-stations",
+              "negative": 82.9510935701157,
+              "positive": 82.95006045161297,
+              "axialValues": [
+                -7.0000000000000036
+              ]
+            },
+            {
+              "memberId": "BD",
+              "basis": "minimum-design-strength-over-supplied-axial-stations",
+              "negative": 81.94865069180435,
+              "positive": 81.94759756719736,
+              "axialValues": [
+                -6.217248937900877e-15
+              ]
+            },
+            {
+              "memberId": "BC",
+              "basis": "nominal-zero-axial-strength",
+              "negative": 9.86048058424783,
+              "positive": 11.337029131435184,
+              "axialValues": [
+                0
+              ]
+            },
+            {
+              "memberId": "EB",
+              "basis": "nominal-zero-axial-strength",
+              "negative": 9.86048058424783,
+              "positive": 11.337029131435184,
+              "axialValues": [
+                -2.2737367544323206e-13
+              ]
+            }
+          ]
+        }
+      ],
+      "scope": "column design-strength lower bound versus beam nominal-strength upper bound; both signs; no slab credit",
+      "methodReviewRequired": true,
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-strength-relation",
+          "version": 1,
+          "checkIds": [
+            "joint-member-strength-ratio"
+          ],
+          "module": "src/design/connection/jointStrengthRelation.js",
+          "scope": "column lower/design versus beam upper/nominal strength bound; method review pending",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142010",
+              "edition": "2021",
+              "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+            },
+            {
+              "id": "142020",
+              "edition": "2022",
+              "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3(2)",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2(2); Eq.4.5-1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.5.2",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142020",
+            "code": "KDS 14 20 20",
+            "name": "콘크리트구조 휨 및 압축 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:11:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+            "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142010",
+            "code": "KDS 14 20 10",
+            "name": "콘크리트구조 해석과 설계 원칙",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:20:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+            "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.2.3",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "conservative-sufficient-strength-bound-not-whole-design",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "5523a6d8cbba8cf67828a11aa5bde37e19fc255b027476d2c3a2dfeff021b1c2",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-anchorage",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0.5,
+      "reason": null,
+      "codeReferences": [
+        {
+          "id": "142080",
+          "code": "KDS 14 20 80",
+          "name": "콘크리트 내진설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T15:14:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+          "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+          "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.6.1(4); Eq.4.6-1a; Eq.4.6-1b"
+        }
+      ],
+      "methodReviewRequired": true,
+      "designTransferAllowed": false,
+      "scope": "explicit paired straight beam bars meeting at joint plane; normal concrete special frame; external anchorage and fabrication review separate",
+      "continuityVerified": true,
+      "pairs": [
+        {
+          "axis": "X",
+          "a": {
+            "memberId": "BC",
+            "barIndex": 1,
+            "detailId": "RB",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              0.045,
+              -0.09
+            ]
+          },
+          "b": {
+            "memberId": "EB",
+            "barIndex": 1,
+            "detailId": "RL",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              0.045,
+              -0.09
+            ]
+          }
+        },
+        {
+          "axis": "X",
+          "a": {
+            "memberId": "BC",
+            "barIndex": 2,
+            "detailId": "RB",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              -0.105,
+              -0.09
+            ]
+          },
+          "b": {
+            "memberId": "EB",
+            "barIndex": 2,
+            "detailId": "RL",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              -0.105,
+              -0.09
+            ]
+          }
+        },
+        {
+          "axis": "X",
+          "a": {
+            "memberId": "BC",
+            "barIndex": 3,
+            "detailId": "RB",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              0.105,
+              0.07
+            ]
+          },
+          "b": {
+            "memberId": "EB",
+            "barIndex": 3,
+            "detailId": "RL",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              0.105,
+              0.07
+            ]
+          }
+        },
+        {
+          "axis": "X",
+          "a": {
+            "memberId": "BC",
+            "barIndex": 4,
+            "detailId": "RB",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              0.045,
+              0.07
+            ]
+          },
+          "b": {
+            "memberId": "EB",
+            "barIndex": 4,
+            "detailId": "RL",
+            "detailVersion": 1,
+            "materialId": "steel@1",
+            "catalogId": null,
+            "designation": null,
+            "fy": 235,
+            "diameter": 0.01,
+            "area": 0.00007853981633974484,
+            "point": [
+              0,
+              0.045,
+              0.07
+            ]
+          }
+        }
+      ],
+      "checks": [
+        {
+          "axis": "X",
+          "memberId": "BC",
+          "barIndex": 1,
+          "fy": 235,
+          "diameter": 0.01,
+          "columnDepth": 0.4,
+          "minimumRatio": 20,
+          "requiredDepth": 0.2,
+          "ratio": 0.5,
+          "status": "OK",
+          "units": {
+            "length": "m",
+            "stress": "MPa"
+          }
+        },
+        {
+          "axis": "X",
+          "memberId": "BC",
+          "barIndex": 2,
+          "fy": 235,
+          "diameter": 0.01,
+          "columnDepth": 0.4,
+          "minimumRatio": 20,
+          "requiredDepth": 0.2,
+          "ratio": 0.5,
+          "status": "OK",
+          "units": {
+            "length": "m",
+            "stress": "MPa"
+          }
+        },
+        {
+          "axis": "X",
+          "memberId": "BC",
+          "barIndex": 3,
+          "fy": 235,
+          "diameter": 0.01,
+          "columnDepth": 0.4,
+          "minimumRatio": 20,
+          "requiredDepth": 0.2,
+          "ratio": 0.5,
+          "status": "OK",
+          "units": {
+            "length": "m",
+            "stress": "MPa"
+          }
+        },
+        {
+          "axis": "X",
+          "memberId": "BC",
+          "barIndex": 4,
+          "fy": 235,
+          "diameter": 0.01,
+          "columnDepth": 0.4,
+          "minimumRatio": 20,
+          "requiredDepth": 0.2,
+          "ratio": 0.5,
+          "status": "OK",
+          "units": {
+            "length": "m",
+            "stress": "MPa"
+          }
+        }
+      ],
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": {
+          "id": "p25-joint-hook-anchorage",
+          "version": 1,
+          "checkIds": [
+            "joint-anchorage"
+          ],
+          "module": "src/design/connection/jointHookAnchorage.js",
+          "scope": "ordinary-weight special-frame 90-degree hooks, explicit matched straight through-bars, or an explicit through axis with perpendicular hooks; KDS 4.6.1(4) depth; physical continuity and independent review remain distinct",
+          "implementation": "PARTIAL_PROFILE",
+          "sources": [
+            {
+              "id": "142050",
+              "edition": "2022",
+              "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0"
+            },
+            {
+              "id": "142080",
+              "edition": "2021",
+              "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874"
+            }
+          ],
+          "independentlyVerified": false
+        },
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "METHOD_REVIEW_REQUIRED"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6.1(4); Eq.4.6-1a; Eq.4.6-1b",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142052",
+            "code": "KDS 14 20 52",
+            "name": "콘크리트구조 정착 및 이음 설계기준",
+            "edition": "2024",
+            "updateDate": "2024-12-31T10:54:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142052",
+            "retrievedAt": "2026-09-11T01:06:18.467544+00:00",
+            "sha256": "2d24b7179850d4e1b1cac817ad7e6d890995f6f85d3ba9c0600d4343719f2d51",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142080",
+            "code": "KDS 14 20 80",
+            "name": "콘크리트 내진설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T15:14:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142080",
+            "retrievedAt": "2026-09-11T01:06:18.715365+00:00",
+            "sha256": "c0caabdfc8f7589a946993146d39bc8a3831ba6b8390f235d62e7a99213e7874",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.6",
+            "applicability": "TO_BE_CONFIRMED"
+          },
+          {
+            "id": "142050",
+            "code": "KDS 14 20 50",
+            "name": "콘크리트구조 철근상세 설계기준",
+            "edition": "2022",
+            "updateDate": "2022-01-13T14:12:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142050",
+            "retrievedAt": "2026-09-11T01:06:18.353909+00:00",
+            "sha256": "400eb92f0f6a4e518c42056bbb2fcac39eb03f9710d6d91312149d43e3fa01c0",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1",
+            "applicability": "TO_BE_CONFIRMED"
+          }
+        ],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    },
+    {
+      "id": "ba776840c261d722f57824a228092b317e91d9b23a977fdc1fdae50de04452f2",
+      "entityId": "joint:B",
+      "memberId": "joint:B",
+      "comboId": "U",
+      "checkId": "joint-stiffness",
+      "category": "connection",
+      "status": "OK",
+      "ratio": 0,
+      "reason": null,
+      "jointTopology": {
+        "version": "p25-joint-topology-v1",
+        "classificationOnly": true,
+        "status": "OK",
+        "beamArrangement": "two-opposite",
+        "beamFaces": [
+          {
+            "face": "X-",
+            "axis": "X",
+            "side": "-",
+            "memberId": "EB",
+            "end": "j"
+          },
+          {
+            "face": "X+",
+            "axis": "X",
+            "side": "+",
+            "memberId": "BC",
+            "end": "i"
+          }
+        ],
+        "columns": [
+          {
+            "memberId": "BD",
+            "side": "above"
+          },
+          {
+            "memberId": "AB",
+            "side": "below"
+          }
+        ],
+        "oppositeBeamPair": true,
+        "anchorageMode": "special-frame-beam-through-bars"
+      },
+      "codeBasis": {
+        "version": "p25-code-basis-v5-method-specific-targets",
+        "rule": null,
+        "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+        "status": "NOT_ESTABLISHED",
+        "blockers": [
+          "CODE_REFERENCES_MISSING"
+        ],
+        "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+        "applied": [],
+        "reviewTargets": [],
+        "calculationBasis": "missing-or-unqualified-input",
+        "reason": "KDS application not established: CODE_REFERENCES_MISSING; calculation assumptions are not code certification",
+        "wholeDesignQualified": false
+      },
+      "analysisRunId": "E:2026-09-13T23:57:03.869Z:1"
+    }
+  ],
+  "summary": {
+    "scopeComplete": false,
+    "combinationCoverage": {
+      "projectProfile": {
+        "qualification": "user-declared-scope-only",
+        "codeQualified": false,
+        "loadScopeHash": "4f9c324b8ceb4afd6055b99671fab90df8d6c3c46f17778febc728454df24552",
+        "status": "NOT_CHECKED",
+        "issues": [
+          {
+            "code": "PROJECT_PROFILE_REQUIRED"
+          }
+        ]
+      },
+      "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+      "expectedIds": [
+        "U"
+      ],
+      "missingIds": [],
+      "evaluatedComboIds": [
+        "U"
+      ],
+      "missingEvaluationIds": [],
+      "missingPurposes": [
+        "service"
+      ],
+      "codeQualified": false
+    },
+    "counts": {
+      "OK": 9,
+      "NG": 0,
+      "WARN": 0,
+      "NOT_CHECKED": 59,
+      "N_A": 12,
+      "FAILED": 0
+    },
+    "closureDiagnosticCounts": {
+      "OK": 0,
+      "NG": 0,
+      "NOT_CHECKED": 0,
+      "N_A": 0
+    },
+    "incompleteCheckCount": 59,
+    "checkCount": 80,
+    "failedEntityCount": 0,
+    "uncheckedEntityCount": 5,
+    "complete": false
+  }
+}

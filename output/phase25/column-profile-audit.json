@@ -1,0 +1,3324 @@
+{
+  "scope": "synthetic prescribed restrained axial member; not whole profile qualification",
+  "evaluatorVersion": "p25-practical-evaluation-v207-post-attachment-calculation",
+  "inputHash": "eb4eefed885d2f3cf9a2819fbb3f02fb21441fa9be5f1829cb62d7fa2030cc6c",
+  "candidate": {
+    "generation": {
+      "ok": true,
+      "version": "p25-section-size-proposal-v5-shear-limit",
+      "sectionChangeRequired": false,
+      "sectionCandidates": [
+        {
+          "B": 300,
+          "H": 240
+        },
+        {
+          "B": 240,
+          "H": 300
+        },
+        {
+          "B": 300,
+          "H": 300
+        }
+      ],
+      "basisCheckIds": [
+        "d3e9a36f15376cdf6eced82ba78740a65c3a56bd63617af98d54d99db1a231fe"
+      ],
+      "sourceSectionId": "S@1",
+      "sourceDimensions": {
+        "B": 240,
+        "H": 240
+      },
+      "units": {
+        "length": "mm"
+      },
+      "requiresReanalysis": true,
+      "requiresCandidateEvaluation": true,
+      "architecturalFitVerified": false,
+      "automaticApplicationAllowed": false,
+      "basis": "bounded 50 mm-grid width/depth enlargement for recorded strength, deflection, gross-section stability or shear upper-bound NG; no proportional capacity inference; whole candidate reanalysis and review required",
+      "components": [
+        {
+          "ok": true,
+          "version": "p25-section-size-proposal-v5-shear-limit",
+          "sectionChangeRequired": false,
+          "sectionCandidates": [
+            {
+              "B": 300,
+              "H": 240
+            },
+            {
+              "B": 240,
+              "H": 300
+            },
+            {
+              "B": 300,
+              "H": 300
+            }
+          ],
+          "basisCheckIds": [
+            "d3e9a36f15376cdf6eced82ba78740a65c3a56bd63617af98d54d99db1a231fe"
+          ],
+          "sourceSectionId": "S@1",
+          "sourceDimensions": {
+            "B": 240,
+            "H": 240
+          },
+          "units": {
+            "length": "mm"
+          },
+          "requiresReanalysis": true,
+          "requiresCandidateEvaluation": true,
+          "architecturalFitVerified": false,
+          "automaticApplicationAllowed": false,
+          "basis": "bounded 50 mm-grid width/depth enlargement for recorded strength, deflection, gross-section stability or shear upper-bound NG; no proportional capacity inference; whole candidate reanalysis and review required"
+        },
+        {
+          "ok": false,
+          "reason": "RECORDED_SHEAR_NG_REQUIRED",
+          "automaticApplicationAllowed": false
+        }
+      ],
+      "longitudinalProposalUnavailable": "LONGITUDINAL_COUNT_ONLY_REPAIR_UNAVAILABLE",
+      "cageProposalUnavailable": "RECORDED_CAGE_COLLISION_REQUIRED",
+      "endDevelopmentUnavailable": "RECORDED_END_DEVELOPMENT_REQUIRED",
+      "spliceLengthUnavailable": "RECORDED_SPLICE_LENGTH_REQUIRED",
+      "dependentProposalUnavailable": [],
+      "dependentProposalUnavailableCount": 0,
+      "dependentProposalTruncated": false,
+      "regionCandidateOrder": "diagonal-first"
+    },
+    "job": {
+      "ok": true,
+      "jobId": "candidate-job-d8871a2ab688df0b10002eda49226ef49516f7a066f81ec8469d29ce2afe6b78",
+      "status": "BUDGET_EXHAUSTED",
+      "stageTiming": {
+        "activeStage": null,
+        "activeElapsedMs": 0,
+        "durationsMs": {
+          "preparation": 298.02850000000035,
+          "geometry": 729.2768999999998,
+          "analysis": 4545.949500000001,
+          "evaluation": 1646.3801000000003,
+          "quantity": 13.117899999999281,
+          "comparison": 162.13240000000042
+        },
+        "basis": "wall-clock stage duration; not CPU time or completion percentage"
+      },
+      "previousJobId": null,
+      "nextCursor": 1,
+      "continuationAvailable": true,
+      "workerTerminationUnconfirmedAtFailure": false,
+      "discardedCandidateCount": 0,
+      "applicationRequest": null,
+      "application": null,
+      "candidateCount": 1,
+      "offset": 0,
+      "total": 1,
+      "nextOffset": null,
+      "candidates": [
+        {
+          "engineeringSeverity": {
+            "version": "p25-candidate-severity-v3-strain-deficit",
+            "basis": "recorded-NG-utilization-or-required-to-actual-tension-strain; aggregate-code-compliance-excluded",
+            "affected": {
+              "maximumNgRatio": 1.0276142374915396,
+              "sumNgExcess": 0.11045694996615829,
+              "unquantifiedNgCount": 0
+            },
+            "project": {
+              "maximumNgRatio": 1.0276142374915396,
+              "sumNgExcess": 0.11045694996615829,
+              "unquantifiedNgCount": 0
+            }
+          },
+          "affectedScope": {
+            "version": "p25-candidate-scope-v4-source-record-lineage",
+            "basis": "all-evaluated-entities-after-reanalysis",
+            "entityIds": [
+              "AB",
+              "foundation:A",
+              "foundation:B",
+              "joint:A",
+              "joint:B"
+            ],
+            "summary": {
+              "scopeComplete": false,
+              "combinationCoverage": {
+                "projectProfile": {
+                  "qualification": "user-declared-scope-only",
+                  "codeQualified": false,
+                  "loadScopeHash": "9b3ee945e8668cc0f9350b57fa85695356fedce06c1e0cf5e0e71b2993aa96c1",
+                  "status": "OK",
+                  "profileId": "P",
+                  "profileVersion": 1,
+                  "structuralSystem": "ordinary-rc-frame",
+                  "stiffnessBasis": "gross-section-only",
+                  "decisionReference": "synthetic single beam without lateral environmental loading; not building qualification",
+                  "issues": []
+                },
+                "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+                "expectedIds": [
+                  "U",
+                  "TOTAL",
+                  "LIVE",
+                  "SUST"
+                ],
+                "missingIds": [],
+                "evaluatedComboIds": [
+                  "LIVE",
+                  "SUST",
+                  "TOTAL",
+                  "U"
+                ],
+                "missingEvaluationIds": [],
+                "missingPurposes": [],
+                "codeQualified": false
+              },
+              "counts": {
+                "OK": 22,
+                "NG": 6,
+                "WARN": 0,
+                "NOT_CHECKED": 45,
+                "N_A": 43,
+                "FAILED": 0
+              },
+              "closureDiagnosticCounts": {
+                "OK": 0,
+                "NG": 0,
+                "NOT_CHECKED": 0,
+                "N_A": 0
+              },
+              "incompleteCheckCount": 45,
+              "checkCount": 116,
+              "failedEntityCount": 1,
+              "uncheckedEntityCount": 2,
+              "complete": false
+            },
+            "complete": false,
+            "projectComplete": false,
+            "unaffectedRegressionCount": 0,
+            "unaffectedSourceRecordChangeCount": 0,
+            "missingCheckCount": 0,
+            "missingEntityIds": [],
+            "duplicateChecks": false,
+            "supported": true,
+            "designTransferAllowed": false
+          },
+          "candidateId": "0086247a42801a1535558543ddadd589be138fb57f51c09f2792b22a1e993f9b",
+          "candidateInputHash": "47d1595084021a69015275be6f68d11c2d524229d79cf2560c8c14704868f825",
+          "objective": {
+            "name": "incomplete-geometry-longitudinal-proxy",
+            "value": 0.0062831853071795875,
+            "longitudinalVolume": 0.0062831853071795875,
+            "unit": "m3",
+            "secondary": null,
+            "secondaryUnit": "m3",
+            "quantityComplete": false,
+            "transverseQuantityComplete": false,
+            "longitudinalQuantityComplete": true,
+            "longitudinalBasis": "prepared-end-and-splice-pieces",
+            "estimatedSteelVolume": null,
+            "secondaryFallback": 0.00471238898038469,
+            "secondaryFallbackComplete": true,
+            "secondaryFallbackUnit": "m2",
+            "quantityReason": "TRANSVERSE_GEOMETRY_INCOMPLETE; AREA_COUNT_PROXY_ONLY",
+            "concreteVolume": 0.21599999999999997,
+            "fabricationQuantity": false,
+            "scope": "all-member-reinforcement-regions"
+          },
+          "impact": "REANALYSIS_REQUIRED",
+          "reinforcementChangeCount": 1,
+          "spliceChangeCount": 0,
+          "completionBlockers": {
+            "counts": {
+              "input": 38,
+              "designNg": 4,
+              "failure": 0,
+              "method": 0,
+              "review": 1
+            },
+            "total": 43,
+            "truncated": false,
+            "automaticInputSelectionAllowed": false,
+            "detailAvailable": true
+          },
+          "changes": {
+            "kind": "reinforcement-record",
+            "differentialReferences": [],
+            "regionCount": 1,
+            "changedRegionCount": 1,
+            "regionPolicy": "local-constraints-override-global; omitted-fields-preserved-per-region",
+            "spliceLengthChanges": [],
+            "spliceRefinementState": {
+              "status": "NO_QUALIFIED_LENGTH_DEFICIT",
+              "performedPasses": 0,
+              "attemptedPasses": 0,
+              "maximumPasses": 2,
+              "remainingLengthChecks": 0,
+              "reason": null,
+              "wholeDesignQualified": false,
+              "basis": "current calculated A-class length deficits only; spacing, other checks and unproven A-class cases remain separate"
+            },
+            "dependentDetails": [],
+            "detailEdit": null,
+            "stirrupSpacing": null,
+            "barDiameter": null,
+            "barsPerFace": 2,
+            "cover": null,
+            "section": {
+              "B": 300,
+              "H": 240
+            },
+            "spliceRefinement": [],
+            "spliceDevelopment": [],
+            "endDevelopment": [
+              {
+                "detailId": "R",
+                "status": "UNCHANGED",
+                "anchorageStatus": "OK",
+                "reason": "RECORDED_END_DEVELOPMENT_REQUIRED",
+                "requiresFullReevaluation": true,
+                "siteFitVerified": false,
+                "codeReferenceCount": 1,
+                "detailAvailable": true
+              }
+            ]
+          },
+          "summary": {
+            "complete": false,
+            "checkCount": 116,
+            "incompleteCheckCount": 45,
+            "closureDiagnosticCounts": {
+              "OK": 0,
+              "NG": 0,
+              "NOT_CHECKED": 0,
+              "N_A": 0
+            },
+            "counts": {
+              "OK": 22,
+              "NG": 6,
+              "WARN": 0,
+              "NOT_CHECKED": 45,
+              "N_A": 43,
+              "FAILED": 0
+            }
+          },
+          "detailQuery": {
+            "tool": "get_design_candidate_detail",
+            "jobId": "candidate-job-d8871a2ab688df0b10002eda49226ef49516f7a066f81ec8469d29ce2afe6b78",
+            "candidateId": "0086247a42801a1535558543ddadd589be138fb57f51c09f2792b22a1e993f9b"
+          },
+          "codeBasisCount": 46,
+          "codeBasisQuery": {
+            "tool": "get_design_candidate_basis",
+            "jobId": "candidate-job-d8871a2ab688df0b10002eda49226ef49516f7a066f81ec8469d29ce2afe6b78",
+            "candidateId": "0086247a42801a1535558543ddadd589be138fb57f51c09f2792b22a1e993f9b"
+          },
+          "analysisProofCount": 4
+        }
+      ],
+      "best": {
+        "engineeringSeverity": {
+          "version": "p25-candidate-severity-v3-strain-deficit",
+          "basis": "recorded-NG-utilization-or-required-to-actual-tension-strain; aggregate-code-compliance-excluded",
+          "affected": {
+            "maximumNgRatio": 1.0276142374915396,
+            "sumNgExcess": 0.11045694996615829,
+            "unquantifiedNgCount": 0
+          },
+          "project": {
+            "maximumNgRatio": 1.0276142374915396,
+            "sumNgExcess": 0.11045694996615829,
+            "unquantifiedNgCount": 0
+          }
+        },
+        "affectedScope": {
+          "version": "p25-candidate-scope-v4-source-record-lineage",
+          "basis": "all-evaluated-entities-after-reanalysis",
+          "entityIds": [
+            "AB",
+            "foundation:A",
+            "foundation:B",
+            "joint:A",
+            "joint:B"
+          ],
+          "summary": {
+            "scopeComplete": false,
+            "combinationCoverage": {
+              "projectProfile": {
+                "qualification": "user-declared-scope-only",
+                "codeQualified": false,
+                "loadScopeHash": "9b3ee945e8668cc0f9350b57fa85695356fedce06c1e0cf5e0e71b2993aa96c1",
+                "status": "OK",
+                "profileId": "P",
+                "profileVersion": 1,
+                "structuralSystem": "ordinary-rc-frame",
+                "stiffnessBasis": "gross-section-only",
+                "decisionReference": "synthetic single beam without lateral environmental loading; not building qualification",
+                "issues": []
+              },
+              "basis": "all-active-declared-combinations; code-generation-and-load-family-qualification-separate",
+              "expectedIds": [
+                "U",
+                "TOTAL",
+                "LIVE",
+                "SUST"
+              ],
+              "missingIds": [],
+              "evaluatedComboIds": [
+                "LIVE",
+                "SUST",
+                "TOTAL",
+                "U"
+              ],
+              "missingEvaluationIds": [],
+              "missingPurposes": [],
+              "codeQualified": false
+            },
+            "counts": {
+              "OK": 22,
+              "NG": 6,
+              "WARN": 0,
+              "NOT_CHECKED": 45,
+              "N_A": 43,
+              "FAILED": 0
+            },
+            "closureDiagnosticCounts": {
+              "OK": 0,
+              "NG": 0,
+              "NOT_CHECKED": 0,
+              "N_A": 0
+            },
+            "incompleteCheckCount": 45,
+            "checkCount": 116,
+            "failedEntityCount": 1,
+            "uncheckedEntityCount": 2,
+            "complete": false
+          },
+          "complete": false,
+          "projectComplete": false,
+          "unaffectedRegressionCount": 0,
+          "unaffectedSourceRecordChangeCount": 0,
+          "missingCheckCount": 0,
+          "missingEntityIds": [],
+          "duplicateChecks": false,
+          "supported": true,
+          "designTransferAllowed": false
+        },
+        "candidateId": "0086247a42801a1535558543ddadd589be138fb57f51c09f2792b22a1e993f9b",
+        "candidateInputHash": "47d1595084021a69015275be6f68d11c2d524229d79cf2560c8c14704868f825",
+        "objective": {
+          "name": "incomplete-geometry-longitudinal-proxy",
+          "value": 0.0062831853071795875,
+          "longitudinalVolume": 0.0062831853071795875,
+          "unit": "m3",
+          "secondary": null,
+          "secondaryUnit": "m3",
+          "quantityComplete": false,
+          "transverseQuantityComplete": false,
+          "longitudinalQuantityComplete": true,
+          "longitudinalBasis": "prepared-end-and-splice-pieces",
+          "estimatedSteelVolume": null,
+          "secondaryFallback": 0.00471238898038469,
+          "secondaryFallbackComplete": true,
+          "secondaryFallbackUnit": "m2",
+          "quantityReason": "TRANSVERSE_GEOMETRY_INCOMPLETE; AREA_COUNT_PROXY_ONLY",
+          "concreteVolume": 0.21599999999999997,
+          "fabricationQuantity": false,
+          "scope": "all-member-reinforcement-regions"
+        },
+        "impact": "REANALYSIS_REQUIRED",
+        "reinforcementChangeCount": 1,
+        "spliceChangeCount": 0,
+        "completionBlockers": {
+          "counts": {
+            "input": 38,
+            "designNg": 4,
+            "failure": 0,
+            "method": 0,
+            "review": 1
+          },
+          "total": 43,
+          "truncated": false,
+          "automaticInputSelectionAllowed": false,
+          "detailAvailable": true
+        },
+        "changes": {
+          "kind": "reinforcement-record",
+          "differentialReferences": [],
+          "regionCount": 1,
+          "changedRegionCount": 1,
+          "regionPolicy": "local-constraints-override-global; omitted-fields-preserved-per-region",
+          "spliceLengthChanges": [],
+          "spliceRefinementState": {
+            "status": "NO_QUALIFIED_LENGTH_DEFICIT",
+            "performedPasses": 0,
+            "attemptedPasses": 0,
+            "maximumPasses": 2,
+            "remainingLengthChecks": 0,
+            "reason": null,
+            "wholeDesignQualified": false,
+            "basis": "current calculated A-class length deficits only; spacing, other checks and unproven A-class cases remain separate"
+          },
+          "dependentDetails": [],
+          "detailEdit": null,
+          "stirrupSpacing": null,
+          "barDiameter": null,
+          "barsPerFace": 2,
+          "cover": null,
+          "section": {
+            "B": 300,
+            "H": 240
+          },
+          "spliceRefinement": [],
+          "spliceDevelopment": [],
+          "endDevelopment": [
+            {
+              "detailId": "R",
+              "status": "UNCHANGED",
+              "anchorageStatus": "OK",
+              "reason": "RECORDED_END_DEVELOPMENT_REQUIRED",
+              "requiresFullReevaluation": true,
+              "siteFitVerified": false,
+              "codeReferenceCount": 1,
+              "detailAvailable": true
+            }
+          ]
+        },
+        "summary": {
+          "complete": false,
+          "checkCount": 116,
+          "incompleteCheckCount": 45,
+          "closureDiagnosticCounts": {
+            "OK": 0,
+            "NG": 0,
+            "NOT_CHECKED": 0,
+            "N_A": 0
+          },
+          "counts": {
+            "OK": 22,
+            "NG": 6,
+            "WARN": 0,
+            "NOT_CHECKED": 45,
+            "N_A": 43,
+            "FAILED": 0
+          }
+        },
+        "detailQuery": {
+          "tool": "get_design_candidate_detail",
+          "jobId": "candidate-job-d8871a2ab688df0b10002eda49226ef49516f7a066f81ec8469d29ce2afe6b78",
+          "candidateId": "0086247a42801a1535558543ddadd589be138fb57f51c09f2792b22a1e993f9b"
+        },
+        "codeBasisCount": 46,
+        "codeBasisQuery": {
+          "tool": "get_design_candidate_basis",
+          "jobId": "candidate-job-d8871a2ab688df0b10002eda49226ef49516f7a066f81ec8469d29ce2afe6b78",
+          "candidateId": "0086247a42801a1535558543ddadd589be138fb57f51c09f2792b22a1e993f9b"
+        },
+        "analysisProof": [
+          {
+            "comboId": "LIVE",
+            "method": "off",
+            "resultHash": "9b9888a28f9ccdf3835638e79f096521bbd990ad9aa74e5b78a076a34cbeba5a",
+            "candidateInputHash": "47d1595084021a69015275be6f68d11c2d524229d79cf2560c8c14704868f825",
+            "isolated": true
+          },
+          {
+            "comboId": "SUST",
+            "method": "off",
+            "resultHash": "391c1573b6ccf03f7c446c5e0b47e99f46c277382155e2bd79977e2c39c636b2",
+            "candidateInputHash": "47d1595084021a69015275be6f68d11c2d524229d79cf2560c8c14704868f825",
+            "isolated": true
+          },
+          {
+            "comboId": "TOTAL",
+            "method": "off",
+            "resultHash": "592d6ab53b0935c43b45fbd5443e7f1439888bbdaff9990d784f2f39ce9c5c24",
+            "candidateInputHash": "47d1595084021a69015275be6f68d11c2d524229d79cf2560c8c14704868f825",
+            "isolated": true
+          },
+          {
+            "comboId": "U",
+            "method": "off",
+            "resultHash": "f05b881cddc9c19c7cf4fe1f0179ea0ac74a3e43e5320805973e27fff6374a36",
+            "candidateInputHash": "47d1595084021a69015275be6f68d11c2d524229d79cf2560c8c14704868f825",
+            "isolated": true
+          }
+        ]
+      },
+      "elapsedMs": 7395.068700000001,
+      "error": null,
+      "stale": false,
+      "designTransferAllowed": false
+    }
+  },
+  "checks": [
+    {
+      "combo": "LIVE",
+      "check": "rc-section-strength",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-stability",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-shear-y",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-shear-z",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-spacing",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-cover",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-reinforcement-ratio",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-confinement",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-anchorage",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-splices",
+      "status": "N_A",
+      "reason": "EXPLICIT_NO_LAP_DECLARATION"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-deflection",
+      "status": "NOT_CHECKED",
+      "reason": "UNIAXIAL_FLEXURE_WITHOUT_AXIAL_FORCE_REQUIRED"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-serviceability",
+      "status": "N_A",
+      "reason": "CRACK_WIDTH_OWNED_BY_SUSTAINED_COMBINATION",
+      "incomplete": false
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-torsion",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "LIVE",
+      "check": "rc-code-compliance",
+      "status": "NOT_CHECKED",
+      "reason": "REQUIRED_KDS_CHECKS_INCOMPLETE"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-section-strength",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-stability",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-shear-y",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-shear-z",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-spacing",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-cover",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-reinforcement-ratio",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-confinement",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-anchorage",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-splices",
+      "status": "N_A",
+      "reason": "EXPLICIT_NO_LAP_DECLARATION"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-deflection",
+      "status": "N_A",
+      "reason": "SERVICE_COMBINATION_SUPPLIES_DEFLECTION_REFERENCE"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-serviceability",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-torsion",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "SUST",
+      "check": "rc-code-compliance",
+      "status": "NOT_CHECKED",
+      "reason": "REQUIRED_KDS_CHECKS_INCOMPLETE"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-section-strength",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-stability",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-shear-y",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-shear-z",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-spacing",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-cover",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-reinforcement-ratio",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-confinement",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-anchorage",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-splices",
+      "status": "N_A",
+      "reason": "EXPLICIT_NO_LAP_DECLARATION"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-deflection",
+      "status": "N_A",
+      "reason": "SERVICE_COMBINATION_SUPPLIES_DEFLECTION_REFERENCE"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-serviceability",
+      "status": "N_A",
+      "reason": "CRACK_WIDTH_OWNED_BY_SUSTAINED_COMBINATION",
+      "incomplete": false
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-torsion",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_STRENGTH_COMBINATION"
+    },
+    {
+      "combo": "TOTAL",
+      "check": "rc-code-compliance",
+      "status": "OK",
+      "reason": null
+    },
+    {
+      "combo": "U",
+      "check": "rc-section-strength",
+      "status": "NG",
+      "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-stability",
+      "status": "OK",
+      "reason": null
+    },
+    {
+      "combo": "U",
+      "check": "rc-shear-y",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-shear-z",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-spacing",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-cover",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-reinforcement-ratio",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-confinement",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-anchorage",
+      "status": "OK",
+      "reason": null,
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-splices",
+      "status": "N_A",
+      "reason": "EXPLICIT_NO_LAP_DECLARATION"
+    },
+    {
+      "combo": "U",
+      "check": "rc-deflection",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_SERVICE_COMBINATION"
+    },
+    {
+      "combo": "U",
+      "check": "rc-serviceability",
+      "status": "N_A",
+      "reason": "CHECK_REQUIRES_SERVICE_COMBINATION"
+    },
+    {
+      "combo": "U",
+      "check": "rc-torsion",
+      "status": "OK",
+      "reason": "TORSION_NEGLECTED_BY_KDS_THRESHOLD",
+      "incomplete": false
+    },
+    {
+      "combo": "U",
+      "check": "rc-code-compliance",
+      "status": "NG",
+      "reason": "REQUIRED_KDS_CHECK_FAILED"
+    }
+  ],
+  "strength": {
+    "id": "d3e9a36f15376cdf6eced82ba78740a65c3a56bd63617af98d54d99db1a231fe",
+    "entityId": "AB",
+    "memberId": "AB",
+    "comboId": "U",
+    "checkId": "rc-section-strength",
+    "category": "concrete",
+    "status": "NG",
+    "ratio": 0.03777993635923595,
+    "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+    "codeReferences": [
+      {
+        "id": "142010",
+        "code": "KDS 14 20 10",
+        "name": "콘크리트구조 해석과 설계 원칙",
+        "edition": "2021",
+        "updateDate": "2021-02-18T14:20:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+        "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+        "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.2.3(2)"
+      },
+      {
+        "id": "142020",
+        "code": "KDS 14 20 20",
+        "name": "콘크리트구조 휨 및 압축 설계기준",
+        "edition": "2022",
+        "updateDate": "2022-01-13T14:11:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+        "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+        "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.1.1(3),(8) Table 4.1-2; 4.1.2(3)-(7) Eq.4.1-17"
+      }
+    ],
+    "qualification": "clause-scoped-not-whole-design",
+    "designTransferAllowed": false,
+    "inputSignConvention": "solver-native",
+    "sectionDemand": {
+      "N": -28,
+      "My": -0.6389289613305205,
+      "Mz": 0.6389289613305205
+    },
+    "equilibriumConvention": "rc-section",
+    "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+    "capacity": 23.91698053471392,
+    "phi": 0.7627202782933572,
+    "tensionStrain": 0.0033182687768720047,
+    "minStrain": 0.004,
+    "law": {
+      "alpha": 0.85,
+      "beta": 0.8,
+      "epscu": 0.0033
+    },
+    "nominal": {
+      "N": -36.71070558593644,
+      "My": -22.17308180063653,
+      "Mz": 22.173081800636545
+    },
+    "equilibrium": {
+      "N": -27.999999580850943,
+      "My": -16.91185912160287,
+      "Mz": 16.91185912160288
+    },
+    "scope": "nonprestressed-rectangular-tied-section-strength-only",
+    "torsionReservedArea": 0,
+    "torsionAllocationFraction": 0,
+    "concurrentDemand": {
+      "memberId": "AB",
+      "comboId": "U",
+      "station": 0,
+      "x": 0,
+      "side": "point",
+      "N": -28,
+      "Vy": 0,
+      "Vz": 0,
+      "T": 0,
+      "My": -0.6389289613305205,
+      "Mz": -0.6389289613305205,
+      "axes": "member-local",
+      "signConvention": "solver-native",
+      "units": {
+        "length": "m",
+        "force": "kN",
+        "moment": "kN.m"
+      },
+      "stability": {
+        "rawDemand": {
+          "N": -28,
+          "My": 0,
+          "Mz": 0
+        },
+        "axes": {
+          "My": {
+            "EI": 1255.2191999999998,
+            "Pc": 1376.5018822946513,
+            "utilization": 0.027121890506315947,
+            "minimumMoment": 0.6215999999999999,
+            "delta": 1.0278779944184693,
+            "inputMoment": 0,
+            "k": 1,
+            "Cm": 1,
+            "betaDns": 1
+          },
+          "Mz": {
+            "EI": 1255.2191999999998,
+            "Pc": 1376.5018822946513,
+            "utilization": 0.027121890506315947,
+            "minimumMoment": 0.6215999999999999,
+            "delta": 1.0278779944184693,
+            "inputMoment": 0,
+            "k": 1,
+            "Cm": 1,
+            "betaDns": 1
+          }
+        }
+      }
+    },
+    "detailId": "R",
+    "detailVersion": 1,
+    "x": 0,
+    "incomplete": false,
+    "locationCoverage": {
+      "counts": {
+        "OK": 0,
+        "NG": 84,
+        "WARN": 0,
+        "NOT_CHECKED": 0,
+        "N_A": 0,
+        "FAILED": 0
+      },
+      "incompleteCount": 0,
+      "total": 84,
+      "complete": true,
+      "missingLocations": [],
+      "failedLocations": [
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.15,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.15,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.15,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.15,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.3,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.3,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.3,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        },
+        {
+          "status": "NG",
+          "reason": "MINIMUM_TENSION_STRAIN_NOT_SATISFIED",
+          "ratio": 0.03777993635923595,
+          "x": 0.3,
+          "side": "point",
+          "comboId": "U",
+          "detailId": "R",
+          "detailVersion": 1
+        }
+      ],
+      "witnessLimit": 12,
+      "witnessesTruncated": true
+    },
+    "strengthRepairRegions": [
+      {
+        "detailId": "R",
+        "detailVersion": 1,
+        "needsRepair": true,
+        "blocked": true,
+        "evaluatedLocations": 84
+      }
+    ],
+    "strengthRepairRegionsTruncated": false,
+    "codeBasis": {
+      "version": "p25-code-basis-v5-method-specific-targets",
+      "rule": {
+        "id": "p25-section-strength",
+        "version": 1,
+        "checkIds": [
+          "rc-section-strength"
+        ],
+        "module": "src/design/rc/kdsStrength.js",
+        "scope": "rectangular-tied-section; tabulated blocks or explicit parabolic law at intermediate strengths",
+        "implementation": "PARTIAL_PROFILE",
+        "sources": [
+          {
+            "id": "142010",
+            "edition": "2021",
+            "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994"
+          },
+          {
+            "id": "142020",
+            "edition": "2022",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+          }
+        ],
+        "independentlyVerified": false
+      },
+      "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+      "status": "CLAUSE_APPLIED",
+      "blockers": [],
+      "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+      "applied": [
+        {
+          "id": "142010",
+          "code": "KDS 14 20 10",
+          "name": "콘크리트구조 해석과 설계 원칙",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:20:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+          "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+          "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.3(2)"
+        },
+        {
+          "id": "142020",
+          "code": "KDS 14 20 20",
+          "name": "콘크리트구조 휨 및 압축 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:11:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+          "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+          "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1(3),(8) Table 4.1-2; 4.1.2(3)-(7) Eq.4.1-17"
+        }
+      ],
+      "reviewTargets": [
+        {
+          "id": "142020",
+          "code": "KDS 14 20 20",
+          "name": "콘크리트구조 휨 및 압축 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:11:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+          "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+          "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1, 4.1.2",
+          "applicability": "TO_BE_CONFIRMED"
+        },
+        {
+          "id": "142010",
+          "code": "KDS 14 20 10",
+          "name": "콘크리트구조 해석과 설계 원칙",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:20:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142010",
+          "retrievedAt": "2026-09-11T01:06:17.846311+00:00",
+          "sha256": "37b8a499e44e4607bd06ff4a134d97db2aa0b35925ea364dd6f60421eee6b994",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.3",
+          "applicability": "TO_BE_CONFIRMED"
+        }
+      ],
+      "calculationBasis": "clause-scoped-not-whole-design",
+      "reason": null,
+      "wholeDesignQualified": false
+    },
+    "analysisRunId": "E-U:2026-09-13T23:54:33.822Z:4"
+  },
+  "stability": {
+    "id": "9c172315e92900e7a21885ccd30555ccae26975ec97f48fb397d8ec9db8fb345",
+    "entityId": "AB",
+    "memberId": "AB",
+    "comboId": "U",
+    "checkId": "rc-stability",
+    "category": "concrete",
+    "status": "OK",
+    "ratio": 0.7341985674417638,
+    "reason": null,
+    "spliceLayoutIndependent": true,
+    "stiffnessBasis": "0.2 Ec Ig; no reinforcement stiffness term",
+    "codeReferences": [
+      {
+        "id": "142020",
+        "code": "KDS 14 20 20",
+        "name": "콘크리트구조 휨 및 압축 설계기준",
+        "edition": "2022",
+        "updateDate": "2022-01-13T14:11:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+        "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+        "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.4.2(2); 4.4.6; Eq.4.4-4; Eq.4.4-5; Eq.4.4-6; Eq.4.4-8; Eq.4.4-11"
+      }
+    ],
+    "qualification": "clause-scoped-not-whole-design",
+    "designTransferAllowed": false,
+    "axialStabilityRatio": 0.027121890506315947,
+    "amplificationLimit": 1.4,
+    "amplificationRatio": 0.7341985674417638,
+    "amplificationBasis": "local magnifier on minimum-eccentricity-adjusted first-order moment; full-frame moment comparison separate",
+    "axes": {
+      "My": {
+        "EI": 1255.2191999999998,
+        "Pc": 1376.5018822946513,
+        "utilization": 0.027121890506315947,
+        "minimumMoment": 0.6215999999999999,
+        "delta": 1.0278779944184693,
+        "inputMoment": 0,
+        "k": 1,
+        "Cm": 1,
+        "betaDns": 1
+      },
+      "Mz": {
+        "EI": 1255.2191999999998,
+        "Pc": 1376.5018822946513,
+        "utilization": 0.027121890506315947,
+        "minimumMoment": 0.6215999999999999,
+        "delta": 1.0278779944184693,
+        "inputMoment": 0,
+        "k": 1,
+        "Cm": 1,
+        "betaDns": 1
+      }
+    },
+    "demand": {
+      "N": -28,
+      "My": 0.6389289613305205,
+      "Mz": 0.6389289613305205
+    },
+    "scope": "explicitly-braced-prismatic-column-first-order; full-node-length; conservative-Cm-beta",
+    "units": {
+      "length": "m",
+      "E": "MPa",
+      "Pc": "kN",
+      "moment": "kN.m"
+    },
+    "concurrentDemand": {
+      "memberId": "AB",
+      "comboId": "U",
+      "station": 0,
+      "x": 0,
+      "side": "point",
+      "N": -28,
+      "Vy": 0,
+      "Vz": 0,
+      "T": 0,
+      "My": 0,
+      "Mz": 0,
+      "axes": "member-local",
+      "signConvention": "solver-native",
+      "units": {
+        "length": "m",
+        "force": "kN",
+        "moment": "kN.m"
+      }
+    },
+    "classificationReference": "synthetic restrained member classification",
+    "detailId": "R",
+    "detailVersion": 1,
+    "detailSources": [
+      {
+        "id": "R",
+        "version": 1,
+        "start": 0,
+        "end": 1,
+        "classificationReference": "synthetic restrained member classification"
+      }
+    ],
+    "strengthDemandPrepared": true,
+    "globalStabilityQualified": false,
+    "codeBasis": {
+      "version": "p25-code-basis-v5-method-specific-targets",
+      "rule": {
+        "id": "p25-local-stability",
+        "version": 1,
+        "checkIds": [
+          "rc-stability"
+        ],
+        "module": "src/design/rc/kdsStability.js",
+        "scope": "explicit braced first-order column or KDS specified-inertia refined Direct member check with current stiffness, cut equilibrium, mesh convergence and full-interval moment comparison; independent method qualification pending",
+        "implementation": "PARTIAL_PROFILE",
+        "sources": [
+          {
+            "id": "142020",
+            "edition": "2022",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+          }
+        ],
+        "independentlyVerified": false
+      },
+      "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+      "status": "CLAUSE_APPLIED",
+      "blockers": [],
+      "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+      "applied": [
+        {
+          "id": "142020",
+          "code": "KDS 14 20 20",
+          "name": "콘크리트구조 휨 및 압축 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:11:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+          "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+          "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.4.2(2); 4.4.6; Eq.4.4-4; Eq.4.4-5; Eq.4.4-6; Eq.4.4-8; Eq.4.4-11"
+        }
+      ],
+      "reviewTargets": [
+        {
+          "id": "142020",
+          "code": "KDS 14 20 20",
+          "name": "콘크리트구조 휨 및 압축 설계기준",
+          "edition": "2022",
+          "updateDate": "2022-01-13T14:11:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142020",
+          "retrievedAt": "2026-09-11T01:06:17.974919+00:00",
+          "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.4.6",
+          "applicability": "TO_BE_CONFIRMED"
+        }
+      ],
+      "calculationBasis": "clause-scoped-not-whole-design",
+      "reason": null,
+      "wholeDesignQualified": false
+    },
+    "analysisRunId": "E-U:2026-09-13T23:54:33.822Z:4"
+  },
+  "deflection": {
+    "id": "c3429e453c35d304ea14bf288df2ae2beca6d60348856a99f979ada6311907b9",
+    "entityId": "AB",
+    "memberId": "AB",
+    "comboId": "LIVE",
+    "checkId": "rc-deflection",
+    "category": "concrete",
+    "status": "NOT_CHECKED",
+    "ratio": null,
+    "reason": "UNIAXIAL_FLEXURE_WITHOUT_AXIAL_FORCE_REQUIRED",
+    "requestedServiceabilityMode": "long-term-curvature",
+    "prerequisiteStage": "regional-source-applicability",
+    "codeReferences": [
+      {
+        "id": "142030",
+        "code": "KDS 14 20 30",
+        "name": "콘크리트구조 사용성 설계기준",
+        "edition": "2021",
+        "updateDate": "2021-02-18T14:39:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+        "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+        "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.2.1(2),(3),(5),(6); Eq.4.2-1..4; Table 4.2-2"
+      }
+    ],
+    "codeBasis": {
+      "version": "p25-code-basis-v5-method-specific-targets",
+      "rule": {
+        "id": "p25-deflection",
+        "version": 1,
+        "checkIds": [
+          "rc-deflection"
+        ],
+        "module": "src/design/rc/kdsServiceability.js",
+        "scope": "instant live or sustained post-attachment uniaxial curvature; instantaneous total-minus-dead splice or specified-inertia refined Direct frame displacement with separate method qualification",
+        "implementation": "PARTIAL_PROFILE",
+        "sources": [
+          {
+            "id": "142030",
+            "edition": "2021",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b"
+          }
+        ],
+        "independentlyVerified": false
+      },
+      "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+      "status": "NOT_ESTABLISHED",
+      "blockers": [
+        "CHECK_NOT_EVALUATED"
+      ],
+      "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+      "applied": [],
+      "reviewTargets": [
+        {
+          "id": "142030",
+          "code": "KDS 14 20 30",
+          "name": "콘크리트구조 사용성 설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:39:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+          "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+          "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.1(2),(3),(5),(6); Eq.4.2-1..4; Table 4.2-2",
+          "applicability": "TO_BE_CONFIRMED"
+        },
+        {
+          "id": "142030",
+          "code": "KDS 14 20 30",
+          "name": "콘크리트구조 사용성 설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:39:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+          "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+          "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.2.1",
+          "applicability": "TO_BE_CONFIRMED"
+        }
+      ],
+      "calculationBasis": "missing-or-unqualified-input",
+      "reason": "KDS application not established: CHECK_NOT_EVALUATED; calculation assumptions are not code certification",
+      "wholeDesignQualified": false
+    },
+    "analysisRunId": "E-LIVE:2026-09-13T23:54:32.574Z:1"
+  },
+  "width": {
+    "id": "6b26f5373356e3a63dfc1d3206170f50c6ae7806fdc48c0d7e3cd82f64ed75cd",
+    "entityId": "AB",
+    "memberId": "AB",
+    "comboId": "SUST",
+    "checkId": "rc-serviceability",
+    "category": "concrete",
+    "status": "OK",
+    "ratio": 0,
+    "reason": null,
+    "version": "p25-kds-appendix-crack-width-v1",
+    "codeReferences": [
+      {
+        "id": "142030",
+        "code": "KDS 14 20 30",
+        "name": "콘크리트구조 사용성 설계기준",
+        "edition": "2021",
+        "updateDate": "2021-02-18T14:39:00",
+        "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+        "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+        "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+        "verification": "official-source-captured-independent-review-pending",
+        "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+        "documentPart": "appendix"
+      }
+    ],
+    "qualification": "clause-scoped-not-whole-design",
+    "designTransferAllowed": false,
+    "detailId": "R",
+    "detailVersion": 1,
+    "concurrentDemand": {
+      "memberId": "AB",
+      "comboId": "SUST",
+      "station": 0,
+      "x": 0,
+      "side": "point",
+      "N": -15.000000000000002,
+      "Vy": 0,
+      "Vz": 0,
+      "T": 0,
+      "My": 0,
+      "Mz": 0,
+      "axes": "member-local",
+      "signConvention": "solver-native",
+      "units": {
+        "length": "m",
+        "force": "kN",
+        "moment": "kN.m"
+      }
+    },
+    "methodReviewRequired": true,
+    "sectionDemand": {
+      "N": -15.000000000000002,
+      "My": 0,
+      "Mz": 0
+    },
+    "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+    "sectionResponse": {
+      "strain": [
+        -0.000009761780432725188,
+        0,
+        0
+      ],
+      "recovered": {
+        "N": -15.000000000000005,
+        "My": 0,
+        "Mz": 0
+      },
+      "residual": 2.368475785867e-16,
+      "version": "p25-cracked-elastic-section-v3-initial-strains",
+      "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+    },
+    "axis": "local-y",
+    "sustainedComboId": "SUST",
+    "tensileStrengthReference": "specified synthetic input 3MPa",
+    "sustainedLoadReference": "synthetic specified permanent action",
+    "demand": 0,
+    "capacity": null,
+    "units": {
+      "length": "mm"
+    },
+    "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+    "tensileZone": false,
+    "incomplete": false,
+    "locationCoverage": {
+      "counts": {
+        "OK": 21,
+        "NG": 0,
+        "WARN": 0,
+        "NOT_CHECKED": 0,
+        "N_A": 0,
+        "FAILED": 0
+      },
+      "incompleteCount": 0,
+      "total": 21,
+      "complete": true,
+      "missingLocations": [],
+      "failedLocations": [],
+      "witnessLimit": 12,
+      "witnessesTruncated": false
+    },
+    "checks": [
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 0,
+          "x": 0,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 1,
+          "x": 0.15,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 2,
+          "x": 0.3,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 3,
+          "x": 0.45,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 4,
+          "x": 0.6,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 5,
+          "x": 0.75,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 6,
+          "x": 0.9,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 7,
+          "x": 1.05,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 8,
+          "x": 1.2,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 9,
+          "x": 1.35,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 10,
+          "x": 1.5,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 11,
+          "x": 1.65,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 12,
+          "x": 1.8,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 13,
+          "x": 1.95,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 14,
+          "x": 2.1,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 15,
+          "x": 2.25,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 16,
+          "x": 2.4,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 17,
+          "x": 2.55,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 18,
+          "x": 2.7,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 19,
+          "x": 2.85,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      },
+      {
+        "version": "p25-kds-appendix-crack-width-v1",
+        "codeReferences": [
+          {
+            "id": "142030",
+            "code": "KDS 14 20 30",
+            "name": "콘크리트구조 사용성 설계기준",
+            "edition": "2021",
+            "updateDate": "2021-02-18T14:39:00",
+            "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+            "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+            "verification": "official-source-captured-independent-review-pending",
+            "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+            "documentPart": "appendix"
+          }
+        ],
+        "qualification": "clause-scoped-not-whole-design",
+        "designTransferAllowed": false,
+        "detailId": "R",
+        "detailVersion": 1,
+        "concurrentDemand": {
+          "memberId": "AB",
+          "comboId": "SUST",
+          "station": 20,
+          "x": 3,
+          "side": "point",
+          "N": -15.000000000000002,
+          "Vy": 0,
+          "Vz": 0,
+          "T": 0,
+          "My": 0,
+          "Mz": 0,
+          "axes": "member-local",
+          "signConvention": "solver-native",
+          "units": {
+            "length": "m",
+            "force": "kN",
+            "moment": "kN.m"
+          }
+        },
+        "methodReviewRequired": true,
+        "sectionDemand": {
+          "N": -15.000000000000002,
+          "My": 0,
+          "Mz": 0
+        },
+        "frameConventionVersion": "p25-rc-frame-section-sign-v1",
+        "sectionResponse": {
+          "strain": [
+            -0.000009761780432725188,
+            0,
+            0
+          ],
+          "recovered": {
+            "N": -15.000000000000005,
+            "My": 0,
+            "Mz": 0
+          },
+          "residual": 2.368475785867e-16,
+          "version": "p25-cracked-elastic-section-v3-initial-strains",
+          "basis": "plane-sections; perfect-bond; elastic-steel; compression-only-elastic-concrete"
+        },
+        "axis": "local-y",
+        "sustainedComboId": "SUST",
+        "tensileStrengthReference": "specified synthetic input 3MPa",
+        "sustainedLoadReference": "synthetic specified permanent action",
+        "status": "OK",
+        "reason": null,
+        "ratio": 0,
+        "demand": 0,
+        "capacity": null,
+        "units": {
+          "length": "mm"
+        },
+        "scope": "no longitudinal tensile strain under selected sustained demand; shrinkage and thermal effects excluded",
+        "tensileZone": false
+      }
+    ],
+    "codeBasis": {
+      "version": "p25-code-basis-v5-method-specific-targets",
+      "rule": {
+        "id": "p25-crack-control",
+        "version": 1,
+        "checkIds": [
+          "rc-serviceability"
+        ],
+        "module": "src/design/rc/kdsCrackControl.js",
+        "scope": "ordinary uniaxial flexural spacing or explicit sustained-load appendix crack width; compression/tension and single-axis bending; method review separate",
+        "implementation": "PARTIAL_PROFILE",
+        "sources": [
+          {
+            "id": "142020",
+            "edition": "2022",
+            "sha256": "bad8aea615382f08f745aeb79e50671f831873428e5c231584b33594928b8cc3"
+          },
+          {
+            "id": "142030",
+            "edition": "2021",
+            "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b"
+          }
+        ],
+        "independentlyVerified": false
+      },
+      "rulePackHash": "b8fc7bd6bc119b267b8792aa6be65a2834a8d2aeacaf3b07daec2f2c11522069",
+      "status": "NOT_ESTABLISHED",
+      "blockers": [
+        "METHOD_REVIEW_REQUIRED"
+      ],
+      "verificationScope": "source-and-clause-heading; equation-mapping-and-independent-review-separate",
+      "applied": [],
+      "reviewTargets": [
+        {
+          "id": "142030",
+          "code": "KDS 14 20 30",
+          "name": "콘크리트구조 사용성 설계기준",
+          "edition": "2021",
+          "updateDate": "2021-02-18T14:39:00",
+          "url": "https://kcsc.re.kr/OpenApi/CodeViewer/KDS/142030",
+          "retrievedAt": "2026-09-11T01:06:18.252640+00:00",
+          "sha256": "0f352bbf1f3c9fe93dc5a3c3a12eaa21daae170ef2ad022b3faa295604f7266b",
+          "verification": "official-source-captured-independent-review-pending",
+          "clause": "4.1.1; 4.1.2; 4.1.3; Eq.4.1-1..7; Table 4.1-1 (Appendix)",
+          "documentPart": "appendix",
+          "applicability": "TO_BE_CONFIRMED"
+        }
+      ],
+      "calculationBasis": "clause-scoped-not-whole-design",
+      "reason": "KDS application not established: METHOD_REVIEW_REQUIRED; calculation assumptions are not code certification",
+      "wholeDesignQualified": false
+    },
+    "analysisRunId": "E-SUST:2026-09-13T23:54:32.995Z:2"
+  }
+}

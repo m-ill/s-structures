@@ -1,10 +1,16 @@
 # S-Structures Documentation Index
 
-documentationVersion: 2026-09-14-phase26-debt-cleanup
+documentationVersion: 2026-09-14-phase29-complete
 
 이 폴더는 Phase 2 개발부터 문서가 코드, 산출물, 임시 패키지와 섞이지 않도록 용도별로 나눈다. 새 문서를 추가할 때는 먼저 아래 분류 중 하나를 고른다.
 
-## 현재 개발 — Phase26 (2026-09-14)
+## 현재 상태 — Phase29 완료 / Phase30 계획 (2026-09-14)
+
+[Phase29 구현 기록](phase29/IMPLEMENTATION_STATUS.md)에 따라 M0~M5를 완료했다. 활하중 저감, 내진 기준계수, 슬래브·벽 검사를 기존 경로에 연결했고 실무 검사 42종을 등록했다. [Phase30](phase30/README.md)은 후속 계획이며 아직 완료 기능으로 표시하지 않는다. 외부 독립 검증과 KDS 판본 추가 대조, 최종 설계 전달 승인은 별개다.
+
+이전 단계: [Phase27](phase27/README.md) · [Phase28](phase28/README.md). 아래 이전 Phase 설명은 당시 이력이다.
+
+## 이전 개발 — Phase26 (2026-09-14)
 
 [Phase26 기술부채 정리와 정식 게이트 확장](phase26/README.md)은 새 기능을 만들지 않는다. `npm test`가 마일스톤과 phase 7~15만 실행하던 탓에 게이트 밖에서 썩은 검사와 구조 부채를 정리하고, **phase 16~25의 445건을 정식 게이트에 편입**하는 것이 전부다. 항목별 상태는 [부채 대장](phase26/DEBT_REGISTER.json), 진행은 [구현 기록](phase26/IMPLEMENTATION_STATUS.md)을 따른다. 미구현 RC 기능 11건은 사유와 함께 `DEFERRED`로 남기고 [Phase27](phase27/README.md)로 넘겼다. **제품 자격이나 설계 적합성을 뜻하지 않는다.**
 

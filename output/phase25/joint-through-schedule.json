@@ -1,0 +1,136 @@
+{
+  "version": "p25-through-bar-schedule-v2-canonical",
+  "records": [
+    {
+      "id": "CB-1536894e7ff079c6",
+      "status": "OK",
+      "count": 1,
+      "cutLength": 5.92,
+      "volume": 0.00046495571273128943,
+      "sourceFragments": [
+        {
+          "detailId": "RB",
+          "version": 1,
+          "memberId": "BC",
+          "barIndex": 3,
+          "mark": "B3",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        },
+        {
+          "detailId": "RL",
+          "version": 1,
+          "memberId": "EB",
+          "barIndex": 3,
+          "mark": "B3",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        }
+      ],
+      "connectionIds": [
+        "J"
+      ],
+      "fabricationApproved": false,
+      "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+    },
+    {
+      "id": "CB-1bde7fcd8905d1d2",
+      "status": "OK",
+      "count": 1,
+      "cutLength": 5.92,
+      "volume": 0.00046495571273128943,
+      "sourceFragments": [
+        {
+          "detailId": "RB",
+          "version": 1,
+          "memberId": "BC",
+          "barIndex": 2,
+          "mark": "B2",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        },
+        {
+          "detailId": "RL",
+          "version": 1,
+          "memberId": "EB",
+          "barIndex": 2,
+          "mark": "B2",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        }
+      ],
+      "connectionIds": [
+        "J"
+      ],
+      "fabricationApproved": false,
+      "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+    },
+    {
+      "id": "CB-4ad4f1678689138c",
+      "status": "OK",
+      "count": 1,
+      "cutLength": 5.92,
+      "volume": 0.00046495571273128943,
+      "sourceFragments": [
+        {
+          "detailId": "RB",
+          "version": 1,
+          "memberId": "BC",
+          "barIndex": 1,
+          "mark": "B1",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        },
+        {
+          "detailId": "RL",
+          "version": 1,
+          "memberId": "EB",
+          "barIndex": 1,
+          "mark": "B1",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        }
+      ],
+      "connectionIds": [
+        "J"
+      ],
+      "fabricationApproved": false,
+      "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+    },
+    {
+      "id": "CB-5c82abf84152f7c8",
+      "status": "OK",
+      "count": 1,
+      "cutLength": 5.92,
+      "volume": 0.00046495571273128943,
+      "sourceFragments": [
+        {
+          "detailId": "RB",
+          "version": 1,
+          "memberId": "BC",
+          "barIndex": 4,
+          "mark": "B4",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        },
+        {
+          "detailId": "RL",
+          "version": 1,
+          "memberId": "EB",
+          "barIndex": 4,
+          "mark": "B4",
+          "cutLength": 2.96,
+          "volume": 0.00023247785636564471
+        }
+      ],
+      "connectionIds": [
+        "J"
+      ],
+      "fabricationApproved": false,
+      "reason": "CONTINUOUS_GEOMETRIC_BAR; FABRICATION_REVIEW_SEPARATE"
+    }
+  ],
+  "physicalBarCount": 4,
+  "sourceFragmentCount": 8,
+  "fabricationApproved": false
+}
