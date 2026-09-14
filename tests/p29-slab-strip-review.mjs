@@ -88,12 +88,32 @@ assert.equal(reviewOneWaySlabStrip({
   transverseReinforcement: { diameter: 0.022, spacing: 0.5 },
 })['slab-shrinkage-temperature'].reason, 'SHRINKAGE_STEEL_SPACING_EXCEEDS_LIMIT');
 
-// 4.6.2(1)2 gives the ratio above 400 MPa as an equation the capture renders as
-// an image. It is not implemented and the 400 MPa value is not substituted,
-// because that would understate the steel.
-const highGrade = reviewOneWaySlabStrip({ ...slab, fy: 500 })['slab-shrinkage-temperature'];
-assert.equal(highGrade.status, 'NOT_CHECKED');
-assert.equal(highGrade.reason, 'SHRINKAGE_STEEL_RATIO_EQUATION_NOT_IN_CAPTURED_TEXT');
+// 4.6.2(1): a flat 0.0020 up to 400 MPa, then 0.0020 * 400 / fy, floored at
+// 0.0014. The expression falls as fy rises, so the floor takes over at 571 MPa.
+const denser = { ...slab, transverseReinforcement: { diameter: 0.013, spacing: 0.2 } };
+for (const [fy, before, required, floorGoverns] of [
+  [400, 0.002, 0.002, false],
+  [500, 0.0016, 0.0016, false],
+  [600, 0.002 * 400 / 600, 0.0014, true],
+  [700, 0.002 * 400 / 700, 0.0014, true],
+]) {
+  const row = reviewOneWaySlabStrip({ ...denser, fy })['slab-shrinkage-temperature'];
+  assert.ok(Math.abs(row.ratioBeforeFloor - before) < 1e-12, `fy ${fy}`);
+  assert.ok(Math.abs(row.requiredRatio - required) < 1e-12, `fy ${fy}`);
+  assert.equal(row.ratioFloorGoverns, floorGoverns, `fy ${fy}`);
+  assert.equal(row.status, 'OK', `fy ${fy}: ${row.reason}`);
+}
+// A higher grade therefore needs LESS shrinkage steel, not more: substituting
+// the 400 MPa ratio for a higher grade would overstate the requirement.
+const at400 = reviewOneWaySlabStrip({ ...denser, fy: 400 })['slab-shrinkage-temperature'];
+const at500 = reviewOneWaySlabStrip({ ...denser, fy: 500 })['slab-shrinkage-temperature'];
+assert.ok(at500.requiredArea < at400.requiredArea);
+assert.equal(at500.ratioBasis, '4.6.2(1)2 expression');
+assert.equal(at400.ratioBasis, '4.6.2(1)1 flat ratio');
+assert.match(at500.equationOrigin, /owner-confirmed/);
+// The ratio is on the gross concrete area b*h, not b*d.
+assert.equal(at400.areaBasis, 'gross concrete area b*h');
+assert.ok(Math.abs(at400.grossArea - 1 * 0.18) < 1e-12);
 
 // The provided-reinforcement contract: no bars is NOT_CHECKED, never OK.
 for (const [patch, reason] of [

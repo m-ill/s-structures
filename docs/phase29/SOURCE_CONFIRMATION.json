@@ -1,5 +1,5 @@
 {
-  "version": "p29-m0-source-confirmation-v5",
+  "version": "p29-m0-source-confirmation-v6",
   "date": "2026-09-14",
   "purpose": "Per Phase29's rule, a clause may be implemented from the captured text; an equation or table the capture renders as an image must be confirmed separately and its origin recorded. This is the list of what falls on each side.",
   "evidenceRoot": "verification/evidence/phase25/kcsc/official-20260911",
@@ -235,9 +235,12 @@
       "clause": "4.6.2(1)2",
       "subject": "fy 400MPa 초과 슬래브 수축·온도철근비",
       "textStatus": "IMAGE_ONLY",
-      "note": "The ratio for fy above 400 MPa is an equation the capture renders as an image. Not implemented: the 400 MPa value is not substituted because it would understate the steel. That branch returns NOT_CHECKED with the reason.",
-      "confirmation": "OWNER_CONFIRMATION_REQUIRED",
-      "status": "OPEN"
+      "note": "Resolved. Owner-confirmed: rho = 0.0020 * 400 / fy above 400 MPa, with the clause's 0.0014 floor applying to every case, so 400 -> 0.0020, 500 -> 0.0016, 600 -> 0.0014. The ratio is on the gross concrete area b*h, not b*d.",
+      "confirmation": "OWNER_CONFIRMED",
+      "status": "IMPLEMENTED",
+      "confirmedValue": "rho_min = max(0.0020 * 400 / fy, 0.0014) for fy > 400 MPa; 0.0020 for deformed bars at or below 400 MPa",
+      "recordedIn": "src/design/rc/slabStripReview.js SHRINKAGE",
+      "correctedRecord": "an earlier note in this register said substituting the 400 MPa ratio for a higher grade would understate the steel. That was backwards: the expression falls as fy rises, so the substitution would overstate the requirement. Not substituting was still right, because this clause is a minimum and silently demanding more than the code does is its own defect."
     },
     {
       "id": "P29-G1-04",
@@ -269,12 +272,10 @@
   "summary": {
     "total": 16,
     "byStatus": {
-      "IMPLEMENTED": 15,
-      "OPEN": 1
+      "IMPLEMENTED": 16
     },
     "ownerResearching": [
-      "KDS 14 20 50 4.6.2(1)2 fy>400MPa 수축·온도철근비",
-      "2024-05 정정고시 대조"
+      "2024-05 정정고시 대조 (KDS 17 10 00)"
     ],
     "captureGaps": []
   }

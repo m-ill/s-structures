@@ -20,17 +20,39 @@ const SPACING_LIMITS = Object.freeze({
   other: { thicknessMultiple: 3, absolute: 0.45, clause: 'KDS 14 20 70 4.1.1.3(2) 기타 단면' },
 });
 
-// KDS 14 20 50 4.6.2. The ratio for fy above 400 MPa is an equation the capture
-// renders as an image, so it is not implemented; that branch reports why rather
-// than falling back to the 400 MPa value, which would understate the steel.
+// KDS 14 20 50 4.6.2(1). Deformed bars up to 400 MPa take a flat 0.0020; above
+// it the ratio is 0.0020 * 400 / fy, and the clause floors every case at 0.0014.
+// The equation is an image in the capture and was owner-confirmed.
+//
+// The expression falls as fy rises (0.0020 at 400, 0.0016 at 500, the 0.0014
+// floor at 600), so substituting the 400 MPa value for a higher grade would
+// OVERstate the required steel, not understate it. It is still not substituted:
+// this clause is a minimum, and quietly requiring more than the code does is a
+// different defect from requiring less, not a safe one.
 const SHRINKAGE = Object.freeze({
   ratioUpTo400: 0.002,
+  aboveFyExpression: '0.0020 * 400 / fy',
   absoluteFloor: 0.0014,
+  gradeThreshold: 400,
   areaCapPerMetre: 0.0018,
   spacingThicknessMultiple: 5,
   spacingAbsolute: 0.45,
   clause: 'KDS 14 20 50 4.6.1(1); 4.6.2(1)~(3)',
+  equationOrigin: 'owner-confirmed against the published KDS 14 20 50 4.6.2(1)2 equation image',
 });
+
+// The ratio is taken on the GROSS concrete area b*h, not b*d.
+function shrinkageRatio(fy) {
+  const tabulated = fy <= SHRINKAGE.gradeThreshold
+    ? SHRINKAGE.ratioUpTo400
+    : (SHRINKAGE.ratioUpTo400 * SHRINKAGE.gradeThreshold) / fy;
+  return {
+    ratio: Math.max(tabulated, SHRINKAGE.absoluteFloor),
+    tabulated,
+    floorGoverns: tabulated < SHRINKAGE.absoluteFloor,
+    basis: fy <= SHRINKAGE.gradeThreshold ? '4.6.2(1)1 flat ratio' : '4.6.2(1)2 expression',
+  };
+}
 
 // Each check cites its own clauses rather than the module's whole set, so the
 // central review map can say which document a given check actually depends on.
@@ -207,20 +229,16 @@ function shrinkageTemperature(reinforcement, { thickness, fy }) {
   if (!reinforcement || !Number.isFinite(reinforcement.spacing) || reinforcement.spacing <= 0) {
     return notChecked('slab-shrinkage-temperature', 'MISSING_TRANSVERSE_REINFORCEMENT');
   }
-  if (fy > 400) {
-    return notChecked('slab-shrinkage-temperature', 'SHRINKAGE_STEEL_RATIO_EQUATION_NOT_IN_CAPTURED_TEXT', {
-      fy,
-      note: 'KDS 14 20 50 4.6.2(1)2 gives the ratio for fy above 400 MPa as an equation the capture renders as an image; the 400 MPa ratio is not substituted because it would understate the steel',
-    });
-  }
-
   const barArea = Number.isFinite(reinforcement.area)
     ? reinforcement.area
     : (Math.PI * reinforcement.diameter ** 2) / 4;
   const providedArea = barArea * (STRIP_WIDTH / reinforcement.spacing);
+  // 4.6.2(1): the ratio is on the gross concrete area b*h, not b*d.
   const grossArea = STRIP_WIDTH * thickness;
-  const ratioRequirement = Math.max(SHRINKAGE.ratioUpTo400, SHRINKAGE.absoluteFloor);
-  // 4.6.2(2) caps the required area at 1,800 mm2 per metre of width.
+  const required = shrinkageRatio(fy);
+  const ratioRequirement = required.ratio;
+  // 4.6.2(2) caps the REQUIRED area at 1,800 mm2 per metre of width. It is a
+  // ceiling on what the clause demands, not on what may be provided.
   const requiredArea = Math.min(ratioRequirement * grossArea, SHRINKAGE.areaCapPerMetre);
   const spacingLimit = Math.min(SHRINKAGE.spacingThicknessMultiple * thickness, SHRINKAGE.spacingAbsolute);
 
@@ -236,11 +254,21 @@ function shrinkageTemperature(reinforcement, { thickness, fy }) {
     providedArea,
     requiredArea,
     requiredRatio: ratioRequirement,
+    ratioBeforeFloor: required.tabulated,
+    ratioFloorGoverns: required.floorGoverns,
+    ratioBasis: required.basis,
+    fy,
+    equation: fy > SHRINKAGE.gradeThreshold ? SHRINKAGE.aboveFyExpression : null,
+    equationOrigin: fy > SHRINKAGE.gradeThreshold ? SHRINKAGE.equationOrigin : null,
+    grossArea,
+    areaBasis: 'gross concrete area b*h',
     areaCapApplied: ratioRequirement * grossArea > SHRINKAGE.areaCapPerMetre,
     spacing: reinforcement.spacing,
     spacingLimit,
     clause: SHRINKAGE.clause,
-    // 4.6.1(3): the tabulated minimum is for members not severely restrained.
+    // 4.6.1(3): the tabulated minimum applies to members whose shrinkage and
+    // temperature movement is not severely restrained. A severely restrained
+    // member needs MORE than this, and whether it is one is not evaluated here.
     severeRestraintChecked: false,
   };
 }
