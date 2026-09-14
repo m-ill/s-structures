@@ -1,5 +1,13 @@
 # S-Structures
 
+## 개발 현황 한눈에 보기
+
+**[인터랙티브 개발맵 열기 →](https://m-ill.github.io/s-structures/docs/user-manual/development-map.html)**
+
+[![S-Structures 시스템 개요와 개발 현황 — 클릭하면 인터랙티브 개발맵이 열립니다](docs/images/development-map-overview.png)](https://m-ill.github.io/s-structures/docs/user-manual/development-map.html)
+
+모델링·탄성설계·비선형해석과 AI 공통 기반을 펼쳐서 **구현 범위·남은 개발·완료 기준·근거**를 확인할 수 있습니다. 2026-09-14 정리 기준으로 현재 기능 84항목·후속 32작업·AI 공통 기반 8항목을 담았습니다. 항목 수는 완료율이 아니며, 구현 확인과 공학적 검증 완료는 구분합니다.
+
 ## 실행물과 개발 자료 분리 (2026-09-13)
 
 대용량 계산 근거 `reports/representative-building-calculation-packages/**/calculation-package.json`은 Git LFS로 보존합니다. 개발용 clone에서 해당 근거를 읽거나 전체 검증을 실행하려면 Git LFS 설치 후 `git lfs pull`을 실행하십시오. 웹 배포물과 로컬 실행물에는 이 과거 보고서 데이터가 포함되지 않습니다.
