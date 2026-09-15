@@ -182,3 +182,8 @@ Phase20 Release의 `s-structures-source.zip`, `s-structures-runtime.zip`, `s-str
 기존 독점적 라이선스를 유지합니다. 저장소 공개가 사용·복제·수정·재배포 권한을 부여하는 것은 아닙니다.
 
 과거 Phase19 검증 기록: 수치 엔진 기준선 8147974의 확장 회귀는 로컬·Windows·Ubuntu 각각 92/92 PASS입니다. 최종 단위 metadata 수정(467dd70)은 별도 WebMCP/host 4개와 패키지 설치·복원을 통과한 기록입니다. 당시 CI 진행 상황은 현재 배포 상태를 나타내지 않습니다. [후보별 증거와 제한](verification/evidence/phase19/m5-m10/README.md).
+
+
+### 2026-09-15 보고서·에이전트 시작 안내
+
+일반구조설계 검토 PDF는 내장 글꼴과 고정 A4 벡터 출력으로 통일했습니다. UI·WebMCP가 같은 생성기를 사용하며 템플릿·폰트·입력·결과 해시를 남깁니다. 에이전트는 `get_agent_start_context`에서 현재 모델·작업 절차·도구 선택·공통 보고서 규칙을 조회할 수 있습니다. 브라우저 등록은 4개, 기능 카탈로그는 94개입니다. [변경·검증 범위](docs/ux/REPORT_AGENT_PORTABILITY_20260915.md).

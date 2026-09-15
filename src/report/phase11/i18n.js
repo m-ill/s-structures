@@ -1,7 +1,7 @@
 import { escapeHtml } from '../reportFormat.js';
 
 export const P11_REPORT_LOCALES = Object.freeze(['ko-KR', 'en-US']);
-export const P11_KOREAN_FONT_STACK = '"Pretendard","Noto Sans KR","Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif';
+export const P11_KOREAN_FONT_STACK = '"SStructuresSans",sans-serif';
 
 const EN = Object.freeze({
   'report.title': 'Structural Analysis Report',

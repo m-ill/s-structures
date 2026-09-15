@@ -1,3 +1,7 @@
+import {buildVectorDetailPdf,readTrueType} from '../phase24/vectorPdf.js';
+import {loadBundledDrawingFont} from '../phase24/drawingExportService.js';
+import {formatDesignCodeBasis} from '../designCodeBasisFormat.js';
+import {REPORT_CONTRACT} from '../reportContract.js';
 import { sha256Bytes,stableHash } from '../../core/stableHash.js';
 
 const encode=text=>new TextEncoder().encode(text);
@@ -27,67 +31,80 @@ export function buildImagePdf(pages,{width=595.28,height=841.89,maxBytes=32*1024
 
 export function* reviewPdfLines(report) {
   const s=report.snapshot,r=s.designReview;
-  yield '탄성 설계 예비 검토 기록';yield '예비 검토용 - 최종 구조설계 승인 아님';
   yield `프로젝트: ${s.project.id} / 검토: ${r.designRunId} / 판정: ${r.summary.status}`;
   yield `집계: ${JSON.stringify(r.summary.counts)}`;
+  if(r.summary.practical)yield `실무 검토 집계: ${JSON.stringify(r.summary.practical)}`;
   yield `Snapshot: ${report.reportSnapshotHash}`;yield `Input: ${r.inputIdentity.inputHash}`;
   yield `Result: ${r.resultHash}`;
   yield `최대변위(m): ${s.analysis.maxDisplacement} / 평형잔차: ${s.analysis.maxEquilibriumResidual}`;
   yield '해석 출처';for(const id of r.sourceAnalysisRunIds)yield String(id);
+  yield `Template: ${REPORT_CONTRACT.templateVersion}`;
+  yield `Source: ${s.provenance?.sourceRevision??'미확인'} / Build: ${s.provenance?.buildId??'미확인'}`;
+  yield `단위: ${JSON.stringify(r.units??{})} / 축: ${r.axes??'미확인'} / 부호: ${r.signConvention??'미확인'}`;
   yield '검토 항목';
   for(const row of r.checks){
-    yield `${row.memberId} / ${row.comboId} / ${row.category} / ${row.checkId} / ${row.status}`;
-    yield `수요 ${row.demand??'미확정'} / 내력 ${row.capacity??'미확정'} (${row.unit??''}) / 검정비 ${row.ratio??'미검토'}`;
-    yield `${row.expression||''}${row.reason?' / '+row.reason:''}`;
+    yield [`${row.memberId} / ${row.comboId} / ${row.category} / ${row.checkId} / ${row.status}`,
+      `수요 ${row.demand??'미확정'} / 내력 ${row.capacity??'미확정'} (${row.unit??''}) / 검정비 ${row.ratio??'미검토'}`,
+      `${row.expression||''}${row.reason?' / '+row.reason:''}`,formatDesignCodeBasis(row.codeBasis,'ko-KR')].join('\n');
   }
   yield '설명 및 제한';for(const row of r.messages||[])yield `${row.memberId||''} ${row.code||''}: ${row.message||''}`;
   for(const text of r.limitations||[])yield text;
   yield '구현·규칙 출처';for(const row of r.ruleSources||[])yield `${row.module} / ${row.method} / ${row.status}`;
 }
 
-export function createBrowserReviewPdfExporter(target,budget) {
-  let busy=false,disposed=false;
+export function createBrowserReviewPdfExporter(target,budget,{loadFont=loadBundledDrawingFont}={}) {
+  let busy=false,disposed=false,controller=null;
   const urls=new Map(),timers=new Set();
-  const supported=()=>!disposed&&!!(target.document?.createElement&&target.Blob&&target.URL?.createObjectURL&&target.atob);
+  const supported=()=>!disposed&&!!(target.document?.createElement&&target.Blob&&target.URL?.createObjectURL);
   const releaseUrl=url=>{target.URL.revokeObjectURL(url);budget.release(urls.get(url));urls.delete(url);};
   return {
     supported,
-    dispose(){disposed=true;for(const timer of timers)target.clearTimeout(timer);timers.clear();for(const url of urls.keys())releaseUrl(url);},
+    dispose(){disposed=true;controller?.abort();for(const timer of timers)target.clearTimeout(timer);timers.clear();for(const url of urls.keys())releaseUrl(url);},
     async export(report,{assertCurrent=()=>{},download=true}={}) {
       if(disposed)fail('PDF_EXPORT_DISPOSED');if(!supported())fail('PDF_BROWSER_UNAVAILABLE');if(busy)fail('PDF_EXPORT_BUSY');
       if(!/^[a-f0-9]{64}$/.test(report.reportSnapshotHash)||report.snapshot?.reportSnapshotHash!==report.reportSnapshotHash)fail('PDF_SNAPSHOT_INVALID');
       const {reportSnapshotHash,verdict,...core}=report.snapshot;
       if(stableHash(core)!==reportSnapshotHash)fail('PDF_SNAPSHOT_HASH_MISMATCH');
-      busy=true;let canvas;const owner=budget.nextOwner('pdf-staging'),pages=[];let bytes=0;
-      const guard=()=>{if(disposed)fail('PDF_EXPORT_DISPOSED');assertCurrent();};
+      busy=true;controller=new AbortController();
+      const owner=budget.nextOwner('pdf-staging'),pages=[];
+      const timeout=target.setTimeout(()=>controller?.abort(),10000);
+      const guard=()=>{if(disposed)fail('PDF_EXPORT_DISPOSED');if(controller.signal.aborted)fail('PDF_EXPORT_TIMEOUT');assertCurrent();};
       try {
-        guard();budget.reserve(owner,1240*1754*4*2);
-        canvas=target.document.createElement('canvas');canvas.width=1240;canvas.height=1754;const ctx=canvas.getContext('2d');if(!ctx)fail('PDF_CANVAS_UNAVAILABLE');
-        let y=0;
-        const begin=()=>{ctx.fillStyle='#fff';ctx.fillRect(0,0,1240,1754);ctx.fillStyle='#132e48';ctx.font='22px "Malgun Gothic", sans-serif';ctx.fillText('S-STRUCTURES | 예비 검토 - 최종 설계 승인 아님',64,64);y=120;};
-        const finish=async()=>{
-          guard();if(pages.length>=400)fail('PDF_PAGE_LIMIT');ctx.fillText(`예비 검토 / ${pages.length+1}`,64,1700);
-          const base64=canvas.toDataURL('image/jpeg',0.85).split(',')[1],raw=target.atob(base64);bytes+=raw.length;
-          if(bytes>32*1024*1024)fail('PDF_SIZE_LIMIT');budget.reserve(owner,1240*1754*4*2+bytes*4);
-          pages.push({width:1240,height:1754,bytes:Uint8Array.from(raw,c=>c.charCodeAt(0))});
-          await new Promise(resolve=>target.setTimeout(resolve,0));guard();begin();
-        };
+        guard();budget.reserve(owner,96*1024*1024);
+        const fontBytes=await loadFont(controller.signal);guard();
+        if(!(fontBytes instanceof Uint8Array)||fontBytes.length>8*1024*1024)fail('PDF_FONT_INVALID');
+        const font=readTrueType(fontBytes),width=ch=>Math.round(font.width(font.glyph(ch.codePointAt(0)))*1000/font.units)/1000*10;
+        let page,y,processed=0;
+        const begin=()=>{if(pages.length>=400)fail('PDF_PAGE_LIMIT');page={width:595.28,height:841.89,commands:[]};pages.push(page);y=80;
+          page.commands.push({kind:'text',x:32,y:35,size:12,text:'S-STRUCTURES | 일반구조설계 검토 보고서'},
+          {kind:'text',x:32,y:53,size:9,text:'예비 검토 · 최종 구조설계 승인 아님'},
+          {kind:'line',x1:32,y1:62,x2:563,y2:62});};
+        const line=text=>{if(y>785)begin();page.commands.push({kind:'text',x:32,y,size:10,text:text||' '});y+=15;};
         begin();
         for(const text of reviewPdfLines(report)){
-          if(String(text).length>64000)fail('PDF_LINE_LIMIT');let line='';
-          for(const char of String(text)){if(ctx.measureText(line+char).width>1112){if(y>1630)await finish();ctx.fillText(line,64,y);y+=32;line='';}line+=char;}
-          if(y>1630)await finish();ctx.fillText(line,64,y);y+=34;
+          if(String(text).length>64000)fail('PDF_LINE_LIMIT');
+          const wrapped=[];
+          for(const paragraph of String(text).replaceAll('\r\n','\n').replaceAll('\r','\n').split('\n')){
+            let buffer='',used=0;
+            for(const ch of paragraph.replaceAll('\t','    ')){
+              const advance=width(ch);if(used+advance>530){wrapped.push(buffer);buffer='';used=0;}buffer+=ch;used+=advance;
+            }
+            wrapped.push(buffer);
+          }
+          if(wrapped.length<=47&&y+(wrapped.length-1)*15>785)begin();
+          for(const textLine of wrapped)line(textLine);
+          if(++processed%100===0){await new Promise(resolve=>target.setTimeout(resolve,0));guard();}
         }
-        await finish();guard();const data=buildImagePdf(pages);guard();
-        const result={ok:true,format:'pdf',scope:'preliminary-review-record',pages:pages.length,byteLength:data.length,sha256:sha256Bytes(data),reportSnapshotHash:report.reportSnapshotHash,designTransferAllowed:false,textSearchable:false};
+        pages.forEach((page,i)=>page.commands.push({kind:'text',x:32,y:818,size:9,text:`${REPORT_CONTRACT.templateVersion} · ${i+1} / ${pages.length}`}));
+        guard();const data=buildVectorDetailPdf(pages,fontBytes,{maxPages:400});guard();
+        const result={ok:true,format:'pdf',scope:REPORT_CONTRACT.scope,pages:pages.length,byteLength:data.length,sha256:sha256Bytes(data),reportSnapshotHash:report.reportSnapshotHash,inputHash:report.snapshot.designReview.inputIdentity.inputHash,resultHash:report.snapshot.designReview.resultHash,fontSha256:sha256Bytes(fontBytes),templateVersion:REPORT_CONTRACT.templateVersion,rendererVersion:REPORT_CONTRACT.rendererVersion,designTransferAllowed:false,textSearchable:true};
         if(download){
           const downloadOwner=budget.nextOwner('pdf-download');budget.reserve(downloadOwner,data.length);let url,a;
           try{url=target.URL.createObjectURL(new target.Blob([data],{type:'application/pdf'}));urls.set(url,downloadOwner);a=target.document.createElement('a');a.href=url;a.download=`review-${report.reportSnapshotHash.slice(0,16)}.pdf`;target.document.body.appendChild(a);a.click();}
           finally{a?.remove();if(url){const timer=target.setTimeout(()=>{timers.delete(timer);releaseUrl(url);},1000);timers.add(timer);}else budget.release(downloadOwner);}
-        }
-        else result.bytes=data;
+        } else result.bytes=data;
         return result;
-      }finally{if(canvas){canvas.width=0;canvas.height=0;}pages.length=0;budget.release(owner);busy=false;}
+      }finally{target.clearTimeout(timeout);controller=null;pages.length=0;budget.release(owner);busy=false;}
     },
   };
 }

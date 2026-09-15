@@ -183,7 +183,7 @@ export function createElasticReviewService({ bridge, store, reportExportWorkflow
     if(browserPdfExporter?.supported()){
       const record=store.getDesignMetadata(id,identity());if(!record.ok)return record;
       if(!reports.has(id))return problem('RESULT_REQUIRED');
-      return {ok:true,formats:['html','json','csv','pdf'],automaticPdf:!record.stale,automaticFinalPdf:false,scope:'preliminary-review-record',textSearchable:false,designTransferAllowed:false,stale:record.stale};
+      return {ok:true,formats:['html','json','csv','pdf'],automaticPdf:!record.stale,automaticFinalPdf:false,scope:'preliminary-review-record',textSearchable:true,designTransferAllowed:false,stale:record.stale};
     }
     const input = exportContext(id), pdf = reportExportWorkflow.preflight(input);
     return {ok:true,formats:['html','json','csv'],manualPrint:true,automaticPdf:pdf.ready,pdf};

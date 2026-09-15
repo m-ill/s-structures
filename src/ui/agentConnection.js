@@ -10,6 +10,7 @@ export function installAgentConnection(target){
  panel.append(el('p','AI 앱에서 열어 둔 프로젝트와 같은 폴더를 선택하세요. 필요한 업무 지침과 기록 폴더를 자동으로 준비합니다.'));
  const link=el('a','S-Structures 공개 사이트');link.href=PUBLIC_SITE_URL;link.target='_blank';link.rel='noopener';panel.append(link);
  panel.append(el('p','자료가 없으면 사람에게 확인하고, 설계 결정은 사람에게 맡기는 기본 지침이 적용됩니다. 기존 파일과 현재 모델은 보존합니다.'));
+ panel.append(el('p','연결된 에이전트에는 시작 안내와 현재 모델 조회, WebMCP·브라우저 도구 선택, 공통 보고서 출력 절차를 제공합니다. AI에게 원하는 작업을 요청하면 됩니다.'));
  const status=el('p','프로젝트 폴더를 선택해 주세요.');status.setAttribute('role','status');panel.append(status);
  const list=el('ul');panel.append(list);
  const detail=el('details');detail.append(el('summary','연결 범위'),el('p','선택한 폴더에 AGENTS.md와 공통 업무 지침을 준비합니다. WebMCP 지원 에이전트는 준비 상태와 지침을 조회할 수 있습니다. 폴더 준비만으로 AI 대화가 시작되거나 연결이 확인되지는 않습니다.'));

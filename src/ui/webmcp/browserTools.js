@@ -41,13 +41,13 @@ export function createBrowserTools(definitions, { onDiscovery = () => {} } = {})
     },
   });
   return [
-    wrap(BROWSER_TOOL_NAMES[0], 'Discover all S-Structures modeling, analysis, design, report and harness tools. Search by name or English description; paginate with nextOffset. No model changes or solver runs. Then describe the selected tool before calling it.',
+    wrap(BROWSER_TOOL_NAMES[0], 'Start S-Structures tasks here. First describe and read get_agent_start_context for workflow, current model and report rules. Discover functions by name or English description; paginate with nextOffset. Describe each selected tool before calling it. No model changes or solver runs.',
       object({ query: { type: 'string', maxLength: 128 }, offset: { type: 'integer', minimum: 0 }, limit: { type: 'integer', minimum: 1, maximum: 12 } }), true,
       ({ query = '', offset = 0, limit = 12 }) => {
         if (typeof query !== 'string' || query.length > 128 || !Number.isSafeInteger(offset) || offset < 0 || !Number.isInteger(limit) || limit < 1 || limit > 12) fail('Invalid catalog query');
         const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
         const rows = catalog.filter(tool => words.every(word => `${tool.name} ${tool.description}`.toLowerCase().includes(word)));
-        return { total: rows.length, offset, nextOffset: offset + limit < rows.length ? offset + limit : null,
+        return { startHere: {name:'get_agent_start_context',instruction:'Describe and read this tool at task start and after reconnect; use its app workflow and canonical report contract within the user task.'}, total: rows.length, offset, nextOffset: offset + limit < rows.length ? offset + limit : null,
           tools: rows.slice(offset, offset + limit).map(tool => ({ name: tool.name, readOnly: tool.annotations?.readOnlyHint === true, summary: tool.description.slice(0, 160) })),
           next: 'Use describe_sstructures_tool for complete instructions and input schema.' };
       }),

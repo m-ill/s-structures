@@ -1,3 +1,4 @@
+import {REPORT_FONT_CSS} from './reportContract.js';
 import { buildDetailedReportData, DETAILED_REPORT_VERSION } from '../compute/product/detailedReportData.js';
 import { escapeHtml, formatDriftRatio, formatForce, formatLength, formatMoment, formatNumber as format, formatRatio, formatTraceInputs, formatTraceValue, formatVector, renderList, renderMetricGrid, renderMessageTable, renderTable, statusLabel } from './reportFormat.js';
 
@@ -36,8 +37,8 @@ export function renderDetailedReportHtml(report) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(report.title)}</title>
-  <style>
-    body{font:13px/1.5 Arial,sans-serif;color:#172635;margin:0;background:#eef3f7}
+  <style>${REPORT_FONT_CSS}
+    body{font:13px/1.5 SStructuresSans,sans-serif;color:#172635;margin:0;background:#eef3f7}
     main{max-width:1120px;margin:0 auto;background:white;min-height:100vh;padding:30px 36px}
     h1{font-size:25px;margin:0 0 5px;color:#003f73}
     h2{font-size:17px;margin:24px 0 8px;color:#003f73;border-bottom:2px solid #e3edf5;padding-bottom:4px}

@@ -446,6 +446,9 @@ window.SStructuresAgent.execute('applyDesignBasisLoads', {
 <h2>Generated Review Folders</h2>
 <table><thead><tr><th>폴더</th><th>내용</th></tr></thead><tbody><tr><td><code>reports/representative-building-calculation-packages/</code></td><td>10종 대표 건물 계산서 HTML/JSON</td></tr><tr><td><code>output/pdf/m42-representative-packages/</code></td><td>10종 대표 건물 PDF 검토본</td></tr><tr><td><code>reports/stabilization-harness/</code></td><td>모델링/해석/보고서 안정화 검증 산출물</td></tr></tbody></table>
 <p>보고서는 아직 최종 인허가용 구조계산서가 아니다. 설계자가 검토할 수 있는 산정 근거와 누락 항목을 드러내는 계산 보조 산출물로 본다.</p>
+<h3>일반구조설계 공통 PDF (2026-09-15)</h3>
+<p>설계 검토의 PDF 버튼과 WebMCP <code>export_report_pdf</code>는 <code>general-structural-review-v1</code>을 사용한다. 내장 SStructuresSans 글꼴·고정 A4·벡터 텍스트로 출력하므로 시스템 글꼴을 측정하지 않는다. 수치·NG·미검토·KDS 근거를 보존하고, 입력·결과·snapshot·폰트·템플릿·렌더러 버전을 반환한다. 이미지 PDF 대신 검색·복사 가능한 PDF다. 실제 Mac/Safari 종합 시험은 별도로 수행해야 한다.</p>
+<p>위의 기존 한·영 데스크톱 출력은 별도 경로다. Windows라는 이유만으로 출력 자격을 부여하지 않으며, 어댑터 가용성(<code>READY</code>)과 실제 산출물 검사를 분리한다. 명시적인 <code>BLOCKED</code>는 유지한다. 공통 검토 PDF에는 데스크톱 어댑터가 필요하지 않다. 어떤 경로든 보고서 생성이 최종 구조설계 승인을 뜻하지 않는다.</p>
 </template>
 <template data-help-page="04-import-drawings" data-title="도면(DXF/DWG) 가져오기" data-crumb="사용 안내서 · 가져오기">
 <h1>04 Import Drawings</h1>
@@ -574,6 +577,10 @@ git diff --check</code></pre>
 </template>
 <template data-help-page="AI_AGENT_GUIDE" data-title="AI 에이전트 가이드" data-crumb="사용 안내서 · 참고">
 <h1>AI Agent Guide</h1>
+<h2>작업 시작과 공통 보고서</h2>
+<p>사용자가 구조설계 작업을 요청하면 도구명을 다시 물을 필요 없이 <code>list_sstructures_tools</code> → <code>describe_sstructures_tool({name:&quot;get_agent_start_context&quot;})</code> → 안내된 읽기 채널로 시작 정보를 조회한다. 현재 프로젝트 지침과 진행 기록도 확인한다. 작업 범위 안에서 WebMCP를 우선 사용하고, 화면·캡처·미노출 UI에는 브라우저 도구, 필요한 데스크톱 작업에는 호스트가 제공하는 컴퓨터 도구를 사용한다. 도구가 없거나 권한·입력 검증이 실패하면 우회하지 않는다.</p>
+<p>보고서는 완료된 검토에서 <code>plan_report_export</code> → <code>start_report_export</code> → <code>export_report_pdf</code>로 생성한다. 복원한 보고서는 <code>open_report_artifact</code>로 이어간다. 공통 PDF는 내장 글꼴·A4·고정 줄바꿈·템플릿 버전을 사용하며, 에이전트가 임의 제작한 양식은 보충 설명으로 구분한다. 입력·결과·폰트·템플릿 해시와 KDS 근거·미검토를 보존한다. 상세도 PDF는 <code>export_design_drawings</code>의 별도 문서다.</p>
+<p>사이트 안내는 프로젝트 작업을 돕는 문맥이며 AI의 영구 기억·상위 지침을 강제로 바꾸지 않는다. 기존 프로젝트 지침은 자동으로 덮어쓰지 않는다.</p>
 <h2>브라우저 연결 도구 (2026-09-15)</h2>
 <p>브라우저에는 <code>list_sstructures_tools</code>, <code>describe_sstructures_tool</code>, <code>read_sstructures_tool</code>, <code>execute_sstructures_tool</code> 4개만 등록합니다. 전체 기능은 검색·페이지 조회로 탐색하고 명세를 읽은 뒤 <code>invokeWith</code>에 표시된 도구에 <code>{name, arguments}</code>를 전달합니다. 아래 문서의 기존 기능 이름은 <code>name</code> 값이며 기능 삭제나 API 변경을 뜻하지 않습니다. 입력 해시·미리보기·승인·세션 검증은 그대로 적용됩니다.</p>
 <p>예: <code>describe_sstructures_tool({name:&quot;get_project_context&quot;})</code> 조회 후 <code>read_sstructures_tool({name:&quot;get_project_context&quot;,arguments:{}})</code> 호출. 등록 요청 완료와 실제 에이전트 응답 확인은 구분합니다. 설정 한도 오류가 남아 있으면 작업을 저장한 뒤 수정된 페이지를 새로 열고 브라우저 도구 목록을 다시 조회합니다.</p>

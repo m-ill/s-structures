@@ -1,3 +1,4 @@
+import {REPORT_FONT_CSS} from './reportContract.js';
 import {selectRcMemberResults} from '../results/designResultSelection.js';
 import { factorText } from '../core/combinations.js';
 
@@ -68,8 +69,8 @@ export function renderHtmlReport(report) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(report.title)}</title>
-  <style>
-    body{font:13px/1.5 Arial,sans-serif;color:#1e2c38;margin:0;background:#f5f7fa}
+  <style>${REPORT_FONT_CSS}
+    body{font:13px/1.5 SStructuresSans,sans-serif;color:#1e2c38;margin:0;background:#f5f7fa}
     main{max-width:980px;margin:0 auto;background:white;min-height:100vh;padding:28px 34px}
     h1{font-size:24px;margin:0 0 4px;color:#003f73} h2{font-size:16px;margin:24px 0 8px;color:#003f73}
     .meta{color:#647484;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}

@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 884,
+  "plannedCount": 885,
   "categoryCounts": {
     "e2e": 15,
     "integration": 51,
     "qualification": 225,
-    "unit": 593
+    "unit": 594
   },
   "executionCounts": {
     "default": 314,
-    "release-long": 570
+    "release-long": 571
   },
   "records": [
     {
@@ -5279,6 +5279,12 @@
       "taxonomy": "qualification",
       "execution": "default",
       "owner": "phase9"
+    },
+    {
+      "file": "tests/report-agent-portability.mjs",
+      "taxonomy": "unit",
+      "execution": "release-long",
+      "owner": "release-verification"
     },
     {
       "file": "tests/runtime-portability-assets.mjs",

@@ -1,5 +1,14 @@
 # AI Agent Guide
 
+## 작업 시작과 공통 보고서
+
+사용자가 구조설계 작업을 요청하면 도구명을 다시 물을 필요 없이 `list_sstructures_tools` → `describe_sstructures_tool({name:"get_agent_start_context"})` → 안내된 읽기 채널로 시작 정보를 조회한다. 현재 프로젝트 지침과 진행 기록도 확인한다. 작업 범위 안에서 WebMCP를 우선 사용하고, 화면·캡처·미노출 UI에는 브라우저 도구, 필요한 데스크톱 작업에는 호스트가 제공하는 컴퓨터 도구를 사용한다. 도구가 없거나 권한·입력 검증이 실패하면 우회하지 않는다.
+
+보고서는 완료된 검토에서 `plan_report_export` → `start_report_export` → `export_report_pdf`로 생성한다. 복원한 보고서는 `open_report_artifact`로 이어간다. 공통 PDF는 내장 글꼴·A4·고정 줄바꿈·템플릿 버전을 사용하며, 에이전트가 임의 제작한 양식은 보충 설명으로 구분한다. 입력·결과·폰트·템플릿 해시와 KDS 근거·미검토를 보존한다. 상세도 PDF는 `export_design_drawings`의 별도 문서다.
+
+사이트 안내는 프로젝트 작업을 돕는 문맥이며 AI의 영구 기억·상위 지침을 강제로 바꾸지 않는다. 기존 프로젝트 지침은 자동으로 덮어쓰지 않는다.
+
+
 ## 브라우저 연결 도구 (2026-09-15)
 
 브라우저에는 `list_sstructures_tools`, `describe_sstructures_tool`, `read_sstructures_tool`, `execute_sstructures_tool` 4개만 등록합니다. 전체 기능은 검색·페이지 조회로 탐색하고 명세를 읽은 뒤 `invokeWith`에 표시된 도구에 `{name, arguments}`를 전달합니다. 아래 문서의 기존 기능 이름은 `name` 값이며 기능 삭제나 API 변경을 뜻하지 않습니다. 입력 해시·미리보기·승인·세션 검증은 그대로 적용됩니다.

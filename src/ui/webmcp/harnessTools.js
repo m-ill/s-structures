@@ -1,7 +1,8 @@
 import { HARNESS_VERSION, createHarnessFiles, connectionPrompt, loadHarnessPackage } from '../../agentHarness/package.js';
 import {PUBLIC_SITE_URL,getDirectoryConnection} from '../../agentHarness/directory.js';
+import {getAgentStartContext} from '../../agentHarness/startContext.js';
 
-export function createHarnessTools({tool,object}) {
+export function createHarnessTools({tool,object,agent,bridge}) {
   const siteUrl=PUBLIC_SITE_URL;
   const paths=[...Object.keys(createHarnessFiles(siteUrl)),'.sstructures/harness/check.mjs','install.mjs'];
   return [
@@ -14,5 +15,6 @@ export function createHarnessTools({tool,object}) {
       const bundle=await loadHarnessPackage({siteUrl});
       return {version:bundle.version,path,content:path==='install.mjs'?bundle.installer:bundle.files[path]};
     }),
+    tool('get_agent_start_context','Start here for S-Structures tasks: read app workflow, tool selection, current model identity, human decision boundaries and canonical report contract. Read-only; no installation, analysis or approval.',object(),true,()=>getAgentStartContext({agent,bridge})),
   ];
 }

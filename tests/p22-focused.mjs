@@ -1,3 +1,4 @@
+import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {createModel} from '../src/core/model.js';
 import {installIndexEngineBridge} from '../src/ui/indexBridge.js';
@@ -43,7 +44,7 @@ const probe=createBrowserMemoryDiagnostics({crossOriginIsolated:true,performance
 assert.equal((await probe()).aggregate.status,'not-requested');assert.equal((await probe({includeAggregate:true})).aggregate.bytes,123);
 assert.equal((await bridge.getRuntimeResources({includeAggregate:true})).aggregate.bytes,null);
 const pdfBudget=createResourceBudget(),mockContext={fillRect(){},fillText(){},measureText:t=>({width:t.length*10})};
-const exporter=createBrowserReviewPdfExporter({document:{createElement:()=>({getContext:()=>mockContext})},Blob,URL:{createObjectURL(){}},atob,setTimeout,clearTimeout},pdfBudget);
+const exporter=createBrowserReviewPdfExporter({document:{createElement:()=>({getContext:()=>mockContext})},Blob,URL:{createObjectURL(){}},atob,setTimeout,clearTimeout},pdfBudget,{loadFont:async()=>new Uint8Array(await readFile(new URL('../assets/fonts/phase24/SStructuresSans.ttf',import.meta.url)))});
 let checks=0;await assert.rejects(exporter.export(createP22Report(),{download:false,assertCurrent:()=>{if(++checks>1)throw Object.assign(new Error('STALE_INPUT'),{code:'STALE_INPUT'});}}),{code:'STALE_INPUT'});assert.equal(pdfBudget.snapshot().totalBytes,0);
 const altered=createP22Report();altered.snapshot.designReview.summary.status='OK';await assert.rejects(exporter.export(altered),{code:'PDF_SNAPSHOT_HASH_MISMATCH'});exporter.dispose();assert.equal(exporter.supported(),false);
 tools.dispose();freshTools.dispose();await bridge.disposeRuntime();await restored.disposeRuntime();assert.equal(bridge.getResourceState().totalBytes,0);assert.equal(restored.getResourceState().totalBytes,0);

@@ -1,3 +1,4 @@
+import {REPORT_FONT_CSS} from '../reportContract.js';
 import { stableHash } from '../../core/stableHash.js';
 import { escapeHtml } from '../reportFormat.js';
 import { P11_VERDICT_REASON_CODES } from './governance.js';
@@ -83,7 +84,7 @@ export function renderLocalizedReportHtml(snapshot, locale, options = {}) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="report-snapshot-hash" content="${snapshot.reportSnapshotHash}">
   <title>${t('report.title')}</title>
-  <style>
+  <style>${REPORT_FONT_CSS}
     @page{size:A4;margin:16mm 14mm}
     *{box-sizing:border-box}body{margin:0;background:#eaf0f5;color:#172b3d;font:12px/1.5 ${P11_KOREAN_FONT_STACK}}
     main{max-width:900px;margin:auto;background:#fff;min-height:100vh;padding:28px}.eyebrow{color:#537087}

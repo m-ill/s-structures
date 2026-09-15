@@ -1,7 +1,7 @@
 // Small bounded PDF writer for the drawing command model. Embeds a licensed
 // TrueType font, explicit glyph widths, CID mapping and Unicode extraction map.
-export function buildVectorDetailPdf(pages,fontBytes,{maxBytes=32*1024*1024}={}) {
- if(!Array.isArray(pages)||!pages.length||pages.length>60)throw new Error('PDF_PAGE_LIMIT');
+export function buildVectorDetailPdf(pages,fontBytes,{maxBytes=32*1024*1024,maxPages=60}={}) {
+ if(!Number.isInteger(maxPages)||maxPages<1||maxPages>400||!Array.isArray(pages)||!pages.length||pages.length>maxPages)throw new Error('PDF_PAGE_LIMIT');
  if(!(fontBytes instanceof Uint8Array)||fontBytes.byteLength>8*1024*1024)throw new Error('PDF_FONT_INVALID');
  const font=readTrueType(fontBytes),characters=[...new Set(pages.flatMap(p=>p.commands.filter(c=>c.kind==='text').flatMap(c=>Array.from(c.text))))];
  if(characters.length>12000)throw new Error('PDF_GLYPH_LIMIT');
@@ -48,7 +48,7 @@ export function buildVectorDetailPdf(pages,fontBytes,{maxBytes=32*1024*1024}={})
  add(`trailer\n<< /Size ${offsets.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
  const pdf=new Uint8Array(size);let at=0;for(const part of parts){pdf.set(part,at);at+=part.length;}return pdf;
 }
-function readTrueType(bytes) {
+export function readTrueType(bytes) {
  const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength),u16=o=>view.getUint16(o),i16=o=>view.getInt16(o),u32=o=>view.getUint32(o),tables={};
  if(u32(0)!==0x00010000)throw new Error('TRUETYPE_FONT_REQUIRED');
  for(let i=0;i<u16(4);i++){const p=12+i*16,name=String.fromCharCode(...bytes.slice(p,p+4)),offset=u32(p+8),length=u32(p+12);if(offset+length>bytes.length)throw new Error('TRUETYPE_TABLE_INVALID');tables[name]=offset;}

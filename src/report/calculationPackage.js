@@ -1,3 +1,4 @@
+import {REPORT_FONT_CSS} from './reportContract.js';
 import { buildCalculationPackageData, CALCULATION_PACKAGE_VERSION } from '../compute/product/calculationPackageData.js';
 import { escapeHtml, formatDriftRatio as driftRatio, formatForce as force, formatLength as length, formatNumber as fmt, formatRatio as ratio, formatTraceInputs as traceInputs, formatTraceValue as traceValue, renderMetricGrid as metricGrid, renderTable as table, stripTrailingLineWhitespace } from './reportFormat.js';
 
@@ -17,9 +18,9 @@ export function renderCalculationPackageHtml(pkg) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>${escapeHtml(pkg.title)}</title>
-  <style>
+  <style>${REPORT_FONT_CSS}
     @page{size:A4;margin:16mm 14mm}
-    body{font:12px/1.45 Arial,sans-serif;color:#182736;margin:0;background:#edf2f6}
+    body{font:12px/1.45 SStructuresSans,sans-serif;color:#182736;margin:0;background:#edf2f6}
     main{max-width:980px;margin:0 auto;background:white;min-height:100vh}
     section{padding:24px 28px;border-bottom:1px solid #e1e8ef}
     h1{font-size:26px;color:#003f73;margin:0 0 8px}

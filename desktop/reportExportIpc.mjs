@@ -35,7 +35,12 @@ export function createElectronPdfAdapter({ BrowserWindow, tempRoot }) {
               image.addEventListener('load', resolve, { once: true });
               image.addEventListener('error', reject, { once: true });
             }))
-        ]).then(() => true)`, true);
+        ]).then(() => {
+          if (!document.fonts || !document.fonts.check('12px SStructuresSans')) {
+            throw new Error('REPORT_BUNDLED_FONT_UNAVAILABLE');
+          }
+          return true;
+        })`, true);
         if (signal?.aborted) throw exportError('P11_PDF_EXPORT_CANCELLED');
         const bytes = await win.webContents.printToPDF({
           pageSize: 'A4',

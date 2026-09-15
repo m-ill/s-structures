@@ -73,6 +73,8 @@ export async function exportDualPdfPair(plan, options = {}) {
     checkCancelled(signal);
     emit('staging', 0.05);
     await stageAssets(plan, stagingDir);
+    const reportFont = await readFile(new URL('../../../assets/fonts/phase24/SStructuresSans.ttf', import.meta.url));
+    await writeFile(path.join(stagingDir, 'sstructures-report-font.ttf'), reportFont);
     const artifacts = {};
     for (const [index, locale] of P11_PDF_EXPORT_LOCALES.entries()) {
       checkCancelled(signal);
@@ -134,6 +136,7 @@ export async function exportDualPdfPair(plan, options = {}) {
     const generatedAt = new Date(options.now?.() ?? Date.now()).toISOString();
     const core = {
       version: P11_PDF_ARTIFACT_MANIFEST_VERSION,
+      font: {file:'sstructures-report-font.ttf',sha256:sha256(reportFont)},
       status: 'complete',
       jobId,
       projectId: plan.projectId,

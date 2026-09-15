@@ -73,7 +73,7 @@ import { decorateAgentControls, listAgentControls } from './indexAgentControlsDo
 import { applyKdsLoadCombinationsToModel, availableAgentActions, createIndexAgentApi } from './indexAgentApi.js';
 import { installCalculationPackageMenuHook, installDetailedReportMenuHook } from './indexReportHooks.js';
 import { createReportExportWorkflow, installReportExportUi } from './indexReportExportWorkflow.js';
-import { PHASE11_REPORT_RELEASE_QUALIFICATION } from '../report/phase11/releaseGate.js';
+import {getReportRuntimeQualification} from '../report/reportContract.js';
 
 
 
@@ -903,7 +903,7 @@ export function installIndexEngineBridge(target = globalThis) {
   const elasticReview = createElasticReviewService({ bridge, store: workflowResults,budget:resourceBudget,browserPdfExporter,sharedPracticalCache,
     reportExportWorkflow: target.SStructuresReportExportWorkflow,
     getPdfContext: () => ({ sourceRevision:target.SStructuresSourceRevision||null,buildIdentity:target.SStructuresBuildIdentity||null,figureManifest: target.SStructuresFigureManifest || null,
-      qualification: target.SStructuresReportQualification || { status: 'BLOCKED' } }),
+      qualification: getReportRuntimeQualification(target) }),
   });
   target.addEventListener?.('pagehide',()=>bridge.disposeRuntime());
   target.addEventListener?.('pageshow',event=>{if(event.persisted){analysisProductService=null;elasticProductService=null;eigenProductService=null;nonlinearProductService=null;runtimeDisposed=false;practicalWorkflow.resume();rcServiceWorkflow.resume();rcSpliceExecution.resume();drawingExporter.resume();}});
@@ -1043,16 +1043,7 @@ export function installIndexEngineBridge(target = globalThis) {
           snapshot,
           currentReportSnapshotHash: snapshot?.reportSnapshotHash || null,
           figureManifest: target.SStructuresFigureManifest || null,
-          qualification: target.SStructuresReportQualification || (
-            /windows|win32|win64/iu.test(`${target.navigator?.platform || ''} ${target.navigator?.userAgent || ''}`)
-              ? PHASE11_REPORT_RELEASE_QUALIFICATION
-              : {
-                ...PHASE11_REPORT_RELEASE_QUALIFICATION,
-                status: 'BLOCKED',
-                releaseQualified: false,
-                reason: 'P11_REPORT_PROFILE_UNQUALIFIED',
-              }
-          ),
+          qualification: getReportRuntimeQualification(target),
           sourceRevision: target.SStructuresSourceRevision || null,
         };
       },

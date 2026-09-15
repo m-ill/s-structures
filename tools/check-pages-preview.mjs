@@ -1,6 +1,8 @@
 // Fast, mandatory deployment checks. Full engineering qualification is separate.
 import {spawnSync} from 'node:child_process';
 const checks = [
+  'tests/report-agent-portability.mjs',
+  'tests/p11-m6-dual-pdf-export.mjs',
   'tests/agent-harness.mjs',
   'tests/agent-directory.mjs',
   'tests/p25-m8-pages-assets.mjs',

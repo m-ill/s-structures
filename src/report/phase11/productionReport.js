@@ -1,3 +1,4 @@
+import {REPORT_FONT_CSS} from '../reportContract.js';
 import {formatDesignCodeBasis} from '../designCodeBasisFormat.js';
 import { stableHash } from '../../core/stableHash.js';
 import { escapeHtml } from '../reportFormat.js';
@@ -108,7 +109,7 @@ export function renderProductionReport(snapshot, locale, options = {}) {
   <meta name="report-snapshot-hash" content="${snapshot.reportSnapshotHash}">
   <meta name="report-layout-version" content="${P11_PRODUCTION_REPORT_VERSION}">
   <title>S-Structures Report [${locale}] - ${projectName}</title>
-  <style>${productionCss()}</style>
+  <style>${REPORT_FONT_CSS}${productionCss()}</style>
 </head>
 <body data-report-version="${P11_PRODUCTION_REPORT_VERSION}" data-semantic-hash="${semanticHash}">
 <main>${pageHtml}</main><div class="probe">${t('glyph.probe')}</div>

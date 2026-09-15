@@ -38,7 +38,7 @@ assert.match(ko.html, /KDS-ST-05-EX-N/);
 assert.match(en.html, /KDS-ST-05-EX-N/);
 assert.match(ko.html, /M32/);
 assert.match(en.html, /M32/);
-assert.ok(P11_KOREAN_FONT_STACK.includes('Noto Sans KR'));
+assert.ok(P11_KOREAN_FONT_STACK.includes('SStructuresSans'));
 assert.ok(!ko.html.includes('<img src=x'));
 assert.ok(!en.html.includes('<img src=x'));
 assert.match(ko.html, /&lt;img src=x onerror=alert\(1\)&gt;/);

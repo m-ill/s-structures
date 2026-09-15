@@ -60,7 +60,9 @@ export function createReportExportWorkflow(options = {}) {
       || input.figureManifest?.figureCount !== 7) {
       issues.push(issue('P11_REPORT_EXPORT_FIGURES_INCOMPLETE'));
     }
-    if (input.qualification && input.qualification.status !== 'PASS') {
+    if (input.qualification && input.qualification.status !== 'PASS'
+      && !(input.qualification.status === 'READY' && input.qualification.profile === 'runtime-report-adapter-v1'
+        && input.qualification.artifactValidationRequired === true && input.qualification.releaseQualified === false)) {
       issues.push(issue('P11_REPORT_EXPORT_QUALIFICATION_BLOCKED'));
     }
     return Object.freeze({

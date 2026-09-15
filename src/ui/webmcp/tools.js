@@ -98,7 +98,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
   const workflow=createWorkflowTools({agent,bridge,tool,object,context,setView});
   const nonlinear=createNonlinearTools({agent,budget,tool,context});
   const definitions = [
-    ...createHarnessTools({tool,object}),
+    ...createHarnessTools({tool,object,agent,bridge}),
     ...createPracticalTools({bridge,tool,object}),
     tool('get_design_input_schema','Read the shared typed input contract and field units for UI and WebMCP.',object({type:{type:'string',enum:DESIGN_INPUT_TYPES}},['type']),true,args=>{
       if(PRACTICAL_DESIGN_TYPES.includes(args.type))return bridge.getDesignInputSchema(args);
@@ -118,6 +118,7 @@ export function createWebMcpTools({ agent, bridge, onActivity = () => {}, setVie
       const value = model();
       return {
         version: WEBMCP_VERSION, ...context(value),
+        startHere: 'get_agent_start_context',
         inputIdentity: agent.getWorkflowInputIdentity?.({ model: value }) || null,
         counts: Object.fromEntries(['nodes', 'members', 'loads'].map((key) => [key, value[key]?.length || 0])),
         cases: (value.analysisCases || []).slice(0, 100).map(({ id, name, kind, engineId }) => ({ id, name, kind, engineId, exposed: KINDS.includes(kind)||nonlinear.isCase(id) })),
