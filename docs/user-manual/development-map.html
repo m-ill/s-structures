@@ -1,0 +1,1500 @@
+<!doctype html>
+<html lang="en" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>S-Structures 인터랙티브 개발맵</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="S-Structures 인터랙티브 개발맵" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;S-Structures 인터랙티브 개발맵&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 10px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn,
+.nav-link {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover,
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;ss-feature-map&quot;&gt;
+ &lt;style&gt;
+ #ss-feature-map {color:var(--foreground)}
+ #ss-feature-map .title {text-align:center;margin:0 0 8px}
+ #ss-feature-map .legend {display:flex;gap:8px 14px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+ #ss-feature-map .path {display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0 22px}
+ #ss-feature-map .path span+span:before {content:&#x27;→&#x27;;margin-right:8px;color:var(--muted-foreground)}
+ #ss-feature-map .branches {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
+ #ss-feature-map .branch {min-width:0;border-top:3px solid var(--border)}
+ #ss-feature-map h3 {margin:12px 0 4px}
+ #ss-feature-map .subtitle {min-height:42px;margin-bottom:12px}
+ #ss-feature-map .section-label {margin:18px 0 7px;font-weight:500}
+ #ss-feature-map details {border-bottom:1px solid var(--border);padding:9px 0}
+ #ss-feature-map summary {cursor:pointer;overflow-wrap:anywhere}
+ #ss-feature-map .count {display:block;margin:4px 0 0 17px}
+ #ss-feature-map .leaves {border-left:1px solid var(--border);margin:12px 0 2px 5px;padding-left:12px}
+ #ss-feature-map .leaf {position:relative;margin:0 0 14px;overflow-wrap:anywhere}
+ #ss-feature-map .leaf:before {content:&#x27;&#x27;;position:absolute;top:10px;left:-13px;width:8px;border-top:1px solid var(--border)}
+ #ss-feature-map .detail {margin-top:5px;overflow-wrap:anywhere}
+ #ss-feature-map .I {color:var(--green)}
+ #ss-feature-map .P {color:var(--orange)}
+ #ss-feature-map .U {color:var(--red)}
+ #ss-feature-map .V {color:var(--blue)}
+ #ss-feature-map .future-label {color:var(--purple)}
+ #ss-feature-map .future-group {border-left:2px dashed var(--purple);padding-left:10px;margin-bottom:6px}
+ #ss-feature-map .future-items {margin-top:8px}
+ #ss-feature-map .task {border-bottom:1px solid var(--border);padding:10px 0}
+ #ss-feature-map .task:last-child {border-bottom:0}
+ #ss-feature-map .task-body {padding:8px 0 0 5px}
+ #ss-feature-map .task-body ul {margin:6px 0 10px;padding-left:18px}
+ #ss-feature-map .task-body li {margin:6px 0}
+ #ss-feature-map .basis {overflow-wrap:anywhere;margin-top:9px}
+ #ss-feature-map .source-links {display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:8px}
+ #ss-feature-map .source-links a {color:var(--blue);overflow-wrap:anywhere}
+ #ss-feature-map .ai-layer {margin:0 0 24px}
+ #ss-feature-map .ai-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px;align-items:start}
+ @media(max-width:580px){#ss-feature-map .branches,#ss-feature-map .ai-grid{grid-template-columns:1fr}#ss-feature-map .subtitle{min-height:0}}
+ @media(pointer:coarse){#ss-feature-map summary{min-height:44px}}
+ &lt;/style&gt;
+ &lt;h2 class=&quot;title&quot;&gt;S-Structures AI 활용·실무 개발 지도&lt;/h2&gt;
+ &lt;div class=&quot;title text-small&quot;&gt;2026.09.14 · 현재 84항목 · 후속 32작업 · AI 공통 기반 8항목 진척 반영&lt;/div&gt;
+ &lt;div class=&quot;legend text-small&quot;&gt;&lt;span class=&quot;I&quot;&gt;● 구현 확인&lt;/span&gt;&lt;span class=&quot;P&quot;&gt;◐ 부분 구현&lt;/span&gt;&lt;span class=&quot;U&quot;&gt;○ 미지원·완결 미확인&lt;/span&gt;&lt;span class=&quot;V&quot;&gt;◇ 검증 잔여&lt;/span&gt;&lt;span class=&quot;future-label&quot;&gt;＋ 추후 개발 제안&lt;/span&gt;&lt;/div&gt;
+ &lt;div class=&quot;legend text-small&quot;&gt;&lt;span&gt;A 해당 업무 출시 전 필수&lt;/span&gt;&lt;span&gt;B 일반 건물 범위 확장&lt;/span&gt;&lt;span&gt;C 전문 분야 선택 확장&lt;/span&gt;&lt;/div&gt;
+ &lt;div class=&quot;path text-small&quot; aria-label=&quot;AI 사용 흐름 제안&quot;&gt;&lt;/div&gt;
+ &lt;section class=&quot;ai-layer&quot; aria-label=&quot;세 영역 공통 AI 사용 기반 개발 제안&quot;&gt;
+  &lt;h3&gt;세 영역 공통 · AI가 이해하고 실행하는 기반&lt;/h3&gt;
+  &lt;div class=&quot;text-small&quot;&gt;AI 시작 안내·자료·결정·작업 상태 기록 구현 · 업무 완주·통합 검증 잔여&lt;/div&gt;
+  &lt;div class=&quot;ai-grid&quot;&gt;&lt;/div&gt;
+ &lt;/section&gt;
+ &lt;div class=&quot;branches&quot;&gt;&lt;/div&gt;
+ &lt;div class=&quot;text-small&quot; style=&quot;margin-top:16px&quot;&gt;비선형 A는 성능기반 업무 제공 시 필수 · 항목 수는 완료율이 아님 · 구현 확인과 최종 설계 적합성은 별도&lt;/div&gt;
+ &lt;script type=&quot;application/json&quot; id=&quot;ss-feature-data&quot;&gt;[{&quot;name&quot;: &quot;모델링&quot;, &quot;summary&quot;: &quot;골조 작성·속성·하중·모델 점검 연결&quot;, &quot;groups&quot;: [{&quot;name&quot;: &quot;형상·편집&quot;, &quot;source&quot;: &quot;docs/archive/phase13/IMPLEMENTATION_STATUS.md&quot;, &quot;items&quot;: [[&quot;3D 절점·프레임·트러스&quot;, &quot;I&quot;, &quot;절점 좌표와 보·기둥·가새 연결, 속성 편집.&quot;], [&quot;층·그리드·반복 골조&quot;, &quot;I&quot;, &quot;층/축 생성, 역할별 부재 배치, 층 복사.&quot;], [&quot;선택·스냅·변경 취소&quot;, &quot;I&quot;, &quot;격자·축·작업면 스냅, 선택 강조, transaction과 Undo.&quot;], [&quot;모델 오류 점검·보정&quot;, &quot;I&quot;, &quot;고립 절점·기하 오류·입력 검증, 수정안 미리보기·적용.&quot;]]}, {&quot;name&quot;: &quot;재료·단면·상세 입력&quot;, &quot;source&quot;: &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;items&quot;: [[&quot;재료·단면 라이브러리&quot;, &quot;I&quot;, &quot;강재·RC·목재·조적 물성; RECT/CIRC/H/BOX/PIPE/CUSTOM 등. 물성 지원은 재료별 설계 완결과 별개.&quot;], [&quot;배근·정착·이음 입력&quot;, &quot;I&quot;, &quot;공칭 철근 제품, 주근/횡철근, 구간·양단·이음 객체와 typed 검증.&quot;], [&quot;접합·기초·지반 입력&quot;, &quot;I&quot;, &quot;접합 철근 경로, 독립기초 치수·상하부 배근·지층·근거.&quot;], [&quot;복잡 상세의 통합 적합성&quot;, &quot;P&quot;, &quot;구조시스템별 필수 횡구속·환경·혼합 정착 및 간섭 없는 완성 예제 잔여.&quot;]]}, {&quot;name&quot;: &quot;구속·연결·해석 이상화&quot;, &quot;source&quot;: &quot;docs/user-manual/STATUS_AND_LIMITS.md&quot;, &quot;items&quot;: [[&quot;지점·단부 해제&quot;, &quot;I&quot;, &quot;6자유도 구속, 단부 release; 해석 종류별 허용 조건 검사.&quot;], [&quot;부분강접·offset·변단면&quot;, &quot;I&quot;, &quot;연결 강성, 3D offset·패널존, 테이퍼 부재의 지원 경로.&quot;], [&quot;강체격막·MPC·탄성링크&quot;, &quot;I&quot;, &quot;격막 자유도 축약, rigid link와 6자유도 탄성링크. 조합별 지원 경계 존재.&quot;], [&quot;벽·슬래브·셸 모델&quot;, &quot;P&quot;, &quot;등가 모델과 실제 셸 엔진/실험실 존재. 일반 건물의 셸 설계 전달 완결은 잔여.&quot;]]}, {&quot;name&quot;: &quot;하중·질량·조합&quot;, &quot;source&quot;: &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;items&quot;: [[&quot;하중 케이스·조합 편집&quot;, &quot;I&quot;, &quot;하중·질량원·설계기준 분리, 조합 생성·적용·감사.&quot;], [&quot;층 질량·편심·하중 전달&quot;, &quot;I&quot;, &quot;층/격막 질량, 우발편심, 슬래브 하중 전달과 합력 추적.&quot;], [&quot;풍·지진 기준 절차&quot;, &quot;P&quot;, &quot;기준 팩과 산정 근거 경로 구현. 전체 기준·적용조건·프로젝트 coverage 감사 잔여.&quot;], [&quot;활하중 저감·하중 감사&quot;, &quot;I&quot;, &quot;Phase29: 영향면적·용도·지지층 조건의 저감 계산과 근거/계수 불일치 검사. 조항 해석 조건을 함께 반환.&quot;], [&quot;내진 중요도·지반·시스템 계수&quot;, &quot;I&quot;, &quot;Phase29: 중요도 도출, 지반분류·증폭, RC 시스템 계수 조회. 특수지반·모호한 시스템은 별도 검토 또는 후보 선택.&quot;]]}, {&quot;name&quot;: &quot;외부 자료·모델 교환&quot;, &quot;source&quot;: &quot;src/import/phase13MgtImport.js&quot;, &quot;items&quot;: [[&quot;프로젝트 JSON 저장·읽기&quot;, &quot;I&quot;, &quot;모델 저장과 입력 식별자·버전 검증.&quot;], [&quot;DXF 인식·골조 후보&quot;, &quot;P&quot;, &quot;도면 파싱·선 정리·부재 후보/검토 경로. 모든 CAD 표현 지원은 아님.&quot;], [&quot;MGT 부분 가져오기&quot;, &quot;P&quot;, &quot;NODE/ELEMENT/CONSTRAINT/MATERIAL/SECTION/LOADCASE/CONLOAD 지원; 나머지는 unsupported로 기록.&quot;], [&quot;DWG 가져오기&quot;, &quot;P&quot;, &quot;외부 변환기 기반 DXF 변환 어댑터. 내장 DWG 직접 파서는 아님.&quot;], [&quot;점군 기반 부재 후보&quot;, &quot;P&quot;, &quot;점군 정리·층/보/기둥/벽 추출 모듈. 범용 실자료 자동 모델 완성은 미확인.&quot;]]}, {&quot;name&quot;: &quot;공통 작업 관리&quot;, &quot;source&quot;: &quot;src/ui/webmcp/harnessTools.js&quot;, &quot;items&quot;: [[&quot;UI·Agent·WebMCP 공통 경로&quot;, &quot;I&quot;, &quot;입력 미리보기/적용, 해석·검토·보완·출력·상태 조회.&quot;], [&quot;stale·중복 요청·이력&quot;, &quot;I&quot;, &quot;변경된 모델의 이전 결과 무효화, 요청 중복 방지, Undo/Redo.&quot;], [&quot;체크포인트·재접속 복원&quot;, &quot;P&quot;, &quot;저장/복원·손상 처리 및 현재 이력 보존 구현. 전체 버전/새 세션/화면 통합 잔여.&quot;], [&quot;AI 프로젝트 시작 안내·상태 기록&quot;, &quot;I&quot;, &quot;get_agent_harness/read_agent_harness_file로 업무 안내·자료/질문/결정·state 템플릿 제공. 설치·연결 검증·AI 업무 완주는 별도.&quot;]]}]}, {&quot;name&quot;: &quot;탄성설계&quot;, &quot;summary&quot;: &quot;탄성해석 → 부재 검토 → 보완·출력&quot;, &quot;groups&quot;: [{&quot;name&quot;: &quot;정적·안정 해석&quot;, &quot;source&quot;: &quot;README.md&quot;, &quot;items&quot;: [[&quot;3D 선형 탄성해석&quot;, &quot;I&quot;, &quot;프레임/트러스, 변위·6성분 부재력·반력 복원.&quot;], [&quot;Timoshenko·희소 해법&quot;, &quot;I&quot;, &quot;전단변형 보와 희소 행렬 해석 경로.&quot;], [&quot;Direct P–Delta&quot;, &quot;I&quot;, &quot;조합별 기하강성 반복 및 수렴 결과 사용; 미지원 입력은 차단.&quot;], [&quot;탄성 고유치 좌굴&quot;, &quot;I&quot;, &quot;정적 preload 기반 좌굴 모드·계수. 비탄성 좌굴과 구분.&quot;], [&quot;막·판·셸·탄성지반&quot;, &quot;P&quot;, &quot;셸 조립/안정화, Winkler 및 링크 엔진 구현. 범위별 외부 자격·설계 연결 잔여.&quot;]]}, {&quot;name&quot;: &quot;동적 탄성해석&quot;, &quot;source&quot;: &quot;docs/archive/phase18/IMPLEMENTATION_STATUS.md&quot;, &quot;items&quot;: [[&quot;모달·질량 참여&quot;, &quot;I&quot;, &quot;3D 고유치, 격막·회전질량, 모드/진동수.&quot;], [&quot;응답스펙트럼&quot;, &quot;I&quot;, &quot;SRSS/CQC 등 모드조합, 절점·층·부재 응답 복원.&quot;], [&quot;선형 시간이력&quot;, &quot;I&quot;, &quot;Newmark 계산과 시간이력 결과 경로. 설계 전달 자격 별도.&quot;], [&quot;공식 동일모델 비교&quot;, &quot;V&quot;, &quot;SR1/SR2/SR2b 등 입력 확정 및 기능별 독립 비교 잔여.&quot;]]}, {&quot;name&quot;: &quot;결과·설계 수요&quot;, &quot;source&quot;: &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;items&quot;: [[&quot;변형·부재력·반력 시각화&quot;, &quot;I&quot;, &quot;조합 포락, 모드/시간 스텝, 평형·오차 조회.&quot;], [&quot;동일 조합·위치 수요 추적&quot;, &quot;I&quot;, &quot;N/V/T/My/Mz와 구간·offset, 실행 ID·해시·근거 보존.&quot;], [&quot;판정·기준 근거 표시&quot;, &quot;I&quot;, &quot;OK/NG/NOT_CHECKED/N_A, 입력누락·미지원·실패 분리, KDS 판본·조항 추적.&quot;], [&quot;전체 규칙·조합 적합성 감사&quot;, &quot;V&quot;, &quot;채택 프로파일 필수검사와 적용 예외 전체 대조 잔여. 미대조는 곧 미구현을 뜻하지 않음.&quot;], [&quot;검사·기준 참조와 시험 등록 정리&quot;, &quot;I&quot;, &quot;Phase28–29: 기준 참조 누락과 시험 등록을 검사하는 게이트. 42개 실무 규칙 행이며 모든 기능의 독립 검증 완료를 뜻하지 않음.&quot;]]}, {&quot;name&quot;: &quot;RC 부재 강도·배근&quot;, &quot;source&quot;: &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;items&quot;: [[&quot;축력·2축 휨 단면 강도&quot;, &quot;I&quot;, &quot;실제 배근·콘크리트 응력 적분, 단면 평형과 강도감소계수.&quot;], [&quot;전단·비틀림 검토&quot;, &quot;I&quot;, &quot;제공 횡철근과 KDS 강도 규칙 owner. 채택 범위 전체 적합성은 별도.&quot;], [&quot;철근량·간격·정착·이음&quot;, &quot;P&quot;, &quot;최소철근·간격·양단 정착·이음/횡구속 기능. 모든 상세/역할 조합 완결 잔여.&quot;], [&quot;압축부재·2차 강성 연계&quot;, &quot;P&quot;, &quot;1차 증폭 및 RC 강성 반복 경로. Direct 국부 안정·지속/균열 방법과 전체 압축부재 증거 잔여.&quot;]]}, {&quot;name&quot;: &quot;RC 사용성·장기변형&quot;, &quot;source&quot;: &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;items&quot;: [[&quot;균열·순간 처짐&quot;, &quot;I&quot;, &quot;균열 검토와 제공 배근 기반 사용하중 응답 경로.&quot;], [&quot;장기 처짐 계산·보고서&quot;, &quot;P&quot;, &quot;기존 무축력 단축휨의 부착 전 공제·최종 판정 기록 연결. 대표 PDF 추가 확인 잔여.&quot;], [&quot;축력·양축 RC 단계 합성&quot;, &quot;P&quot;, &quot;크리프/초기변형률·부재력 적분·내부 극값·시점 근거 구현. 새 프레임 경로의 부착 정책/최종 장기 판정 잔여.&quot;], [&quot;처짐·층간변위 검토&quot;, &quot;I&quot;, &quot;부재 사용성 및 층 응답 검토. 기준 출처 미확정 항목은 별도 표시.&quot;]]}, {&quot;name&quot;: &quot;RC 보–기둥 접합&quot;, &quot;source&quot;: &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;items&quot;: [[&quot;접합 평형·전단·강도 관계&quot;, &quot;I&quot;, &quot;예상 철근력, 평형/구속 선행검사, 패널 전단과 보–기둥 강도비.&quot;], [&quot;후프·갈고리·관통 철근&quot;, &quot;P&quot;, &quot;횡구속·정착·철근 경로·관통 수량 검토. 내/모서리 등 전 범위 대조 잔여.&quot;], [&quot;혼합 접합 자동 상세 완결&quot;, &quot;P&quot;, &quot;이음 매핑·후프 충돌 사유·보완 적용 요약 경계 등을 Phase27에서 보완. 모든 실제 접합의 적합 상세 생성과 독립 검증은 별도.&quot;]]}, {&quot;name&quot;: &quot;슬래브·벽체 선정 검토&quot;, &quot;source&quot;: &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;items&quot;: [[&quot;일방향 슬래브 스트립&quot;, &quot;I&quot;, &quot;단위폭 스트립의 두께·휨·일방향 전단·간격·수축온도철근 검토. 처짐 등 전체 슬래브 설계 완결은 별도.&quot;], [&quot;이방향 슬래브 계수법&quot;, &quot;I&quot;, &quot;직사각 4변 지지 패널의 설계 모멘트·전단 분배. 원문 결함 셀은 차단하며 FEM·강도·상세·처짐 전체 완결과 구분.&quot;], [&quot;벽체 단면·배근·설계축강도&quot;, &quot;I&quot;, &quot;두께·최소철근비·간격·철근층·실용식 축강도 검토. 편심 등 적용 조건을 벗어나면 판정하지 않음. 전체 전단벽·코어 설계는 잔여.&quot;]]}, {&quot;name&quot;: &quot;독립기초·지반&quot;, &quot;source&quot;: &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;items&quot;: [[&quot;접촉압·반력·자중 회계&quot;, &quot;I&quot;, &quot;전면/부분 압축접촉, 편심, 자중/반력 합산 및 중복 방지.&quot;], [&quot;휨·전단·펀칭·배근&quot;, &quot;I&quot;, &quot;위험단면, 상하부 배근·정착·중앙대 배분, 후보 적용 후 재평가.&quot;], [&quot;기둥 전달·지반 검토&quot;, &quot;P&quot;, &quot;기둥-기초 전달, 지지력·활동·침하·부등침하 owner. 방법별 독립 검토와 조건 충족 잔여.&quot;], [&quot;말뚝·매트 전용 상세설계&quot;, &quot;U&quot;, &quot;확인한 현재 RC 상세 범위는 독립기초. 전용 상세설계 완결 근거 미확인.&quot;]]}, {&quot;name&quot;: &quot;재료별 설계 확장&quot;, &quot;source&quot;: &quot;README.md&quot;, &quot;items&quot;: [[&quot;철골 부재 검토&quot;, &quot;P&quot;, &quot;압축·휨/LTB·상호작용·세장비·예비 상세 모듈 존재. 전용 기준/상세 완결 잔여.&quot;], [&quot;철골 접합·베이스 상세&quot;, &quot;P&quot;, &quot;예비 접합/기초 및 용접 검토 경로. 전용 접합·베이스플레이트 설계 완결 잔여.&quot;], [&quot;목재·조적 전용 설계&quot;, &quot;U&quot;, &quot;물성 입력과 별개로 전용 상세 설계 완결은 후속 범위.&quot;]]}, {&quot;name&quot;: &quot;자동보완·도면·계산서&quot;, &quot;source&quot;: &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;items&quot;: [[&quot;후보 생성·적용·재해석&quot;, &quot;I&quot;, &quot;단면/배근/접합/기초 후보, 실제 변경·새 해석·재검토와 전후 비교.&quot;], [&quot;보완 반복의 전체 업무 완결&quot;, &quot;P&quot;, &quot;Phase27 RC 후속 11건 해소. 단면 변경–자중–지진질량–부재력의 전역 되먹임과 수렴은 Phase30 계획. 후보별 재해석과 전역 수렴을 구분.&quot;], [&quot;검토도·수량·PDF/CSV/JSON&quot;, &quot;I&quot;, &quot;준비 형상과 같은 snapshot, 계산 근거·상세도·수량표·출력 hash.&quot;], [&quot;시공·제작용 납품 완결&quot;, &quot;U&quot;, &quot;현재 출력은 검토용. 전 상세 도면/수량/계산서 추적성과 제작 승인 완결 아님.&quot;]]}]}, {&quot;name&quot;: &quot;비선형해석&quot;, &quot;summary&quot;: &quot;MDOF 정식 엔진 연결 · 현재 candidate&quot;, &quot;groups&quot;: [{&quot;name&quot;: &quot;비선형 모델·재료&quot;, &quot;source&quot;: &quot;src/nonlinear/capabilities.js&quot;, &quot;items&quot;: [[&quot;집중 소성힌지&quot;, &quot;I&quot;, &quot;힌지 backbone·반복거동, 케이스/힌지 미리보기·할당.&quot;], [&quot;분포 fiber·PMM&quot;, &quot;I&quot;, &quot;단면 축력–2축 휨과 fiber 적분. 지원 단면·재료 snapshot 필요.&quot;], [&quot;3D 기하 비선형&quot;, &quot;I&quot;, &quot;corotational 형상, 현재 단계 평형·일관 접선과 상태 관리.&quot;], [&quot;fiber 부재 단부 release&quot;, &quot;U&quot;, &quot;현 capability에서 분포 fiber와 단부 release 조합을 거부.&quot;]]}, {&quot;name&quot;: &quot;비선형 정적·Pushover&quot;, &quot;source&quot;: &quot;src/nonlinear/capabilities.js&quot;, &quot;items&quot;: [[&quot;MDOF 변위제어 Pushover&quot;, &quot;I&quot;, &quot;현재 모델에 결속된 비동기 실행, 중력 후 횡변위 증분.&quot;], [&quot;Arc-length 연속 추적&quot;, &quot;P&quot;, &quot;변위제어 checkpoint와 적합 backend 조건에서 지원.&quot;], [&quot;곡선·힌지·층 응답&quot;, &quot;I&quot;, &quot;능력곡선, 부재/힌지 상태·층 응답·해석 이력 조회.&quot;], [&quot;일반 하중제어 제품 경로&quot;, &quot;U&quot;, &quot;kernel 기능과 별개로 일반 nonlinearStatic은 reserved; 제품 Pushover load-factor 미지원.&quot;]]}, {&quot;name&quot;: &quot;비선형 시간이력&quot;, &quot;source&quot;: &quot;src/nonlinear/capabilities.js&quot;, &quot;items&quot;: [[&quot;MDOF Newmark·Newton&quot;, &quot;I&quot;, &quot;전체 모델 질량·감쇠·복원력, substep 재적분과 Worker 실행.&quot;], [&quot;1~3성분 지반가진&quot;, &quot;I&quot;, &quot;균일 지점 가진과 시간이력 응답·에너지 조회.&quot;], [&quot;다지점 비동일 지반운동&quot;, &quot;U&quot;, &quot;공간적으로 달라지는 지점 가진 미지원.&quot;], [&quot;SH1 동적·해제단 일관질량&quot;, &quot;U&quot;, &quot;SH1 NLTH 및 release와 consistent mass 조합은 현재 차단.&quot;]]}, {&quot;name&quot;: &quot;실행·결과·복구&quot;, &quot;source&quot;: &quot;docs/archive/phase19/M5_M10_CANDIDATE.md&quot;, &quot;items&quot;: [[&quot;UI·WebMCP 실행·조회&quot;, &quot;I&quot;, &quot;동일 job으로 계획/실행/진행/결과/실패 사유 조회.&quot;], [&quot;취소·시간 제한·재시도&quot;, &quot;I&quot;, &quot;Worker 종료와 늦은 결과 차단; 재시도는 새 작업.&quot;], [&quot;중지·재개·새로고침 복원&quot;, &quot;P&quot;, &quot;동일 모델/build의 paused NLTH 재개 조건. 전체 복원/공통 자원 계약 잔여.&quot;], [&quot;비선형 GPU 실행&quot;, &quot;U&quot;, &quot;결정론적 f64 backend 자격 전 현재 미지원.&quot;]]}, {&quot;name&quot;: &quot;성능기반 활용·검증&quot;, &quot;source&quot;: &quot;docs/archive/phase19/M5_M10_CANDIDATE.md&quot;, &quot;items&quot;: [[&quot;엔진 독립 비교·시간 수렴&quot;, &quot;V&quot;, &quot;대표 강재/RC 전체 dt/2·dt/4, 외부 비교·pilot 및 규모/브라우저 검증 잔여.&quot;], [&quot;최종 설계수요 전달&quot;, &quot;U&quot;, &quot;candidate 결과의 최종설계 전달은 차단. 해석 성공이 설계 승인으로 이어지지 않음.&quot;], [&quot;생산 릴리스 자격&quot;, &quot;V&quot;, &quot;구현된 정식 엔진과 생산 승인 분리. 전체 필수 검증과 독립 검토 미완료.&quot;]]}]}]&lt;/script&gt;
+ &lt;script type=&quot;application/json&quot; id=&quot;ss-roadmap-data&quot;&gt;{&quot;version&quot;: &quot;2-practice-roadmap&quot;, &quot;date&quot;: &quot;2026-09-14&quot;, &quot;scope&quot;: &quot;국내 일반 건축 구조사무소를 가정한 개발 제안. 첫 범위는 RC 골조·독립기초이며 바닥·벽체의 별도 검토/연동 범위를 명시한다. 모든 전문 기능이 최초 출시의 전제는 아니다.&quot;, &quot;priorities&quot;: {&quot;A&quot;: &quot;해당 업무 출시 전 필수&quot;, &quot;B&quot;: &quot;일반 건물 범위 확장&quot;, &quot;C&quot;: &quot;전문 분야 선택 확장&quot;}, &quot;areas&quot;: [{&quot;name&quot;: &quot;모델링&quot;, &quot;groups&quot;: [{&quot;name&quot;: &quot;실무 범위·모델 품질&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;M01&quot;, &quot;name&quot;: &quot;지원 건물·기준·제외 범위 고정&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;재료·단면·상세 입력&quot;, &quot;current&quot;: &quot;프로젝트 프로파일·KDS 출처·지원 상태는 있으나 Phase25 전체 대응 감사는 미완료.&quot;, &quot;need&quot;: &quot;사용자가 이 모델에서 무엇까지 설계할 수 있는지 입력 전에 알 수 있어야 한다.&quot;, &quot;develop&quot;: [&quot;구조시스템·재료·기초·규모·해석법별 지원표&quot;, &quot;프로젝트 채택 판본·시행일·예외·설계 가정 기록&quot;, &quot;바닥·벽체 등 외부 검토 범위와 전달 책임 표시&quot;], &quot;accept&quot;: &quot;지원/미지원 예제에서 누락된 필수 검토가 전체 완료로 표시되지 않고 같은 제외 범위가 계산서에 남는다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;docs/phase25/REMAINING_EXECUTION_PLAN.md&quot;, &quot;src/modeling/practicalInputContract.js&quot;], &quot;refs&quot;: [&quot;R04&quot;], &quot;depends&quot;: []}, {&quot;id&quot;: &quot;M02&quot;, &quot;name&quot;: &quot;층별 하중·질량·전달 장부&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;하중·질량·조합&quot;, &quot;current&quot;: &quot;Phase29 활하중 저감과 하중 감사, 내진 계수 구현. 단면 변경 후 자중·지진질량·밑면전단의 반복 재생성은 Phase30 계획.&quot;, &quot;need&quot;: &quot;해석이 수렴해도 하중이나 질량이 빠지면 건물 검토 결과를 신뢰할 수 없다.&quot;, &quot;develop&quot;: [&quot;자중·마감·벽·설비·활하중의 면→선→절점 전달 표시&quot;, &quot;중복 자중·누락 면적·층/격막 질량 차이 탐지&quot;, &quot;층별 입력 합력과 부재 전달력·기초 반력 대조&quot;], &quot;accept&quot;: &quot;한 층의 면하중·중복 자중·누락 질량을 각각 변경하면 장부와 경고가 변하고 전역 평형이 추적된다.&quot;, &quot;local&quot;: [&quot;src/loads/loadsV2.js&quot;, &quot;src/loads/slabLoadGeneration.js&quot;, &quot;src/results/diaphragm/forces.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R01&quot;, &quot;R04&quot;], &quot;depends&quot;: [&quot;M01&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;M03&quot;, &quot;name&quot;: &quot;해석 모델 점검·문제 위치 연결&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;형상·편집&quot;, &quot;current&quot;: &quot;Model Check·기하 보정·blocker가 구현되어 있다.&quot;, &quot;need&quot;: &quot;실제 사무소에서는 잘못 연결된 모델을 빠르게 찾고 수정하는 기능이 반복 사용된다.&quot;, &quot;develop&quot;: [&quot;미연결·중복·짧은 부재·국부축·release/MPC 충돌 진단&quot;, &quot;불안정 모드·과도한 변형·취약 메시를 해당 객체와 연결&quot;, &quot;해석/설계 종류가 바뀌면 지원 조건 재검사 및 예외 이력&quot;], &quot;accept&quot;: &quot;대표 입력 오류를 주입했을 때 원인과 위치·수정 후 상태가 UI와 보고서에서 일치한다.&quot;, &quot;local&quot;: [&quot;src/modeling/phase13ModelCheck.js&quot;, &quot;src/platform/issueRegistry.js&quot;, &quot;src/nonlinear/integration/capabilityMatrix.js&quot;], &quot;refs&quot;: [&quot;R04&quot;], &quot;depends&quot;: [&quot;M01&quot;]}]}, {&quot;name&quot;: &quot;바닥·벽·외부 모델 생산성&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;M04&quot;, &quot;name&quot;: &quot;개구부·불규칙 평면·일관 메시&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;구속·연결·해석 이상화&quot;, &quot;current&quot;: &quot;벽/슬래브 등가 모델과 셸 엔진은 존재. 일반 건물 객체→메시→설계의 통합 완결은 미확인.&quot;, &quot;need&quot;: &quot;계단실·코어·단차·전이층이 있는 건물까지 다루려면 바닥/벽의 연결을 보존해야 한다.&quot;, &quot;develop&quot;: [&quot;바닥·벽·개구부·단차·경사면 객체 편집&quot;, &quot;보–셸–벽 교차부 공유 절점과 자동/국부 메시&quot;, &quot;물리 부재↔해석 요소 대응 및 메시 변경 결과 비교&quot;], &quot;accept&quot;: &quot;개구부와 전이부가 있는 기준 모델에서 연결·총하중을 보존하고 메시 세분화에 따른 응답 변화를 확인한다.&quot;, &quot;local&quot;: [&quot;src/compute/product/shellLab.js&quot;, &quot;src/solver/wallSlabEquivalent.js&quot;, &quot;src/solver/shell/shellAssembly.js&quot;], &quot;refs&quot;: [&quot;R01&quot;, &quot;R03&quot;], &quot;depends&quot;: [&quot;M02&quot;, &quot;M03&quot;]}, {&quot;id&quot;: &quot;M05&quot;, &quot;name&quot;: &quot;일괄 편집·CAD/BIM 교환 감사&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;외부 자료·모델 교환&quot;, &quot;current&quot;: &quot;층 복사·DXF·MGT subset·JSON 경로가 있다. IFC 해석정보 왕복과 전수 속성 보존 근거는 미확인.&quot;, &quot;need&quot;: &quot;수백 부재의 수정과 타 사무소 모델 인수가 가능한 작업 속도가 필요하다.&quot;, &quot;develop&quot;: [&quot;표 붙여넣기·다중 속성 편집·층/부재 그룹 변경 미리보기&quot;, &quot;단위·단면·축·release·하중 mapping 및 미지원 목록&quot;, &quot;안정 ID로 모델 변경 비교, 선택 IFC/외부해석 subset 연동&quot;], &quot;accept&quot;: &quot;정한 교환 subset의 왕복 후 형상·연결·하중을 대조하고 손실은 조용히 생략하지 않는다.&quot;, &quot;local&quot;: [&quot;src/import/phase13MgtImport.js&quot;, &quot;src/import/dxf/importDxf.js&quot;, &quot;src/platform/featureCatalog.js&quot;], &quot;refs&quot;: [&quot;R03&quot;, &quot;R06&quot;], &quot;depends&quot;: [&quot;M01&quot;, &quot;M03&quot;]}]}, {&quot;name&quot;: &quot;저장·검토·운영 마감&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;M06&quot;, &quot;name&quot;: &quot;설계 변경·검토·복원 일관성&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;공통 작업 관리&quot;, &quot;current&quot;: &quot;입력 hash·변경 이력·복원 및 AI 프로젝트 facts/questions/decisions/state 템플릿 제공. 신규 AI 세션의 자동 재개 완주는 별도 검증.&quot;, &quot;need&quot;: &quot;전날 승인한 모델과 오늘 출력한 계산서의 차이를 추적할 수 있어야 한다.&quot;, &quot;develop&quot;: [&quot;모델·기준·해석·배근·보고서 변경 영향과 검토 대상 표시&quot;, &quot;잠긴 상세·수동 수정·설계자 예외와 승인 리비전 보존&quot;, &quot;저장 중 중단·손상·구버전·새 세션 복원 검증&quot;], &quot;accept&quot;: &quot;입력/규칙 변경 후 이전 승인·결과를 구분하고 재접속해도 모델·이력·출력의 출처가 유지된다.&quot;, &quot;local&quot;: [&quot;src/platform/featureCatalog.js&quot;, &quot;src/platform/issueRegistry.js&quot;, &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R04&quot;, &quot;R05&quot;], &quot;depends&quot;: [&quot;M01&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;M07&quot;, &quot;name&quot;: &quot;지원 규모·설치·복구·도움말&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;검증·운영&quot;, &quot;linksTo&quot;: &quot;공통 작업 관리&quot;, &quot;current&quot;: &quot;실행물 분리·AI 시작 안내·설치/준비상태 검사 기반 구현. 지원 규모·호스트별 연결·장시간 복구 검증은 잔여.&quot;, &quot;need&quot;: &quot;실무자는 해석 중 취소·복구와 버전 고정, 문제 재현을 안정적으로 수행해야 한다.&quot;, &quot;develop&quot;: [&quot;목표 장비/부재/조합 규모별 실행시간·화면 응답·실제 메모리 측정&quot;, &quot;취소·강제 종료·업데이트/되돌리기·프로젝트 백업 복원&quot;, &quot;지원 범위별 예제·오류 해결 도움말·버전 고정 재현 패키지&quot;], &quot;accept&quot;: &quot;선정 규모에서 입력→해석→취소/재시작→저장복원이 완료되고 측정 환경과 한계를 공개한다. 임의 성능 보장은 두지 않는다.&quot;, &quot;local&quot;: [&quot;docs/phase25/VERIFICATION_HANDOFF.md&quot;, &quot;docs/archive/phase19/M5_M10_CANDIDATE.md&quot;, &quot;src/nonlinear/qualification/performanceQualification.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R10&quot;], &quot;depends&quot;: [&quot;M06&quot;, &quot;E15&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}]}]}, {&quot;name&quot;: &quot;탄성설계&quot;, &quot;groups&quot;: [{&quot;name&quot;: &quot;기준 하중·건물 전체 판정&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;E01&quot;, &quot;name&quot;: &quot;하중 기준의 실제 산정·조합 완결&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;결과·설계 수요&quot;, &quot;current&quot;: &quot;Phase29 활하중 저감·근거 감사 구현. 나머지 환경하중·부분재하·조합의 채택 범위 전체 완결은 잔여.&quot;, &quot;need&quot;: &quot;법정 설계하중이 빠짐없이 올바른 면적·방향·조합에 적용되어야 한다.&quot;, &quot;develop&quot;: [&quot;용도별 활하중·저감·부분 재하 패턴과 적용 제외&quot;, &quot;풍 압력/내외압·지형 등 채택 절차 및 지진 스펙트럼 산정&quot;, &quot;적설·우수·토압·수압·부력 등 대상별 산정과 강도/사용성 조합&quot;], &quot;accept&quot;: &quot;채택 KDS 판본의 각 적용분기를 독립 계산 예제와 대조한다. 수동 외부 산정값은 근거·단위·범위를 명시해 받을 수 있다.&quot;, &quot;local&quot;: [&quot;src/loads/phase13KdsProcedures.js&quot;, &quot;src/loads/loadsV2.js&quot;, &quot;src/core/kdsLoadCombinations.js&quot;, &quot;docs/archive/phase24/KCSC_RULE_INTEGRATION.md&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R03&quot;], &quot;depends&quot;: [&quot;M01&quot;, &quot;M02&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;E02&quot;, &quot;name&quot;: &quot;내진·안정·전체 건물 체크&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;동적 탄성해석&quot;, &quot;current&quot;: &quot;Phase29 내진 중요도·지반분류/증폭·RC 시스템 계수 구현. 전체 건물 내진/안정 검토와 독립 검증은 잔여.&quot;, &quot;need&quot;: &quot;부재별 OK만으로 건물의 횡력저항체계·안정성까지 확인할 수 없다.&quot;, &quot;develop&quot;: [&quot;구조시스템/높이 제한·평면/수직 비정형성의 채택 기준 검사&quot;, &quot;질량참여·밑면전단 보정·방향 조합·우발편심 일관성&quot;, &quot;층간변위·비틀림·안정성·전도 및 결과별 설계 전달 조건&quot;], &quot;accept&quot;: &quot;정형·편심·연약층 등 선정 사례의 건물 판정과 부재 수요가 동일 조합/근거로 연결된다.&quot;, &quot;local&quot;: [&quot;src/loads/loadsV2.js&quot;, &quot;src/design/signedAccidentalLoadCases.js&quot;, &quot;src/dynamics/modal.js&quot;, &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R02&quot;, &quot;R04&quot;], &quot;depends&quot;: [&quot;E01&quot;, &quot;M03&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}]}, {&quot;name&quot;: &quot;RC 골조·접합·기초 마감&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;E03&quot;, &quot;name&quot;: &quot;RC 보·기둥 채택 범위 완결&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;RC 부재 강도·배근&quot;, &quot;current&quot;: &quot;Phase27 RC 후속 11건을 코드·계약·시험 대조로 해소. 이를 11개 신규 알고리즘이나 전체 RC 설계 완료로 세지 않음.&quot;, &quot;need&quot;: &quot;실제 배근을 입력한 부재를 끝까지 검토할 수 있어야 한다.&quot;, &quot;develop&quot;: [&quot;압축부재·양축·변단면·release 등 지원 조합 확정&quot;, &quot;강도·국부 안정·정착·이음·횡구속 필수 검사 전수 대응&quot;, &quot;일반/내진 상세와 필수 입력의 예외를 보고서까지 유지&quot;], &quot;accept&quot;: &quot;선정 보/기둥 프로파일은 필수 검사 전부에 근거가 있으며 경계조건/누락 입력 변경 시 올바르게 미검토 또는 NG가 된다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;docs/phase25/REMAINING_EXECUTION_PLAN.md&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [], &quot;depends&quot;: [&quot;E01&quot;, &quot;E02&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;E04&quot;, &quot;name&quot;: &quot;균열·장기 처짐·2차 강성 마감&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;RC 사용성·장기변형&quot;, &quot;current&quot;: &quot;기존 단축휨 장기 판정 기록은 연결됨. 새 축력/양축 프레임의 부착 정책과 장기 판정/출력 잔여.&quot;, &quot;need&quot;: &quot;강도는 통과해도 장기 처짐·균열·강성 가정에 따라 사용성과 부재 수요가 달라진다.&quot;, &quot;develop&quot;: [&quot;재하 재령·지속하중·크리프/수축·부착 전 공제의 명시 계약&quot;, &quot;균열강성–전역 2차–국부 안정의 중복/누락 검토&quot;, &quot;같은 계산 기록을 변형도·판정·계산서/PDF에 연결&quot;], &quot;accept&quot;: &quot;독립 수치와 단계별 수요를 대조하고 UI/계산서의 최종 수요·허용값·근거가 동일하다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;docs/phase25/REMAINING_EXECUTION_PLAN.md&quot;, &quot;src/design/rc/kdsSecondOrderStiffness.js&quot;], &quot;refs&quot;: [], &quot;depends&quot;: [&quot;E03&quot;]}, {&quot;id&quot;: &quot;E05&quot;, &quot;name&quot;: &quot;RC 접합의 실제 배근·보완 완결&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;RC 보–기둥 접합&quot;, &quot;current&quot;: &quot;Phase27 이음 매핑·후프 충돌 사유·후보 적용 요약 경계 보완. 실제 접합 전체 범위·독립 검증은 잔여.&quot;, &quot;need&quot;: &quot;계산 가능한 철근량이 실제로 배치 가능한 상세여야 한다.&quot;, &quot;develop&quot;: [&quot;내부·외부·모서리·지붕 접합의 지원 조건&quot;, &quot;정착·횡구속·철근 간섭·인접 부재 변경의 연계 보완&quot;, &quot;보완 가능한 상세와 해 없음/입력 부족의 분리&quot;], &quot;accept&quot;: &quot;선정 혼합 접합의 후보→적용→연결 부재 재검토를 완료하고 불가능한 상세는 원인과 함께 남긴다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;src/design/connection/rcJoint.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [], &quot;depends&quot;: [&quot;E03&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;E06&quot;, &quot;name&quot;: &quot;독립기초·지반 방법 검토 마감&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;독립기초·지반&quot;, &quot;current&quot;: &quot;접촉압·자중·구조검토·배분·정착·전달·침하 owner가 있다. 방법별 독립 검토와 지원 조건 잔여.&quot;, &quot;need&quot;: &quot;상부 구조 반력과 기초 구조/지반 검토가 같은 하중 체계로 연결되어야 한다.&quot;, &quot;develop&quot;: [&quot;강도/사용 조합별 총/순 반력·자중·부력 회계&quot;, &quot;중심/편심/부분 접촉의 위험단면·펀칭·기둥 전달&quot;, &quot;지반보고서의 지지력/침하 조건·적용 범위와 독립 방법 검토&quot;], &quot;accept&quot;: &quot;기초 확대·배근 변경 후 구조·지반·정착 재검토와 도면/수량이 일치하며 미검토 방법은 표시된다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;src/design/foundation/footingLoadLedger.js&quot;], &quot;refs&quot;: [], &quot;depends&quot;: [&quot;E03&quot;, &quot;M02&quot;]}]}, {&quot;name&quot;: &quot;바닥·벽·횡력 전달 확장&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;E07&quot;, &quot;name&quot;: &quot;슬래브·계단 실무 설계&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;정적·안정 해석&quot;, &quot;current&quot;: &quot;Phase29 일방향 단위폭 스트립 검토와 이방향 계수법 수요 구현. 전체 FEM 설계·처짐·펀칭·계단·불규칙 패널은 잔여.&quot;, &quot;need&quot;: &quot;골조만으로는 실제 건물의 바닥을 설계·납품할 수 없다.&quot;, &quot;develop&quot;: [&quot;1방향/2방향·캔틸레버·계단의 선정 범위와 FEM/스트립 수요&quot;, &quot;상하부/주·배력근, 개구부·가장자리·기둥 주변 펀칭&quot;, &quot;장기 처짐·균열·정착과 도면/외부 상세설계 연결&quot;], &quot;accept&quot;: &quot;선정 바닥 형식의 평형·설계 수요·배근을 독립 예제와 대조한다. 외부 설계 위임 시 동일 모델/하중 전달을 확인한다.&quot;, &quot;local&quot;: [&quot;src/design/rc/slab.js&quot;, &quot;src/solver/shell/slabPlateMitc4.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R03&quot;], &quot;depends&quot;: [&quot;M04&quot;, &quot;E01&quot;, &quot;E04&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;E08&quot;, &quot;name&quot;: &quot;전단벽·코어·연결보 설계&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;정적·안정 해석&quot;, &quot;current&quot;: &quot;Phase29 벽체 두께·철근비·간격·철근층·실용식 설계축강도 구현. 전체 전단벽 PM·전단·코어·연결보 완결은 잔여.&quot;, &quot;need&quot;: &quot;벽식·코어가 있는 일반 건물로 적용 범위를 넓히는 핵심이다.&quot;, &quot;develop&quot;: [&quot;벽/연결보 구역 지정·단면 절단 합력·개구부 수요&quot;, &quot;면내/면외·축휨/전단·경계요소와 내진 상세&quot;, &quot;층간 불연속·전이·기초 연결과 벽 배근도&quot;], &quot;accept&quot;: &quot;개구부 벽과 연결보의 절단 합력·기초 반력·배근 판정을 같은 해석에서 독립 대조한다.&quot;, &quot;local&quot;: [&quot;src/design/rc/wall.js&quot;, &quot;src/solver/wallSlabEquivalent.js&quot;, &quot;src/solver/shell/shellAssembly.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R02&quot;], &quot;depends&quot;: [&quot;M04&quot;, &quot;E02&quot;, &quot;E03&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;E09&quot;, &quot;name&quot;: &quot;반강체 격막·컬렉터·경계부재&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;구속·연결·해석 이상화&quot;, &quot;current&quot;: &quot;격막 힘 trace는 적용 절점하중 합산이며 코드에 국부 설계력 아님이 명시되어 있다.&quot;, &quot;need&quot;: &quot;지진력이 바닥에서 벽·골조로 이동하는 경로의 국부 부재를 검토해야 한다.&quot;, &quot;develop&quot;: [&quot;강체/반강체 모델의 선택 근거와 면내 응력/절단 합력&quot;, &quot;횡력 수집부재·경계부재·전이부와 정착 수요&quot;, &quot;대개구부·불연속 격막의 전달력과 평형 검토&quot;], &quot;accept&quot;: &quot;면내 힘의 합력과 지점 전달을 대조하고 외력 합산값을 국부 부재 설계력으로 재사용하지 않는다.&quot;, &quot;local&quot;: [&quot;src/results/diaphragm/forces.js&quot;, &quot;src/solver/shell/shellAssembly.js&quot;], &quot;refs&quot;: [&quot;R01&quot;, &quot;R02&quot;], &quot;depends&quot;: [&quot;M04&quot;, &quot;E02&quot;, &quot;E08&quot;]}]}, {&quot;name&quot;: &quot;철골·복합 기초·설계 생산성&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;E10&quot;, &quot;name&quot;: &quot;철골 부재·안정·내진 설계&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;재료별 설계 확장&quot;, &quot;current&quot;: &quot;압축·휨/LTB·분류·상호작용·가새 모듈은 있다. 국내 기준 전용 상세 완결은 후속 범위.&quot;, &quot;need&quot;: &quot;RC 외의 주요 실무 시장을 지원하려면 강재별 물성 입력을 넘어 부재 전체 검토가 필요하다.&quot;, &quot;develop&quot;: [&quot;폭두께·국부좌굴·횡비틀림·유효길이/비지지길이 적용 감사&quot;, &quot;전단·축휨·2차 안정과 사용자 구속 조건 추적&quot;, &quot;채택 내진 골조/가새의 요구 성능·상세와 부재군 단면 선정&quot;], &quot;accept&quot;: &quot;선정 강종/단면/구속/골조 체계별 기준 예제를 대조하고 미지원 단면을 명시한다.&quot;, &quot;local&quot;: [&quot;src/design/steel.js&quot;, &quot;src/design/steel/classify.js&quot;, &quot;src/design/steel/flexureLTB.js&quot;, &quot;README.md&quot;], &quot;refs&quot;: [&quot;R02&quot;], &quot;depends&quot;: [&quot;E01&quot;, &quot;E02&quot;]}, {&quot;id&quot;: &quot;E11&quot;, &quot;name&quot;: &quot;철골 접합·베이스·앵커 연동&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;재료별 설계 확장&quot;, &quot;current&quot;: &quot;접합/기초 힘 포락·용접 등 예비 검토가 있다. 최종 볼트/판/앵커 상세설계가 아님을 명시한다.&quot;, &quot;need&quot;: &quot;부재 수요를 접합과 기초까지 전달할 수 있어야 철골 설계가 이어진다.&quot;, &quot;develop&quot;: [&quot;볼트·용접·판·블록전단·베이스·앵커의 선정 지원 범위&quot;, &quot;동시 작용력과 offset/평형, 접합 강성의 모델 환류&quot;, &quot;내장 상세검토 또는 검증된 외부 접합 프로그램 전달&quot;], &quot;accept&quot;: &quot;지배 동시 조합의 힘을 전달하고 변경된 접합 상세/강성이 부재 재검토와 연결된다.&quot;, &quot;local&quot;: [&quot;src/design/connectionFoundation.js&quot;, &quot;src/design/connection/weld.js&quot;], &quot;refs&quot;: [], &quot;depends&quot;: [&quot;E10&quot;, &quot;M05&quot;]}, {&quot;id&quot;: &quot;E12&quot;, &quot;name&quot;: &quot;복합·매트·말뚝기초 범위 확대&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;신규 후보&quot;, &quot;linksTo&quot;: &quot;독립기초·지반&quot;, &quot;current&quot;: &quot;현재 상세설계 중심은 독립기초. 매트/말뚝 전용 설계 완료 근거는 미확인.&quot;, &quot;need&quot;: &quot;독립기초를 적용하기 어려운 일반 건물의 기초 선택지가 필요하다.&quot;, &quot;develop&quot;: [&quot;복합/줄기초·매트의 선정 형식과 압축전용 지반 접촉&quot;, &quot;파일캡·말뚝 반력 분배·인발/군효과의 지원·외부 검토 경계&quot;, &quot;침하/부등침하·상부 반력 환류와 배근/외부 지반도구 연결&quot;], &quot;accept&quot;: &quot;선정 기초 형식마다 평형·접촉·반력/침하·배근을 검증한다. 모든 지반 비선형을 최초 범위로 요구하지 않는다.&quot;, &quot;local&quot;: [&quot;README.md&quot;, &quot;docs/phase25/CLOSURE_AUDIT.md&quot;], &quot;refs&quot;: [&quot;R03&quot;], &quot;depends&quot;: [&quot;M04&quot;, &quot;E06&quot;, &quot;E07&quot;]}, {&quot;id&quot;: &quot;E13&quot;, &quot;name&quot;: &quot;부재군 보완·수동 설계 존중&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;자동보완·도면·계산서&quot;, &quot;current&quot;: &quot;후보 적용·재해석과 Phase27 보완이 연결됨. 단면–자중–질량–수요의 전역 반복·순환 감지·수렴 판정은 Phase30 계획.&quot;, &quot;need&quot;: &quot;모든 부재를 서로 다른 단면으로 바꾸는 것보다 시공 가능한 부재군 설계가 실무에 유용하다.&quot;, &quot;develop&quot;: [&quot;동일 층/부재군 단면 통일·철근 규격·간격 제약&quot;, &quot;수동 확정/잠금 상세 보존과 연결 접합/기초 변경 평가&quot;, &quot;반복 한도·해 없음·개선량·재검토/되돌리기 기록&quot;], &quot;accept&quot;: &quot;여러 부재를 함께 보완할 때 잠금 조건과 부재군 규칙을 지키고 전체 NG/미검토를 숨기지 않는다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;src/compute/product/practicalWorkflowService.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R02&quot;], &quot;depends&quot;: [&quot;E03&quot;, &quot;E05&quot;, &quot;E06&quot;, &quot;M06&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}]}, {&quot;name&quot;: &quot;계산서·검증·선택 전문 기능&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;E14&quot;, &quot;name&quot;: &quot;사무소 납품 계산서·상세 연계&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;linksTo&quot;: &quot;자동보완·도면·계산서&quot;, &quot;current&quot;: &quot;검토도·수량·분권 PDF 경로와 Phase26 페이지 예산 기본값, Phase27 비교 상세 조회를 보완. 최종 발행·제작 승인과 구분.&quot;, &quot;need&quot;: &quot;검토자가 건물 개요부터 지배 부재까지 추적하고 도면의 변경을 대조할 수 있어야 한다.&quot;, &quot;develop&quot;: [&quot;설계조건·하중·안정/변위·부재·접합·기초·미검토 목록의 계산서 구성&quot;, &quot;부재 ID·도면 부호·단면/배근·수량·revision 대응&quot;, &quot;직접 제작도 생성 또는 CAD/BIM 상세설계 인계·검토 기록&quot;], &quot;accept&quot;: &quot;한 프로젝트의 계산서와 상세/수량이 같은 snapshot을 사용하고 부재 변경 후 전 문서의 추적성이 유지된다. 자체 제작도 엔진은 최초 필수가 아니다.&quot;, &quot;local&quot;: [&quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;src/report/calculationPackage.js&quot;, &quot;src/platform/featureCatalog.js&quot;, &quot;docs/phase29/IMPLEMENTATION_STATUS.md&quot;, &quot;docs/phase27/IMPLEMENTATION_STATUS.md&quot;], &quot;refs&quot;: [&quot;R05&quot;], &quot;depends&quot;: [&quot;E03&quot;, &quot;E04&quot;, &quot;E05&quot;, &quot;E06&quot;, &quot;M06&quot;], &quot;progress&quot;: &quot;일부 구현·후속 범위 유지&quot;}, {&quot;id&quot;: &quot;E15&quot;, &quot;name&quot;: &quot;실제 건물 검증·출시 범위 자격&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;검증·운영&quot;, &quot;linksTo&quot;: &quot;결과·설계 수요&quot;, &quot;current&quot;: &quot;벤치마크·작은 TDD·후속 Q 계획은 있다. 현재 소스의 전체 수치/제품 자격은 완료 전.&quot;, &quot;need&quot;: &quot;개별 요소 PASS를 건물 전체와 새 설계 규칙의 사용 가능 근거로 확대할 수 없다.&quot;, &quot;develop&quot;: [&quot;요소→골조→건물별 독립 해/기준 계산·교차 프로그램 비교&quot;, &quot;하중·단위·축·조합·정착·경계값 및 잘못된 입력의 실패 시험&quot;, &quot;고정 버전/입력/결과·허용오차 근거·독립 검토와 사무소 pilot&quot;], &quot;accept&quot;: &quot;지원 프로파일마다 미해결 차이를 공개하고 전체 업무/출력까지 같은 버전에서 재현한다. 시험 수를 적합성 점수로 쓰지 않는다.&quot;, &quot;local&quot;: [&quot;docs/phase25/VERIFICATION_HANDOFF.md&quot;, &quot;docs/phase25/CLOSURE_AUDIT.md&quot;, &quot;README.md&quot;], &quot;refs&quot;: [&quot;R10&quot;, &quot;R11&quot;], &quot;depends&quot;: [&quot;M01&quot;, &quot;E14&quot;]}, {&quot;id&quot;: &quot;E16&quot;, &quot;name&quot;: &quot;합성·PT·기타 재료·진동 특화&quot;, &quot;priority&quot;: &quot;C&quot;, &quot;kind&quot;: &quot;신규 후보&quot;, &quot;linksTo&quot;: &quot;재료별 설계 확장&quot;, &quot;current&quot;: &quot;일부 물성·동적 엔진은 있으나 이 전문 업무 전체 설계 완결은 미확인.&quot;, &quot;need&quot;: &quot;대상 프로젝트가 요구할 때 별도 제품 범위로 추가한다.&quot;, &quot;develop&quot;: [&quot;합성보/데크·합성기둥 또는 PT의 선정 시스템&quot;, &quot;목재·조적의 전용 강도/접합/상세 기준&quot;, &quot;장스팬 바닥 진동·거주성·설비 진동의 하중/판정/보고서&quot;], &quot;accept&quot;: &quot;선택한 시스템마다 별도 지원표·기준·독립 예제를 갖춘다. RC 골조 첫 출시 조건으로 모두 묶지 않는다.&quot;, &quot;local&quot;: [&quot;README.md&quot;, &quot;src/dynamics/modal.js&quot;], &quot;refs&quot;: [&quot;R02&quot;, &quot;R03&quot;], &quot;depends&quot;: [&quot;M01&quot;, &quot;E07&quot;, &quot;E10&quot;]}]}]}, {&quot;name&quot;: &quot;비선형해석&quot;, &quot;groups&quot;: [{&quot;name&quot;: &quot;재료·지진파·성능 기준&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;N01&quot;, &quot;name&quot;: &quot;실제 부재 기반 모델 보정&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 보완&quot;, &quot;scope&quot;: &quot;성능기반 업무 제공 시&quot;, &quot;linksTo&quot;: &quot;비선형 모델·재료&quot;, &quot;current&quot;: &quot;힌지/fiber·반복 거동·강도/강성 저하가 있다. 파라미터 실험 보정과 전체 지원 부재 자격 잔여.&quot;, &quot;need&quot;: &quot;정식 비선형 반복 계산만으로 실제 구조물의 항복 이후 거동이 입증되지는 않는다.&quot;, &quot;develop&quot;: [&quot;상세 배근/강재→모델 매개변수와 근거·적용 범위&quot;, &quot;열화·핀칭·좌굴/파괴 모드 중 선정 모델의 지원 범위&quot;, &quot;실험 이력곡선·단면/요소/골조 단계 보정과 불확실성&quot;], &quot;accept&quot;: &quot;실험/공개 독립 사례의 강도·변형·에너지·파괴 양상을 대조한다. 가정 힌지값을 검증된 값으로 표시하지 않는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/materials/hingeCyclic.js&quot;, &quot;src/nonlinear/materials/hingeBackbone.js&quot;, &quot;src/nonlinear/fiber/materialModels.js&quot;], &quot;refs&quot;: [&quot;R07&quot;, &quot;R09&quot;], &quot;depends&quot;: [&quot;M01&quot;, &quot;E03&quot;]}, {&quot;id&quot;: &quot;N02&quot;, &quot;name&quot;: &quot;지진파 선정·스펙트럼 적합성&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;scope&quot;: &quot;성능기반 업무 제공 시&quot;, &quot;linksTo&quot;: &quot;비선형 시간이력&quot;, &quot;current&quot;: &quot;텍스트 파싱·PGA 스케일·스펙트럼 trace가 있다. 코드에 full matching 미완결이 명시된다.&quot;, &quot;need&quot;: &quot;파일 입력과 PGA 조정만으로 프로젝트 목표 지진동을 충족했다고 볼 수 없다.&quot;, &quot;develop&quot;: [&quot;기록 출처·단위·성분쌍·시간간격/길이·결측 검토&quot;, &quot;목표 스펙트럼·검토 주기대·기록 선정/스케일 조건&quot;, &quot;필요한 경우 매칭 도구 연계, 조정 전후 파형·스펙트럼 보존&quot;], &quot;accept&quot;: &quot;채택 절차의 기록군·목표 스펙트럼 적합성을 별도로 계산·보고한다. 매칭 자체를 모든 업무의 필수로 두지 않는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/dynamics/groundMotion.js&quot;, &quot;src/dynamics/groundMotionSeries.js&quot;, &quot;src/nonlinear/dynamics/mdofGroundMotion.js&quot;], &quot;refs&quot;: [&quot;R08&quot;], &quot;depends&quot;: [&quot;M01&quot;, &quot;E01&quot;]}, {&quot;id&quot;: &quot;N03&quot;, &quot;name&quot;: &quot;성능목표·허용기준·취성검토&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;scope&quot;: &quot;성능기반 업무 제공 시&quot;, &quot;linksTo&quot;: &quot;성능기반 활용·검증&quot;, &quot;current&quot;: &quot;힌지 상태/acceptance 필드와 결과 자격 경계가 있다. 건물 전체 성능기반 설계 판정 완결은 미확인.&quot;, &quot;need&quot;: &quot;곡선과 힌지 색상에서 한 단계 더 나아가 목표 성능 충족 여부를 판단해야 한다.&quot;, &quot;develop&quot;: [&quot;채택 평가기준의 목표 성능·지진수준·부재별 허용값&quot;, &quot;변형 지배/힘 지배를 구분한 회전·변형률·전단/축력 검사&quot;, &quot;방법별 목표변위/성능점, 잔류변형·층응답·판정 범위 표시&quot;], &quot;accept&quot;: &quot;동일 수요라도 부재 상세/성능목표 변경 시 기준에 맞는 판정이 나고 미지원 파괴 모드는 미검토로 남는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/materials/hingeBackbone.js&quot;, &quot;src/nonlinear/capabilities.js&quot;, &quot;src/nonlinear/integration/governance.js&quot;], &quot;refs&quot;: [&quot;R02&quot;, &quot;R09&quot;], &quot;depends&quot;: [&quot;N01&quot;, &quot;N02&quot;]}]}, {&quot;name&quot;: &quot;해석 신뢰성·기록군 보고서&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;N04&quot;, &quot;name&quot;: &quot;수렴·감쇠·민감도 검증 자동화&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;검증·운영&quot;, &quot;scope&quot;: &quot;성능기반 업무 제공 시&quot;, &quot;linksTo&quot;: &quot;비선형 시간이력&quot;, &quot;current&quot;: &quot;Newmark/Newton·substep·에너지·Rayleigh initial/committed 정책과 취소 경로가 있다.&quot;, &quot;need&quot;: &quot;수렴 실패와 구조적 파괴를 구분하고 계산 설정에 따른 응답 차이를 알아야 한다.&quot;, &quot;develop&quot;: [&quot;힘/변위/에너지 잔차 및 실패 단계·부재 원인 보고&quot;, &quot;시간간격·증분·메시/적분점·감쇠 정책의 민감도 실행&quot;, &quot;외부 독립해·재료/부재 이력시험과 동일 조건 비교&quot;], &quot;accept&quot;: &quot;선정 기준 사례의 시간간격 세분화·감쇠 변경 결과를 공개하고 미수렴 기록을 성공 집계에 넣지 않는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/dynamics/mdofDamping.js&quot;, &quot;docs/archive/phase19/M5_M10_CANDIDATE.md&quot;, &quot;src/nonlinear/equilibrium/convergence.js&quot;], &quot;refs&quot;: [&quot;R07&quot;, &quot;R11&quot;], &quot;depends&quot;: [&quot;N01&quot;, &quot;N02&quot;]}, {&quot;id&quot;: &quot;N05&quot;, &quot;name&quot;: &quot;다수 지진파·성능 보고서 완결&quot;, &quot;priority&quot;: &quot;A&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;scope&quot;: &quot;성능기반 업무 제공 시&quot;, &quot;linksTo&quot;: &quot;실행·결과·복구&quot;, &quot;current&quot;: &quot;단일 job의 실행/결과/이력·취소가 있다. 기준에 따른 기록군 집계·통합 성능 보고서 완결은 미확인.&quot;, &quot;need&quot;: &quot;기록 하나의 성공을 프로젝트의 성능 확인으로 확대하지 않아야 한다.&quot;, &quot;develop&quot;: [&quot;성분쌍·방향·지진수준별 기록군 실행과 누락/실패 집계&quot;, &quot;기준이 정한 통계/포락, 지배 기록·층·부재 추적&quot;, &quot;건물·부재 성능 판정과 설정/지진파/모델 버전의 제출 패키지&quot;], &quot;accept&quot;: &quot;작은 기록군에서 누락/실패를 재현하고 집계·지배 결과를 독립 대조하며 독립 검토 자료를 재현할 수 있다.&quot;, &quot;local&quot;: [&quot;docs/archive/phase19/M5_M10_CANDIDATE.md&quot;, &quot;src/nonlinear/integration/governance.js&quot;, &quot;src/nonlinear/capabilities.js&quot;], &quot;refs&quot;: [&quot;R02&quot;, &quot;R08&quot;], &quot;depends&quot;: [&quot;N03&quot;, &quot;N04&quot;, &quot;M06&quot;, &quot;M07&quot;]}]}, {&quot;name&quot;: &quot;실건물 요소 연결 확대&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;N06&quot;, &quot;name&quot;: &quot;offset·부분강접·해제단 연결&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;기존 확장&quot;, &quot;linksTo&quot;: &quot;비선형 모델·재료&quot;, &quot;current&quot;: &quot;현 integration capability가 3D offset/비중심 삽입·부분강접·동적 release 등의 조합을 차단한다.&quot;, &quot;need&quot;: &quot;탄성 모델을 비선형으로 옮기면서 접합 조건이나 편심을 임의로 없애지 않아야 한다.&quot;, &quot;develop&quot;: [&quot;유한 회전 offset·삽입점과 접선/힘 복원&quot;, &quot;회전 접합 스프링·동적 해제단 질량/강성 일관성&quot;, &quot;기존 SH1 동적·fiber release 등 지원 조합별 전역 연결&quot;], &quot;accept&quot;: &quot;각 조합의 단독 요소와 골조에서 평형·접선·질량·에너지를 검증한 뒤 capability를 확대한다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/integration/capabilityMatrix.js&quot;, &quot;src/nonlinear/capabilities.js&quot;], &quot;refs&quot;: [&quot;R07&quot;], &quot;depends&quot;: [&quot;N01&quot;, &quot;N04&quot;]}, {&quot;id&quot;: &quot;N07&quot;, &quot;name&quot;: &quot;비선형 벽·연결보·격막 모델&quot;, &quot;priority&quot;: &quot;B&quot;, &quot;kind&quot;: &quot;신규 후보&quot;, &quot;linksTo&quot;: &quot;비선형 모델·재료&quot;, &quot;current&quot;: &quot;생산 프레임 통합에서 shell FEM은 명시 차단, 벽은 예비 등가 모델 경고를 갖는다.&quot;, &quot;need&quot;: &quot;전단벽/코어 건물의 성능기반 검토로 확장하려면 관련 파괴모드가 필요하다.&quot;, &quot;develop&quot;: [&quot;선정 벽 macro/fiber/층상 셸 방법의 전단–휨 상호작용&quot;, &quot;연결보·벽 경계부·개구부와 중력 골조 연결&quot;, &quot;면내 격막·지점/기초 연결 및 부재별 성능 수요&quot;], &quot;accept&quot;: &quot;선정 벽/연결보 실험과 건물 사례를 단계적으로 검증한다. 모든 비선형 셸 정식화를 동시에 요구하지 않는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/integration/capabilityMatrix.js&quot;, &quot;src/solver/wallSlabEquivalent.js&quot;], &quot;refs&quot;: [&quot;R02&quot;, &quot;R07&quot;], &quot;depends&quot;: [&quot;E08&quot;, &quot;E09&quot;, &quot;N01&quot;, &quot;N04&quot;]}]}, {&quot;name&quot;: &quot;면진·제진·시공단계 특화&quot;, &quot;items&quot;: [{&quot;id&quot;: &quot;N08&quot;, &quot;name&quot;: &quot;면진·제진·gap·인장전용&quot;, &quot;priority&quot;: &quot;C&quot;, &quot;kind&quot;: &quot;신규 후보&quot;, &quot;linksTo&quot;: &quot;비선형 모델·재료&quot;, &quot;current&quot;: &quot;탄성링크/힌지는 있으나 비선형 active-set 인장/압축전용은 명시 차단. 장치별 실무 자격은 미확인.&quot;, &quot;need&quot;: &quot;면진·보강·인발/접촉을 요구하는 프로젝트에서 선택 개발한다.&quot;, &quot;develop&quot;: [&quot;선정 댐퍼/받침의 속도·변위 의존 구성법칙&quot;, &quot;gap·마찰·인장/압축전용·uplift의 상태 전환&quot;, &quot;제조사/시험 곡선 입력과 장치 변위·힘·에너지 판정&quot;], &quot;accept&quot;: &quot;선정 장치/접촉 요소의 이력시험과 시스템 비교를 완료한다. 선형링크를 장치 검증 완료로 표시하지 않는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/integration/capabilityMatrix.js&quot;, &quot;src/nonlinear/capabilities.js&quot;], &quot;refs&quot;: [&quot;R07&quot;, &quot;R09&quot;], &quot;depends&quot;: [&quot;N01&quot;, &quot;N04&quot;, &quot;N06&quot;]}, {&quot;id&quot;: &quot;N09&quot;, &quot;name&quot;: &quot;시공단계·일반 비선형 정적&quot;, &quot;priority&quot;: &quot;C&quot;, &quot;kind&quot;: &quot;신규 후보&quot;, &quot;linksTo&quot;: &quot;비선형 정적·Pushover&quot;, &quot;current&quot;: &quot;RC 시간단계 합성과 Pushover는 있지만 일반 nonlinearStatic 제품 경로는 reserved. 일반 시공단계 완결 근거 미확인.&quot;, &quot;need&quot;: &quot;전이/장스팬·부재 설치/제거·재하 순서가 지배하는 업무에 별도 적용한다.&quot;, &quot;develop&quot;: [&quot;부재/지점 활성·제거·하중 이력과 상태 승계&quot;, &quot;시공 재령·크리프/수축·가설 지지의 선정 결합 범위&quot;, &quot;일반 하중제어·large displacement·한계점 추적의 제품 경로&quot;], &quot;accept&quot;: &quot;시공 순서가 다른 독립 예제의 최종/중간 상태와 평형을 비교한다. 기존 RC 단계 수치 합성을 전체 시공단계 해석으로 부르지 않는다.&quot;, &quot;local&quot;: [&quot;src/nonlinear/capabilities.js&quot;, &quot;docs/phase25/CLOSURE_AUDIT.md&quot;], &quot;refs&quot;: [&quot;R02&quot;], &quot;depends&quot;: [&quot;N04&quot;, &quot;E04&quot;]}]}]}]}&lt;/script&gt;
+ &lt;script type=&quot;application/json&quot; id=&quot;ss-source-data&quot;&gt;{&quot;reviewedAt&quot;: &quot;2026-09-13&quot;, &quot;basis&quot;: &quot;영문 공식 제품 문서·공공 연구보고서·공식 IFC 명세를 기능 비교에 사용. 국내 법정 요구와 수치계수를 이 자료에서 확정하지 않음.&quot;, &quot;sources&quot;: {&quot;R01&quot;: {&quot;title&quot;: &quot;CSI ETABS — Floor Auto Meshing&quot;, &quot;url&quot;: &quot;https://docs.csiamerica.com/help-files/etabs/Menus/Analyze/Automatic_Mesh_Settings_for_Floors.htm&quot;, &quot;finding&quot;: &quot;바닥 메시가 수직하중 분배와 면내·면외 강성에 사용된다. 물리 형상과 해석 메시 연결을 제품 기능으로 비교했다.&quot;}, &quot;R02&quot;: {&quot;title&quot;: &quot;CSI ETABS — Features&quot;, &quot;url&quot;: &quot;https://www.csiamerica.com/products/etabs/features&quot;, &quot;finding&quot;: &quot;RC·철골·벽·바닥 설계, 성능 허용기준과 모델/객체별 판정, 시공단계 해석을 제공한다. 타 제품의 지원 기준이 KDS 적합성을 뜻하지 않는다.&quot;}, &quot;R03&quot;: {&quot;title&quot;: &quot;CSI SAFE — Features&quot;, &quot;url&quot;: &quot;https://www.csiamerica.com/products/safe/features&quot;, &quot;finding&quot;: &quot;설계 스트립·FEM 슬래브 설계, 개구부/모서리를 고려하는 펀칭, 매트/기초, 부분 활하중 패턴, 물리/해석 모델 보기와 표 편집을 비교했다.&quot;}, &quot;R04&quot;: {&quot;title&quot;: &quot;Trimble — Structural Designer Validation&quot;, &quot;url&quot;: &quot;https://support.tekla.com/article/validation&quot;, &quot;finding&quot;: &quot;모델 연결·하중, 해석 모델, 설계 가능 여부를 나눠 점검하고 문제 객체를 찾아 수정하는 작업 흐름을 설명한다.&quot;}, &quot;R05&quot;: {&quot;title&quot;: &quot;Trimble — Structural Designer Reports (2025)&quot;, &quot;url&quot;: &quot;https://support.tekla.com/doc/tekla-structural-designer/2025/rep_reportingguidelandingpage&quot;, &quot;finding&quot;: &quot;전체/일부 모델의 해석 결과, 부재 계산, 재료 목록 및 개별 부재 보고서 기능을 설명한다.&quot;}, &quot;R06&quot;: {&quot;title&quot;: &quot;buildingSMART — IfcStructuralAnalysisModel (IFC 4.3.2.0)&quot;, &quot;url&quot;: &quot;https://standards.buildingsmart.org/IFC/RELEASE/IFC4_3/HTML/lexical/IfcStructuralAnalysisModel.htm&quot;, &quot;finding&quot;: &quot;구조해석 모델은 부재·연결/지점·하중·결과를 연관시키는 정보 구조다. 단순 형상 교환과 해석정보 교환을 구분할 근거로 사용했다.&quot;}, &quot;R07&quot;: {&quot;title&quot;: &quot;NIST GCR 17-917-46v1 — Nonlinear Analysis Guidelines (2017)&quot;, &quot;url&quot;: &quot;https://nvlpubs.nist.gov/nistpubs/gcr/2017/NIST.GCR.17-917-46v1.pdf&quot;, &quot;finding&quot;: &quot;응답에 중요한 구성요소, 비선형 부품의 검증·보정, 연결·메시·감쇠와 수렴 문제를 다룬다. 2017년 방법론 참고자료이며 최신 국내 기준으로 사용하지 않았다.&quot;, &quot;access&quot;: &quot;검색 색인 본문에서 관련 절 확인. 직접 PDF 열기는 도구 오류; 전 문서 정독 아님.&quot;}, &quot;R08&quot;: {&quot;title&quot;: &quot;NIST GCR 11-917-15 — Ground Motion Selection and Scaling (2011)&quot;, &quot;url&quot;: &quot;https://www.nist.gov/publications/selecting-and-scaling-earthquake-ground-motions-performing-response-history-analyses&quot;, &quot;finding&quot;: &quot;기록 선정·생성·스케일링, 목표 스펙트럼과 근단층 특성을 다루는 방법론 자료. 모든 프로젝트에 스펙트럼 매칭을 강제하는 근거로 사용하지 않았다.&quot;}, &quot;R09&quot;: {&quot;title&quot;: &quot;NIST GCR 17-917-45 — Modeling Parameters and Acceptance Criteria (2017)&quot;, &quot;url&quot;: &quot;https://nvlpubs.nist.gov/nistpubs/gcr/2017/NIST.GCR.17-917-45.pdf&quot;, &quot;finding&quot;: &quot;비선형 모델 매개변수의 실험 보정·불확실성과 성능 기준을 다룬다. 재료모델의 실험자료 연결 및 민감도 비교 필요성을 참고했다.&quot;, &quot;access&quot;: &quot;검색 색인 관련 절 확인; 전 문서 정독 아님.&quot;}, &quot;R10&quot;: {&quot;title&quot;: &quot;Dlubal — Verification Examples&quot;, &quot;url&quot;: &quot;https://www.dlubal.com/en/support-and-learning/support/product-features/001415&quot;, &quot;finding&quot;: &quot;계산 방법을 추적할 수 있는 검증 예제를 공개한다. S-Structures에도 입력·독립 기대값·결과가 재현되는 사례집을 제안했다.&quot;}, &quot;R11&quot;: {&quot;title&quot;: &quot;Dlubal VE0052 — Cantilever with Moment Loading&quot;, &quot;url&quot;: &quot;https://www.dlubal.com/en/downloads-and-information/examples-and-tutorials/verification-examples/008852&quot;, &quot;finding&quot;: &quot;동일한 재료·형상·하중·해석 설정을 명시하고 해석해와 프로그램 결과를 비교하는 예제 형식을 참고했다.&quot;}, &quot;R12&quot;: {&quot;title&quot;: &quot;KCSC — 공식 API 안내 진입점&quot;, &quot;url&quot;: &quot;https://www.kcsc.re.kr/support/api&quot;, &quot;finding&quot;: &quot;국내 기준 출처 확인의 공식 진입점. 이번 웹 도구에서는 본문 추출이 되지 않았다. 현행 판본·시행일·수치조항은 별도 확인해야 하며 신규 법규 주장을 만들지 않았다.&quot;, &quot;access&quot;: &quot;공식 URL 접속만 확인. 적용 기준의 로컬 확보 기록은 docs/phase24/KCSC_RULE_INTEGRATION.md 참조.&quot;}}}&lt;/script&gt;
+ &lt;script type=&quot;application/json&quot; id=&quot;ss-agent-data&quot;&gt;{&quot;version&quot;: &quot;review-2&quot;, &quot;date&quot;: &quot;2026-09-14&quot;, &quot;status&quot;: &quot;implementation-and-remaining-scope-review&quot;, &quot;goal&quot;: &quot;슈퍼앱의 AI가 링크와 사용자 요청으로 S-Structures를 이해하고 모델링·탄성설계·비선형해석을 수행한다.&quot;, &quot;scope&quot;: &quot;기존 세 영역에 공통으로 적용하는 개발 제안. 기존 기능을 새 구현으로 세지 않으며 실무·공학 검증을 대체하지 않는다.&quot;, &quot;flow&quot;: [&quot;링크·사용자 요청&quot;, &quot;첫 접속 안내&quot;, &quot;지원 범위·현재 상태&quot;, &quot;작업 순서·부족한 입력&quot;, &quot;변경·해석 실행&quot;, &quot;결과 확인·작업 재개&quot;], &quot;sources&quot;: {&quot;AI-R01&quot;: {&quot;title&quot;: &quot;OpenAI — Site tools (WebMCP)&quot;, &quot;url&quot;: &quot;https://learn.chatgpt.com/docs/webmcp&quot;, &quot;finding&quot;: &quot;지원 호스트의 열린 페이지에서 도구를 발견하고 같은 세션을 사용한다. 일반 MCP는 열린 페이지와 독립적으로 연결할 수 있다.&quot;}, &quot;AI-R02&quot;: {&quot;title&quot;: &quot;OpenAI — Build an AI tour guide&quot;, &quot;url&quot;: &quot;https://learn.chatgpt.com/use-cases/build-an-ai-tour-guide&quot;, &quot;finding&quot;: &quot;안정적인 제어 대상 식별자·앱 상태·문서를 함께 노출하는 구현 예시. S-Structures 자동 실행 설계는 이를 참고한 별도 제안이다.&quot;}}, &quot;items&quot;: [{&quot;id&quot;: &quot;AI01&quot;, &quot;name&quot;: &quot;첫 접속 안내&quot;, &quot;stage&quot;: &quot;우선 구축&quot;, &quot;status&quot;: &quot;일부 구현·연결/완주 검증 잔여&quot;, &quot;current&quot;: &quot;AI 프로젝트 하네스와 get_agent_harness/read_agent_harness_file 구현. 업무 절차·입력 출처·질문·결정·작업 상태 템플릿을 읽고 설치/준비상태를 점검할 수 있다. 최초 AI 세션의 완주는 별도 검증.&quot;, &quot;develop&quot;: [&quot;앱 첫 화면에서 AI 시작 안내·지원 작업·문서 목차를 읽을 수 있게 한다.&quot;, &quot;기존 get_agent_harness를 첫 진입 도구로 연결한다. 별도 get_system_context 신설 필요성은 버전·모델 유무·다음 동작 정보의 실제 공백을 확인한 뒤 결정한다.&quot;, &quot;문서와 기능 정보는 현재 배포 빌드에 맞춰 제공하고, llms.txt 같은 보조 목차도 같은 안내를 가리키게 한다.&quot;], &quot;accept&quot;: &quot;빈 프로젝트와 기존 프로젝트에 처음 접속한 AI가 별도 저장소 설명 없이 지원 범위와 올바른 시작 경로를 찾는다.&quot;, &quot;local&quot;: [&quot;docs/user-manual/AI_AGENT_GUIDE.md&quot;, &quot;src/ui/webmcp/tools.js&quot;, &quot;src/ui/indexAgentApi.js&quot;, &quot;src/agentHarness/package.js&quot;, &quot;src/ui/webmcp/harnessTools.js&quot;], &quot;refs&quot;: [&quot;AI-R01&quot;, &quot;AI-R02&quot;], &quot;linksTo&quot;: [&quot;M01&quot;, &quot;M06&quot;]}, {&quot;id&quot;: &quot;AI02&quot;, &quot;name&quot;: &quot;실행 가능한 기능 사전&quot;, &quot;stage&quot;: &quot;우선 구축&quot;, &quot;status&quot;: &quot;기존 목록 통합·조건 조회 보완 제안&quot;, &quot;current&quot;: &quot;get_design_modules와 설계·해석 capability 자료가 있고 일부는 UI와 WebMCP가 공유한다. 개발 지도는 별도 조사 자료다.&quot;, &quot;develop&quot;: [&quot;공통 기능 정의에서 사람용 개발맵·AI용 요약·도구 설명을 생성한다. 세부 스키마는 필요할 때 조회한다.&quot;, &quot;개발 여부·현재 연결에서의 노출·모델 적용성·업무 검증 범위·권한을 각각 표시한다.&quot;, &quot;현재 실행 가능 여부, 차단 사유, 부족한 입력, 유효한 다음 동작을 반환하고 계획 중인 기능은 실행 목록에서 제외한다.&quot;], &quot;accept&quot;: &quot;같은 빌드의 화면과 AI 설명이 일치하고, 미지원 조합·미구현 항목을 실행 가능한 것으로 안내하지 않는다.&quot;, &quot;local&quot;: [&quot;src/metadata/designModuleCapabilities.js&quot;, &quot;src/ui/webmcp/browserDefinitions.js&quot;, &quot;src/ui/webmcp/tools.js&quot;], &quot;refs&quot;: [&quot;AI-R01&quot;], &quot;linksTo&quot;: [&quot;M01&quot;, &quot;N06&quot;]}, {&quot;id&quot;: &quot;AI03&quot;, &quot;name&quot;: &quot;목적별 작업 안내&quot;, &quot;stage&quot;: &quot;우선 구축&quot;, &quot;status&quot;: &quot;일부 구현·연결/완주 검증 잔여&quot;, &quot;current&quot;: &quot;AI 프로젝트 하네스와 get_agent_harness/read_agent_harness_file 구현. 업무 절차·입력 출처·질문·결정·작업 상태 템플릿을 읽고 설치/준비상태를 점검할 수 있다. 최초 AI 세션의 완주는 별도 검증.&quot;, &quot;develop&quot;: [&quot;새 골조 만들기·기존 모델 탄성검토·NG 부재 보완·비선형 검토 등 목적별 안내를 조회하게 한다.&quot;, &quot;각 안내에 적용 범위, 필수 입력, 필요한 질문, 도구 순서, 완료 조건, 중단·재개 방법을 둔다.&quot;, &quot;사용자 표현과 구조 용어를 연결하고, 예시 수치와 사용자 확정값을 구분한다. 설계 전제의 빈칸은 임의 확정하지 않는다.&quot;], &quot;accept&quot;: &quot;AI가 자연어 요청을 지원되는 업무로 연결하고 필요한 정보만 질문한 뒤 확인 가능한 결과까지 수행한다.&quot;, &quot;local&quot;: [&quot;docs/phase25/USAGE.md&quot;, &quot;src/ui/webmcp/workflowTools.js&quot;, &quot;src/ui/webmcp/browserDefinitions.js&quot;, &quot;src/agentHarness/package.js&quot;, &quot;src/ui/webmcp/harnessTools.js&quot;], &quot;refs&quot;: [&quot;AI-R02&quot;], &quot;linksTo&quot;: [&quot;M01&quot;, &quot;E02&quot;, &quot;E14&quot;, &quot;N05&quot;]}, {&quot;id&quot;: &quot;AI04&quot;, &quot;name&quot;: &quot;모델·업무 맥락과 재개&quot;, &quot;stage&quot;: &quot;대표 업무 연결&quot;, &quot;status&quot;: &quot;일부 구현·연결/완주 검증 잔여&quot;, &quot;current&quot;: &quot;AI 프로젝트 하네스와 get_agent_harness/read_agent_harness_file 구현. 업무 절차·입력 출처·질문·결정·작업 상태 템플릿을 읽고 설치/준비상태를 점검할 수 있다. 최초 AI 세션의 완주는 별도 검증.&quot;, &quot;develop&quot;: [&quot;사용 목적·적용 기준 판본·단위·사용자 확정 조건·미정 가정·현재 단계·남은 문제를 프로젝트에 보존한다.&quot;, &quot;층·그리드·부재군·이름으로 대상 ID를 찾고 대형 모델은 범위와 페이지를 나눠 조회한다.&quot;, &quot;세션 재접속 시 입력 변경과 결과 유효성을 다시 확인하고, 완료된 작업과 다음 할 일을 복원한다.&quot;], &quot;accept&quot;: &quot;다른 AI 세션도 이전 대화 전체 없이 업무를 이어가며, 이전 결과를 현재 입력의 결과로 오인하지 않는다.&quot;, &quot;local&quot;: [&quot;src/ui/webmcp/workflowTools.js&quot;, &quot;src/ui/webmcp/tools.js&quot;, &quot;src/ui/indexAgentSnapshot.js&quot;, &quot;src/agentHarness/package.js&quot;, &quot;src/ui/webmcp/harnessTools.js&quot;], &quot;refs&quot;: [&quot;AI-R02&quot;], &quot;linksTo&quot;: [&quot;M06&quot;, &quot;E14&quot;]}, {&quot;id&quot;: &quot;AI05&quot;, &quot;name&quot;: &quot;입력·실행 계약&quot;, &quot;stage&quot;: &quot;대표 업무 연결&quot;, &quot;status&quot;: &quot;기존 실행 계약의 범위별 완결 제안&quot;, &quot;current&quot;: &quot;입력 스키마, 변경 미리보기/적용, 입력 hash, requestId, 해석 job 상태와 취소 경로가 존재한다.&quot;, &quot;develop&quot;: [&quot;모델 생성부터 결과 출력까지 선택한 업무의 모든 단계가 실제 노출 도구로 이어지는지 확인하고 빠진 조작을 보완한다.&quot;, &quot;길이·힘·응력 단위, 로컬 축·부호, ID 참조, 허용값, 쓰기 영향과 되돌리기 범위를 명시한다.&quot;, &quot;미리보기→적용→검사→해석의 입력 일치를 보장하고, 중복 요청·사용자 동시 수정·실행 취소를 일관되게 처리한다.&quot;], &quot;accept&quot;: &quot;같은 입력과 설정을 재현할 수 있고, 재시도로 중복 변경하지 않으며 사용자의 후속 수정을 덮어쓰지 않는다.&quot;, &quot;local&quot;: [&quot;src/ui/webmcp/schemas.js&quot;, &quot;src/ui/webmcp/tools.js&quot;, &quot;src/ui/webmcp/workflowTools.js&quot;], &quot;refs&quot;: [&quot;AI-R01&quot;], &quot;linksTo&quot;: [&quot;M02&quot;, &quot;M06&quot;, &quot;E05&quot;, &quot;E14&quot;]}, {&quot;id&quot;: &quot;AI06&quot;, &quot;name&quot;: &quot;결과·실패 해석과 복구&quot;, &quot;stage&quot;: &quot;대표 업무 연결&quot;, &quot;status&quot;: &quot;기존 판정·근거·후보 조회의 공통화 제안&quot;, &quot;current&quot;: &quot;현재성·qualification·designBlocked·검토 판정과 근거 조회가 있다. 완료한 해석과 최종 설계 적합성을 구분한다.&quot;, &quot;develop&quot;: [&quot;해석 완료·수치 검증·부재 판정·미검토·업무 적용 범위를 분리해 AI가 읽는 결과 요약을 통일한다.&quot;, &quot;NG/NOT_CHECKED/미지원/입력 누락/수렴 실패마다 대상 ID·원인·근거·가능한 보완 동작을 반환한다.&quot;, &quot;모델·설정·엔진·기준·결과 버전과 검토 이력을 연결하고, 보완 후 필요한 재해석·재검토를 안내한다.&quot;], &quot;accept&quot;: &quot;AI가 미검토를 통과로 요약하지 않고 결과 근거와 미해결 항목을 전달한다. 수렴 실패를 구조 부적합과 혼동하지 않는다.&quot;, &quot;local&quot;: [&quot;src/ui/webmcp/tools.js&quot;, &quot;src/ui/webmcp/workflowTools.js&quot;, &quot;docs/phase25/USAGE.md&quot;], &quot;refs&quot;: [], &quot;linksTo&quot;: [&quot;E04&quot;, &quot;E05&quot;, &quot;E14&quot;, &quot;N04&quot;, &quot;N05&quot;]}, {&quot;id&quot;: &quot;AI07&quot;, &quot;name&quot;: &quot;화면·도구 연결과 호스트 대응&quot;, &quot;stage&quot;: &quot;대표 업무 연결&quot;, &quot;status&quot;: &quot;일부 구현·연결/완주 검증 잔여&quot;, &quot;current&quot;: &quot;AI 프로젝트 하네스와 get_agent_harness/read_agent_harness_file 구현. 업무 절차·입력 출처·질문·결정·작업 상태 템플릿을 읽고 설치/준비상태를 점검할 수 있다. 최초 AI 세션의 완주는 별도 검증.&quot;, &quot;develop&quot;: [&quot;지원 환경은 WebMCP의 구조화된 조작을 우선하고, 호스트에 따라 의미 있는 DOM 조작·화면 조작으로 이어지는 경로를 제공한다.&quot;, &quot;화면의 모델·선택 부재·경고·변경 전후가 도구 반환과 같은 상태를 가리키게 한다.&quot;, &quot;호스트별 실제 도구 발견·호출을 확인하고, 노출되지 않은 API를 사용하도록 안내하지 않는다. 무인 장기 작업이 필요해지면 별도 MCP/서버 작업을 검토한다.&quot;], &quot;accept&quot;: &quot;도구 등록 표시만으로 연결 성공을 선언하지 않으며, 사용자가 AI 작업의 대상과 결과를 같은 화면에서 확인할 수 있다.&quot;, &quot;local&quot;: [&quot;docs/user-manual/AI_AGENT_GUIDE.md&quot;, &quot;src/ui/indexAgentSnapshot.js&quot;, &quot;src/ui/webmcp/register.js&quot;, &quot;src/agentHarness/package.js&quot;, &quot;src/ui/webmcp/harnessTools.js&quot;], &quot;refs&quot;: [&quot;AI-R01&quot;, &quot;AI-R02&quot;], &quot;linksTo&quot;: [&quot;M06&quot;, &quot;E14&quot;]}, {&quot;id&quot;: &quot;AI08&quot;, &quot;name&quot;: &quot;처음 온 AI의 사용 검증&quot;, &quot;stage&quot;: &quot;각 단계부터 함께 검증&quot;, &quot;status&quot;: &quot;독립 세션 진입·완주 평가 추가 제안&quot;, &quot;current&quot;: &quot;tests/agent-harness.mjs와 기존 Agent 회귀 시험 존재. 저장소·과거 대화 없이 링크와 자연어만 주는 독립 업무 완주 평가는 이번 점검에서 확인하지 못했다.&quot;, &quot;develop&quot;: [&quot;저장소와 과거 대화가 없는 AI에게 링크와 요청만 주는 반복 가능한 대표 과제를 만든다.&quot;, &quot;빈 프로젝트·기존 모델·입력 부족·미지원 요청·오래된 결과·취소·재접속·사용자 동시 수정에서 평가한다.&quot;, &quot;업무 완료와 결과 정확성, 올바른 누락 질문, 허위 성공, 불필요한 호출·출력량을 기록하고 빌드 변경마다 비교한다.&quot;], &quot;accept&quot;: &quot;정상 과제는 결과와 근거까지 도달하고, 수행할 수 없는 과제는 이유와 유효한 다음 단계를 설명한다. 공학 검증은 별도 유지한다.&quot;, &quot;local&quot;: [&quot;docs/user-manual/AI_AGENT_GUIDE.md&quot;, &quot;src/ui/webmcp/register.js&quot;, &quot;src/ui/webmcp/browserDefinitions.js&quot;], &quot;refs&quot;: [&quot;AI-R02&quot;], &quot;linksTo&quot;: [&quot;M07&quot;, &quot;E15&quot;, &quot;N05&quot;]}]}&lt;/script&gt;
+ &lt;script&gt;
+ (()=&gt;{
+ const root=document.getElementById(&#x27;ss-feature-map&#x27;);
+ const data=JSON.parse(root.querySelector(&#x27;#ss-feature-data&#x27;).textContent);
+ const roadmap=JSON.parse(root.querySelector(&#x27;#ss-roadmap-data&#x27;).textContent);
+ const sources=JSON.parse(root.querySelector(&#x27;#ss-source-data&#x27;).textContent).sources;
+ const agent=JSON.parse(root.querySelector(&#x27;#ss-agent-data&#x27;).textContent);
+ const labels={I:&#x27;● 구현&#x27;,P:&#x27;◐ 부분&#x27;,U:&#x27;○ 미지원/미확인&#x27;,V:&#x27;◇ 검증 잔여&#x27;};
+ const make=(tag,cls,text)=&gt;{const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e};
+ const priorities={A:&#x27;A 출시 전&#x27;,B:&#x27;B 범위 확장&#x27;,C:&#x27;C 전문 확장&#x27;};
+ agent.flow.forEach(label=&gt;root.querySelector(&#x27;.path&#x27;).append(make(&#x27;span&#x27;,&#x27;&#x27;,label)));
+ agent.items.forEach(task=&gt;{
+ const item=make(&#x27;details&#x27;,&#x27;task&#x27;);const heading=make(&#x27;summary&#x27;,&#x27;&#x27;,task.id+&#x27; &#x27;+task.name);
+ heading.append(make(&#x27;span&#x27;,&#x27;text-small count future-label&#x27;,task.status));item.append(heading);
+ const body=make(&#x27;div&#x27;,&#x27;task-body text-small&#x27;);
+ body.append(make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;현재 기반 · &#x27;+task.current));
+ const list=make(&#x27;ul&#x27;);task.develop.forEach(step=&gt;list.append(make(&#x27;li&#x27;,&#x27;&#x27;,step)));
+ body.append(list,make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;완료 기준 · &#x27;+task.accept),make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;기존 개발과 연결 · &#x27;+task.linksTo.join(&#x27;, &#x27;)));
+ const refs=make(&#x27;div&#x27;,&#x27;source-links&#x27;);task.refs.forEach(id=&gt;{const source=agent.sources[id];const a=make(&#x27;a&#x27;,&#x27;&#x27;,source.title);a.href=source.url;a.target=&#x27;_blank&#x27;;a.rel=&#x27;noopener noreferrer&#x27;;refs.append(a)});body.append(refs);
+ body.append(make(&#x27;div&#x27;,&#x27;basis&#x27;,&#x27;로컬 근거 · &#x27;+task.local.join(&#x27; · &#x27;)));item.append(body);root.querySelector(&#x27;.ai-grid&#x27;).append(item);
+ });
+ data.forEach((area,i)=&gt;{
+ const branch=make(&#x27;section&#x27;,&#x27;branch&#x27;);branch.append(make(&#x27;h3&#x27;,&#x27;&#x27;,String(i+1).padStart(2,&#x27;0&#x27;)+&#x27; &#x27;+area.name),make(&#x27;div&#x27;,&#x27;text-small subtitle&#x27;,area.summary));
+ branch.append(make(&#x27;div&#x27;,&#x27;section-label&#x27;,&#x27;현재 기능&#x27;));
+ area.groups.forEach(group=&gt;{
+ const box=make(&#x27;details&#x27;);const summary=make(&#x27;summary&#x27;,&#x27;&#x27;,group.name);const counts={};group.items.forEach(x=&gt;counts[x[1]]=(counts[x[1]]||0)+1);
+ summary.append(make(&#x27;span&#x27;,&#x27;text-small count&#x27;,Object.entries(counts).map(([k,n])=&gt;labels[k]+&#x27; &#x27;+n).join(&#x27; · &#x27;)));box.append(summary);
+ const leaves=make(&#x27;div&#x27;,&#x27;leaves&#x27;);group.items.forEach(([name,state,note])=&gt;{const leaf=make(&#x27;div&#x27;,&#x27;leaf&#x27;);leaf.append(make(&#x27;div&#x27;,&#x27;&#x27;,name),make(&#x27;div&#x27;,&#x27;text-small &#x27;+state,labels[state]),make(&#x27;div&#x27;,&#x27;text-small detail&#x27;,note));leaves.append(leaf)});
+ leaves.append(make(&#x27;div&#x27;,&#x27;text-small basis&#x27;,&#x27;근거 · &#x27;+group.source));box.append(leaves);branch.append(box);
+ });
+ branch.append(make(&#x27;div&#x27;,&#x27;section-label future-label&#x27;,&#x27;＋ 추후 개발&#x27;));
+ const future=roadmap.areas.find(a=&gt;a.name===area.name);
+ future.groups.forEach(group=&gt;{
+ const box=make(&#x27;details&#x27;,&#x27;future-group&#x27;);const summary=make(&#x27;summary&#x27;,&#x27;&#x27;,group.name);const counts={};group.items.forEach(t=&gt;counts[t.priority]=(counts[t.priority]||0)+1);
+ summary.append(make(&#x27;span&#x27;,&#x27;text-small count&#x27;,Object.entries(counts).map(([k,n])=&gt;priorities[k]+&#x27; &#x27;+n).join(&#x27; · &#x27;)));box.append(summary);
+ const tasks=make(&#x27;div&#x27;,&#x27;future-items&#x27;);
+ group.items.forEach(task=&gt;{
+ const item=make(&#x27;details&#x27;,&#x27;task&#x27;);const heading=make(&#x27;summary&#x27;,&#x27;&#x27;,task.id+&#x27; &#x27;+task.name);
+ heading.append(make(&#x27;span&#x27;,&#x27;text-small count&#x27;,priorities[task.priority]+&#x27; · &#x27;+task.kind));item.append(heading);
+ const body=make(&#x27;div&#x27;,&#x27;task-body text-small&#x27;);
+ if(task.scope)body.append(make(&#x27;div&#x27;,&#x27;future-label&#x27;,task.scope));
+ body.append(make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;현재 · &#x27;+task.current),make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;목적 · &#x27;+task.need));
+ const list=make(&#x27;ul&#x27;);task.develop.forEach(step=&gt;list.append(make(&#x27;li&#x27;,&#x27;&#x27;,step)));body.append(list,make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;완료 기준 · &#x27;+task.accept));
+ if(task.depends.length)body.append(make(&#x27;div&#x27;,&#x27;detail&#x27;,&#x27;선행 작업 · &#x27;+task.depends.join(&#x27;, &#x27;)));
+ const refs=make(&#x27;div&#x27;,&#x27;source-links&#x27;);task.refs.forEach(id=&gt;{const source=sources[id];const a=make(&#x27;a&#x27;,&#x27;&#x27;,id+&#x27; &#x27;+source.title);a.href=source.url;a.target=&#x27;_blank&#x27;;a.rel=&#x27;noopener noreferrer&#x27;;refs.append(a)});body.append(refs);
+ body.append(make(&#x27;div&#x27;,&#x27;basis&#x27;,&#x27;로컬 근거 · &#x27;+task.local.join(&#x27; · &#x27;)));item.append(body);tasks.append(item);
+ });box.append(tasks);branch.append(box);
+ });root.querySelector(&#x27;.branches&#x27;).append(branch);
+ });
+ })();
+ &lt;/script&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>
