@@ -782,6 +782,7 @@ export function installIndexEngineBridge(target = globalThis) {
     markAnalysisCasesStale(reason = 'model-changed') {
       const changed = markAnalysisCenterCasesStale(target, bridge, reason);
       target.SStructuresAnalysisCenter?.refresh?.();
+      target.SStructuresPhase13Workspace?.refresh?.();
       return changed;
     },
     getCapabilities() {
@@ -832,6 +833,7 @@ export function installIndexEngineBridge(target = globalThis) {
       nativeCanvasResult.clear();
       target.__SStructuresResultRevision = (target.__SStructuresResultRevision || 0) + 1;
       target.SStructuresResultSelection?.set?.({ activeCaseId: null, activeResultId: null, modeOrStep: null }, 'design-input-changed');
+      target.SStructuresPhase13Workspace?.refresh?.();
       target.SStructuresAnalysisCenter?.refresh?.();
       target.draw?.();
       const status = target.document?.getElementById?.('statusTxt');

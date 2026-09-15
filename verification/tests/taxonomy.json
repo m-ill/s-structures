@@ -6,16 +6,16 @@
     "tests",
     "verification/tests"
   ],
-  "plannedCount": 882,
+  "plannedCount": 884,
   "categoryCounts": {
-    "e2e": 14,
+    "e2e": 15,
     "integration": 51,
     "qualification": 225,
-    "unit": 592
+    "unit": 593
   },
   "executionCounts": {
     "default": 314,
-    "release-long": 568
+    "release-long": 570
   },
   "records": [
     {
@@ -5305,8 +5305,20 @@
       "owner": "release-verification"
     },
     {
+      "file": "tests/webmcp-browser-catalog.mjs",
+      "taxonomy": "e2e",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
+    {
       "file": "tests/webmcp-integration.mjs",
       "taxonomy": "integration",
+      "execution": "release-long",
+      "owner": "release-verification"
+    },
+    {
+      "file": "tests/workbench-model-lifecycle.mjs",
+      "taxonomy": "unit",
       "execution": "release-long",
       "owner": "release-verification"
     }

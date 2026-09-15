@@ -18,8 +18,14 @@ export function installHostWebMcp({window,iframe,projectId,onActivity=()=>{}}) {
         const value=await session.call(binding,def.name,args);
         if(disposed||!session.active)throw new Error('SESSION_DISPOSED');onActivity(def.name);return value;
       }}));
-      registration=registerDefinitions(window,definitions,{version:session.version,project:projectId});window.SStructuresHostWebMcp=registration;
-      session.status=`host-${registration.status}`;session.registered=[...registration.registered];session.render?.();
+      const render=()=>{
+        if(!registration)return;
+        session.status=`host-${registration.status}`;session.registered=[...registration.registered];
+        session.availableToolCount=registration.availableToolCount;session.descriptorBytes=registration.descriptorBytes;
+        session.discoveryConfirmed=registration.discoveryConfirmed;session.render?.();
+      };
+      registration=registerDefinitions(window,definitions,{version:session.version,project:projectId,render});window.SStructuresHostWebMcp=registration;
+      render();
     }catch{revoke();}
   }
   iframe.addEventListener?.('load',connect);

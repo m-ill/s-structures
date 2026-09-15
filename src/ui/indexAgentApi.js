@@ -1316,6 +1316,7 @@ function withAnalysisResults(target, options = {}) {
 function runUiAnalysis(target) {
   markAnalysisCenterCasesStale(target, target?.SStructuresEngine, 'model-changed');
   target.SStructuresAnalysisCenter?.refresh?.();
+  target.SStructuresPhase13Workspace?.refresh?.();
   if (typeof target?.reanalyze === 'function') target.reanalyze(true);
 }
 

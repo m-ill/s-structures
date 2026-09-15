@@ -1,3 +1,4 @@
+import { BROWSER_TOOL_NAMES } from '../src/ui/webmcp/browserTools.js';
 import assert from 'node:assert/strict';
 import { createModel } from '../src/core/model.js';
 import { installIndexEngineBridge } from '../src/ui/indexBridge.js';
@@ -86,7 +87,7 @@ let pagehide;
 const supported = { SStructuresAgent: agent, document: { modelContext: { registerTool(tool) { registered.push(tool); return new Promise(() => {}); } } }, addEventListener(type, handler) { if (type === 'pagehide') pagehide = handler; } };
 const registration = installWebMcp(supported, bridge);
 assert.equal(registration.status, 'registered');
-assert.deepEqual(registered.map(tool => tool.name).sort(), tools.map(tool => tool.name).sort());
+assert.deepEqual(registered.map(tool => tool.name).sort(), [...BROWSER_TOOL_NAMES].sort());
 assert.equal(new Set(registered.map(tool => tool.name)).size, registered.length);
 assert.equal(installWebMcp(supported, bridge), registration);
 pagehide({ persisted: true });

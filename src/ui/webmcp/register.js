@@ -1,4 +1,4 @@
-import {browserDefinitions} from './browserDefinitions.js';
+import {createBrowserTools, browserDescriptorBytes, BROWSER_DESCRIPTOR_BUDGET} from './browserTools.js';
 import { createWebMcpTools, WEBMCP_VERSION } from './tools.js';
 import { workflowStatus } from './workflowStatus.js';
 
@@ -7,7 +7,11 @@ export function registerDefinitions(target,definitions,state) {
   state.status='unsupported';state.registered=[];state.errors=[];
   state.dispose=()=>{active=false;controller.abort();state.status='disposed';const report=definitions.dispose?.();state.errors.push(...(report?.errors||[]));};
   if(target.isSecureContext===false||typeof context?.registerTool!=='function')return state;
-  for(const definition of browserDefinitions(definitions)) {
+  const advertised=createBrowserTools(definitions,{onDiscovery:()=>{state.discoveryConfirmed=true;state.render?.();}});
+  state.availableToolCount=definitions.length;
+  state.descriptorBytes=browserDescriptorBytes(advertised,target.location?.href||'https://m-ill.github.io/s-structures/');
+  if(state.descriptorBytes>BROWSER_DESCRIPTOR_BUDGET){state.status='configuration-too-large';state.errors.push({code:'DESCRIPTOR_BUDGET',bytes:state.descriptorBytes});return state;}
+  for(const definition of advertised) {
     try {
       const registration=context.registerTool({...definition,execute(args){if(!active)throw new Error('WebMCP page session is inactive.');return definition.execute(args);}},{signal:controller.signal});
       state.registered.push(definition.name);
@@ -26,8 +30,9 @@ export function installWebMcp(target,bridge) {
   const doc=target.document,host=doc?.querySelector?.('[data-ss-ribbon-panel="elastic"]');
   const label=host?doc.createElement('p'):null;
   if(label){label.id='ssWebMcpStatus';label.setAttribute('role','status');label.style.cssText='font:12px system-ui;margin:4px;color:#284d73';host.appendChild(label);}
-  state.render=()=>{if(label)label.textContent=`WebMCP ${state.status==='registered'?(state.lastAction?'도구 응답 확인':'등록 요청 완료'):state.status} · 도구 ${state.registered.length}개 · ${state.lastAction||'작업 없음'} · ${workflowStatus(bridge,state.reviewId)} · 탄성 예비 검토 · 비선형 candidate`;};
+  state.render=()=>{if(label)label.textContent=`WebMCP ${['registered','host-registered'].includes(state.status)?(state.lastAction?'도구 응답 확인':state.discoveryConfirmed?'에이전트 조회 확인':'등록 요청 완료 · 에이전트 연결 미확인'):state.status} · 연결 도구 ${state.registered.length}개 / 기능 ${state.availableToolCount||0}개 · ${state.lastAction||'작업 없음'} · ${workflowStatus(bridge,state.reviewId)} · 탄성 예비 검토 · 비선형 candidate`;};
   const definitions=createWebMcpTools({agent:target.SStructuresAgent,bridge,onActivity:action=>{state.lastAction=action.tool;if(action.changed)state.changed=true;if(action.designRunId){state.reviewId=action.designRunId;bridge.designReviewPanel?.adoptReview?.(action.designRunId);}state.render();},setView:view=>{
+    target.SStructuresPhase13Workspace?.close?.();
     if(['design-input','design-review'].includes(view)){target.SStructuresNativeUI?.setMode?.('elastic');const panel=view==='design-input'?bridge.designInputPanel:bridge.designReviewPanel;if(!panel)return {ok:false,code:'VIEW_UNAVAILABLE'};panel.open();}
     else {if(!target.SStructuresNativeUI?.setMode)return {ok:false,code:'VIEW_UNAVAILABLE'};target.SStructuresNativeUI.setMode(view);}
     return {ok:true,view};

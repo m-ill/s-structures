@@ -94,7 +94,7 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
   launch.type = 'button';
   launch.id = 'ssPhase13WorkspaceOpen';
   launch.setAttribute('data-testid', 'p13-workspace-open');
-  launch.setAttribute('aria-label', 'Phase 13 실무 워크벤치 열기');
+  launch.setAttribute('aria-label', '실무 워크벤치 열기');
   const topbar = doc.getElementById?.('topbar');
   const spacer = topbar?.querySelector?.('.spacer') || null;
   if (topbar) topbar.insertBefore?.(launch, spacer);
@@ -103,14 +103,14 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
   root.id = 'ssPhase13Workspace';
   root.hidden = true;
   root.setAttribute('data-testid', 'p13-workspace');
-  root.setAttribute('aria-label', 'Phase 13 탄성해석 실무 워크벤치');
+  root.setAttribute('aria-label', '일반구조설계 실무 워크벤치');
   root.setAttribute('role', 'dialog');
-  root.setAttribute('aria-modal', 'true');
+  root.setAttribute('aria-modal', 'false');
 
   const header = element(doc, 'header', 'ss-p13-header');
   const title = element(doc, 'div', 'ss-p13-title');
   title.appendChild(element(doc, 'strong', '', 'S-Structures 실무 워크벤치'));
-  title.appendChild(element(doc, 'span', '', '자체 탄성해석 엔진 · Phase 13'));
+  title.appendChild(element(doc, 'span', '', '현재 모델 · 해석 · 검토 결과'));
   const nav = element(doc, 'nav', 'ss-p13-nav');
   nav.setAttribute('aria-label', '워크스페이스 이동');
   const navButtons = new Map();
@@ -145,6 +145,11 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
   actions.appendChild(status);
   actions.appendChild(runButton);
   actions.appendChild(runAllButton);
+  const modelingButton = element(doc, 'button', 'ss-p13-close', '모델링으로 돌아가기');
+  modelingButton.type = 'button';
+  modelingButton.id = 'ssPhase13ReturnToModel';
+  modelingButton.addEventListener?.('click', () => api.showModel());
+  actions.appendChild(modelingButton);
   actions.appendChild(closeButton);
   header.appendChild(title);
   header.appendChild(nav);
@@ -167,6 +172,17 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
   root.appendChild(drawer);
   doc.body?.appendChild?.(root);
 
+  function updateLayout() {
+    if (!open) return;
+    const top = doc.getElementById?.('main')?.getBoundingClientRect?.().top;
+    if (Number.isFinite(top)) root.style.top = `${Math.max(0, top) + 4}px`;
+  }
+  function resizeCanvas() {
+    const EventCtor = target.Event || globalThis.Event;
+    if (EventCtor) target.dispatchEvent?.(new EventCtor('resize'));
+    target.draw?.();
+  }
+
   const api = {
     version: INDEX_PHASE13_ELASTIC_WORKSPACE_VERSION,
     open() {
@@ -175,6 +191,8 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
       doc.body?.classList?.add('ss-p13-workspace-open');
       target.SStructuresNativeUI?.setMode?.('elastic', { clickLegacy: false, emit: false });
       target.SStructuresElasticSetupWorkflow?.close?.();
+      updateLayout();
+      resizeCanvas();
       api.refresh();
       return api.getState();
     },
@@ -182,6 +200,14 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
       open = false;
       root.hidden = true;
       doc.body?.classList?.remove('ss-p13-workspace-open');
+      tree.replaceChildren?.(); center.replaceChildren?.(); inspector.replaceChildren?.(); drawer.replaceChildren?.();
+      resizeCanvas();
+      return api.getState();
+    },
+    showModel() {
+      api.close();
+      target.SStructuresNativeUI?.setMode?.('modeling');
+      target.draw?.();
       return api.getState();
     },
     setWorkspace(workspace) {
@@ -590,6 +616,8 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
       return api.getState();
     },
     refresh() {
+      // Rebuild from the current shared model only while visible.
+      if (!open) return api.getState();
       const model = bridge.getCurrentModel?.() || {};
       const cases = elasticCases(bridge);
       if (!cases.some((item) => item.id === selectedCaseId)) {
@@ -624,6 +652,7 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
       const analysisCase = selectedCase(bridge, selectedCaseId);
       return {
         version: INDEX_PHASE13_ELASTIC_WORKSPACE_VERSION,
+        model: { nodes: model.nodes?.length || 0, members: model.members?.length || 0, loads: model.loads?.length || 0 },
         open,
         busy,
         selectedCaseId: analysisCase?.id || null,
@@ -694,7 +723,23 @@ export function installIndexPhase13ElasticWorkspace(target = globalThis, options
   };
 
   launch.addEventListener?.('click', () => api.open());
-  target.SStructuresResultSelection?.subscribe?.(() => api.refresh());
+  const unsubscribe = target.SStructuresResultSelection?.subscribe?.(() => { if (open) api.refresh(); });
+  const onModeChange = event => { if (open && event.detail?.activeMode !== 'elastic') api.close(); };
+  const onEscape = event => { if (open && event.key === 'Escape') api.close(); };
+  target.addEventListener?.('sstructures:native-mode-change', onModeChange);
+  target.addEventListener?.('keydown', onEscape);
+  target.addEventListener?.('resize', updateLayout);
+  const layoutObserver = target.ResizeObserver ? new target.ResizeObserver(updateLayout) : null;
+  const subbar = doc.getElementById?.('subbar');
+  if (subbar) layoutObserver?.observe(subbar);
+  target.addEventListener?.('pagehide', event => {
+    if (event.persisted) return;
+    unsubscribe?.();
+    target.removeEventListener?.('sstructures:native-mode-change', onModeChange);
+    target.removeEventListener?.('keydown', onEscape);
+    target.removeEventListener?.('resize', updateLayout);
+    layoutObserver?.disconnect();
+  });
   target.SStructuresPhase13Workspace = api;
   api.refresh();
   return api;
@@ -747,7 +792,7 @@ function renderCenter(doc, root, workspace, model, analysisCase, bridge, runStat
   (renderers[workspace] || renderProject)(doc, root, model, analysisCase, bridge, runState, api, modelCheckUi);
 }
 
-function renderProject(doc, root, model, analysisCase, bridge, runState) {
+function renderProject(doc, root, model, analysisCase, bridge, runState, api) {
   root.appendChild(sectionTitle(doc, '프로젝트 개요', '실무 검토 흐름을 한 화면에서 추적합니다.'));
   const cards = element(doc, 'div', 'ss-p13-card-grid');
   cards.appendChild(summaryCard(doc, '모델', `${(model.nodes || []).length} 절점`, `${(model.members || []).length} 부재`));
@@ -755,7 +800,12 @@ function renderProject(doc, root, model, analysisCase, bridge, runState) {
   cards.appendChild(summaryCard(doc, '선택 해석', analysisCase?.name || '미선택', statusLabel(runState.execution)));
   cards.appendChild(summaryCard(doc, '해석 엔진', 'S-Structures 자체 엔진', '외부 Solver 미사용'));
   root.appendChild(cards);
-  root.appendChild(notice(doc, 'Phase 13 원칙', '현재 범위는 탄성해석 실무화입니다. OpenSees와 외부 Solver 런타임은 사용하지 않으며, 비선형해석은 이 워크벤치 실행 대상에서 제외합니다.'));
+  if (!model.nodes?.length || !model.members?.length) {
+    root.appendChild(notice(doc, '모델 입력이 필요합니다', '현재 페이지에 해석할 절점·부재가 아직 없습니다. 모델링에서 작성하거나 프로젝트 JSON을 연 뒤 검토하세요. 하중케이스·조합만 있는 상태는 모델 생성 완료가 아닙니다.'));
+    const modelButton = element(doc, 'button', 'ss-p13-secondary', '모델링에서 입력하기');
+    modelButton.type = 'button'; modelButton.addEventListener?.('click', () => api.showModel()); root.appendChild(modelButton);
+  }
+  root.appendChild(notice(doc, '검토 범위', '이 작업 창에서는 탄성해석과 부재 검토 결과를 확인합니다. 비선형해석은 상단 비선형해석 탭에서 진행하세요.'));
 }
 
 function renderModelCheck(doc, root, model, _analysisCase, _bridge, _runState, api, ui = {}) {
@@ -1744,7 +1794,7 @@ function injectStyle(doc) {
   style.setAttribute('id', 'ssPhase13WorkspaceStyle');
   style.textContent = `
 .ss-p13-launch{height:32px;border:1px solid rgba(255,255,255,.24);border-radius:7px;background:#0b6da8;color:#fff;padding:0 12px;font-weight:700;white-space:nowrap}
-.ss-p13-launch:hover{background:#1283c7}.ss-p13-workspace{position:fixed;inset:0;z-index:9000;background:#f4f7fa;color:#172536;display:grid;grid-template-rows:auto minmax(0,1fr) 190px;font-family:Inter,Pretendard,"Noto Sans KR",sans-serif}
+.ss-p13-launch:hover{background:#1283c7}.ss-p13-workspace{position:fixed;top:96px;right:8px;bottom:8px;width:min(55vw,1100px);border:1px solid #b7cbdc;border-radius:10px;box-shadow:0 8px 32px #102b4633;overflow:hidden;z-index:9000;background:#f4f7fa;color:#172536;display:grid;grid-template-rows:auto minmax(0,1fr) 96px;font-family:Inter,Pretendard,"Noto Sans KR",sans-serif}
 .ss-p13-workspace[hidden]{display:none}.ss-p13-header{min-height:84px;background:#102b46;color:#fff;display:grid;grid-template-columns:minmax(210px,280px) minmax(420px,1fr) auto;align-items:center;gap:14px;padding:10px 16px;border-bottom:3px solid #d9a72e}
 .ss-p13-title{display:flex;flex-direction:column;gap:3px}.ss-p13-title strong{font-size:17px}.ss-p13-title span{font-size:11px;color:#b9cee0}
 .ss-p13-nav{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0}.ss-p13-nav-button{height:36px;border:1px solid rgba(255,255,255,.18);border-radius:7px;background:rgba(255,255,255,.06);color:#dce9f3;padding:0 11px;font-weight:650;white-space:nowrap}.ss-p13-nav-button.active{background:#d9a72e;color:#14283b;border-color:#d9a72e}
@@ -1767,6 +1817,11 @@ function injectStyle(doc) {
 .ss-p13-drawer{min-width:0;background:#172d42;color:#dfeaf3;border-top:1px solid #0d2032;padding:12px 16px;overflow:auto}.ss-p13-drawer-heading{display:flex;justify-content:space-between;margin-bottom:9px}.ss-p13-drawer-heading span{font-size:11px;color:#a9bdce}.ss-p13-run-list{display:flex;flex-direction:column;gap:4px}.ss-p13-run-row{display:grid;grid-template-columns:140px 80px 110px minmax(0,1fr);gap:8px;align-items:center;background:rgba(255,255,255,.06);border-radius:5px;padding:6px 9px;font-size:11px}.ss-p13-run-row small{color:#9fb5c8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:1180px){.ss-p13-header{grid-template-columns:1fr auto}.ss-p13-title{display:none}.ss-p13-nav{justify-content:flex-start;overflow:auto}.ss-p13-body{grid-template-columns:220px minmax(0,1fr)}.ss-p13-inspector{display:none}.ss-p13-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ss-p13-issue-toolbar{grid-template-columns:140px minmax(160px,1fr) auto}.ss-p13-issue-toolbar>*:nth-child(n+4){grid-row:2}.ss-p13-issue{grid-template-columns:1fr}.ss-p13-issue-actions{justify-content:flex-start;flex-wrap:wrap}.ss-p13-form-grid{grid-template-columns:repeat(2,minmax(140px,1fr))}}
 @media(max-width:760px){.ss-p13-workspace{grid-template-rows:auto minmax(0,1fr) 150px}.ss-p13-header{grid-template-columns:1fr;padding:8px}.ss-p13-actions{justify-content:flex-start;overflow:auto}.ss-p13-body{grid-template-columns:1fr}.ss-p13-tree{display:none}.ss-p13-center{padding:14px}.ss-p13-card-grid,.ss-p13-card-grid.compact{grid-template-columns:1fr}.ss-p13-run-row{grid-template-columns:90px 60px 80px minmax(0,1fr)}.ss-p13-issue-toolbar{grid-template-columns:1fr}.ss-p13-issue-toolbar>*{grid-row:auto!important}.ss-p13-issue-main{grid-template-columns:1fr}.ss-p13-repair-summary{grid-template-columns:1fr}.ss-p13-data-row{min-width:620px}.ss-p13-table{overflow:auto}.ss-p13-form-grid{grid-template-columns:1fr}}
+/* Reserve model space; the canvas resize event recenters its projection. */
+@media(min-width:1000px){body.ss-p13-workspace-open #main{margin-right:min(calc(55vw + 16px),1116px)}}
+/* Keep the model and main mode tabs accessible beside the workbench. */
+.ss-p13-header{grid-template-columns:1fr;min-height:0;gap:8px;padding:10px}.ss-p13-title{display:flex}.ss-p13-nav{min-width:0;justify-content:flex-start;flex-wrap:wrap}.ss-p13-actions{justify-content:flex-start;flex-wrap:wrap}.ss-p13-body{grid-template-columns:170px minmax(0,1fr)}.ss-p13-inspector{display:block;grid-column:1/-1;border-top:1px solid #dbe4eb}.ss-p13-body{overflow:auto}.ss-p13-center,.ss-p13-tree{overflow:visible}.ss-p13-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:760px){.ss-p13-workspace{left:8px;width:auto;top:96px}.ss-p13-body{grid-template-columns:1fr}.ss-p13-card-grid{grid-template-columns:1fr}.ss-p13-actions button{padding:0 8px;font-size:12px}}
 `;
   (doc.head || doc.documentElement || doc.body)?.appendChild?.(style);
 }

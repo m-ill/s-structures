@@ -82,6 +82,8 @@ SB1처럼 수치 정밀도 수준에서 일치하는 항목도 있지만, **21�
 
 ## WebMCP: 모델 조회부터 탄성설계·해석 결과까지
 
+브라우저 등록은 고정 4개 도구(검색·명세·읽기·실행)로 구성하며 전체 기능을 필요할 때 조회합니다. 기능이 늘어도 등록 목록 크기가 함께 늘지 않습니다. [연결 방식과 화면 개선](docs/ux/WEBMCP_WORKBENCH_20260915.md).
+
 지원 브라우저의 최상위 모델러가 `document.modelContext.registerTool`로 도구를 등록합니다. 에이전트가 현재 모델의 단위·케이스를 읽고 기존 제품 API로 해석을 실행한 뒤, 결과를 사용자 화면과 함께 확인합니다. [OpenAI Site tools 문서](https://learn.chatgpt.com/docs/webmcp)
 
 | 도구 | 역할 |

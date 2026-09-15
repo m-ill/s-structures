@@ -1,5 +1,11 @@
 # WebMCP — 탄성설계·보고서·비선형 36개 도구
 
+## 브라우저 연결 도구 (2026-09-15)
+
+브라우저에는 `list_sstructures_tools`, `describe_sstructures_tool`, `read_sstructures_tool`, `execute_sstructures_tool` 4개만 등록합니다. 전체 기능은 검색·페이지 조회로 탐색하고 명세를 읽은 뒤 `invokeWith`에 표시된 도구에 `{name, arguments}`를 전달합니다. 아래 문서의 기존 기능 이름은 `name` 값이며 기능 삭제나 API 변경을 뜻하지 않습니다. 입력 해시·미리보기·승인·세션 검증은 그대로 적용됩니다.
+
+예: `describe_sstructures_tool({name:"get_project_context"})` 조회 후 `read_sstructures_tool({name:"get_project_context",arguments:{}})` 호출. 등록 요청 완료와 실제 에이전트 응답 확인은 구분합니다. 설정 한도 오류가 남아 있으면 작업을 저장한 뒤 수정된 페이지를 새로 열고 브라우저 도구 목록을 다시 조회합니다.
+
 현재 main/Pages는 **36개 도구**를 제공한다. [배포 소스·검증 기록](archive/phase20/PAGES_DEPLOYMENT.md)을 확인한다. [M5~M10 지원 범위](archive/phase19/M5_M10_CANDIDATE.md) · [개발 PR](https://github.com/m-ill/s-structures/pull/3). 아래 M4 기록은 이전 단계의 검증 이력이다.
 
 2026-09-07 로컬 M4는 기존 9개에 18개를 추가한 총 27개 도구를 제공한다. 입력 preview/apply, 탄성 workflow, 설계 검토, 보고서 artifact, 화면 전환을 M2·M3 공통 서비스에 연결했다. 직접 모델러와 같은 출처 app 호스트에서 실제 Site tools를 검증했다. [M4 계약·사용법](archive/phase19/M4_CONTRACT.md) · [39개 고정 회귀와 브라우저 증거](../verification/evidence/phase19/m4/README.md). 이 문단은 M4 당시 기록이며, 후속 Phase19·20은 main/Pages에 반영했다.

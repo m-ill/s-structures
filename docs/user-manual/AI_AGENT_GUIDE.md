@@ -1,5 +1,11 @@
 # AI Agent Guide
 
+## 브라우저 연결 도구 (2026-09-15)
+
+브라우저에는 `list_sstructures_tools`, `describe_sstructures_tool`, `read_sstructures_tool`, `execute_sstructures_tool` 4개만 등록합니다. 전체 기능은 검색·페이지 조회로 탐색하고 명세를 읽은 뒤 `invokeWith`에 표시된 도구에 `{name, arguments}`를 전달합니다. 아래 문서의 기존 기능 이름은 `name` 값이며 기능 삭제나 API 변경을 뜻하지 않습니다. 입력 해시·미리보기·승인·세션 검증은 그대로 적용됩니다.
+
+예: `describe_sstructures_tool({name:"get_project_context"})` 조회 후 `read_sstructures_tool({name:"get_project_context",arguments:{}})` 호출. 등록 요청 완료와 실제 에이전트 응답 확인은 구분합니다. 설정 한도 오류가 남아 있으면 작업을 저장한 뒤 수정된 페이지를 새로 열고 브라우저 도구 목록을 다시 조회합니다.
+
 aiReadable: true
 stableInterfaceFirst: true
 
